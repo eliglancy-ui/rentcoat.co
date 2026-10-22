@@ -36,6 +36,7 @@ The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` ar
 | `PRINTFUL_TOKEN` | Printful developer portal > private token |
 | `PRINTFUL_STORE_ID` | Only if your Printful token covers more than one store (Printful's error will ask for a store ID) |
 | `ADMIN_KEY` | Any long password you make up. Protects the variant-list page. |
+| `STRIPE_TAX` | Leave unset until a parent registers the business for North Carolina sales tax and adds that registration in Stripe > Tax. Then set it to `on` and redeploy: Stripe adds sales tax at checkout (clothing and shipping). |
 
 Never put these keys in the code or send them to anyone.
 
@@ -46,3 +47,9 @@ Never put these keys in the code or send them to anyone.
 3. Shopper pays with card, Apple Pay or Google Pay. Stripe emails the receipt.
 4. Stripe calls `/api/stripe-webhook`. It checks Stripe's signature and creates a Printful draft order with the shipping address.
 5. If anything is missing (like a variant ID), the payment is still safe in Stripe and Netlify's function log says `ORDER NEEDS MANUAL ENTRY` with the Stripe session ID.
+
+## Drop reminder list
+
+The "Get the reminder" box near the bottom of the home page is a Netlify Form called `reminders`. Turn it on once: Netlify > your site > Forms > Enable form detection, then redeploy. Signups show up under Forms > reminders, where you can download them as a CSV. Under Forms > Form notifications you can get an email for each signup.
+
+When a drop opens, email the list (put the addresses in BCC so nobody sees anyone else's). The policies page promises we only email about drops, so keep it to that.

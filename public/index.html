@@ -266,6 +266,13 @@ details p { margin: 10px 0 0; color: var(--muted); max-width: 70ch }
 .social h2 { font-size: clamp(40px, 6vw, 72px) }
 .social .links { display: flex; gap: 12px; flex-wrap: wrap }
 .social .btn { background: var(--ink); color: var(--bone) } .social .btn:hover { background: var(--bone); color: var(--ink) }
+.social .sub { margin: 14px 0 0; max-width: 40ch }
+.follow { display: flex; flex-direction: column; gap: 14px; width: min(100%, 440px) }
+.remind { display: flex; gap: 0; border: 1.5px solid var(--ink) }
+.remind input[type=email] { flex: 1; min-width: 0; font: 400 16px/1 var(--body); padding: 14px 14px; border: 0; background: var(--bone); color: var(--ink) }
+.remind .btn { flex: none }
+.remind-note { margin: 0; min-height: 1.4em; font-weight: 800 }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
 
 footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-block: 32px 44px }
 footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
@@ -484,11 +491,22 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
   </div>
 </div></section>
 
-<section class="social" aria-labelledby="social-title"><div class="wrap">
-  <div><p class="eyebrow">Don't miss Drop 002</p><h2 id="social-title">Follow the drop</h2></div>
-  <div class="links">
-    <a class="btn" id="ig-link" href="https://www.instagram.com/rentcoat.co" target="_blank" rel="noopener">Instagram</a>
-    <a class="btn" id="tt-link" href="https://www.tiktok.com/@rentcoat.co" target="_blank" rel="noopener">TikTok</a>
+<section class="social" id="remind" aria-labelledby="social-title"><div class="wrap">
+  <div><p class="eyebrow">Don't miss a drop</p><h2 id="social-title">Get the reminder</h2>
+    <p class="sub">Drops only last 7 days. Leave your email and we'll tell you when each one opens. We only email about drops.</p></div>
+  <div class="follow">
+    <form class="remind" id="remind-form" name="reminders" method="POST" action="/" data-netlify="true" netlify-honeypot="company">
+      <input type="hidden" name="form-name" value="reminders">
+      <p hidden><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+      <label class="sr" for="remind-email">Email</label>
+      <input id="remind-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
+      <button class="btn" type="submit">Remind me</button>
+    </form>
+    <p class="remind-note" id="remind-note" role="status"></p>
+    <div class="links">
+      <a class="btn" id="ig-link" href="https://www.instagram.com/rentcoat.co" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn" id="tt-link" href="https://www.tiktok.com/@rentcoat.co" target="_blank" rel="noopener">TikTok</a>
+    </div>
   </div>
 </div></section>
 </main>
@@ -532,6 +550,22 @@ const fmt = d => d.toLocaleString(undefined, { weekday: "short", month: "short",
 const phase = () => { const n = now(); return n < opens ? "before" : n < closes ? "live" : "closed"; };
 const $ = id => document.getElementById(id);
 
+const remind = $("remind-form");
+remind.addEventListener("submit", async e => {
+  e.preventDefault();
+  const note = $("remind-note"), btn = remind.querySelector("button");
+  btn.disabled = true;
+  try {
+    const r = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(remind)).toString() });
+    if (!r.ok) throw new Error(String(r.status));
+    remind.reset();
+    note.textContent = "You're on the list. We'll email you when the drop opens.";
+  } catch {
+    note.textContent = "That didn't go through. Try again, or DM @rentcoat.co.";
+  }
+  btn.disabled = false;
+});
+
 document.querySelectorAll(".card").forEach(card => {
   const shot = card.querySelector(".shot"), sides = card.querySelectorAll(".flip button");
   const show = side => {
@@ -545,7 +579,7 @@ document.querySelectorAll(".card").forEach(card => {
     const size = card.querySelector("input:checked")?.value || "M";
     const ph = phase();
     if (ph !== "live") {
-      note.textContent = ph === "before" ? `Preorders open ${fmt(opens)}. Follow @rentcoat.co for the reminder.` : "Drop 001 is closed. Follow @rentcoat.co for Drop 002.";
+      note.textContent = ph === "before" ? `Preorders open ${fmt(opens)}. Get an email reminder at the bottom of this page.` : "Drop 001 is closed. Follow @rentcoat.co for Drop 002.";
       return;
     }
     note.textContent = "";

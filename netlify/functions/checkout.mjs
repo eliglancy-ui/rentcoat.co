@@ -16,6 +16,8 @@ export default async (req) => {
   }
 
   const site = process.env.URL || new URL(req.url).origin;
+  // Set STRIPE_TAX=on in Netlify once the business is registered for NC sales tax and that registration is added in Stripe Tax.
+  const tax = process.env.STRIPE_TAX === "on";
   const params = {
     mode: "payment",
     success_url: `${site}/thanks.html?session_id={CHECKOUT_SESSION_ID}`,
@@ -33,6 +35,7 @@ export default async (req) => {
         type: "fixed_amount",
         display_name: SHIPPING.label,
         fixed_amount: { amount: SHIPPING.amount, currency: "usd" },
+        ...(tax && { tax_behavior: "exclusive", tax_code: "txcd_92010001" }),
       },
     }],
     line_items: items.map(i => ({
@@ -40,12 +43,15 @@ export default async (req) => {
       price_data: {
         currency: "usd",
         unit_amount: unitPrice(i.size),
+        ...(tax && { tax_behavior: "exclusive" }),
         product_data: {
           name: `${PRODUCTS[i.id].name} (${PRODUCTS[i.id].color}), size ${i.size}`,
           images: [`${site}/${PRODUCTS[i.id].image}`],
+          ...(tax && { tax_code: "txcd_30011000" }),
         },
       },
     })),
+    ...(tax && { automatic_tax: { enabled: true } }),
     metadata: { items: encodeItems(items), drop: "001" },
     payment_intent_data: { description: "Rent Coat Co. Drop 001 preorder", metadata: { items: encodeItems(items) } },
   };
