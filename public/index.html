@@ -206,7 +206,8 @@ h2 { font: 400 clamp(44px, 6.4vw, 84px)/.92 var(--display); text-transform: uppe
 .shot { position: relative; aspect-ratio: 1600/1800; max-width: 100%; overflow: hidden }
 .shot img { width: 100%; height: 100%; object-fit: cover; transition: opacity .35s }
 .shot img.alt { position: absolute; inset: 0; opacity: 0 }
-.card:hover .shot img.alt, .shot.show-front img.alt { opacity: 1 }
+.shot.show-front img.alt { opacity: 1 }
+.shot img { cursor: pointer }
 .tag { position: absolute; top: 12px; left: 12px; background: var(--ink); color: var(--bone); padding: 7px 9px }
 .tag.hot { background: var(--flare); color: var(--flare-ink) }
 .flip { position: absolute; right: 12px; bottom: 12px; display: flex; background: var(--bone); border: 1.5px solid var(--ink) }
@@ -531,11 +532,13 @@ const phase = () => { const n = now(); return n < opens ? "before" : n < closes 
 const $ = id => document.getElementById(id);
 
 document.querySelectorAll(".card").forEach(card => {
-  const shot = card.querySelector(".shot");
-  card.querySelectorAll(".flip button").forEach(b => b.addEventListener("click", () => {
-    card.querySelectorAll(".flip button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    shot.classList.toggle("show-front", b.dataset.side === "front");
-  }));
+  const shot = card.querySelector(".shot"), sides = card.querySelectorAll(".flip button");
+  const show = side => {
+    sides.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.side === side)));
+    shot.classList.toggle("show-front", side === "front");
+  };
+  sides.forEach(b => b.addEventListener("click", () => show(b.dataset.side)));
+  shot.querySelectorAll("img").forEach(img => img.addEventListener("click", () => show(shot.classList.contains("show-front") ? "back" : "front")));
   const buy = card.querySelector(".buy"), note = card.querySelector(".note");
   buy.addEventListener("click", () => {
     const size = card.querySelector("input:checked")?.value || "M";
