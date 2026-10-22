@@ -6,6 +6,7 @@ export default async (req) => {
 
   const phase = dropPhase();
   if (phase === "before") return json({ error: "Preorders aren't open yet. Check the countdown." }, 409);
+  if (phase === "sunday") return json({ error: "We're closed on Sundays. Your bag is saved, so check out on Monday." }, 409);
   if (phase === "closed") return json({ error: "Drop 001 has closed. Follow @rentcoat.co for the next one." }, 409);
 
   let items;

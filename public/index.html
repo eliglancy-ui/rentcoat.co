@@ -483,6 +483,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
     <details><summary>What is Rent Coat Co.?</summary><p>An independent clothing brand that makes heavyweight graphic tees for young Latter-day Saints. Every design starts with a scripture reference, printed on the shirt so anyone who asks can look it up.</p></details>
     <details><summary>Is this an LDS clothing brand?</summary><p>It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church.</p></details>
     <details><summary>How does the 7-day preorder work?</summary><p>Each drop is open for exactly 7 days. Shirts are printed after the window closes and usually arrive 2 to 3 weeks after that. After the window closes, that drop is gone.</p></details>
+    <details><summary>Why can't I order on Sunday?</summary><p>Checkout pauses on Sundays (Eastern time) while a drop is open, because we keep Sunday as a day of rest. Your bag stays saved, so you can check out on Monday.</p></details>
     <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $36 ($39 for 2XL), and shipping is a flat $5.99 in the US.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
     <details><summary>How do the shirts fit?</summary><p>Unisex and true to size with a relaxed cut, S to 2XL. Size up one for a boxy fit.</p></details>
@@ -537,6 +538,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
 let DROP = { opens: "2026-11-14T10:00:00-05:00", closes: "2026-11-21T10:00:00-05:00" };
 let PRICE = { default: 3600, "2XL": 3900 };
 let SHIPPING_CENTS = 599;
+let closedSundays = true;
 
 const PRODUCTS = [
   { id: "liberty", name: "Title of Liberty", color: "Pepper", back: "images/liberty-back.jpg" },
@@ -547,7 +549,13 @@ const SIZES = ["S", "M", "L", "XL", "2XL"];
 let opens = new Date(DROP.opens), closes = new Date(DROP.closes), skew = 0;
 const now = () => Date.now() + skew;
 const fmt = d => d.toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
-const phase = () => { const n = now(); return n < opens ? "before" : n < closes ? "live" : "closed"; };
+const easternDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" });
+const phase = () => {
+  const n = now();
+  if (n < opens) return "before";
+  if (n >= closes) return "closed";
+  return closedSundays && easternDay.format(n) === "Sun" ? "sunday" : "live";
+};
 const $ = id => document.getElementById(id);
 
 const remind = $("remind-form");
@@ -579,7 +587,9 @@ document.querySelectorAll(".card").forEach(card => {
     const size = card.querySelector("input:checked")?.value || "M";
     const ph = phase();
     if (ph !== "live") {
-      note.textContent = ph === "before" ? `Preorders open ${fmt(opens)}. Get an email reminder at the bottom of this page.` : "Drop 001 is closed. Follow @rentcoat.co for Drop 002.";
+      note.textContent = ph === "before" ? `Preorders open ${fmt(opens)}. Get an email reminder at the bottom of this page.`
+        : ph === "sunday" ? "We're closed on Sundays. Come back Monday to order."
+        : "Drop 001 is closed. Follow @rentcoat.co for Drop 002.";
       return;
     }
     note.textContent = "";
@@ -595,6 +605,7 @@ showDates();
 const pad = n => String(n).padStart(2, "0");
 function tick() {
   const n = now(), ph = phase();
+  const open = ph === "live" || ph === "sunday";
   const target = ph === "before" ? opens : closes;
   let left = Math.max(0, target - n);
   const d = Math.floor(left / 864e5); left -= d * 864e5;
@@ -602,11 +613,11 @@ function tick() {
   const m = Math.floor(left / 6e4); left -= m * 6e4;
   const s = Math.floor(left / 1e3);
   $("cd-d").textContent = pad(d); $("cd-h").textContent = pad(h); $("cd-m").textContent = pad(m); $("cd-s").textContent = pad(s);
-  $("clock-label").textContent = ph === "before" ? "Drop 001 opens in" : ph === "live" ? "Preorder closes in" : "Drop 001 has closed";
-  $("clock-state").textContent = ph === "before" ? "Upcoming" : ph === "live" ? "● Live now" : "Closed";
-  const pct = ph === "before" ? 0 : ph === "live" ? (n - opens) / (closes - opens) * 100 : 100;
+  $("clock-label").textContent = ph === "before" ? "Drop 001 opens in" : open ? "Preorder closes in" : "Drop 001 has closed";
+  $("clock-state").textContent = ph === "before" ? "Upcoming" : ph === "live" ? "● Live now" : ph === "sunday" ? "Closed Sunday" : "Closed";
+  const pct = ph === "before" ? 0 : open ? (n - opens) / (closes - opens) * 100 : 100;
   $("cd-bar").style.width = pct.toFixed(2) + "%";
-  document.querySelectorAll(".buy").forEach(b => b.textContent = ph === "live" ? "Add to bag" : ph === "before" ? "Opens soon" : "Closed");
+  document.querySelectorAll(".buy").forEach(b => b.textContent = ph === "live" ? "Add to bag" : ph === "before" ? "Opens soon" : ph === "sunday" ? "Back Monday" : "Closed");
   $("checkout").disabled = ph !== "live";
 }
 
@@ -616,6 +627,7 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   DROP = c.drop; opens = new Date(DROP.opens); closes = new Date(DROP.closes);
   if (c.price?.default) PRICE = c.price;
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
+  if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
   showDates(); renderBag(); tick();
 }).catch(() => {});

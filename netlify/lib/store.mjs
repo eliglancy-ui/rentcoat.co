@@ -35,12 +35,17 @@ export const DROP = {
   closes: process.env.DROP_CLOSES || "2026-11-21T10:00:00-05:00",
 };
 
+// Checkout pauses on Sundays (Eastern time) while a drop is open. Set CLOSED_SUNDAYS=off in Netlify to sell every day.
+export const CLOSED_SUNDAYS = process.env.CLOSED_SUNDAYS !== "off";
+const easternDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" });
+export const isSunday = (now = Date.now()) => easternDay.format(now) === "Sun";
+
 const own = (obj, key) => typeof key === "string" && Object.hasOwn(obj, key);
 export const unitPrice = size => own(PRICE, size) ? PRICE[size] : PRICE.default;
 
 export function dropPhase(now = Date.now()) {
   if (now < Date.parse(DROP.opens)) return "before";
-  if (now < Date.parse(DROP.closes)) return "live";
+  if (now < Date.parse(DROP.closes)) return CLOSED_SUNDAYS && isSunday(now) ? "sunday" : "live";
   return "closed";
 }
 
