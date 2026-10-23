@@ -4,24 +4,24 @@
 export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
-    color: "Pepper",
+    color: "Shadow",
     image: "images/liberty-back.jpg",
-    // Printful variant IDs for the "Rent Coat Co." API store. Strings are Printful's external
+    // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
     // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
     // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
-    variants: { S: "6adb85060e5617", M: "6adb85060e5656", L: "6adb85060e5673", XL: "6adb85060e56a4", "2XL": "6adb85060e56c4" },
+    variants: { S: "6adb8c541a39d5", M: "6adb8c541a39f3", L: "6adb8c541a3a06", XL: "6adb8c541a3a16", "2XL": "6adb8c541a3a31" },
   },
   stripling: {
     name: "Stripling 2000 Tee",
-    color: "Hemp",
+    color: "Black",
     image: "images/stripling-back.jpg",
-    variants: { S: "6adb85e915b682", M: "6adb85e915b6b4", L: "6adb85e915b6d9", XL: "6adb85e915b6f8", "2XL": "6adb85e915b714" },
+    variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
-    color: "Butter",
+    color: "Cream",
     image: "images/cureloms-back.jpg",
-    variants: { S: "6adb86bdbc8972", M: "6adb86bdbc89a9", L: "6adb86bdbc89c6", XL: "6adb86bdbc89e6", "2XL": "6adb86bdbc89f5" },
+    variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
   },
 };
 
@@ -29,7 +29,7 @@ export const PRODUCTS = {
 // The PRINTFUL_STORE_ID environment variable overrides it.
 export const PRINTFUL_STORE_ID = "18950104";
 
-export const PRICE = { default: 3600, "2XL": 3900 };
+export const PRICE = { default: 4000, "2XL": 4300 };
 export const SHIPPING = { amount: 599, label: "Standard shipping (ships after the preorder closes)" };
 export const SHIP_TO = ["US"];
 export const MAX_ITEMS = 10;
