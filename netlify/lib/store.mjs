@@ -4,26 +4,32 @@
 export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
-    color: "Pepper",
+    color: "Shadow",
     image: "images/liberty-back.jpg",
-    // Printful sync variant IDs. Fill these in from /api/printful-variants?key=YOUR_ADMIN_KEY
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
+    // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
+    // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
+    variants: { S: "6adb8c541a39d5", M: "6adb8c541a39f3", L: "6adb8c541a3a06", XL: "6adb8c541a3a16", "2XL": "6adb8c541a3a31" },
   },
   stripling: {
     name: "Stripling 2000 Tee",
-    color: "Hemp",
+    color: "Black",
     image: "images/stripling-back.jpg",
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
-    color: "Butter",
+    color: "Cream",
     image: "images/cureloms-back.jpg",
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
   },
 };
 
-export const PRICE = { default: 3600, "2XL": 3900 };
+// The Printful store orders go to ("Rent Coat Co.", the Manual order / API store). Not a secret.
+// The PRINTFUL_STORE_ID environment variable overrides it.
+export const PRINTFUL_STORE_ID = "18950104";
+
+export const PRICE = { default: 4000, "2XL": 4300 };
 export const SHIPPING = { amount: 599, label: "Standard shipping (ships after the preorder closes)" };
 export const SHIP_TO = ["US"];
 export const MAX_ITEMS = 10;
@@ -113,7 +119,7 @@ export async function printful(path, { method = "GET", body } = {}) {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      ...(process.env.PRINTFUL_STORE_ID ? { "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID } : {}),
+      "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID || PRINTFUL_STORE_ID,
     },
     body: body ? JSON.stringify(body) : undefined,
   });

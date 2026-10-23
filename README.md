@@ -32,7 +32,8 @@ netlify.toml                tells Netlify where things are
 | Drop dates (7-day window) | `DROP` in `netlify/lib/store.mjs`, or `DROP_OPENS` / `DROP_CLOSES` in Netlify environment variables (redeploy after changing them). The page reads them from `/api/config`, so the countdown and checkout always match. |
 | Prices | `PRICE` in `store.mjs` (cents) |
 | Shipping charge | `SHIPPING` in `store.mjs` |
-| Printful variant IDs | `variants` for each product in `store.mjs` |
+| Printful variant IDs | `variants` for each product in `store.mjs`. Filled in for Drop 001 with the external IDs (the `#6adb...` codes) from the "Rent Coat Co." store in Printful. For a new shirt, create it in that store and copy its IDs the same way. |
+| Printful store | `PRINTFUL_STORE_ID` in `store.mjs` (18950104, the "Rent Coat Co." Manual order / API store) |
 
 The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` are only fallbacks for a preview without the server. Update them too if you want the preview to match, but the live site never uses them.
 
