@@ -6,22 +6,28 @@ export const PRODUCTS = {
     name: "Title of Liberty Tee",
     color: "Pepper",
     image: "images/liberty-back.jpg",
-    // Printful sync variant IDs. Fill these in from /api/printful-variants?key=YOUR_ADMIN_KEY
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    // Printful variant IDs for the "Rent Coat Co." API store. Strings are Printful's external
+    // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
+    // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
+    variants: { S: "6adb85060e5617", M: "6adb85060e5656", L: "6adb85060e5673", XL: "6adb85060e56a4", "2XL": "6adb85060e56c4" },
   },
   stripling: {
     name: "Stripling 2000 Tee",
     color: "Hemp",
     image: "images/stripling-back.jpg",
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    variants: { S: "6adb85e915b682", M: "6adb85e915b6b4", L: "6adb85e915b6d9", XL: "6adb85e915b6f8", "2XL": "6adb85e915b714" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
     color: "Butter",
     image: "images/cureloms-back.jpg",
-    variants: { S: null, M: null, L: null, XL: null, "2XL": null },
+    variants: { S: "6adb86bdbc8972", M: "6adb86bdbc89a9", L: "6adb86bdbc89c6", XL: "6adb86bdbc89e6", "2XL": "6adb86bdbc89f5" },
   },
 };
+
+// The Printful store orders go to ("Rent Coat Co.", the Manual order / API store). Not a secret.
+// The PRINTFUL_STORE_ID environment variable overrides it.
+export const PRINTFUL_STORE_ID = "18950104";
 
 export const PRICE = { default: 3600, "2XL": 3900 };
 export const SHIPPING = { amount: 599, label: "Standard shipping (ships after the preorder closes)" };
@@ -113,7 +119,7 @@ export async function printful(path, { method = "GET", body } = {}) {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      ...(process.env.PRINTFUL_STORE_ID ? { "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID } : {}),
+      "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID || PRINTFUL_STORE_ID,
     },
     body: body ? JSON.stringify(body) : undefined,
   });

@@ -27,7 +27,10 @@ export function buildPrintfulOrder(session) {
   const items = decodeItems(session.metadata?.items).map(i => {
     const variant = PRODUCTS[i.id]?.variants?.[i.size];
     if (!variant) throw new Error(`No Printful variant set for ${i.id} size ${i.size}`);
-    return { sync_variant_id: variant, quantity: i.qty };
+    // String IDs are Printful external variant IDs; numbers are sync variant IDs.
+    return typeof variant === "string"
+      ? { external_variant_id: variant, quantity: i.qty }
+      : { sync_variant_id: variant, quantity: i.qty };
   });
   if (items.length === 0) throw new Error("Session has no items in metadata");
   return {
