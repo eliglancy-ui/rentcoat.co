@@ -8,7 +8,14 @@ public/                     the website (what visitors see)
   thanks.html               page shown after someone pays
   policies.html             shipping, returns, cancellations, accessibility and contact
   terms.html                terms of sale (preorders, delays, cancellations, disputes)
-  privacy.html              privacy and cookies policy
+  privacy.html              privacy policy
+  cookies.html              cookie policy (the site sets no cookies; only the bag in local storage)
+  about.html                the story behind the name, written so Google and AI search can quote it
+  404.html                  branded "page not found" page (Netlify uses it automatically)
+  fonts/                    self-hosted fonts, so no visitor data goes to Google Fonts
+  site.webmanifest          app name, colors and icons for phones
+  robots.txt, sitemap.xml   tell search engines and AI crawlers what to read
+  llms.txt                  plain-text brand facts for AI assistants
 netlify/functions/
   config.mjs                /api/config: gives the page the drop dates, prices and shipping from store.mjs
   checkout.mjs              /api/checkout: turns the bag into a Stripe Checkout page
@@ -53,7 +60,13 @@ Never put these keys in the code or send them to anyone.
 
 ## Policy pages
 
-`terms.html`, `privacy.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, Google Fonts, no cookies or analytics. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` first. `/terms`, `/privacy`, `/cookies` and `/shipping` are short links set in `netlify.toml`.
+`terms.html`, `privacy.html`, `cookies.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, self-hosted fonts, no cookies or analytics. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` and `cookies.html` first (and add a consent banner before any non-essential cookie). `/terms`, `/privacy`, `/cookies`, `/shipping` and `/about` are short links set in `netlify.toml`, which also sets the security and caching headers.
+
+## Before each drop (SEO checklist)
+
+- Update the drop dates in `llms.txt`, `about.html` (Quick facts and the box at the bottom), and the `priceValidUntil`, `availabilityStarts` and `availabilityEnds` values in the structured data at the top of `index.html`.
+- Bump `<lastmod>` in `sitemap.xml` for any page you changed.
+- After deploying, ask Google Search Console to re-crawl the home page.
 
 ## Drop reminder list
 
