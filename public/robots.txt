@@ -1,20 +1,24 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /thanks.html
 
 # AI search and assistant crawlers are welcome
 User-agent: GPTBot
-Allow: /
 User-agent: OAI-SearchBot
-Allow: /
 User-agent: ChatGPT-User
-Allow: /
 User-agent: ClaudeBot
-Allow: /
+User-agent: Claude-User
 User-agent: Claude-SearchBot
-Allow: /
 User-agent: PerplexityBot
-Allow: /
+User-agent: Perplexity-User
 User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
 Allow: /
+Disallow: /api/
+Disallow: /thanks.html
 
 Sitemap: https://rentcoat.co/sitemap.xml

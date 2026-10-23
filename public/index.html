@@ -17,15 +17,18 @@
 <meta property="og:image" content="https://rentcoat.co/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rent Coat Co. Drop 001: three heavyweight scripture tees">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rent Coat Co. | Drop 001, 7-day preorder">
 <meta name="twitter:description" content="Heavyweight tees for young Latter-day Saints. Every design starts with scripture.">
 <meta name="twitter:image" content="https://rentcoat.co/images/og-image.jpg">
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&family=Instrument+Serif:ital@1&family=Space+Mono:wght@700&display=swap">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,19 +39,55 @@
       "name": "Rent Coat Co.",
       "url": "https://rentcoat.co/",
       "logo": "https://rentcoat.co/images/logo-512.png",
-      "description": "Independent streetwear brand making heavyweight graphic tees for young Latter-day Saints. Named for Alma 46:12–13 in the Book of Mormon, where Captain Moroni rent his coat and raised it as the title of liberty.",
+      "description": "Independent streetwear brand making heavyweight graphic tees for young Latter-day Saints. Named for Alma 46:12–13 in the Book of Mormon, where Captain Moroni rent his coat and raised it as the title of liberty. Not affiliated with The Church of Jesus Christ of Latter-day Saints.",
       "email": "rentcoat.co@gmail.com",
-      "sameAs": ["https://www.instagram.com/rentcoat.co", "https://www.tiktok.com/@rentcoat.co"]
+      "sameAs": [
+        "https://www.instagram.com/rentcoat.co",
+        "https://www.tiktok.com/@rentcoat.co"
+      ],
+      "slogan": "Every design starts with scripture.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "NC",
+        "addressCountry": "US"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "rentcoat.co@gmail.com",
+        "availableLanguage": "English"
+      }
     },
     {
       "@type": "OfferShippingDetails",
       "@id": "https://rentcoat.co/#shipping",
-      "shippingRate": { "@type": "MonetaryAmount", "value": "5.99", "currency": "USD" },
-      "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "5.99",
+        "currency": "USD"
+      },
+      "shippingDestination": {
+        "@type": "DefinedRegion",
+        "addressCountry": "US"
+      },
       "deliveryTime": {
         "@type": "ShippingDeliveryTime",
-        "handlingTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 12, "unitCode": "DAY" },
-        "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 8, "unitCode": "DAY" }
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 3,
+          "maxValue": 12,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 2,
+          "maxValue": 8,
+          "unitCode": "DAY"
+        }
       }
     },
     {
@@ -63,54 +102,240 @@
       "@id": "https://rentcoat.co/#site",
       "url": "https://rentcoat.co/",
       "name": "Rent Coat Co.",
-      "publisher": { "@id": "https://rentcoat.co/#org" }
+      "publisher": {
+        "@id": "https://rentcoat.co/#org"
+      },
+      "inLanguage": "en-US",
+      "description": "Heavyweight graphic tees for young Latter-day Saints, sold in 7-day preorder drops."
     },
     {
       "@type": "Product",
       "@id": "https://rentcoat.co/#stripling",
       "name": "Stripling 2000 Heavyweight Tee",
       "description": "Varsity-style back print of the 2,000 stripling warriors with the quote \"We do not doubt our mothers knew it\" (Alma 56:48). Comfort Colors 1717 garment-dyed cotton in Hemp.",
-      "image": ["https://rentcoat.co/images/stripling-back.jpg", "https://rentcoat.co/images/stripling-front.jpg"],
-      "brand": { "@id": "https://rentcoat.co/#org" },
+      "image": [
+        "https://rentcoat.co/images/stripling-back.jpg",
+        "https://rentcoat.co/images/stripling-front.jpg"
+      ],
+      "brand": {
+        "@id": "https://rentcoat.co/#org"
+      },
       "color": "Hemp",
       "material": "100% ring-spun cotton",
-      "offers": { "@type": "Offer", "price": "36.00", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://rentcoat.co/#stripling", "itemCondition": "https://schema.org/NewCondition", "shippingDetails": { "@id": "https://rentcoat.co/#shipping" }, "hasMerchantReturnPolicy": { "@id": "https://rentcoat.co/#returns" } }
+      "offers": {
+        "@type": "Offer",
+        "price": "36.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/PreOrder",
+        "url": "https://rentcoat.co/#stripling",
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@id": "https://rentcoat.co/#shipping"
+        },
+        "hasMerchantReturnPolicy": {
+          "@id": "https://rentcoat.co/#returns"
+        },
+        "priceValidUntil": "2026-11-21",
+        "availabilityStarts": "2026-11-14T10:00:00-05:00",
+        "availabilityEnds": "2026-11-21T10:00:00-05:00",
+        "seller": {
+          "@id": "https://rentcoat.co/#org"
+        }
+      },
+      "sku": "RC001-STRIPLING",
+      "category": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "size": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ],
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedGender": "unisex"
+      }
     },
     {
       "@type": "Product",
       "@id": "https://rentcoat.co/#cureloms",
       "name": "Cureloms & Cumoms Wildlife Society Tee",
       "description": "Field-guide back print of the animals in Ether 9:19: elephants, cureloms and cumoms. Comfort Colors 1717 garment-dyed cotton in Butter.",
-      "image": ["https://rentcoat.co/images/cureloms-back.jpg", "https://rentcoat.co/images/cureloms-front.jpg"],
-      "brand": { "@id": "https://rentcoat.co/#org" },
+      "image": [
+        "https://rentcoat.co/images/cureloms-back.jpg",
+        "https://rentcoat.co/images/cureloms-front.jpg"
+      ],
+      "brand": {
+        "@id": "https://rentcoat.co/#org"
+      },
       "color": "Butter",
       "material": "100% ring-spun cotton",
-      "offers": { "@type": "Offer", "price": "36.00", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://rentcoat.co/#cureloms", "itemCondition": "https://schema.org/NewCondition", "shippingDetails": { "@id": "https://rentcoat.co/#shipping" }, "hasMerchantReturnPolicy": { "@id": "https://rentcoat.co/#returns" } }
+      "offers": {
+        "@type": "Offer",
+        "price": "36.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/PreOrder",
+        "url": "https://rentcoat.co/#cureloms",
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@id": "https://rentcoat.co/#shipping"
+        },
+        "hasMerchantReturnPolicy": {
+          "@id": "https://rentcoat.co/#returns"
+        },
+        "priceValidUntil": "2026-11-21",
+        "availabilityStarts": "2026-11-14T10:00:00-05:00",
+        "availabilityEnds": "2026-11-21T10:00:00-05:00",
+        "seller": {
+          "@id": "https://rentcoat.co/#org"
+        }
+      },
+      "sku": "RC001-CURELOMS",
+      "category": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "size": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ],
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedGender": "unisex"
+      }
     },
     {
       "@type": "Product",
       "@id": "https://rentcoat.co/#liberty",
       "name": "Title of Liberty Heavyweight Tee",
       "description": "The Rent Coat Co. flagship: a torn banner on a pole for the title of liberty in Alma 46:12–13. Comfort Colors 1717 garment-dyed cotton in Pepper.",
-      "image": ["https://rentcoat.co/images/liberty-back.jpg", "https://rentcoat.co/images/liberty-front.jpg"],
-      "brand": { "@id": "https://rentcoat.co/#org" },
+      "image": [
+        "https://rentcoat.co/images/liberty-back.jpg",
+        "https://rentcoat.co/images/liberty-front.jpg"
+      ],
+      "brand": {
+        "@id": "https://rentcoat.co/#org"
+      },
       "color": "Pepper",
       "material": "100% ring-spun cotton",
-      "offers": { "@type": "Offer", "price": "36.00", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://rentcoat.co/#liberty", "itemCondition": "https://schema.org/NewCondition", "shippingDetails": { "@id": "https://rentcoat.co/#shipping" }, "hasMerchantReturnPolicy": { "@id": "https://rentcoat.co/#returns" } }
+      "offers": {
+        "@type": "Offer",
+        "price": "36.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/PreOrder",
+        "url": "https://rentcoat.co/#liberty",
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@id": "https://rentcoat.co/#shipping"
+        },
+        "hasMerchantReturnPolicy": {
+          "@id": "https://rentcoat.co/#returns"
+        },
+        "priceValidUntil": "2026-11-21",
+        "availabilityStarts": "2026-11-14T10:00:00-05:00",
+        "availabilityEnds": "2026-11-21T10:00:00-05:00",
+        "seller": {
+          "@id": "https://rentcoat.co/#org"
+        }
+      },
+      "sku": "RC001-LIBERTY",
+      "category": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "size": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ],
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedGender": "unisex"
+      }
     },
     {
       "@type": "FAQPage",
       "@id": "https://rentcoat.co/#faq",
       "mainEntity": [
-        { "@type": "Question", "name": "What is Rent Coat Co.?", "acceptedAnswer": { "@type": "Answer", "text": "Rent Coat Co. is an independent clothing brand that makes heavyweight, garment-dyed graphic tees for young Latter-day Saints. Every design starts with a scripture reference, printed on the shirt." } },
-        { "@type": "Question", "name": "Where does the name Rent Coat Co. come from?", "acceptedAnswer": { "@type": "Answer", "text": "From Alma 46:12–13 in the Book of Mormon. Captain Moroni \"rent his coat,\" wrote on it, fastened it to a pole, and called it the title of liberty." } },
-        { "@type": "Question", "name": "Is this an LDS clothing brand?", "acceptedAnswer": { "@type": "Answer", "text": "It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church." } },
-        { "@type": "Question", "name": "How does the 7-day preorder work?", "acceptedAnswer": { "@type": "Answer", "text": "Each drop is open for exactly 7 days. Shirts are printed to order after the window closes and usually arrive 2 to 3 weeks after the drop closes." } },
-        { "@type": "Question", "name": "How do I pay for a Rent Coat Co. order?", "acceptedAnswer": { "@type": "Answer", "text": "Checkout runs on Stripe and accepts major cards, Apple Pay and Google Pay. Tees are $36 ($39 for 2XL), and shipping is a flat $5.99 in the US." } },
-        { "@type": "Question", "name": "What's a curelom?", "acceptedAnswer": { "@type": "Answer", "text": "Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society." } },
-        { "@type": "Question", "name": "How do Rent Coat Co. tees fit?", "acceptedAnswer": { "@type": "Answer", "text": "They are Comfort Colors 1717 tees: heavyweight, garment-dyed, unisex, and true to size with a relaxed cut. Size up one for a boxy fit. Sizes run S to 2XL." } },
-        { "@type": "Question", "name": "Can I return a shirt?", "acceptedAnswer": { "@type": "Answer", "text": "Because every shirt is printed for you, fit returns are not accepted. A damaged or misprinted shirt is replaced free if you email a photo to rentcoat.co@gmail.com within 30 days of delivery." } }
+        {
+          "@type": "Question",
+          "name": "What is Rent Coat Co.?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rent Coat Co. is an independent clothing brand that makes heavyweight, garment-dyed graphic tees for young Latter-day Saints. Every design starts with a scripture reference, printed on the shirt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does the name Rent Coat Co. come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From Alma 46:12–13 in the Book of Mormon. Captain Moroni \"rent his coat,\" wrote on it, fastened it to a pole, and called it the title of liberty."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this an LDS clothing brand?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the 7-day preorder work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each drop is open for exactly 7 days. Shirts are printed to order after the window closes and usually arrive 2 to 3 weeks after the drop closes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I pay for a Rent Coat Co. order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Checkout runs on Stripe and accepts major cards, Apple Pay and Google Pay. Tees are $36 ($39 for 2XL), and shipping is a flat $5.99 in the US."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's a curelom?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do Rent Coat Co. tees fit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They are Comfort Colors 1717 tees: heavyweight, garment-dyed, unisex, and true to size with a relaxed cut. Size up one for a boxy fit. Sizes run S to 2XL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I return a shirt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because every shirt is printed for you, fit returns are not accepted. A damaged or misprinted shirt is replaced free if you email a photo to rentcoat.co@gmail.com within 30 days of delivery."
+          }
+        }
       ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://rentcoat.co/",
+      "url": "https://rentcoat.co/",
+      "name": "Rent Coat Co. | Faith Streetwear for Young Latter-day Saints",
+      "isPartOf": {
+        "@id": "https://rentcoat.co/#site"
+      },
+      "about": {
+        "@id": "https://rentcoat.co/#org"
+      },
+      "primaryImageOfPage": "https://rentcoat.co/images/liberty-back.jpg",
+      "inLanguage": "en-US",
+      "dateModified": "2026-10-23"
     }
   ]
 }
@@ -285,7 +510,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
 .bag-btn b[hidden] { display: none }
 .scrim { position: fixed; inset: 0; background: rgba(22,32,27,.45); z-index: 40 }
 .bag { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--bone); z-index: 41; display: flex; flex-direction: column;
-  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) 20px; box-shadow: -20px 0 60px rgba(0,0,0,.18) }
+  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(72px + env(safe-area-inset-bottom, 0px)) 20px; box-shadow: -20px 0 60px rgba(0,0,0,.18) }
 .bag-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 12px }
 .bag-head h2 { font-size: 40px; margin: 0 }
 .x { border: 0; background: none; font: 700 26px/1 var(--mono); cursor: pointer; color: var(--ink); padding: 6px 10px }
@@ -372,7 +597,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
     </div>
   </div>
   <figure class="hero-art" style="margin:0">
-    <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in washed charcoal, back print of a torn banner on a pole" fetchpriority="high">
+    <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in Pepper, back print of a torn banner on a pole" fetchpriority="high">
     <figcaption class="stamp"><span class="eyebrow">Only 7 days</span><b>From $36</b></figcaption>
   </figure>
 </div></section>
@@ -467,6 +692,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
     <p>When Captain Moroni needed his people to remember what they were fighting for, he tore his coat, wrote on it, and raised it on a pole. He called it the title of liberty.</p>
     <p>Rent Coat Co. is named for that moment: take what you have and turn it into something you stand behind. We make shirts that look like a real streetwear drop and still say what you believe.</p>
     <blockquote><p>“He rent his coat.”</p><cite class="eyebrow">Alma 46:12</cite></blockquote>
+    <p><a href="/about.html">Read the full story</a></p>
   </div>
 </div></section>
 
@@ -500,7 +726,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
   <div class="follow">
     <form class="remind" id="remind-form" name="reminders" method="POST" action="/" data-netlify="true" netlify-honeypot="company">
       <input type="hidden" name="form-name" value="reminders">
-      <p hidden><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+      <p hidden><label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off"></label></p>
       <label class="sr" for="remind-email">Email</label>
       <input id="remind-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
       <button class="btn" type="submit">Remind me</button>
@@ -532,7 +758,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
 
 <footer><div class="wrap">
   <p><b>Rent Coat Co.</b> · <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> · © 2026<br>
-    <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="privacy.html#cookies">Cookies</a> · <a href="policies.html">Shipping &amp; returns</a> · <a href="policies.html#accessibility">Accessibility</a></p>
+    <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/policies.html">Shipping &amp; returns</a> · <a href="/policies.html#accessibility">Accessibility</a></p>
   <p>Rent Coat Co. is an independent clothing brand. It is not affiliated with, sponsored by, or endorsed by The Church of Jesus Christ of Latter-day Saints. Scripture references are from the Book of Mormon.</p>
 </div></footer>
 
@@ -586,6 +812,7 @@ document.querySelectorAll(".card").forEach(card => {
   };
   sides.forEach(b => b.addEventListener("click", () => show(b.dataset.side)));
   shot.querySelectorAll("img").forEach(img => img.addEventListener("click", () => show(shot.classList.contains("show-front") ? "back" : "front")));
+  card.querySelectorAll(".sizes input").forEach(r => r.addEventListener("change", refreshPrices));
   const buy = card.querySelector(".buy"), note = card.querySelector(".note");
   buy.addEventListener("click", () => {
     const size = card.querySelector("input:checked")?.value || "M";
@@ -633,12 +860,19 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
-  showDates(); renderBag(); tick();
+  showDates(); renderBag(); refreshPrices(); tick();
 }).catch(() => {});
 
 /* ----- bag ----- */
 const priceOf = size => Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default;
 const money = c => "$" + (c / 100).toFixed(c % 100 ? 2 : 0);
+// Each card shows the price for the size that's picked ($39 for 2XL).
+function refreshPrices() {
+  document.querySelectorAll(".card").forEach(card => {
+    const size = card.querySelector(".sizes input:checked")?.value || "M", el = card.querySelector(".price");
+    if (el) el.textContent = money(priceOf(size));
+  });
+}
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 let bag = [];
 try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]").filter(l => byId[l.id] && SIZES.includes(l.size)); } catch (e) { bag = []; }
@@ -712,7 +946,7 @@ $("checkout").onclick = async () => {
   }
   btn.disabled = phase() !== "live"; btn.textContent = "Checkout";
 };
-renderBag();
+renderBag(); refreshPrices();
 
 tick(); setInterval(tick, 1000);
 </script>

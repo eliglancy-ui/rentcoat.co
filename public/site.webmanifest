@@ -1,0 +1,15 @@
+{
+  "name": "Rent Coat Co.",
+  "short_name": "Rent Coat",
+  "description": "Heavyweight tees for young Latter-day Saints. Every design starts with scripture.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#EFEBE2",
+  "theme_color": "#16201B",
+  "icons": [
+    { "src": "/images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/images/logo-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/images/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
