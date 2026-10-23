@@ -510,7 +510,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
 .bag-btn b[hidden] { display: none }
 .scrim { position: fixed; inset: 0; background: rgba(22,32,27,.45); z-index: 40 }
 .bag { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--bone); z-index: 41; display: flex; flex-direction: column;
-  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) 20px; box-shadow: -20px 0 60px rgba(0,0,0,.18) }
+  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(72px + env(safe-area-inset-bottom, 0px)) 20px; box-shadow: -20px 0 60px rgba(0,0,0,.18) }
 .bag-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 12px }
 .bag-head h2 { font-size: 40px; margin: 0 }
 .x { border: 0; background: none; font: 700 26px/1 var(--mono); cursor: pointer; color: var(--ink); padding: 6px 10px }
@@ -597,7 +597,7 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
     </div>
   </div>
   <figure class="hero-art" style="margin:0">
-    <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in washed charcoal, back print of a torn banner on a pole" fetchpriority="high">
+    <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in Pepper, back print of a torn banner on a pole" fetchpriority="high">
     <figcaption class="stamp"><span class="eyebrow">Only 7 days</span><b>From $36</b></figcaption>
   </figure>
 </div></section>
@@ -812,6 +812,7 @@ document.querySelectorAll(".card").forEach(card => {
   };
   sides.forEach(b => b.addEventListener("click", () => show(b.dataset.side)));
   shot.querySelectorAll("img").forEach(img => img.addEventListener("click", () => show(shot.classList.contains("show-front") ? "back" : "front")));
+  card.querySelectorAll(".sizes input").forEach(r => r.addEventListener("change", refreshPrices));
   const buy = card.querySelector(".buy"), note = card.querySelector(".note");
   buy.addEventListener("click", () => {
     const size = card.querySelector("input:checked")?.value || "M";
@@ -859,12 +860,19 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
-  showDates(); renderBag(); tick();
+  showDates(); renderBag(); refreshPrices(); tick();
 }).catch(() => {});
 
 /* ----- bag ----- */
 const priceOf = size => Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default;
 const money = c => "$" + (c / 100).toFixed(c % 100 ? 2 : 0);
+// Each card shows the price for the size that's picked ($39 for 2XL).
+function refreshPrices() {
+  document.querySelectorAll(".card").forEach(card => {
+    const size = card.querySelector(".sizes input:checked")?.value || "M", el = card.querySelector(".price");
+    if (el) el.textContent = money(priceOf(size));
+  });
+}
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 let bag = [];
 try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]").filter(l => byId[l.id] && SIZES.includes(l.size)); } catch (e) { bag = []; }
@@ -938,7 +946,7 @@ $("checkout").onclick = async () => {
   }
   btn.disabled = phase() !== "live"; btn.textContent = "Checkout";
 };
-renderBag();
+renderBag(); refreshPrices();
 
 tick(); setInterval(tick, 1000);
 </script>
