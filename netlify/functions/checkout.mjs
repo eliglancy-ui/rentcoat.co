@@ -1,5 +1,7 @@
 // POST /api/checkout  { items: [{ id, size, qty }] }  ->  { url }  (a Stripe Checkout page)
-import { PRODUCTS, SHIPPING, SHIP_TO, cleanCart, dropPhase, encodeItems, unitPrice, stripe, json } from "../lib/store.mjs";
+import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, dropPhase, encodeItems, unitPrice, stripe, json } from "../lib/store.mjs";
+
+const closeDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
 
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
@@ -26,7 +28,7 @@ export default async (req) => {
     // Stripe's shortest allowed lifetime, so a page opened just before the drop closes can't be paid hours later.
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     custom_text: {
-      submit: { message: "Preorder: your shirt is printed after the 7-day drop closes and arrives about 2 to 3 weeks after that." },
+      submit: { message: `Preorder: your shirt is printed after the drop closes on ${closeDay.format(Date.parse(DROP.closes))} and arrives about 2 to 3 weeks after that. Made to order, so no fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms.` },
     },
     allow_promotion_codes: true,
     billing_address_collection: "auto",

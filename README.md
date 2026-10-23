@@ -6,7 +6,9 @@ The Rent Coat Co. website and ordering system. No Shopify: customers fill a bag 
 public/                     the website (what visitors see)
   index.html                home page: countdown, shirts, bag, FAQ
   thanks.html               page shown after someone pays
-  policies.html             shipping, returns, privacy and contact
+  policies.html             shipping, returns, cancellations, accessibility and contact
+  terms.html                terms of sale (preorders, delays, cancellations, disputes)
+  privacy.html              privacy and cookies policy
 netlify/functions/
   config.mjs                /api/config: gives the page the drop dates, prices and shipping from store.mjs
   checkout.mjs              /api/checkout: turns the bag into a Stripe Checkout page
@@ -23,9 +25,9 @@ netlify.toml                tells Netlify where things are
 | Drop dates (7-day window) | `DROP` in `netlify/lib/store.mjs`, or `DROP_OPENS` / `DROP_CLOSES` in Netlify environment variables (redeploy after changing them). The page reads them from `/api/config`, so the countdown and checkout always match. |
 | Prices | `PRICE` in `store.mjs` (cents) |
 | Shipping charge | `SHIPPING` in `store.mjs` |
+| Printful variant IDs | `variants` for each product in `store.mjs` |
 
 The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` are only fallbacks for a preview without the server. Update them too if you want the preview to match, but the live site never uses them.
-| Printful variant IDs | `variants` for each product in `store.mjs` |
 
 ## Environment variables (Netlify > Site configuration > Environment variables)
 
@@ -48,6 +50,10 @@ Never put these keys in the code or send them to anyone.
 3. Shopper pays with card, Apple Pay or Google Pay. Stripe emails the receipt.
 4. Stripe calls `/api/stripe-webhook`. It checks Stripe's signature and creates a Printful draft order with the shipping address.
 5. If anything is missing (like a variant ID), the payment is still safe in Stripe and Netlify's function log says `ORDER NEEDS MANUAL ENTRY` with the Stripe session ID.
+
+## Policy pages
+
+`terms.html`, `privacy.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, Google Fonts, no cookies or analytics. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` first. `/terms`, `/privacy`, `/cookies` and `/shipping` are short links set in `netlify.toml`.
 
 ## Drop reminder list
 

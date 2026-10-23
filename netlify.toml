@@ -1,6 +1,27 @@
 [build]
   publish = "public"
 
+# Short links to the policy pages (also used in the Stripe checkout text).
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/cookies"
+  to = "/privacy.html#cookies"
+  status = 301
+
+[[redirects]]
+  from = "/shipping"
+  to = "/policies.html"
+  status = 200
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"

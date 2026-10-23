@@ -18,5 +18,9 @@
 
 ## Policies
 - Returns: no fit returns on made-to-order shirts; damaged or misprinted shirts replaced free within 30 days of delivery.
-- [Shipping, returns and privacy](https://rentcoat.co/policies.html)
+- Cancellations: free until the drop closes; after that, shirts go to print.
+- Privacy: no cookies, analytics or ad tracking on rentcoat.co; personal information is never sold.
+- [Shipping and returns](https://rentcoat.co/policies.html)
+- [Terms of sale](https://rentcoat.co/terms.html)
+- [Privacy and cookies](https://rentcoat.co/privacy.html)
 - [FAQ](https://rentcoat.co/#faq)
