@@ -13,7 +13,7 @@ export const PRODUCTS = {
   },
   stripling: {
     name: "Stripling 2000 Tee",
-    color: "Black",
+    color: "Glazed Green",
     image: "images/stripling-back.jpg",
     variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
   },
