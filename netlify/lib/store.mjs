@@ -13,9 +13,10 @@ export const PRODUCTS = {
   },
   stripling: {
     name: "Stripling 2000 Tee",
-    color: "Black",
+    color: "Glazed Green",
     image: "images/stripling-back.jpg",
-    variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
+    // "Stripling 2000 Tee (Green)": Stanley/Stella SATU018 in Glazed Green.
+    variants: { S: "6add24a0cc9301", M: "6add24a0cc9322", L: "6add24a0cc9349", XL: "6add24a0cc9359", "2XL": "6add24a0cc9374" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
