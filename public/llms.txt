@@ -6,7 +6,7 @@
 - Name: from Alma 46:12–13, where Captain Moroni "rent his coat," wrote on it, fastened it to a pole, and called it the title of liberty. "Rent" means torn. The flag in the logo is the title of liberty.
 - Sells in limited 7-day preorder drops. Shirts are printed to order after a drop closes and arrive about 2 to 3 weeks later.
 - Drop 001: opens Saturday, November 14, 2026 at 10:00 AM Eastern and closes Saturday, November 21, 2026 at 10:00 AM Eastern. Checkout is paused on Sundays (Eastern time).
-- Blanks: Title of Liberty and Cureloms & Cumoms are Shaka Wear SHGDD, 7.5 oz 100% cotton, garment-dyed, boxy oversized drop-shoulder fit (order your usual size for the boxy look). Stripling 2000 is a Stanley/Stella Freestyler, 7 oz 100% organic cotton, classic fit. Sizes S to 2XL.
+- Blank: Shaka Wear SHGDD, 7.5 oz 100% cotton, garment-dyed, boxy oversized drop-shoulder fit. Sizes S to 2XL; order your usual size for the boxy look.
 - Price: $40 USD per tee ($43 for 2XL). Shipping: flat $5.99, US addresses only.
 - Payment: Stripe checkout (cards, Apple Pay, Google Pay).
 - Based in North Carolina, USA.
@@ -16,7 +16,7 @@
 
 ## Drop 001 shirts
 - [Title of Liberty Tee](https://rentcoat.co/#liberty): the flagship. Torn banner on a pole. Color Shadow. Reference Alma 46:12.
-- [Stripling 2000 Tee](https://rentcoat.co/#stripling): varsity back print for the 2,000 stripling warriors, quote "We do not doubt our mothers knew it." Color Glazed Green. Reference Alma 56:48.
+- [Stripling 2000 Tee](https://rentcoat.co/#stripling): varsity back print for the 2,000 stripling warriors, quote "We do not doubt our mothers knew it." Color Black. Reference Alma 56:48.
 - [Cureloms & Cumoms Wildlife Society Tee](https://rentcoat.co/#cureloms): field-guide print of the animals in Ether 9:19, which lists cureloms and cumoms with elephants as animals useful to the Jaredites. Color Cream.
 
 ## Pages
