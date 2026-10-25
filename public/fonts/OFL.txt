@@ -1,4 +1,6 @@
-Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)
+Copyright 2016 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
+Copyright 2017 IBM Corp. (IBM Plex Mono, https://github.com/IBM/plex)
+Instrument Serif: copyright The Instrument Serif Project Authors, same license.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
