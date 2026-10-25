@@ -5,7 +5,7 @@ export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
     color: "Shadow",
-    image: "images/liberty-back-v2.jpg",
+    image: "images/liberty-back-v3.jpg",
     // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
     // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
     // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
