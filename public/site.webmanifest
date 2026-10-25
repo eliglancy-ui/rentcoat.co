@@ -5,7 +5,7 @@
   "start_url": "/",
   "scope": "/",
   "display": "browser",
-  "background_color": "#EFEBE2",
+  "background_color": "#ECE8DF",
   "theme_color": "#16201B",
   "icons": [
     { "src": "/images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },

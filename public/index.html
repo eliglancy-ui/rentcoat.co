@@ -26,8 +26,8 @@
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" href="/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-mono-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">
 {
@@ -335,282 +335,383 @@
       },
       "primaryImageOfPage": "https://rentcoat.co/images/liberty-back.jpg",
       "inLanguage": "en-US",
-      "dateModified": "2026-10-23"
+      "dateModified": "2026-10-25"
     }
   ]
 }
 </script>
 <style>
-/* Layout: drop page. Hero with live countdown, product rail, how-it-works steps, story band, FAQ. One deliberate light look. */
+/* Layout: drop page, "torn banner" look. Dark hero with live countdown, scripture marquee, product cards,
+   how-it-works, story, fit specs, FAQ, reminder signup. Torn edges between bands nod to the rent coat. */
 :root {
   color-scheme: light;
-  --bone: #EFEBE2;
-  --paper: #E5E0D4;
+  --night: #16201B;      /* forest-black: header, hero, dark bands */
+  --night-2: #1F2C25;    /* raised panels on dark */
+  --deep: #0F1612;       /* footer */
+  --bone: #ECE8DF;       /* light background */
+  --paper: #F5F2EA;      /* cards, lighter bands */
   --ink: #16201B;
-  --muted: #59625D;
-  --line: #CBC5B7;
-  --forest: #23382C;
-  --forest-2: #2E4A3A;
-  --cream: #F3EAD7;
-  --flare: #D9622B;
-  --flare-ink: #FFF7EC;
-  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --text: #3A3F39;       /* body copy on light */
+  --muted: #4A4F48;      /* labels on light */
+  --line: rgba(22,32,27,.16);
+  --rent: #A83A2C;       /* rent-red accent */
+  --rent-dark: #7E2A20;
+  --gold: #C9A45C;
+  --on-dark: #ECE8DF;
+  --on-dark-2: #C9CFC6;  /* body copy on dark */
+  --on-dark-3: #A7B0A6;  /* labels on dark */
+  --display: "Archivo", "Arial Narrow", Impact, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --serif: "Instrument Serif", Georgia, serif;
-  --mono: "Space Mono", ui-monospace, Menlo, monospace;
-  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
-  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px), 4vw);
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px), 4vw);
 }
 * { box-sizing: border-box }
 [hidden] { display: none !important }
 html { scroll-behavior: smooth }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
-body { margin: 0; background: var(--bone); color: var(--ink); font: 400 16px/1.55 var(--body); -webkit-font-smoothing: antialiased }
+body { margin: 0; background: var(--bone); color: var(--ink); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased }
 img { max-width: 100%; height: auto; display: block }
 a { color: inherit }
-:focus-visible { outline: 3px solid var(--flare); outline-offset: 3px }
-.wrap { max-width: 1240px; margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r) }
-.eyebrow { font: 700 12px/1.3 var(--mono); letter-spacing: .18em; text-transform: uppercase }
-.skip { position: absolute; left: -999px } .skip:focus { left: 16px; top: 16px; z-index: 50; background: var(--ink); color: var(--bone); padding: 10px 14px }
+button, input { font: inherit }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px }
+.on-light :focus-visible, .card :focus-visible, .faq :focus-visible { outline-color: var(--rent) }
+.wrap { max-width: 1320px; margin: 0 auto; padding-left: min(48px, var(--gutter-l)); padding-right: min(48px, var(--gutter-r)) }
+.eyebrow { font: 500 12px/1.3 var(--mono); letter-spacing: .16em; text-transform: uppercase }
+.skip { position: absolute; left: -999px } .skip:focus { left: 16px; top: 16px; z-index: 60; background: var(--gold); color: var(--night); padding: 10px 14px }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+.big { font: 900 clamp(48px, 7vw, 104px)/.88 var(--display); font-stretch: 68%; text-transform: uppercase; margin: 0; text-wrap: balance }
+.big em, .h1 em { font: italic 400 1.04em/.95 var(--serif); font-stretch: 100%; text-transform: none; letter-spacing: -.02em }
+.torn { display: block; width: 100%; height: 30px; line-height: 0 }
+.torn svg { display: block; width: 100%; height: 30px }
+
+/* announcement bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--night) }
+.announce { background: var(--rent); color: var(--paper); font: 500 12px/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; text-align: center; padding: 10px 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px }
 
 /* header */
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bone) }
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bone) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line) }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 800 19px/1 var(--body); letter-spacing: .08em }
-.brand svg { width: 22px; height: 24px; fill: var(--ink) }
-.top nav { display: flex; align-items: center; gap: 22px }
-.top nav a { text-decoration: none; font: 700 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase }
-.top nav a:not(.btn):hover { color: var(--flare) }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border: 0; cursor: pointer;
-  font: 800 14px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; padding: 15px 22px; background: var(--ink); color: var(--bone); transition: background .2s, color .2s, transform .2s }
-.btn:hover { background: var(--flare); color: var(--flare-ink) }
-.btn.flare { background: var(--flare); color: var(--flare-ink) } .btn.flare:hover { background: var(--ink); color: var(--bone) }
-.btn.sm { padding: 11px 14px; font-size: 12px }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--night); color: var(--on-dark); border-bottom: 1px solid rgba(236,232,223,.12) }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 32px; padding-block: 12px }
+.brand { display: flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; font: 900 20px/1 var(--display); font-stretch: 78%; letter-spacing: .06em; white-space: nowrap }
+.brand svg { width: 22px; height: 24px; fill: var(--on-dark) }
+.brand svg path { fill: var(--gold) }
+.top nav { display: flex; align-items: center; gap: 4px 28px }
+.top nav a.link { text-decoration: none; font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: 16px 0 }
+.top nav a.link:hover { color: var(--gold) }
+.bag-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; background: transparent; color: var(--on-dark); border: 1px solid rgba(236,232,223,.35); border-radius: 999px; font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; white-space: nowrap }
+.bag-btn:hover { border-color: var(--gold) }
+.bag-btn svg { width: 16px; height: 16px }
+.bag-btn b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--gold); color: var(--night); font-weight: 600 }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 0 28px; text-decoration: none; border: 0; border-radius: 4px; cursor: pointer;
+  font: 800 15px/1 var(--display); font-stretch: 85%; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; transition: transform .18s ease, filter .18s ease, background .18s }
+.btn svg { width: 18px; height: 18px }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.08) }
+.btn.gold { background: var(--gold); color: var(--night) }
+.btn.rent { background: var(--rent); color: var(--paper) }
+.btn.dark { background: var(--night); color: var(--on-dark) }
+.btn.ghost { background: transparent; color: var(--on-dark); border: 1px solid rgba(236,232,223,.35) }
+.btn.ghost:hover { background: rgba(236,232,223,.08) }
+.btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; filter: none }
 
 /* hero */
-.hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; padding-block: 40px 56px }
-.hero h1 { font: 400 clamp(64px, 10.5vw, 150px)/.86 var(--display); text-transform: uppercase; margin: 14px 0 0; letter-spacing: -.005em }
-.hero h1 em { font-style: normal; color: var(--flare) }
-.lede { font-size: 19px; max-width: 46ch; margin: 22px 0 0; text-wrap: pretty }
-.lede b { font-weight: 800 }
-.hero-art { position: relative; min-width: 0 }
-.hero-art img { width: 100%; aspect-ratio: 1600/1800; object-fit: cover; background: var(--paper) }
-.hero-art .stamp { position: absolute; left: -18px; bottom: 28px; background: var(--flare); color: var(--flare-ink); padding: 12px 14px; transform: rotate(-4deg) }
-.hero-art .stamp b { display: block; font: 400 30px/1 var(--display); letter-spacing: .01em }
+.hero { position: relative; background: var(--night); color: var(--on-dark); overflow: hidden }
+.hero .ghostnum { position: absolute; right: -6%; top: 4%; font: 900 clamp(220px, 34vw, 520px)/.8 var(--display); font-stretch: 62%; color: rgba(236,232,223,.035); pointer-events: none; user-select: none }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; padding-block: clamp(48px, 7vw, 104px) clamp(64px, 8vw, 112px) }
+.pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; padding: 0; list-style: none }
+.pills li { padding: 6px 12px; border: 1px solid rgba(236,232,223,.22); border-radius: 999px; color: var(--on-dark-3) }
+.pills li:first-child { border-color: rgba(201,164,92,.5); color: var(--gold) }
+.h1 { margin: 0; font: 900 clamp(72px, 11vw, 176px)/.84 var(--display); font-stretch: 68%; text-transform: uppercase; letter-spacing: -.01em }
+.h1 em { display: block; color: var(--gold) }
+.lede { margin: 32px 0 0; max-width: 520px; font-size: clamp(17px, 1.5vw, 20px); color: var(--on-dark-2); text-wrap: pretty }
+.lede b { color: var(--on-dark); font-weight: 700 }
+.hero-art { position: relative; min-width: 0; max-width: 560px; width: 100%; margin: 0 auto }
+.hero-art .frame { position: relative; background: var(--bone); border-radius: 6px; overflow: hidden; transform: rotate(1.6deg); box-shadow: 0 40px 80px -30px rgba(0,0,0,.6) }
+.hero-art img { width: 100%; aspect-ratio: 8/9; object-fit: cover }
+.hero-art .chips { position: absolute; left: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px }
+.chip { padding: 7px 12px; border-radius: 999px; background: var(--night); color: var(--on-dark); font: 500 11px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase }
+.chip.light { background: var(--paper); color: var(--ink) }
+.stamp { position: absolute; top: -40px; left: -34px; width: 136px; height: 136px; animation: spin 28s linear infinite }
+@keyframes spin { to { transform: rotate(360deg) } }
 
 /* countdown */
-.clock { margin-top: 30px; background: var(--forest); color: var(--cream); padding: 20px 22px 22px; max-width: 560px }
-.clock-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline }
-.clock-state { color: #F0B48F }
-.units { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px }
-.unit { background: rgba(243,234,215,.07); padding: 12px 6px 10px; text-align: center }
-.unit b { display: block; font: 400 clamp(38px, 6vw, 58px)/1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: .01em }
-.unit span { font: 700 10px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; opacity: .75 }
-.bar { height: 6px; background: rgba(243,234,215,.15); margin-top: 16px; position: relative; overflow: hidden }
-.bar i { position: absolute; inset: 0 auto 0 0; background: var(--flare); width: 0% }
-.clock-foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 10px; opacity: .8 }
-.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px }
+.clock { margin-top: 40px; max-width: 560px; padding: 22px 24px; border: 1px solid rgba(236,232,223,.16); border-radius: 6px; background: rgba(236,232,223,.03) }
+.clock-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; color: var(--on-dark-3) }
+.clock-state { color: var(--gold) }
+.units { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px }
+.unit b { display: block; font: 500 clamp(32px, 4vw, 48px)/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--on-dark) }
+.unit:last-child b { color: var(--gold) }
+.unit span { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--on-dark-3) }
+.bar { height: 4px; background: rgba(236,232,223,.12); margin-top: 18px; position: relative; overflow: hidden; border-radius: 2px }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--gold); width: 0% }
+.clock-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; color: var(--on-dark-3); font-size: 11px }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px }
 
 /* marquee */
-.marquee { background: var(--ink); color: var(--bone); overflow: hidden; white-space: nowrap; padding-block: 13px }
-.marquee .track { display: inline-flex; gap: 40px; padding-left: 40px; animation: run 38s linear infinite }
-.marquee span { font: 700 13px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase }
-.marquee span::after { content: "✦"; margin-left: 40px; color: var(--flare) }
+.marquee { background: var(--rent); color: var(--paper); overflow: hidden; white-space: nowrap; padding: 4px 0 18px }
+.marquee .track { display: inline-flex; animation: run 40s linear infinite }
+.marquee span { font: 900 clamp(22px, 2.6vw, 34px)/1.2 var(--display); font-stretch: 70%; letter-spacing: .04em; text-transform: uppercase; padding-right: 28px }
+.marquee span::after { content: "✦"; margin-left: 28px; color: var(--gold) }
 @keyframes run { to { transform: translateX(-50%) } }
-@media (prefers-reduced-motion: reduce) { .marquee .track { animation: none } }
 
 /* sections */
-section { padding-block: 72px }
-.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; flex-wrap: wrap; margin-bottom: 28px }
-h2 { font: 400 clamp(44px, 6.4vw, 84px)/.92 var(--display); text-transform: uppercase; margin: 8px 0 0; text-wrap: balance }
-.sec-head p { margin: 0; max-width: 44ch; color: var(--muted) }
+section { padding-block: clamp(64px, 8vw, 120px) }
+.sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px; margin-bottom: 48px }
+.sec-head > div { flex: 1 1 520px; min-width: 0 }
+.sec-head > p { flex: 0 1 420px; margin: 0; color: var(--muted) }
+.kicker { margin: 0 0 14px; color: var(--rent) }
+.dark .kicker { color: var(--gold) }
+.dark { background: var(--night); color: var(--on-dark) }
+.dark .big em { color: var(--gold) }
 
 /* products */
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px }
-.card { background: var(--paper); display: flex; flex-direction: column; min-width: 0; scroll-margin-top: 90px }
-.shot { position: relative; aspect-ratio: 1600/1800; max-width: 100%; overflow: hidden }
-.shot img { width: 100%; height: 100%; object-fit: cover; transition: opacity .35s }
+.drop-sec { background: var(--bone); padding-bottom: clamp(56px, 7vw, 96px) }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px }
+.card { display: flex; flex-direction: column; min-width: 0; background: var(--paper); border: 1px solid rgba(22,32,27,.12); border-radius: 6px; overflow: hidden; scroll-margin-top: 90px }
+.shot { position: relative; aspect-ratio: 8/9; overflow: hidden; background: var(--bone) }
+.shot img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity .35s, transform .6s cubic-bezier(.2,.7,.2,1) }
 .shot img.alt { position: absolute; inset: 0; opacity: 0 }
 .shot.show-front img.alt { opacity: 1 }
-.shot img { cursor: pointer }
-.tag { position: absolute; top: 12px; left: 12px; background: var(--ink); color: var(--bone); padding: 7px 9px }
-.tag.hot { background: var(--flare); color: var(--flare-ink) }
-.flip { position: absolute; right: 12px; bottom: 12px; display: flex; background: var(--bone); border: 1.5px solid var(--ink) }
-.flip button { font: 700 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 8px 10px; border: 0; background: transparent; color: var(--ink); cursor: pointer }
-.flip button[aria-pressed="true"] { background: var(--ink); color: var(--bone) }
-.info { padding: 20px; display: flex; flex-direction: column; gap: 12px; border-top: 1.5px solid var(--line); flex: 1 }
-.row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px }
-.info h3 { font: 400 32px/1 var(--display); text-transform: uppercase; margin: 0 }
-.price { font: 700 19px/1 var(--mono) }
-.info p { margin: 0; color: var(--muted); font-size: 15px }
-.ref { color: var(--flare); text-decoration: none } a.ref:hover { text-decoration: underline }
-.sizes { display: flex; flex-wrap: wrap; gap: 6px; border: 0; margin: 0; padding: 0 }
-.sizes legend { position: absolute; left: -999px }
+.card:hover .shot img { transform: scale(1.04) }
+.tag { position: absolute; top: 16px; left: 16px; padding: 6px 12px; border-radius: 999px; background: var(--night); color: var(--on-dark) }
+.tag.hot { background: var(--rent); color: var(--paper) }
+.flip { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; padding: 4px; background: rgba(245,242,234,.94); border: 1px solid rgba(22,32,27,.12); border-radius: 999px }
+.flip button { min-width: 72px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer }
+.flip button[aria-pressed="true"] { background: var(--night); color: var(--on-dark) }
+.info { display: flex; flex-direction: column; gap: 14px; padding: 24px 24px 26px; flex: 1 }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px }
+.info h3 { margin: 0; font: 900 30px/1 var(--display); font-stretch: 72%; text-transform: uppercase }
+.price { font: 600 18px/1 var(--mono) }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--muted) }
+.swatch { display: inline-flex; align-items: center; gap: 8px }
+.swatch i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(22,32,27,.3) }
+.ref { color: var(--rent); text-underline-offset: 3px }
+.ref:hover { color: var(--rent-dark) }
+.blurb { margin: 0; font-size: 16px; color: var(--text) }
+.size-wrap { margin-top: auto; padding-top: 8px }
+.sizes { display: flex; flex-wrap: wrap; gap: 6px; border: 0; margin: 0; padding: 0; min-width: 0 }
+.sizes legend { float: left; width: 100%; margin: 0 0 8px; padding: 0; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
 .sizes label { position: relative }
-.sizes input { position: absolute; opacity: 0; inset: 0; cursor: pointer }
-.sizes span { display: block; font: 700 12px/1 var(--mono); min-width: 46px; text-align: center; padding: 11px 8px; border: 1.5px solid var(--line); background: transparent }
-.sizes input:checked + span { background: var(--ink); color: var(--bone); border-color: var(--ink) }
-.sizes input:focus-visible + span { outline: 3px solid var(--flare); outline-offset: 2px }
-.card .btn { margin-top: auto; width: 100% }
-.note { font: 700 12px/1.5 var(--mono); color: var(--flare); min-height: 1.5em; margin: 0 }
+.sizes input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer }
+.sizes span { display: grid; place-items: center; min-width: 48px; min-height: 44px; padding: 0 10px; border: 1px solid rgba(22,32,27,.22); border-radius: 4px; font: 500 13px/1 var(--mono) }
+.sizes label:hover span { border-color: var(--ink) }
+.sizes input:checked + span { background: var(--night); color: var(--on-dark); border-color: var(--night); font-weight: 600 }
+.sizes input:focus-visible + span { outline: 2px solid var(--rent); outline-offset: 2px }
+.card .buy { width: 100%; margin-top: 16px; min-height: 54px }
+.note { margin: 0; min-height: 1.5em; font: 500 13px/1.5 var(--mono); color: var(--rent) }
+.drop-fine { margin: 28px 0 0; text-align: center; color: var(--muted) }
 
-/* steps */
-.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; counter-reset: s; list-style: none; margin: 0; padding: 0 }
-.steps li { border-top: 3px solid var(--ink); padding-top: 16px; counter-increment: s }
-.steps li::before { content: "0" counter(s); font: 400 54px/1 var(--display); color: var(--flare) }
-.steps h3 { font: 800 18px/1.25 var(--body); margin: 10px 0 6px }
-.steps p { margin: 0; color: var(--muted) }
+/* how it works */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(236,232,223,.18) }
+.steps li { padding: 32px 32px 32px 0; border-bottom: 1px solid rgba(236,232,223,.18) }
+.steps .n { display: block; font: italic 400 88px/1 var(--serif); color: var(--gold) }
+.steps h3 { margin: 18px 0 10px; font: 800 24px/1.15 var(--display); font-stretch: 80%; letter-spacing: .02em; text-transform: uppercase }
+.steps p { margin: 0; color: var(--on-dark-2) }
+.steps .when { margin-top: 18px; color: var(--on-dark-3) }
+.rest { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 22px 24px; background: var(--night-2); border-radius: 6px }
+.rest svg { width: 28px; height: 28px; flex: none }
+.rest p { margin: 0; flex: 1 1 360px; color: var(--on-dark-2) }
+.rest strong { color: var(--on-dark); font-weight: 800 }
 
 /* story */
-.story { background: var(--forest); color: var(--cream) }
-.story .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; align-items: center }
-.story h2 { font-size: clamp(56px, 8.5vw, 120px) }
-.story h2 em { font: italic 400 1em/1 var(--serif); text-transform: none; color: #F0B48F }
-.story p { margin: 0 0 16px; font-size: 18px; max-width: 56ch }
-.story blockquote { margin: 26px 0 0; padding: 18px 0 0; border-top: 1.5px solid rgba(243,234,215,.25) }
-.story blockquote p { font: italic 400 30px/1.2 var(--serif); margin: 0 0 8px }
-.flagmark { width: min(340px, 70%); fill: var(--cream) }
+.story { background: var(--paper) }
+.story .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center }
+.story figure { margin: 0 }
+.story blockquote { margin: 0; font: italic 400 clamp(72px, 10vw, 152px)/.9 var(--serif); letter-spacing: -.02em }
+.story blockquote span { color: var(--rent) }
+.story figcaption { margin-top: 24px; color: var(--muted) }
+.story h2 { font-size: clamp(40px, 5vw, 72px); margin-bottom: 24px }
+.story h2 em { color: var(--rent) }
+.story p { margin: 0 0 16px; color: var(--text) }
+.story .btn { margin-top: 12px; min-height: 52px; font-size: 14px }
 
 /* fit */
-.fit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px }
-.fit h3 { font: 800 15px/1.2 var(--body); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 8px }
-.fit p { margin: 0; color: var(--muted) }
+.fit-sec { border-top: 1px solid rgba(22,32,27,.1) }
+.fit-sec .wrap { display: flex; flex-wrap: wrap; gap: 48px 72px }
+.fit-sec .intro { flex: 1 1 340px; min-width: 0 }
+.fit-sec .intro h2 { font-size: clamp(40px, 5vw, 72px); margin-bottom: 20px }
+.fit-sec .intro p { margin: 0; max-width: 420px; color: var(--text) }
+.specs { flex: 2 1 560px; min-width: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 2px solid var(--ink) }
+.specs div { padding: 20px 20px 20px 0; border-bottom: 1px solid var(--line) }
+.specs dt { font: 500 11px/1.3 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted) }
+.specs dd { margin: 6px 0 0; font-weight: 700 }
 
 /* faq */
-.faq { border-top: 3px solid var(--ink) }
-details { border-bottom: 1.5px solid var(--line); padding-block: 18px }
-summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; font: 800 19px/1.3 var(--body) }
+.faq-sec { background: var(--paper); border-top: 1px solid rgba(22,32,27,.1) }
+.faq-sec .wrap { display: flex; flex-wrap: wrap; gap: 40px 72px }
+.faq-sec .intro { flex: 1 1 300px; min-width: 0 }
+.faq-sec .intro h2 { margin-bottom: 20px }
+.faq-sec .intro p { margin: 0; color: var(--text) }
+.faq-sec .intro a { color: var(--rent) }
+.faq { flex: 2 1 560px; min-width: 0; border-top: 2px solid var(--ink) }
+details { border-bottom: 1px solid var(--line) }
+summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 64px; padding: 16px 4px; font: 700 19px/1.3 var(--body) }
+summary:hover { background: rgba(22,32,27,.04) }
 summary::-webkit-details-marker { display: none }
-summary::after { content: "+"; font: 700 20px/1 var(--mono); color: var(--flare) }
-details[open] summary::after { content: "–" }
-details p { margin: 10px 0 0; color: var(--muted); max-width: 70ch }
+summary::after { content: ""; flex: none; width: 20px; height: 20px; background:
+  linear-gradient(currentColor, currentColor) center/14px 2.2px no-repeat,
+  linear-gradient(currentColor, currentColor) center/2.2px 14px no-repeat }
+details[open] summary::after { background: linear-gradient(currentColor, currentColor) center/14px 2.2px no-repeat }
+details p { margin: 0; padding: 0 48px 24px 4px; max-width: 720px; color: var(--text) }
+details a { color: var(--rent) }
 
-/* social */
-.social { background: var(--flare); color: var(--flare-ink) }
-.social .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap }
-.social h2 { font-size: clamp(40px, 6vw, 72px) }
-.social .links { display: flex; gap: 12px; flex-wrap: wrap }
-.social .btn { background: var(--ink); color: var(--bone) } .social .btn:hover { background: var(--bone); color: var(--ink) }
-.social .sub { margin: 14px 0 0; max-width: 40ch }
-.follow { display: flex; flex-direction: column; gap: 14px; width: min(100%, 440px) }
-.remind { display: flex; gap: 0; border: 1.5px solid var(--ink) }
-.remind input[type=email] { flex: 1; min-width: 0; font: 400 16px/1 var(--body); padding: 14px 14px; border: 0; background: var(--bone); color: var(--ink) }
-.remind .btn { flex: none }
-.remind-note { margin: 0; min-height: 1.4em; font-weight: 800 }
-.follow .remind-fine { margin: -6px 0 0; color: inherit; font-size: 13px }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+/* reminder */
+.remind-sec .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 40px 72px }
+.remind-sec .intro { flex: 1 1 480px; min-width: 0 }
+.remind-sec .intro p { margin: 20px 0 0; max-width: 460px; color: var(--on-dark-2) }
+.follow { flex: 1 1 420px; min-width: 0 }
+.follow > label { display: block; margin-bottom: 10px; color: var(--on-dark-3) }
+.remind { display: flex; flex-wrap: wrap; gap: 10px }
+.remind input[type=email] { flex: 1 1 240px; min-width: 0; min-height: 56px; padding: 0 18px; background: var(--paper); color: var(--ink); border: 2px solid var(--paper); border-radius: 4px; font-size: 17px }
+.remind input[type=email]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px }
+.remind .btn { flex: 0 0 auto }
+.remind-fine { margin: 14px 0 0; font-size: 13px; color: var(--on-dark-3) }
+.remind-fine a { color: var(--on-dark-2) }
+.remind-note { margin: 12px 0 0; min-height: 1.4em; font-weight: 800; color: var(--gold) }
 
-footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-block: 32px 44px }
-footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
+/* footer */
+footer { background: var(--deep); color: var(--on-dark-3) }
+footer .wrap { padding-block: 56px 40px }
+.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px }
+.wordmark { margin: 0; font: 900 clamp(56px, 9vw, 132px)/.82 var(--display); font-stretch: 62%; text-transform: uppercase; color: var(--on-dark); letter-spacing: -.01em }
+.wordmark span { color: var(--gold) }
+.foot-top .eyebrow { margin: 14px 0 0 }
+.socials { display: flex; gap: 10px }
+.socials a { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid rgba(236,232,223,.25); border-radius: 50%; color: var(--on-dark) }
+.socials a:hover { border-color: var(--gold); color: var(--gold) }
+.socials svg { width: 20px; height: 20px }
+.foot-nav { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(236,232,223,.12); display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px }
+.foot-nav a { color: var(--on-dark-2) }
+.foot-nav span { margin-left: auto }
+.disclaim { margin: 20px 0 0; max-width: 820px; font-size: 13px; line-height: 1.6 }
 
-/* bag */
-.bag-btn { position: relative }
-.bag-btn b { position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; border-radius: 10px; background: var(--ink); color: var(--bone); font: 700 11px/20px var(--mono); text-align: center; padding: 0 5px }
-.bag-btn b[hidden] { display: none }
-.scrim { position: fixed; inset: 0; background: rgba(22,32,27,.45); z-index: 40 }
-.bag { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--bone); z-index: 41; display: flex; flex-direction: column;
-  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(72px + env(safe-area-inset-bottom, 0px)) 20px; box-shadow: -20px 0 60px rgba(0,0,0,.18) }
-.bag-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 12px }
-.bag-head h2 { font-size: 40px; margin: 0 }
-.x { border: 0; background: none; font: 700 26px/1 var(--mono); cursor: pointer; color: var(--ink); padding: 6px 10px }
+/* bag drawer */
+.scrim { position: fixed; inset: 0; background: rgba(15,22,18,.55); z-index: 40 }
+.bag { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--paper); z-index: 41; display: flex; flex-direction: column;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) max(22px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) 22px; box-shadow: -20px 0 60px rgba(0,0,0,.25) }
+.bag-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink); padding-bottom: 12px }
+.bag-head h2 { margin: 0; font: 900 40px/1 var(--display); font-stretch: 68%; text-transform: uppercase }
+.x { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; color: var(--ink); cursor: pointer; border-radius: 50% }
+.x:hover { background: rgba(22,32,27,.06) }
+.x svg { width: 22px; height: 22px }
 .lines { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1 }
-.line { display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: center; padding-block: 14px; border-bottom: 1.5px solid var(--line) }
-.line img { width: 72px; height: 81px; object-fit: cover; background: var(--paper) }
-.line h3 { font: 400 20px/1.05 var(--display); text-transform: uppercase; margin: 0 }
+.line { display: grid; grid-template-columns: 72px 1fr auto; gap: 14px; align-items: center; padding-block: 16px; border-bottom: 1px solid var(--line) }
+.line img { width: 72px; height: 81px; object-fit: cover; background: var(--bone); border-radius: 4px }
+.line h3 { margin: 0; font: 900 20px/1.05 var(--display); font-stretch: 72%; text-transform: uppercase }
 .line p { margin: 4px 0 0; color: var(--muted); font-size: 13px }
-.qty { display: flex; align-items: center; border: 1.5px solid var(--line); margin-top: 8px; width: max-content }
-.qty button { border: 0; background: none; width: 30px; height: 30px; cursor: pointer; font: 700 15px/1 var(--mono); color: var(--ink) }
-.qty span { min-width: 22px; text-align: center; font: 700 13px/1 var(--mono) }
-.line .amt { font: 700 15px/1 var(--mono); text-align: right }
-.rm { display: block; margin-top: 10px; border: 0; background: none; color: var(--muted); font: 700 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; padding: 0 }
+.qty { display: flex; align-items: center; border: 1px solid rgba(22,32,27,.22); border-radius: 4px; margin-top: 8px; width: max-content }
+.qty button { border: 0; background: none; width: 36px; height: 36px; cursor: pointer; font: 600 16px/1 var(--mono); color: var(--ink) }
+.qty span { min-width: 24px; text-align: center; font: 600 13px/1 var(--mono) }
+.line .amt { font: 600 15px/1 var(--mono); text-align: right }
+.rm { display: block; margin-top: 10px; border: 0; background: none; color: var(--muted); font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px }
 .empty { color: var(--muted); padding-block: 28px }
-.totals { border-top: 3px solid var(--ink); padding-top: 14px; display: grid; gap: 8px }
-.totals .row span:last-child { font: 700 15px/1 var(--mono) }
+.totals { border-top: 2px solid var(--ink); padding-top: 14px; display: grid; gap: 8px }
+.totals .row span:last-child { font: 600 15px/1 var(--mono) }
 .totals .grand span { font-weight: 800; font-size: 18px }
 .bag .btn { width: 100%; margin-top: 8px }
-.bag .btn[disabled] { opacity: .45; cursor: not-allowed }
 .fine { font-size: 12px; color: var(--muted); margin: 6px 0 0 }
-.toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bone); padding: 12px 16px; z-index: 39; font: 700 12px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase }
+.fine a { color: var(--rent) }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 39; display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px);
+  padding: 14px 20px; background: var(--night); color: var(--on-dark); border: 1px solid rgba(201,164,92,.5); border-radius: 999px; box-shadow: 0 20px 40px -12px rgba(0,0,0,.5); font: 500 13px/1.3 var(--mono); letter-spacing: .06em; cursor: pointer }
+.toast::before { content: ""; width: 14px; height: 8px; border: solid var(--gold); border-width: 0 0 2.5px 2.5px; transform: rotate(-45deg) translateY(-2px); flex: none }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .hero .wrap, .story .wrap { grid-template-columns: 1fr }
-  .hero-art { order: -1 }
-  .grid, .steps, .fit { grid-template-columns: 1fr }
-  .top nav a:not(.btn) { display: none }
-  .hero-art .stamp { left: 10px }
-  .flagmark { width: 120px }
+  .hero-art { order: -1; max-width: 460px }
+  .grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto }
+  .steps { grid-template-columns: 1fr }
+  .steps li { padding-right: 0 }
 }
-@media (max-width: 440px) {
-  .brand { font-size: 15px; letter-spacing: .06em }
-  .top .btn.sm { padding: 10px 11px; font-size: 11px }
-  .top .wrap { gap: 10px } .top nav { gap: 10px }
+@media (max-width: 900px) { .top nav a.link { display: none } }
+@media (max-width: 600px) {
+  .announce span:not(:first-child) { display: none }
+  .stamp { width: 96px; height: 96px; top: -22px; left: -8px }
+  .stamp svg { width: 96px; height: 96px }
+  .specs { grid-template-columns: 1fr }
+  .specs div { padding-right: 0 }
+  .brand { font-size: 17px }
+  .top nav .btn { display: none }
+  details p { padding-right: 4px }
+  .foot-nav span { margin-left: 0; width: 100% }
 }
-@media (max-width: 370px) {
-  .top .btn.flare { display: none }
-}
-.brand, .btn { white-space: nowrap }
-@media (prefers-reduced-motion: no-preference) {
-  .card { transition: transform .25s } .card:hover { transform: translateY(-4px) }
+@media (prefers-reduced-motion: reduce) {
+  .marquee .track, .stamp { animation: none }
+  .btn, .shot img { transition: none }
+  .card:hover .shot img, .btn:hover { transform: none }
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#drop">Skip to the shirts</a>
 
+<div class="announce"><span id="bar-dates">Drop 001 · Nov 14 – 21, 2026</span><span>Printed to order</span><span>Flat $5.99 US shipping</span></div>
+
 <header class="top"><div class="wrap">
   <a class="brand" href="#top" aria-label="Rent Coat Co. home">
     <svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>
     RENT COAT CO.</a>
   <nav aria-label="Main">
-    <a href="#drop">Drop 001</a><a href="#story">Story</a><a href="#faq">FAQ</a>
-    <a class="btn sm flare" href="#drop">Shop the drop</a>
-    <button type="button" class="btn sm bag-btn" id="bag-open" aria-haspopup="dialog" aria-controls="bag">Bag<b id="bag-count" hidden>0</b></button>
+    <a class="link" href="#drop">Drop 001</a><a class="link" href="#how">How it works</a><a class="link" href="/about.html">The story</a><a class="link" href="#faq">FAQ</a>
+    <button type="button" class="bag-btn" id="bag-open" aria-haspopup="dialog" aria-controls="bag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1 14H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      Bag<b id="bag-count" hidden>0</b>
+    </button>
   </nav>
 </div></header>
 
 <main id="top">
-<section class="hero" style="padding-block:0" aria-labelledby="hero-title"><div class="wrap">
-  <div>
-    <p class="eyebrow">Drop 001 · Faith streetwear · 7-day preorder</p>
-    <h1 id="hero-title">Stand for <em>something.</em></h1>
-    <p class="lede">Heavyweight, garment-dyed tees for young Latter-day Saints. <b>Every design starts with scripture</b>, and the reference is printed right on the shirt.</p>
+<section class="hero" style="padding-block:0" aria-labelledby="hero-title">
+  <div class="ghostnum" aria-hidden="true">001</div>
+  <div class="wrap">
+    <div>
+      <ul class="pills eyebrow" aria-label="Drop details"><li>Drop 001</li><li>Faith streetwear</li><li>7-day preorder</li></ul>
+      <h1 class="h1" id="hero-title">Stand for <em>something.</em></h1>
+      <p class="lede">Heavyweight, garment-dyed tees for young Latter-day Saints. <b>Every design starts with scripture</b>, and the reference is printed right on the shirt.</p>
 
-    <div class="clock" role="timer" aria-live="off" aria-labelledby="clock-label">
-      <div class="clock-head">
-        <span class="eyebrow" id="clock-label">Drop 001 opens in</span>
-        <span class="eyebrow clock-state" id="clock-state">Upcoming</span>
+      <div class="clock" role="timer" aria-live="off" aria-labelledby="clock-label">
+        <div class="clock-head">
+          <span class="eyebrow" id="clock-label">Drop 001 opens in</span>
+          <span class="eyebrow clock-state" id="clock-state">Upcoming</span>
+        </div>
+        <div class="units">
+          <div class="unit"><b id="cd-d">--</b><span>Days</span></div>
+          <div class="unit"><b id="cd-h">--</b><span>Hours</span></div>
+          <div class="unit"><b id="cd-m">--</b><span>Min</span></div>
+          <div class="unit"><b id="cd-s">--</b><span>Sec</span></div>
+        </div>
+        <div class="bar" aria-hidden="true"><i id="cd-bar"></i></div>
+        <div class="clock-foot eyebrow"><span id="cd-open"></span><span id="cd-close"></span></div>
       </div>
-      <div class="units">
-        <div class="unit"><b id="cd-d">--</b><span>Days</span></div>
-        <div class="unit"><b id="cd-h">--</b><span>Hours</span></div>
-        <div class="unit"><b id="cd-m">--</b><span>Min</span></div>
-        <div class="unit"><b id="cd-s">--</b><span>Sec</span></div>
-      </div>
-      <div class="bar" aria-hidden="true"><i id="cd-bar"></i></div>
-      <div class="clock-foot eyebrow"><span id="cd-open"></span><span id="cd-close"></span></div>
-    </div>
 
-    <div class="hero-cta">
-      <a class="btn flare" href="#drop">Shop Drop 001</a>
-      <a class="btn" href="#story">Why a torn coat?</a>
+      <div class="hero-cta">
+        <a class="btn gold" href="#drop">Shop Drop 001 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn ghost" href="#story">Why a torn coat?</a>
+      </div>
     </div>
+    <figure class="hero-art" style="margin:0">
+      <div class="frame">
+        <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in Shadow, back print of a torn banner on a pole" fetchpriority="high">
+        <figcaption class="chips"><span class="chip">The flagship</span><span class="chip light">From $40</span></figcaption>
+      </div>
+      <div class="stamp" aria-hidden="true">
+        <svg viewBox="0 0 140 140" width="136" height="136"><defs><path id="stamp-path" d="M70,70 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs><circle cx="70" cy="70" r="68" fill="#A83A2C"/><circle cx="70" cy="70" r="61" fill="none" stroke="#F5F2EA" stroke-opacity=".35"/><text fill="#F5F2EA" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600"><textPath href="#stamp-path" textLength="308" lengthAdjust="spacing">ALMA 46:12 · TITLE OF LIBERTY · DROP 001 · </textPath></text><g transform="translate(55 48) scale(.36)" fill="#F5F2EA"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></g></svg>
+      </div>
+    </figure>
   </div>
-  <figure class="hero-art" style="margin:0">
-    <img src="images/liberty-back.jpg" width="1600" height="1800" alt="Title of Liberty tee in Shadow, back print of a torn banner on a pole" fetchpriority="high">
-    <figcaption class="stamp"><span class="eyebrow">Only 7 days</span><b>From $40</b></figcaption>
-  </figure>
-</div></section>
+  <div class="torn" aria-hidden="true"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#A83A2C" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
+</section>
 
 <div class="marquee" aria-hidden="true"><div class="track">
-  <span>Alma 46:12</span><span>Alma 56:48</span><span>Ether 9:19</span><span>Printed to order</span><span>7.5 oz heavyweight</span><span>Unisex S–2XL</span>
-  <span>Alma 46:12</span><span>Alma 56:48</span><span>Ether 9:19</span><span>Printed to order</span><span>7.5 oz heavyweight</span><span>Unisex S–2XL</span>
+  <span>Alma 46:12</span><span>Alma 56:48</span><span>Ether 9:19</span><span>Printed to order</span><span>7.5 oz heavyweight</span><span>Unisex S–2XL</span><span>Seven days only</span>
+  <span>Alma 46:12</span><span>Alma 56:48</span><span>Ether 9:19</span><span>Printed to order</span><span>7.5 oz heavyweight</span><span>Unisex S–2XL</span><span>Seven days only</span>
 </div></div>
 
-<section id="drop" aria-labelledby="drop-title"><div class="wrap">
+<section class="drop-sec" id="drop" aria-labelledby="drop-title"><div class="wrap">
   <div class="sec-head">
-    <div><p class="eyebrow">Three shirts · one week</p><h2 id="drop-title">Drop 001</h2></div>
-    <p>Big back prints, small chest marks, garment-dyed blanks. When the clock hits zero, these are gone.</p>
+    <div><p class="eyebrow kicker">Three shirts · one week</p><h2 class="big" id="drop-title">Drop <em>001</em></h2></div>
+    <p>Big back prints, small chest marks, garment-dyed blanks. Pick your shirt and size while the clock runs. When it closes, that design is done.</p>
   </div>
   <div class="grid" id="grid">
     <article class="card" id="liberty">
@@ -625,11 +726,13 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
       </div>
       <div class="info">
         <div class="row"><h3>Title of Liberty</h3><span class="price">$40</span></div>
+        <span class="eyebrow meta"><span class="swatch"><i style="background:#4A4A47" aria-hidden="true"></i>Shadow</span><a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/46?lang=eng&amp;id=p12#p12" target="_blank" rel="noopener">Alma 46:12</a></span>
         <p class="blurb">A torn banner on a pole, for the coat Captain Moroni rent and raised as the title of liberty. Small Rent Coat Co. mark on the chest.</p>
-        <span class="eyebrow meta">Shadow · <a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/46?lang=eng&amp;id=p12#p12" target="_blank" rel="noopener">Alma 46:12</a></span>
-        <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-liberty" value="S"><span>S</span></label><label><input type="radio" name="size-liberty" value="M" checked><span>M</span></label><label><input type="radio" name="size-liberty" value="L"><span>L</span></label><label><input type="radio" name="size-liberty" value="XL"><span>XL</span></label><label><input type="radio" name="size-liberty" value="2XL"><span>2XL</span></label></fieldset>
-        <button type="button" class="btn buy" data-id="liberty">Add to bag</button>
-        <p class="note" aria-live="polite"></p>
+        <div class="size-wrap">
+          <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-liberty" value="S"><span>S</span></label><label><input type="radio" name="size-liberty" value="M" checked><span>M</span></label><label><input type="radio" name="size-liberty" value="L"><span>L</span></label><label><input type="radio" name="size-liberty" value="XL"><span>XL</span></label><label><input type="radio" name="size-liberty" value="2XL"><span>2XL</span></label></fieldset>
+          <button type="button" class="btn rent buy" data-id="liberty">Add to bag</button>
+          <p class="note" aria-live="polite"></p>
+        </div>
       </div>
     </article>
     <article class="card" id="stripling">
@@ -644,11 +747,13 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
       </div>
       <div class="info">
         <div class="row"><h3>Stripling 2000</h3><span class="price">$40</span></div>
+        <span class="eyebrow meta"><span class="swatch"><i style="background:#1B1B1B" aria-hidden="true"></i>Black</span><a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/56?lang=eng&amp;id=p48#p48" target="_blank" rel="noopener">Alma 56:48</a></span>
         <p class="blurb">Varsity arch in cream and gold for the 2,000 young warriors. “We do not doubt our mothers knew it.”</p>
-        <span class="eyebrow meta">Black · <a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/56?lang=eng&amp;id=p48#p48" target="_blank" rel="noopener">Alma 56:48</a></span>
-        <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-stripling" value="S"><span>S</span></label><label><input type="radio" name="size-stripling" value="M" checked><span>M</span></label><label><input type="radio" name="size-stripling" value="L"><span>L</span></label><label><input type="radio" name="size-stripling" value="XL"><span>XL</span></label><label><input type="radio" name="size-stripling" value="2XL"><span>2XL</span></label></fieldset>
-        <button type="button" class="btn buy" data-id="stripling">Add to bag</button>
-        <p class="note" aria-live="polite"></p>
+        <div class="size-wrap">
+          <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-stripling" value="S"><span>S</span></label><label><input type="radio" name="size-stripling" value="M" checked><span>M</span></label><label><input type="radio" name="size-stripling" value="L"><span>L</span></label><label><input type="radio" name="size-stripling" value="XL"><span>XL</span></label><label><input type="radio" name="size-stripling" value="2XL"><span>2XL</span></label></fieldset>
+          <button type="button" class="btn rent buy" data-id="stripling">Add to bag</button>
+          <p class="note" aria-live="polite"></p>
+        </div>
       </div>
     </article>
     <article class="card" id="cureloms">
@@ -663,54 +768,77 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
       </div>
       <div class="info">
         <div class="row"><h3>Cureloms &amp; Cumoms</h3><span class="price">$40</span></div>
+        <span class="eyebrow meta"><span class="swatch"><i style="background:#EFEAD8" aria-hidden="true"></i>Cream</span><a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/ether/9?lang=eng&amp;id=p19#p19" target="_blank" rel="noopener">Ether 9:19</a></span>
         <p class="blurb">A field guide to the Jaredite animals. Elephant: identified. Curelom and cumom: still looking.</p>
-        <span class="eyebrow meta">Cream · <a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/ether/9?lang=eng&amp;id=p19#p19" target="_blank" rel="noopener">Ether 9:19</a></span>
-        <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-cureloms" value="S"><span>S</span></label><label><input type="radio" name="size-cureloms" value="M" checked><span>M</span></label><label><input type="radio" name="size-cureloms" value="L"><span>L</span></label><label><input type="radio" name="size-cureloms" value="XL"><span>XL</span></label><label><input type="radio" name="size-cureloms" value="2XL"><span>2XL</span></label></fieldset>
-        <button type="button" class="btn buy" data-id="cureloms">Add to bag</button>
-        <p class="note" aria-live="polite"></p>
+        <div class="size-wrap">
+          <fieldset class="sizes"><legend>Size</legend><label><input type="radio" name="size-cureloms" value="S"><span>S</span></label><label><input type="radio" name="size-cureloms" value="M" checked><span>M</span></label><label><input type="radio" name="size-cureloms" value="L"><span>L</span></label><label><input type="radio" name="size-cureloms" value="XL"><span>XL</span></label><label><input type="radio" name="size-cureloms" value="2XL"><span>2XL</span></label></fieldset>
+          <button type="button" class="btn rent buy" data-id="cureloms">Add to bag</button>
+          <p class="note" aria-live="polite"></p>
+        </div>
       </div>
     </article>
   </div>
+  <p class="eyebrow drop-fine">$40 each · $43 for 2XL · flat $5.99 US shipping · checkout by Stripe</p>
 </div></section>
+<div class="torn" aria-hidden="true" style="background:var(--bone)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
-<section style="padding-top:0" aria-labelledby="how-title"><div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow">How a drop works</p><h2 id="how-title">Seven days. That's it.</h2></div></div>
+<section class="dark" id="how" aria-labelledby="how-title"><div class="wrap">
+  <p class="eyebrow kicker">How a drop works</p>
+  <h2 class="big" id="how-title" style="margin-bottom:56px">Seven days. <em>That's it.</em></h2>
   <ol class="steps">
-    <li><h3>Preorder in the 7-day window</h3><p>Pick your shirt and size while the clock is running. When it closes, that design is done.</p></li>
-    <li><h3>We print yours</h3><p>Every shirt is printed after you order, so nothing gets wasted and nothing sits in a warehouse.</p></li>
-    <li><h3>It ships to your door</h3><p>Shirts are printed after the drop closes and arrive 2 to 3 weeks later. You'll get tracking by email.</p></li>
+    <li><span class="n" aria-hidden="true">01</span><h3>Preorder in the window</h3><p>Pick your shirt and size while the clock is running. When it closes, that design is done.</p><p class="eyebrow when" id="step-window">Nov 14 – Nov 21</p></li>
+    <li><span class="n" aria-hidden="true">02</span><h3>We print yours</h3><p>Every shirt is printed after you order, so nothing gets wasted and nothing sits in a warehouse.</p><p class="eyebrow when">After the drop closes</p></li>
+    <li><span class="n" aria-hidden="true">03</span><h3>It ships to your door</h3><p>Shirts arrive about 2 to 3 weeks after the drop closes. You'll get tracking by email.</p><p class="eyebrow when">US addresses only</p></li>
   </ol>
-</div></section>
-
-<section class="story" id="story" aria-labelledby="story-title"><div class="wrap">
-  <div>
-    <svg class="flagmark" viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>
+  <div class="rest">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#C9A45C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    <p><strong>Checkout rests on Sunday.</strong> While a drop is open, checkout pauses on Sundays (Eastern time) because we keep it as a day of rest. Your bag stays saved for Monday.</p>
   </div>
+</div></section>
+<div class="torn" aria-hidden="true" style="background:var(--night)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#F5F2EA" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
+
+<section class="story on-light" id="story" aria-labelledby="story-title"><div class="wrap">
+  <figure>
+    <blockquote>“He rent <span>his coat.</span>”</blockquote>
+    <figcaption class="eyebrow">— <a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/46?lang=eng&amp;id=p12#p12" target="_blank" rel="noopener">Alma 46:12</a></figcaption>
+  </figure>
   <div>
-    <p class="eyebrow">The name</p>
-    <h2 id="story-title">Why a <em>torn</em> coat?</h2>
+    <p class="eyebrow kicker">The name</p>
+    <h2 class="big" id="story-title">Why a <em>torn</em> coat?</h2>
     <p>When Captain Moroni needed his people to remember what they were fighting for, he tore his coat, wrote on it, and raised it on a pole. He called it the title of liberty.</p>
     <p>Rent Coat Co. is named for that moment: take what you have and turn it into something you stand behind. We make shirts that look like a real streetwear drop and still say what you believe.</p>
-    <blockquote><p>“He rent his coat.”</p><cite class="eyebrow">Alma 46:12</cite></blockquote>
-    <p><a href="/about.html">Read the full story</a></p>
+    <a class="btn dark" href="/about.html">Read the full story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </div></section>
 
-<section aria-labelledby="fit-title"><div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow">The blank</p><h2 id="fit-title">Fit &amp; feel</h2></div></div>
-  <div class="fit">
-    <div><h3>Heavyweight, garment-dyed</h3><p>Shaka Wear SHGDD: 7.5 oz, 100% cotton, garment-dyed for a worn-in, vintage feel. Blank assembled in the USA from globally sourced materials, printed to order.</p></div>
-    <div><h3>Boxy, oversized fit</h3><p>Boxy and oversized, with dropped shoulders and a slightly shorter body. Sizes S to 2XL. Order your usual size for the boxy look, or size down for a closer fit. A medium is about 24¾ inches across the chest and 27¼ inches long. $40 each, $43 for 2XL.</p></div>
-    <div><h3>Care</h3><p>Wash inside out on cold and tumble dry low. Don't iron the print.</p></div>
+<section class="fit-sec on-light" id="fit" aria-labelledby="fit-title"><div class="wrap">
+  <div class="intro">
+    <p class="eyebrow kicker">The blank</p>
+    <h2 class="big" id="fit-title">Fit <em>&amp;</em> feel</h2>
+    <p>Boxy and oversized with dropped shoulders and a slightly shorter body. Order your usual size for the boxy look, or size down for a closer fit.</p>
   </div>
+  <dl class="specs">
+    <div><dt>Blank</dt><dd>Shaka Wear SHGDD</dd></div>
+    <div><dt>Weight</dt><dd>7.5 oz, 100% cotton</dd></div>
+    <div><dt>Finish</dt><dd>Garment-dyed, worn-in feel</dd></div>
+    <div><dt>Sizes</dt><dd>Unisex S – 2XL</dd></div>
+    <div><dt>Medium</dt><dd>24¾ in chest · 27¼ in long</dd></div>
+    <div><dt>Care</dt><dd>Inside out, cold wash, tumble dry low. Don't iron the print.</dd></div>
+    <div><dt>Made</dt><dd>Blank assembled in the USA from globally sourced materials</dd></div>
+    <div><dt>Price</dt><dd>$40 · $43 for 2XL</dd></div>
+  </dl>
 </div></section>
 
-<section id="faq" style="padding-top:0" aria-labelledby="faq-title"><div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow">Questions</p><h2 id="faq-title">FAQ</h2></div></div>
+<section class="faq-sec on-light" id="faq" aria-labelledby="faq-title"><div class="wrap">
+  <div class="intro">
+    <p class="eyebrow kicker">Questions</p>
+    <h2 class="big" id="faq-title">FAQ</h2>
+    <p>Something not here? Email <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a>.</p>
+  </div>
   <div class="faq">
     <details><summary>What is Rent Coat Co.?</summary><p>An independent clothing brand that makes heavyweight graphic tees for young Latter-day Saints. Every design starts with a scripture reference, printed on the shirt so anyone who asks can look it up.</p></details>
     <details><summary>Is this an LDS clothing brand?</summary><p>It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church.</p></details>
-    <details><summary>How does the 7-day preorder work?</summary><p>Each drop is open for exactly 7 days. Shirts are printed after the window closes and usually arrive 2 to 3 weeks after that. After the window closes, that drop is gone.</p></details>
+    <details open><summary>How does the 7-day preorder work?</summary><p>Each drop is open for exactly 7 days. Shirts are printed after the window closes and usually arrive 2 to 3 weeks after that. After the window closes, that drop is gone.</p></details>
     <details><summary>Why can't I order on Sunday?</summary><p>Checkout pauses on Sundays (Eastern time) while a drop is open, because we keep Sunday as a day of rest. Your bag stays saved, so you can check out on Monday.</p></details>
     <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $40 ($43 for 2XL), and shipping is a flat $5.99 in the US.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
@@ -719,37 +847,37 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
     <details><summary>Can I return or exchange?</summary><p>Because every shirt is printed for you, we can't take fit returns. If your shirt arrives damaged or misprinted, email a photo to <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days of delivery and we'll replace it free. <a href="policies.html">Shipping and returns</a>.</p></details>
   </div>
 </div></section>
+<div class="torn" aria-hidden="true" style="background:var(--paper)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
-<section class="social" id="remind" aria-labelledby="social-title"><div class="wrap">
-  <div><p class="eyebrow">Don't miss a drop</p><h2 id="social-title">Get the reminder</h2>
-    <p class="sub">Drops only last 7 days. Leave your email and we'll tell you when each one opens. We only email about drops.</p></div>
+<section class="dark remind-sec" id="remind" aria-labelledby="social-title"><div class="wrap">
+  <div class="intro">
+    <p class="eyebrow kicker">Don't miss a drop</p>
+    <h2 class="big" id="social-title">Get the <em>reminder.</em></h2>
+    <p>Drops only last 7 days. Leave your email and we'll tell you when each one opens. We only email about drops.</p>
+  </div>
   <div class="follow">
+    <label class="eyebrow" for="remind-email">Email</label>
     <form class="remind" id="remind-form" name="reminders" method="POST" action="/" data-netlify="true" netlify-honeypot="company">
       <input type="hidden" name="form-name" value="reminders">
       <p hidden><label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off"></label></p>
-      <label class="sr" for="remind-email">Email</label>
       <input id="remind-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
-      <button class="btn" type="submit">Remind me</button>
+      <button class="btn gold" type="submit">Remind me</button>
     </form>
-    <p class="fine remind-fine">For ages 13 and up. Reply "stop" to any email to unsubscribe. <a href="privacy.html#emails">Privacy policy</a>.</p>
+    <p class="remind-fine">For ages 13 and up. Reply "stop" to any email to unsubscribe. <a href="privacy.html#emails">Privacy policy</a>.</p>
     <p class="remind-note" id="remind-note" role="status"></p>
-    <div class="links">
-      <a class="btn" id="ig-link" href="https://www.instagram.com/rentcoat.co" target="_blank" rel="noopener">Instagram</a>
-      <a class="btn" id="tt-link" href="https://www.tiktok.com/@rentcoat.co" target="_blank" rel="noopener">TikTok</a>
-    </div>
   </div>
 </div></section>
 </main>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="bag" id="bag" role="dialog" aria-modal="true" aria-labelledby="bag-title" hidden>
-  <div class="bag-head"><h2 id="bag-title">Your bag</h2><button type="button" class="x" id="bag-close" aria-label="Close bag">×</button></div>
+  <div class="bag-head"><h2 id="bag-title">Your bag</h2><button type="button" class="x" id="bag-close" aria-label="Close bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <ul class="lines" id="lines"></ul>
   <div class="totals">
     <div class="row"><span>Subtotal</span><span id="t-sub">$0</span></div>
     <div class="row"><span>Shipping (US)</span><span id="t-ship">$5.99</span></div>
     <div class="row grand"><span>Total</span><span id="t-total">$0</span></div>
-    <button type="button" class="btn flare" id="checkout">Checkout</button>
+    <button type="button" class="btn rent" id="checkout">Checkout</button>
     <p class="note" id="bag-note" aria-live="polite"></p>
     <p class="fine">Secure checkout by Stripe. Shirts are printed after the drop closes and arrive about 2 to 3 weeks later. Made to order, so no fit returns. By checking out, you agree to our <a href="terms.html">terms of sale</a>.</p>
   </div>
@@ -757,9 +885,22 @@ footer p { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch }
 <div class="toast" id="toast" role="status" hidden></div>
 
 <footer><div class="wrap">
-  <p><b>Rent Coat Co.</b> · <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> · © 2026<br>
-    <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/cookies.html">Cookies</a> · <a href="/policies.html">Shipping &amp; returns</a> · <a href="/policies.html#accessibility">Accessibility</a></p>
-  <p>Rent Coat Co. is an independent clothing brand. It is not affiliated with, sponsored by, or endorsed by The Church of Jesus Christ of Latter-day Saints. Scripture references are from the Book of Mormon.</p>
+  <div class="foot-top">
+    <div>
+      <p class="wordmark">Rent Coat <span>Co.</span></p>
+      <p class="eyebrow">Made by a member, for members · North Carolina</p>
+    </div>
+    <div class="socials">
+      <a href="https://www.instagram.com/rentcoat.co" target="_blank" rel="noopener" aria-label="Rent Coat Co. on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@rentcoat.co" target="_blank" rel="noopener" aria-label="Rent Coat Co. on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 3 2.5 5 5.5 5"/></svg></a>
+      <a href="mailto:rentcoat.co@gmail.com" aria-label="Email Rent Coat Co."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+    </div>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <a href="/about.html">About</a><a href="/policies.html">Shipping &amp; returns</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a><a href="/policies.html#accessibility">Accessibility</a>
+    <span>© 2026 Rent Coat Co. · rentcoat.co@gmail.com</span>
+  </nav>
+  <p class="disclaim">Rent Coat Co. is an independent clothing brand. It is not affiliated with, sponsored by, or endorsed by The Church of Jesus Christ of Latter-day Saints. Scripture references are from the Book of Mormon.</p>
 </div></footer>
 
 <script>
@@ -828,9 +969,16 @@ document.querySelectorAll(".card").forEach(card => {
   });
 });
 
+const shortDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" });
+const yearOf = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric" });
 function showDates() {
   $("cd-open").textContent = "Opens " + fmt(opens);
   $("cd-close").textContent = "Closes " + fmt(closes);
+  // Announcement bar and step 1 read the same dates as the countdown, so they never drift from /api/config.
+  const a = shortDay.format(opens), b = shortDay.format(closes);
+  const sameMonth = a.split(" ")[0] === b.split(" ")[0];
+  $("bar-dates").textContent = `Drop 001 · ${a} – ${sameMonth ? b.split(" ")[1] : b}, ${yearOf.format(closes)}`;
+  $("step-window").textContent = `${a} – ${b}`;
 }
 showDates();
 const pad = n => String(n).padStart(2, "0");
@@ -848,7 +996,7 @@ function tick() {
   $("clock-state").textContent = ph === "before" ? "Upcoming" : ph === "live" ? "● Live now" : ph === "sunday" ? "Closed Sunday" : "Closed";
   const pct = ph === "before" ? 0 : open ? (n - opens) / (closes - opens) * 100 : 100;
   $("cd-bar").style.width = pct.toFixed(2) + "%";
-  document.querySelectorAll(".buy").forEach(b => b.textContent = ph === "live" ? "Add to bag" : ph === "before" ? "Opens soon" : ph === "sunday" ? "Back Monday" : "Closed");
+  document.querySelectorAll(".card").forEach(card => setBuyLabel(card, ph));
   $("checkout").disabled = ph !== "live";
 }
 
@@ -866,11 +1014,16 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
 /* ----- bag ----- */
 const priceOf = size => Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default;
 const money = c => "$" + (c / 100).toFixed(c % 100 ? 2 : 0);
-// Each card shows the price for the size that's picked ($43 for 2XL).
+// Each card shows the price for the size that's picked ($43 for 2XL), and the button repeats it while the drop is live.
+function setBuyLabel(card, ph = phase()) {
+  const size = card.querySelector(".sizes input:checked")?.value || "M", b = card.querySelector(".buy");
+  if (b) b.textContent = ph === "live" ? `Add to bag · ${size} · ${money(priceOf(size))}` : ph === "before" ? "Opens soon" : ph === "sunday" ? "Back Monday" : "Closed";
+}
 function refreshPrices() {
   document.querySelectorAll(".card").forEach(card => {
     const size = card.querySelector(".sizes input:checked")?.value || "M", el = card.querySelector(".price");
     if (el) el.textContent = money(priceOf(size));
+    setBuyLabel(card);
   });
 }
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
