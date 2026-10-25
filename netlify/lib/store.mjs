@@ -5,7 +5,7 @@ export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
     color: "Shadow",
-    image: "images/liberty-back.jpg",
+    image: "images/liberty-back-v2.jpg",
     // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
     // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
     // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
@@ -14,14 +14,14 @@ export const PRODUCTS = {
   stripling: {
     name: "Stripling 2000 Tee",
     color: "Glazed Green",
-    image: "images/stripling-back.jpg",
+    image: "images/stripling-back-v2.jpg",
     // "Stripling 2000 Tee (Green)": Stanley/Stella SATU018 in Glazed Green.
     variants: { S: "6add24a0cc9301", M: "6add24a0cc9322", L: "6add24a0cc9349", XL: "6add24a0cc9359", "2XL": "6add24a0cc9374" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
     color: "Cream",
-    image: "images/cureloms-back.jpg",
+    image: "images/cureloms-back-v2.jpg",
     variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
   },
 };
