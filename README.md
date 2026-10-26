@@ -11,6 +11,12 @@ public/                     the website (what visitors see)
   privacy.html              privacy policy
   cookies.html              cookie policy (the site sets no cookies; only the bag in local storage)
   about.html                the story behind the name, written so Google and AI search can quote it
+  title-of-liberty-shirt/   one page per shirt, each aimed at what people search for (also
+  stripling-warrior-shirt/  stripling and curelom), with its own FAQ and structured data
+  curelom-shirt/
+  book-of-mormon-shirts/    collection page for "Book of Mormon shirts"
+  christian-streetwear/     page for "Christian streetwear" searches
+  book-of-mormon-gifts/     Christmas gift guide for teens and missionaries
   404.html                  branded "page not found" page (Netlify uses it automatically)
   fonts/                    self-hosted fonts, so no visitor data goes to Google Fonts
   site.webmanifest          app name, colors and icons for phones
@@ -66,6 +72,7 @@ Never put these keys in the code or send them to anyone.
 ## Before each drop (SEO checklist)
 
 - Update the drop dates in `llms.txt`, `about.html` (Quick facts and the box at the bottom), and the `priceValidUntil`, `availabilityStarts` and `availabilityEnds` values in the structured data at the top of `index.html`.
+- The keyword pages (`title-of-liberty-shirt/`, `stripling-warrior-shirt/`, `curelom-shirt/`, `book-of-mormon-shirts/`, `christian-streetwear/`, `book-of-mormon-gifts/`) repeat the drop dates, prices and the same structured data. Update them too. Each new shirt gets its own page named after what people search for (for example `captain-moroni-hoodie/`), linked from its card on the home page, `book-of-mormon-shirts/` and `sitemap.xml`.
 - Bump `<lastmod>` in `sitemap.xml` for any page you changed.
 - After deploying, ask Google Search Console to re-crawl the home page.
 
