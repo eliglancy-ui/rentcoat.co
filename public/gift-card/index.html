@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Printable Gift Card | Rent Coat Co.</title>
+<meta name="description" content="Giving a Rent Coat Co. shirt for Christmas? Print this card to put under the tree while your shirt is being printed.">
+<link rel="canonical" href="https://rentcoat.co/gift-card/">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#16201B">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="preload" href="/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+/* A screen page with instructions, and a single gift card that is the only thing that prints. */
+:root { color-scheme: light; --night: #16201B; --bone: #ECE8DF; --paper: #F5F2EA; --ink: #16201B; --text: #3A3F39; --muted: #4A4F48; --line: rgba(22,32,27,.16);
+  --rent: #A83A2C; --gold: #C9A45C; --on-dark: #ECE8DF; --on-dark-2: #C9CFC6;
+  --display: "Archivo", "Arial Narrow", Impact, sans-serif; --serif: "Instrument Serif", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 "Archivo", Arial, sans-serif; -webkit-font-smoothing: antialiased }
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--rent); outline-offset: 3px }
+.wrap { max-width: 880px; margin: 0 auto; padding: clamp(32px, 6vw, 72px) max(16px, env(safe-area-inset-left, 0px), min(48px, 4vw)) }
+.eyebrow { font: 500 12px/1.3 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--rent); margin: 0 0 12px }
+h1 { margin: 0 0 16px; font: 900 clamp(40px, 7vw, 72px)/.9 var(--display); font-stretch: 70%; text-transform: uppercase }
+h1 em { font: italic 400 1.04em/.95 var(--serif); font-stretch: 100%; text-transform: none }
+.intro p { margin: 0 0 14px; color: var(--text); max-width: 620px }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 40px }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 24px; border: 0; border-radius: 4px; cursor: pointer; text-decoration: none; font: 800 14px/1 var(--display); font-stretch: 85%; letter-spacing: .1em; text-transform: uppercase; background: var(--night); color: var(--on-dark) }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line) }
+.card { position: relative; background: var(--night); color: var(--on-dark); border-radius: 8px; padding: clamp(28px, 5vw, 48px); overflow: hidden; aspect-ratio: 7 / 5; display: flex; flex-direction: column; justify-content: space-between; gap: 18px }
+.card .flag { position: absolute; right: 4%; top: 8%; width: 18%; opacity: .14 }
+.card > *:not(.flag) { position: relative; z-index: 1 }
+.card .flag path { fill: var(--gold) } .card .flag circle, .card .flag rect { fill: var(--on-dark) }
+.card .top { display: flex; align-items: center; gap: 10px; font: 900 18px/1 var(--display); font-stretch: 78%; letter-spacing: .06em }
+.card .top svg { width: 20px; height: 22px } .card .top svg path { fill: var(--gold) } .card .top svg circle, .card .top svg rect { fill: var(--on-dark) }
+.card h2 { margin: 0; font: 900 clamp(30px, 5.4vw, 54px)/.92 var(--display); font-stretch: 70%; text-transform: uppercase; max-width: 80% }
+.card h2 em { font: italic 400 1.04em/.95 var(--serif); font-stretch: 100%; text-transform: none; color: var(--gold) }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px }
+.fields label { display: flex; flex-direction: column; gap: 4px; font: 500 11px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--on-dark-2) }
+.fields input, .fields select { width: 100%; min-height: 40px; background: transparent; color: var(--on-dark); border: 0; border-bottom: 1px solid rgba(236,232,223,.5); font: 400 18px/1.2 "Archivo", Arial, sans-serif; padding: 4px 0 }
+.fields select option { color: var(--ink) }
+.fields .full { grid-column: 1 / -1 }
+.card .fine { margin: 0; font-size: 13px; color: var(--on-dark-2) }
+.tips { margin-top: 40px; color: var(--text) } .tips h3 { margin: 0 0 8px; font-size: 18px; color: var(--ink) } .tips ul { margin: 0; padding-left: 1.2em }
+@media (max-width: 560px) { .card { aspect-ratio: auto } .fields { grid-template-columns: 1fr } }
+@media print {
+  @page { size: letter landscape; margin: 0.5in }
+  body { background: #fff }
+  .no-print { display: none !important }
+  :focus, :focus-visible { outline: none !important }
+  .wrap { padding: 0; max-width: none }
+  .card { aspect-ratio: auto; height: 6.5in; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .fields input, .fields select { appearance: none; -webkit-appearance: none }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="intro no-print">
+    <p class="eyebrow">Giving a shirt for Christmas?</p>
+    <h1>Print a <em>gift card.</em></h1>
+    <p>Drop 001 shirts are printed after the drop closes and are expected to arrive early to mid December, so yours might not be wrapped in time. Fill in the card below, print it, and put it under the tree. The shirt follows.</p>
+    <p>Type the names, pick the shirt, then print. Your browser's print window lets you save it as a PDF too.</p>
+    <div class="actions">
+      <button class="btn" type="button" onclick="window.print()">Print the card</button>
+      <a class="btn ghost" href="/#drop">See the shirts</a>
+    </div>
+  </div>
+
+  <section class="card" aria-label="Gift card">
+    <svg class="flag" viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>
+    <div class="top"><svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>RENT COAT CO.</div>
+    <h2>Your shirt is <em>on its way.</em></h2>
+    <div class="fields">
+      <label>To<input type="text" name="to" placeholder="Their name" autocomplete="off"></label>
+      <label>From<input type="text" name="from" placeholder="Your name" autocomplete="off"></label>
+      <label class="full">The shirt
+        <select name="shirt">
+          <option>Title of Liberty · Alma 46:12</option>
+          <option>Stripling 2000 · Alma 56:48</option>
+          <option>Cureloms &amp; Cumoms Wildlife Society · Ether 9:19</option>
+          <option>Two of them, because you're worth it</option>
+        </select>
+      </label>
+    </div>
+    <p class="fine">Printed just for you after Drop 001 closes. Expected to arrive early to mid December. rentcoat.co</p>
+  </section>
+
+  <div class="tips no-print">
+    <h3>Printing tips</h3>
+    <ul>
+      <li>Turn on "Background graphics" in the print settings so the dark card prints.</li>
+      <li>Landscape, letter size. Cardstock looks best, but plain paper works.</li>
+      <li>On a phone, use Share → Print, or save it as a PDF and print later.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
