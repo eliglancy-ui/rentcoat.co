@@ -75,6 +75,7 @@ Never put these keys in the code or send them to anyone.
 - The keyword pages (`title-of-liberty-shirt/`, `stripling-warrior-shirt/`, `curelom-shirt/`, `book-of-mormon-shirts/`, `christian-streetwear/`, `book-of-mormon-gifts/`) repeat the drop dates, prices and the same structured data. Update them too. Each new shirt gets its own page named after what people search for (for example `captain-moroni-hoodie/`), linked from its card on the home page, `book-of-mormon-shirts/` and `sitemap.xml`.
 - Bump `<lastmod>` in `sitemap.xml` for any page you changed.
 - After deploying, ask Google Search Console to re-crawl the home page.
+- Tell Bing (and the other IndexNow search engines) about new or changed pages: `curl "https://api.indexnow.org/indexnow?url=https://rentcoat.co/PAGE/&key=2174a020e3714f431274a69bf9510c3c"`. The key file is `public/2174a020e3714f431274a69bf9510c3c.txt`; keep it.
 
 ## Drop reminder list
 
