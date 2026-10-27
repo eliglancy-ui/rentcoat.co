@@ -73,6 +73,9 @@ export default async (req) => {
   }
   if (session.payment_status !== "paid") return json({ received: true, skipped: "not paid yet" });
 
+  const foundUs = session.custom_fields?.find(f => f.key === "found_us")?.dropdown?.value;
+  if (foundUs) console.log(`Found us: ${foundUs} (${session.id})`);
+
   let order;
   try {
     order = buildPrintfulOrder(session);

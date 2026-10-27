@@ -30,6 +30,20 @@ export default async (req) => {
     custom_text: {
       submit: { message: `Preorder: your shirt is printed after the drop closes on ${closeDay.format(Date.parse(DROP.closes))} and arrives about 2 to 3 weeks after that. Made to order, so no fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms.` },
     },
+    // "How did you find us?" so ad spend can be measured without a tracking pixel. Answers show on each payment in Stripe.
+    custom_fields: [{
+      key: "found_us",
+      label: { type: "custom", custom: "How did you find us?" },
+      type: "dropdown",
+      dropdown: { options: [
+        { label: "Instagram ad", value: "instagramad" },
+        { label: "Instagram post", value: "instagrampost" },
+        { label: "TikTok", value: "tiktok" },
+        { label: "Google or another search", value: "search" },
+        { label: "A friend", value: "friend" },
+        { label: "Other", value: "other" },
+      ] },
+    }],
     allow_promotion_codes: true,
     billing_address_collection: "auto",
     shipping_address_collection: { allowed_countries: SHIP_TO },
