@@ -60,7 +60,7 @@ Never put these keys in the code or send them to anyone.
 
 ## The line (hoodies, jackets, caps, mugs)
 
-Twenty-one more pieces live in `LINE_PIECES` in `netlify/lib/store.mjs`. All of them are already created in the
+Sixteen more pieces live in `LINE_PIECES` in `netlify/lib/store.mjs`. All of them are already created in the
 Printful store, with photos in `public/images/products`. They stay off the site until you launch them.
 
 **To launch a piece:** set `live: true` on it in `LINE_PIECES` and deploy. The homepage shows a "The line" section with

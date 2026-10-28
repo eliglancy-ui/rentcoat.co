@@ -90,12 +90,6 @@ export const FILES = [
       + t(900, 1050, 300, "IN MEMORY") + t(900, 1340, 300, "OF OUR GOD")
       + t(900, 1540, 130, "our religion, and freedom", { f: "s", fill: INK.gold })
       + t(900, 1720, 56, "ALMA 46:12 · RENT COAT CO.", { f: "m", ls: 14 }) },
-  { id: "liberty-crew", place: "front", size: "DTG", svg: () => flag(900, 360, 300, INK.red, INK.night)
-      + t(900, 760, 150, "In memory of our God,", { f: "s", fill: INK.night }) + t(900, 930, 150, "our religion, and freedom", { f: "s", fill: INK.night })
-      + t(900, 1080, 56, "ALMA 46:12 · RENT COAT CO.", { f: "m", fill: INK.red, ls: 14 }) },
-  { id: "stripling-hoodie", place: "front", size: "DTG", svg: () => t(900, 420, 150, "STRIPLING", { ls: 56, wd: 80 })
-      + `<text x="900" y="1130" text-anchor="middle" fill="none" stroke="${INK.gold}" stroke-width="16" style="font-family:'Archivo';font-weight:900;font-stretch:62%;font-size:700px">2000</text>`
-      + t(900, 1300, 64, "ALMA 56:48", { f: "m", ls: 20 }) },
   { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 600) rotate(-90)">${t(0, -10, 116, "STRAIT & NARROW", { wd: 78, ls: 8 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
   { id: "flag-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 84, 160, THREAD.oldGold, THREAD.white) + t(375, 252, 74, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
   { id: "flag-beanie", place: "embroidery_front", size: "BEANIE", threads: [THREAD.white], svg: () => flag(375, 96, 172, THREAD.white, THREAD.white) + t(375, 282, 76, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
@@ -131,23 +125,12 @@ export const FILES = [
       + [0, 1, 2, 3, 4].map(i => `<path d="M400 ${1140 + i * 110} q62.5 -60 125 0 t125 0 t125 0 t125 0 t125 0 t125 0 t125 0 t125 0" fill="none" stroke="${INK.night}" stroke-width="34" stroke-linecap="round"/>`).join("")
       + t(900, 1900, 190, "many waters", { f: "s", fill: INK.night })
       + t(900, 2060, 60, "SURF CLUB · 1 NEPHI 17:5", { f: "m", fill: INK.red, ls: 14 }) },
-  { id: "deseret-crew", place: "front", size: "DTG", svg: () => {
-      const n = INK.night;
-      return `<g transform="translate(900 440) scale(5.2)" fill="none" stroke="${n}" stroke-width="3"><path d="M0 -30 L26 -15 L26 15 L0 30 L-26 15 L-26 -15 Z"/><ellipse cx="0" cy="4" rx="8" ry="12" fill="${n}" stroke="none"/><ellipse cx="-11" cy="-8" rx="9" ry="5" transform="rotate(-25 -11 -8)"/><ellipse cx="11" cy="-8" rx="9" ry="5" transform="rotate(25 11 -8)"/></g>`
-        + `<path d="M860 444 L940 444 M856 480 L944 480" stroke="${INK.bone}" stroke-width="10"/>`
-        + t(900, 830, 200, "DESERET APIARY", { fill: n, wd: 62, ls: 6 })
-        + t(900, 990, 110, "by interpretation, a honey bee", { f: "s", fill: n })
-        + t(900, 1120, 56, "ETHER 2:3", { f: "m", fill: INK.red, ls: 16 });
-    } },
   { id: "samuel-tee", place: "front", size: "DTG", svg: () => chest(t(0, 10, 62, "SAMUEL'S WALL", { f: "m", ls: 6, w: 600 }) + t(0, 76, 44, "ARCHERY CLUB", { f: "m", fill: INK.gold, ls: 10 })) },
   { id: "samuel-tee", place: "back", size: "DTG", svg: () => [400, 280, 160].map(r => `<circle cx="900" cy="980" r="${r}" fill="none" stroke="${INK.bone}" stroke-width="56"/>`).join("")
       + `<circle cx="900" cy="980" r="58" fill="${INK.bone}"/>`
       + [[300, 520, 34], [1520, 620, -36], [330, 1480, -24], [1490, 1420, 30], [900, 440, 0], [1620, 1020, 12]].map(([x, y, a]) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M0 0 L0 -220" stroke="${INK.gold}" stroke-width="18"/><path d="M-34 -220 L0 -290 L34 -220 Z" fill="${INK.gold}"/><path d="M-26 0 L0 -40 L26 0 M-26 30 L0 -10 L26 30" fill="none" stroke="${INK.gold}" stroke-width="10"/></g>`).join("")
       + t(900, 1880, 168, "THEY COULD NOT HIT HIM", { wd: 60 })
       + t(900, 2040, 60, "HELAMAN 16:2", { f: "m", fill: INK.gold, ls: 18 }) },
-  { id: "stones-tee", place: "front", size: "DTG", svg: () => `<defs><radialGradient id="glow"><stop offset="0" stop-color="#FFFDF5"/><stop offset=".5" stop-color="#F3EBD2"/><stop offset="1" stop-color="#F3EBD2" stop-opacity="0"/></radialGradient></defs>`
-      + Array.from({ length: 16 }, (_, i) => `<circle cx="${585 + (i % 4) * 210}" cy="${300 + Math.floor(i / 4) * 210}" r="92" fill="url(#glow)"/>`).join("")
-      + t(900, 1240, 64, "SIXTEEN SMALL STONES", { f: "m", ls: 20 }) + t(900, 1340, 52, "ETHER 3:1", { f: "m", fill: INK.gold, ls: 16 }) },
   { id: "curelom-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.black], svg: () => t(375, 150, 150, "C&C", { fill: THREAD.black, wd: 80, ls: 14 }) + t(375, 246, 66, "WILDLIFE SOCIETY", { f: "m", fill: THREAD.black, w: 600, ls: 4 }) },
   { id: "curelom-cap", place: "embroidery_back", size: "HATBACK", threads: [THREAD.black], svg: () => t(300, 104, 70, "RENT COAT CO.", { fill: THREAD.black, wd: 72, ls: 6 }) },
   { id: "stories-tee", place: "front", size: "DTG", svg: () => storiesFront(INK.night, INK.red) },
@@ -162,11 +145,6 @@ export const FILES = [
       + t(900, 1640, 260, "LEHI'S TENT CO.", { wd: 62, ls: 4 })
       + t(900, 1860, 150, "And my father dwelt in a tent.", { f: "s", fill: INK.gold })
       + t(900, 2030, 60, "1 NEPHI 2:15", { f: "m", ls: 18 }) },
-  { id: "liahona-crew", place: "front", size: "DTG", svg: () => `<g transform="translate(900 560)" fill="none" stroke="${INK.gold}"><circle r="300" stroke-width="26"/><ellipse rx="150" ry="300" stroke-width="9"/><ellipse rx="300" ry="104" stroke-width="9"/><path d="M0 -300 L0 300" stroke-width="9"/>`
-      + `<path d="M0 0 L-118 -150" stroke="${INK.bone}" stroke-width="30" stroke-linecap="round"/><path d="M0 0 L150 84" stroke="${INK.bone}" stroke-width="30" stroke-linecap="round"/><circle r="38" fill="${INK.gold}" stroke="none"/></g>`
-      + t(900, 1100, 150, "CURIOUS WORKMANSHIP", { wd: 60, ls: 4 })
-      + t(900, 1250, 104, "a round ball of fine brass", { f: "s", fill: INK.gold })
-      + t(900, 1370, 56, "1 NEPHI 16:10", { f: "m", ls: 16 }) },
   { id: "barge-mug", place: "default", size: "MUG", svg: () => {
       const n = INK.night, s = `fill="none" stroke="${n}" stroke-width="7"`;
       return `<g transform="translate(330 262)"><path d="M-250 0 C-150 -130 150 -130 250 0 C150 130 -150 130 -250 0 Z" ${s}/><path d="M-210 0 L210 0" ${s} stroke-width="5" stroke-dasharray="14 16"/><circle cy="-60" r="16" ${s}/><circle cy="60" r="16" ${s}/><path d="M0 -76 L0 -170 L130 -170 M0 76 L0 170 L130 170" ${s} stroke-width="4"/></g>`
@@ -189,10 +167,6 @@ const MARK = {
   "samuel-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
   "lehi-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
   // Front-only prints: under the scripture line.
-  "stripling-hoodie:front": () => lock(900, 1460, 64, INK.bone, INK.gold),
-  "deseret-crew:front": () => lock(900, 1270, 64, INK.night, INK.red),
-  "stones-tee:front": () => lock(900, 1500, 64, INK.bone, INK.gold),
-  "liahona-crew:front": () => lock(900, 1520, 64, INK.bone, INK.gold),
   // Joggers: further up the same leg.
   "strait-joggers:leg_front_left": () => `<g transform="translate(210 1490) rotate(-90)">${lock(0, 22, 48, INK.bone, INK.gold)}</g>`,
   // Embroidered patches: the club crest shrinks a little and the mark goes underneath.

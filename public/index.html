@@ -717,13 +717,13 @@ footer .wrap { padding-block: 56px 40px }
   </div>
   <div class="grid" id="grid">
     <article class="card" id="liberty">
-      <div class="shot">
+      <div class="shot show-front">
         <img src="images/liberty-back-v3.jpg" width="1600" height="1800" loading="lazy" alt="Title of Liberty tee in Shadow, back print">
         <img class="alt" src="images/liberty-front.jpg" width="1600" height="1800" loading="lazy" alt="Title of Liberty tee in Shadow, front chest print">
         <span class="tag eyebrow hot">Flagship</span>
         <div class="flip" role="group" aria-label="Show side">
-          <button type="button" aria-pressed="true" data-side="back">Back</button>
-          <button type="button" aria-pressed="false" data-side="front">Front</button>
+          <button type="button" aria-pressed="true" data-side="front">Front</button>
+          <button type="button" aria-pressed="false" data-side="back">Back</button>
         </div>
       </div>
       <div class="info">
@@ -739,13 +739,13 @@ footer .wrap { padding-block: 56px 40px }
       </div>
     </article>
     <article class="card" id="stripling">
-      <div class="shot">
+      <div class="shot show-front">
         <img src="images/stripling-back-v3.jpg" width="1600" height="1800" loading="lazy" alt="Stripling 2000 tee in Black, back print">
         <img class="alt" src="images/stripling-front-v3.jpg" width="1600" height="1800" loading="lazy" alt="Stripling 2000 tee in Black, front chest print">
         <span class="tag eyebrow">Varsity</span>
         <div class="flip" role="group" aria-label="Show side">
-          <button type="button" aria-pressed="true" data-side="back">Back</button>
-          <button type="button" aria-pressed="false" data-side="front">Front</button>
+          <button type="button" aria-pressed="true" data-side="front">Front</button>
+          <button type="button" aria-pressed="false" data-side="back">Back</button>
         </div>
       </div>
       <div class="info">
@@ -761,13 +761,13 @@ footer .wrap { padding-block: 56px 40px }
       </div>
     </article>
     <article class="card" id="cureloms">
-      <div class="shot">
+      <div class="shot show-front">
         <img src="images/cureloms-back-v2.jpg" width="1600" height="1800" loading="lazy" alt="Cureloms &amp; Cumoms tee in Cream, back print">
         <img class="alt" src="images/cureloms-front.jpg" width="1600" height="1800" loading="lazy" alt="Cureloms &amp; Cumoms tee in Cream, front chest print">
         <span class="tag eyebrow">Wildlife Society</span>
         <div class="flip" role="group" aria-label="Show side">
-          <button type="button" aria-pressed="true" data-side="back">Back</button>
-          <button type="button" aria-pressed="false" data-side="front">Front</button>
+          <button type="button" aria-pressed="true" data-side="front">Front</button>
+          <button type="button" aria-pressed="false" data-side="back">Back</button>
         </div>
       </div>
       <div class="info">
@@ -965,10 +965,17 @@ remind.addEventListener("submit", async e => {
 
 function wireCard(card) {
   const shot = card.querySelector(".shot"), sides = card.querySelectorAll(".flip button");
+  // Cards open on the front. On a mouse, hovering shows the other side; the buttons (or a tap) pick a side.
+  let chosen = shot.classList.contains("show-front") ? "front" : "back";
   const show = side => {
+    chosen = side;
     sides.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.side === side)));
     shot.classList.toggle("show-front", side === "front");
   };
+  if (sides.length && matchMedia("(hover: hover)").matches) {
+    shot.addEventListener("mouseenter", () => shot.classList.toggle("show-front", chosen !== "front"));
+    shot.addEventListener("mouseleave", () => shot.classList.toggle("show-front", chosen === "front"));
+  }
   sides.forEach(b => b.addEventListener("click", () => show(b.dataset.side)));
   shot.querySelectorAll("img").forEach(img => img.addEventListener("click", () => show(shot.classList.contains("show-front") ? "back" : "front")));
   card.querySelectorAll(".sizes input").forEach(r => r.addEventListener("change", refreshPrices));
@@ -1024,6 +1031,14 @@ function showLine(line) {
       view.alt = `${p.name} in ${p.color}, ${b.textContent.toLowerCase()}`;
     };
     buttons.forEach(b => b.addEventListener("click", () => pick(b)));
+    // On a mouse, hovering shows the back (or the second photo) without changing the picked view.
+    const peek = buttons.find(b => b.textContent === "Back") || buttons[1];
+    const picked = () => buttons.find(x => x.getAttribute("aria-pressed") === "true");
+    if (peek && matchMedia("(hover: hover)").matches) {
+      const shot = card.querySelector(".shot");
+      shot.addEventListener("mouseenter", () => { if (picked() !== peek) view.src = peek.dataset.src; });
+      shot.addEventListener("mouseleave", () => { view.src = picked().dataset.src; });
+    }
     view.addEventListener("click", () => {
       if (!buttons.length) return;
       const i = buttons.findIndex(x => x.getAttribute("aria-pressed") === "true");
