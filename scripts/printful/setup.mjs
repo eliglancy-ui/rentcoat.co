@@ -164,7 +164,9 @@ let failures = 0;
 for (const [id, cat] of Object.entries(CATALOG)) {
   if (ONLY.length && !ONLY.includes(id)) continue;
   const product = PRODUCTS[id];
-  const files = [...FILES, ...TAG_FILES].filter(f => f.id === id);
+  // Printful's API refuses printed inside tags ("Unsupported file type: label_inside"), so TAG_FILES are only
+  // artwork for adding a tag by hand in Printful's dashboard.
+  const files = FILES.filter(f => f.id === id);
   // A file with forSize (a sized tag) only goes on that size.
   const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);
@@ -183,15 +185,9 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     }
 
     // 1. The product.
-    let existing = await pf(`store/products/@rc-${id}`);
-    if (existing.ok && REPLACE.has(id)) {
-      const gone = await pf(`store/products/@rc-${id}`, { method: "DELETE" });
-      if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
-      console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
-      existing = { ok: false };
-      if (!RUN.keep_photos) out.images = [];
-    }
-    if (existing.ok) {
+    const existing = await pf(`store/products/@rc-${id}`);
+    const replacing = existing.ok && REPLACE.has(id);
+    if (existing.ok && !replacing) {
       out.sync_product_id = existing.data.result.sync_product.id;
       console.log(`  already in Printful (#${out.sync_product_id}), leaving it as is`);
     } else {
@@ -206,6 +202,13 @@ for (const [id, cat] of Object.entries(CATALOG)) {
           files: await Promise.all(filesFor(size).map(async f => ({ type: f.place, url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, variant_id, f) }))),
           ...(options.length && { options }),
         });
+      }
+      // The new version is fully built before the old one is deleted, so a failure never leaves the piece missing.
+      if (replacing) {
+        const gone = await pf(`store/products/@rc-${id}`, { method: "DELETE" });
+        if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
+        console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
+        if (!RUN.keep_photos) out.images = [];
       }
       const made = await pf("store/products", { method: "POST", body: { sync_product: { name: `${product.name} | ${cat.color}`, external_id: `rc-${id}` }, sync_variants } });
       if (!made.ok) throw new Error(`create product: ${why(made)}`);
