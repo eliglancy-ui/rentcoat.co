@@ -110,6 +110,14 @@ for (const [id, cat] of Object.entries(CATALOG)) {
   try {
     const options = await threadOptions(cat.product, files);
 
+    // "list_styles": only record which photo styles (option groups) and views Printful offers for this blank.
+    if (RUN.list_styles) {
+      const pfs = await printfiles(cat.product);
+      out.styles = { option_groups: pfs.option_groups, options: pfs.options };
+      console.log(`  styles: ${(pfs.option_groups || []).join(", ")}`);
+      continue;
+    }
+
     // 1. The product.
     let existing = await pf(`store/products/@rc-${id}`);
     if (existing.ok && REPLACE.has(id)) {
