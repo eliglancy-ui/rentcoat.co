@@ -18,6 +18,7 @@ import { createHash } from "node:crypto";
 import { PRODUCTS, PRINTFUL_STORE_ID } from "../../netlify/lib/store.mjs";
 import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
+import { BOLD_FILES, PREVIEWS } from "./art-bold.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
@@ -106,6 +107,7 @@ const STYLES = {
   661: { groups: ["Men's", "Men's Lifestyle", "Women's", "Flat"], views: ["Front", "Front 2", "Zoomed-in"] },
   399: { groups: ["Men's", "Men's 2", "Men's Lifestyle", "Women's Lifestyle", "Flat", "On Hanger"], views: ["Front", "Front 2", "Zoomed-in"] },
   1626: { groups: ["Flat"], views: ["Front", "Back"] },
+  895: { groups: ["Men's", "Men's 2", "Men's 3", "Women's", "Flat"], views: ["Front", "Front Left", "Left Front", "Front Left Leg", "Front Right"] },
   19: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Environment"], views: ["Front", "Handle on Right", "Handle on Left", "Woman", "Office environment", "Cutting board"] },
   407: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Lifestyle 4", "Men's Lifestyle", "Women's Lifestyle"], views: ["Front", "Left", "Right"] },
 };
@@ -113,6 +115,50 @@ const STYLES = {
 const resultPath = "scripts/printful/result.json";
 const result = existsSync(resultPath) ? JSON.parse(readFileSync(resultPath, "utf8")) : { products: {} };
 mkdirSync("public/images/products", { recursive: true });
+
+// "preview": photograph the designs in art-bold.mjs on their blanks without creating any products, and save the
+// photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
+if (RUN.preview) {
+  let bad = 0;
+  for (const pv of PREVIEWS) {
+    if (ONLY.length && !ONLY.includes(pv.key)) continue;
+    console.log(`\npreview ${pv.key} (${pv.color})`);
+    try {
+      const pfs = await printfiles(pv.product);
+      const style = STYLES[pv.product] || { groups: [], views: [] };
+      const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
+      const views = style.views.filter(v => (pfs.options || []).includes(v));
+      const files = pv.files.flatMap(id => BOLD_FILES.filter(f => f.id === id)).filter(f => pfs.available_placements?.[f.place]);
+      const task = await pf(`mockup-generator/create-task/${pv.product}`, { method: "POST", body: {
+        variant_ids: [pv.variant], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
+        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(pv.product, pv.variant, f) }))),
+      } });
+      if (!task.ok) throw new Error(`start preview: ${why(task)}`);
+      let done;
+      for (let i = 0; i < 90 && !done; i++) {
+        await sleep(5000);
+        const r = await pf(`mockup-generator/task?task_key=${encodeURIComponent(task.data.result.task_key)}`);
+        if (r.data?.result?.status === "completed") done = r.data.result;
+        else if (r.data?.result?.status === "failed") throw new Error(`preview failed: ${JSON.stringify(r.data.result.error)}`);
+      }
+      if (!done) throw new Error("preview took longer than 7 minutes");
+      const dir = `candidates/preview/${pv.key}`, list = [], seen = new Set();
+      mkdirSync(dir, { recursive: true });
+      for (const m of done.mockups) for (const shot of [{ option: m.placement, url: m.mockup_url }, ...(m.extra || [])]) {
+        if (list.length >= 30 || seen.has(shot.url)) continue;
+        seen.add(shot.url);
+        const img = await fetch(shot.url);
+        if (!img.ok) continue;
+        const file = `${list.length + 1}.jpg`;
+        writeFileSync(`${dir}/${file}`, Buffer.from(await img.arrayBuffer()));
+        list.push({ file, placement: m.placement, group: shot.option_group || "", view: shot.option || "" });
+      }
+      writeFileSync(`${dir}/index.json`, JSON.stringify(list, null, 2) + "\n");
+      console.log(`  saved ${list.length} photos (styles: ${groups.join(", ") || "default"})`);
+    } catch (e) { bad++; console.error(`  FAILED: ${e.message}`); }
+  }
+  process.exit(bad ? 1 : 0);
+}
 
 let failures = 0;
 for (const [id, cat] of Object.entries(CATALOG)) {
