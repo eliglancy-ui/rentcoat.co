@@ -1,6 +1,9 @@
 // POST /api/stripe-webhook  (Stripe calls this after each payment)
-// Turns a paid Checkout session into a Printful DRAFT order. Drafts cost nothing until you confirm them
-// in Printful, so you can review every order after the preorder closes and confirm them all at once.
+// Turns a paid Checkout session into a Printful order.
+// Launch week orders (metadata drop "001") become DRAFTS: they cost nothing until you confirm them in Printful,
+// so you can review them after launch week and confirm them all at once. Orders after launch week are
+// confirmed right away so they print and ship within days. Set PRINTFUL_AUTO_CONFIRM=off in Netlify to make
+// every order a draft again.
 import crypto from "node:crypto";
 import { PRODUCTS, decodeItems, stripe, printful, json } from "../lib/store.mjs";
 
@@ -85,14 +88,15 @@ export default async (req) => {
     return json({ received: true, manual: e.message });
   }
 
-  const res = await printful("orders", { method: "POST", body: order });
+  const confirm = session.metadata?.drop !== "001" && process.env.PRINTFUL_AUTO_CONFIRM !== "off";
+  const res = await printful(confirm ? "orders?confirm=true" : "orders", { method: "POST", body: order });
   if (res.ok) {
-    console.log(`Printful draft order ${res.data?.result?.id} for ${session.id}`);
+    console.log(`Printful ${confirm ? "confirmed" : "draft"} order ${res.data?.result?.id} for ${session.id}`);
     return json({ received: true, printful: res.data?.result?.id });
   }
   const msg = JSON.stringify(res.data?.error || res.data);
   if (res.status === 400 && /external/i.test(msg)) {
-    return json({ received: true, duplicate: true }); // Stripe retried; the draft already exists.
+    return json({ received: true, duplicate: true }); // Stripe retried; the order already exists.
   }
   console.error(`Printful rejected ${session.id}: ${res.status} ${msg}`);
   return json({ error: "Printful order failed" }, 500); // 500 makes Stripe retry for up to 3 days

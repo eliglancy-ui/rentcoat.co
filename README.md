@@ -35,8 +35,8 @@ netlify.toml                tells Netlify where things are
 
 | What | Where |
 | --- | --- |
-| Drop dates (7-day window) | `DROP` in `netlify/lib/store.mjs`, or `DROP_OPENS` / `DROP_CLOSES` in Netlify environment variables (redeploy after changing them). The page reads them from `/api/config`, so the countdown and checkout always match. |
-| Prices | `PRICE` in `store.mjs` (cents) |
+| Launch week dates | `DROP` in `netlify/lib/store.mjs`, or `DROP_OPENS` / `DROP_CLOSES` in Netlify environment variables (redeploy after changing them). Between them the shop sells at launch prices and orders become Printful drafts; after `DROP.closes` it stays open at regular prices and orders print right away. The page reads them from `/api/config`, so the countdown and checkout always match. |
+| Prices | `PRICE` (regular) and `LAUNCH_PRICE` (launch week) in `store.mjs`, in cents |
 | Shipping charge | `SHIPPING` in `store.mjs` |
 | Printful variant IDs | `variants` for each product in `store.mjs`. Filled in for Drop 001 with the external IDs (the `#6adb...` codes) from the "Rent Coat Co." store in Printful. For a new shirt, create it in that store and copy its IDs the same way. |
 | Printful store | `PRINTFUL_STORE_ID` in `store.mjs` (18950104, the "Rent Coat Co." Manual order / API store) |
@@ -53,6 +53,7 @@ The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` ar
 | `PRINTFUL_STORE_ID` | Only if your Printful token covers more than one store (Printful's error will ask for a store ID) |
 | `ADMIN_KEY` | Any long password you make up. Protects the variant-list page. |
 | `CLOSED_SUNDAYS` | Leave unset to pause checkout every Sunday (Eastern time) during a drop. Set to `off` to sell on Sundays too. |
+| `PRINTFUL_AUTO_CONFIRM` | Leave unset so orders after launch week go straight to print (Printful charges your billing card for each one). Set to `off` to make every order a draft you confirm by hand. |
 | `STRIPE_TAX` | Leave unset until a parent registers the business for North Carolina sales tax and adds that registration in Stripe > Tax. Then set it to `on` and redeploy: Stripe adds sales tax at checkout (clothing and shipping). |
 
 Never put these keys in the code or send them to anyone.
@@ -60,9 +61,9 @@ Never put these keys in the code or send them to anyone.
 ## How an order flows
 
 1. Shopper adds shirts to the bag and taps Checkout.
-2. `/api/checkout` checks the preorder window and the bag, then opens Stripe Checkout with US shipping at $5.99. The checkout page expires after 30 minutes.
+2. `/api/checkout` checks the shop is open (not before launch week, not Sunday), prices the bag at launch or regular prices, then opens Stripe Checkout with US shipping at $5.99. The checkout page expires after 30 minutes.
 3. Shopper pays with card, Apple Pay or Google Pay. Stripe emails the receipt.
-4. Stripe calls `/api/stripe-webhook`. It checks Stripe's signature and creates a Printful draft order with the shipping address.
+4. Stripe calls `/api/stripe-webhook`. It checks Stripe's signature and creates the Printful order: a draft for launch week orders (confirm them together after launch week), or a confirmed order that prints right away for orders after it.
 5. If anything is missing (like a variant ID), the payment is still safe in Stripe and Netlify's function log says `ORDER NEEDS MANUAL ENTRY` with the Stripe session ID.
 
 ## Policy pages

@@ -29,30 +29,43 @@ export const PRODUCTS = {
 // The PRINTFUL_STORE_ID environment variable overrides it.
 export const PRINTFUL_STORE_ID = "18950104";
 
+// Regular prices, from the end of launch week on.
 export const PRICE = { default: 4000, "2XL": 4300 };
-export const SHIPPING = { amount: 599, label: "Standard shipping (ships after the preorder closes)" };
+// Launch-week prices: only between DROP.opens and DROP.closes.
+export const LAUNCH_PRICE = { default: 3500, "2XL": 3800 };
+export const SHIPPING = { amount: 599 };
+export const shippingLabel = phase => phase === "launch"
+  ? "Standard shipping (printed after launch week ends Nov 21)"
+  : "Standard shipping";
 export const SHIP_TO = ["US"];
 export const MAX_ITEMS = 10;
 
-// The 7-day preorder window. This is the one place to change it: the website reads it from /api/config.
+// Drop 001 launch week: launch prices and preorders between these two times. After DROP.closes the shop
+// stays open at regular prices and orders print right away. The website reads this from /api/config.
 // Netlify environment variables DROP_OPENS and DROP_CLOSES override it without a code change (redeploy after changing them).
 export const DROP = {
   opens: process.env.DROP_OPENS || "2026-11-14T10:00:00-05:00",
   closes: process.env.DROP_CLOSES || "2026-11-21T10:00:00-05:00",
 };
 
-// Checkout pauses on Sundays (Eastern time) while a drop is open. Set CLOSED_SUNDAYS=off in Netlify to sell every day.
+// Checkout pauses on Sundays (Eastern time). Set CLOSED_SUNDAYS=off in Netlify to sell every day.
 export const CLOSED_SUNDAYS = process.env.CLOSED_SUNDAYS !== "off";
 const easternDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" });
 export const isSunday = (now = Date.now()) => easternDay.format(now) === "Sun";
 
 const own = (obj, key) => typeof key === "string" && Object.hasOwn(obj, key);
-export const unitPrice = size => own(PRICE, size) ? PRICE[size] : PRICE.default;
+export const isLaunch = (now = Date.now()) => now >= Date.parse(DROP.opens) && now < Date.parse(DROP.closes);
+export const priceTable = (now = Date.now()) => isLaunch(now) ? LAUNCH_PRICE : PRICE;
+export const unitPrice = (size, now = Date.now()) => {
+  const table = priceTable(now);
+  return own(table, size) ? table[size] : table.default;
+};
 
-export function dropPhase(now = Date.now()) {
+// "before" launch week, "launch" during it, "open" after it (regular shop), or "sunday" (checkout paused).
+export function storePhase(now = Date.now()) {
   if (now < Date.parse(DROP.opens)) return "before";
-  if (now < Date.parse(DROP.closes)) return CLOSED_SUNDAYS && isSunday(now) ? "sunday" : "live";
-  return "closed";
+  if (CLOSED_SUNDAYS && isSunday(now)) return "sunday";
+  return isLaunch(now) ? "launch" : "open";
 }
 
 // Cart lines travel through Stripe metadata as "liberty:M:1,stripling:L:2".
