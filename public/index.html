@@ -475,9 +475,10 @@ section { padding-block: clamp(64px, 8vw, 120px) }
 .card:hover .shot img { transform: scale(1.04) }
 .tag { position: absolute; top: 16px; left: 16px; padding: 6px 12px; border-radius: 999px; background: var(--night); color: var(--on-dark) }
 .tag.hot { background: var(--rent); color: var(--paper) }
-.flip { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; padding: 4px; background: rgba(245,242,234,.94); border: 1px solid rgba(22,32,27,.12); border-radius: 999px }
-.flip button { min-width: 72px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer }
-.flip button[aria-pressed="true"] { background: var(--night); color: var(--on-dark) }
+.flip, .views { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; padding: 4px; background: rgba(245,242,234,.94); border: 1px solid rgba(22,32,27,.12); border-radius: 999px }
+.flip button, .views button { min-width: 72px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; cursor: pointer }
+.flip button[aria-pressed="true"], .views button[aria-pressed="true"] { background: var(--night); color: var(--on-dark) }
+.views button { min-width: 0; white-space: nowrap; padding: 0 11px }
 .info { display: flex; flex-direction: column; gap: 14px; padding: 24px 24px 26px; flex: 1 }
 .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px }
 .info h3 { margin: 0; font: 900 30px/1 var(--display); font-stretch: 72%; text-transform: uppercase }
@@ -993,16 +994,16 @@ function showLine(line) {
   const grid = $("line-grid");
   for (const p of line) {
     if (byId[p.id]) continue;
-    byId[p.id] = { id: p.id, name: p.name, color: p.color, back: p.images[0], price: p.price };
-    const [a, b] = p.images;
+    byId[p.id] = { id: p.id, name: p.name, color: p.color, back: p.images[0].src, price: p.price };
+    // Each photo is { src, label }: the buttons are its labels (Back, Front, On model), and tapping the photo shows the next one.
+    const views = p.images.map((img, i) => `<button type="button" aria-pressed="${i === 0}" data-src="${esc(img.src)}">${esc(img.label || `Photo ${i + 1}`)}</button>`).join("");
     const sizes = p.sizes.map(size => `<label><input type="radio" name="size-${esc(p.id)}" value="${esc(size)}"${size === "M" || p.sizes.length === 1 ? " checked" : ""}><span>${size === "OS" ? "One size" : esc(size)}</span></label>`).join("");
     const card = document.createElement("article");
     card.className = "card"; card.id = p.id; card.dataset.line = "";
     card.innerHTML = `<div class="shot">
-        <img src="${esc(a)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}">
-        ${b ? `<img class="alt" src="${esc(b)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}, another view">` : ""}
+        <img class="view" src="${esc(p.images[0].src)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}, ${esc((p.images[0].label || "photo").toLowerCase())}">
         <span class="tag eyebrow">${esc(p.kind)}</span>
-        ${b ? `<div class="flip" role="group" aria-label="Show photo"><button type="button" aria-pressed="true" data-side="back">Photo 1</button><button type="button" aria-pressed="false" data-side="front">Photo 2</button></div>` : ""}
+        ${p.images.length > 1 ? `<div class="views" role="group" aria-label="Show view">${views}</div>` : ""}
       </div>
       <div class="info">
         <div class="row"><h3>${esc(p.name)}</h3><span class="price"></span></div>
@@ -1016,6 +1017,18 @@ function showLine(line) {
       </div>`;
     grid.append(card);
     wireCard(card);
+    const view = card.querySelector("img.view"), buttons = [...card.querySelectorAll(".views button")];
+    const pick = b => {
+      buttons.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      view.src = b.dataset.src;
+      view.alt = `${p.name} in ${p.color}, ${b.textContent.toLowerCase()}`;
+    };
+    buttons.forEach(b => b.addEventListener("click", () => pick(b)));
+    view.addEventListener("click", () => {
+      if (!buttons.length) return;
+      const i = buttons.findIndex(x => x.getAttribute("aria-pressed") === "true");
+      pick(buttons[(i + 1) % buttons.length]);
+    });
   }
   $("line").hidden = false;
   restoreBag();
