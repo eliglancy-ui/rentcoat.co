@@ -3,49 +3,56 @@
     "rent-hoodie": {
       "sync_product_id": 486689930,
       "images": [
-        "images/products/rent-hoodie-front.jpg",
-        "images/products/rent-hoodie-front-1.jpg",
-        "images/products/rent-hoodie-front-2.jpg",
-        "images/products/rent-hoodie-front-3.jpg",
-        "images/products/rent-hoodie-back.jpg",
-        "images/products/rent-hoodie-back-1.jpg"
+        "images/products/rent-hoodie-1.jpg",
+        "images/products/rent-hoodie-2.jpg",
+        "images/products/rent-hoodie-3.jpg",
+        "images/products/rent-hoodie-4.jpg",
+        "images/products/rent-hoodie-5.jpg",
+        "images/products/rent-hoodie-6.jpg",
+        "images/products/rent-hoodie-7.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b4a429a9a5d9bb37b1b7b01d6383cddd/unisex-premium-pullover-hoodie-black-front-6ae16a5dafc8e.jpg",
-          "path": "images/products/rent-hoodie-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/222006fbcbede7c0044231f3cf624f20/unisex-premium-pullover-hoodie-black-front-6ae16b922b981.jpg",
+          "path": "images/products/rent-hoodie-1.jpg"
         },
         {
           "placement": "front",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/91235375bb301b92ae1e92f6da40b455/unisex-premium-pullover-hoodie-black-front-6ae16a5db07db.jpg",
-          "path": "images/products/rent-hoodie-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/30e4971b79131b3f6e5d6a264fbcd992/unisex-premium-pullover-hoodie-black-front-6ae16b922bf82.jpg",
+          "path": "images/products/rent-hoodie-2.jpg"
         },
         {
           "placement": "front",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/869ccaf413bb8c7ba2bc6d4c464b7969/unisex-premium-pullover-hoodie-black-product-details-6ae16a5db0ba6.jpg",
-          "path": "images/products/rent-hoodie-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5183fc9da72967e509f78493889efc93/unisex-premium-pullover-hoodie-black-product-details-6ae16b922c1df.jpg",
+          "path": "images/products/rent-hoodie-3.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ea70f1d870b5dfc3670bd718970f8c70/unisex-premium-pullover-hoodie-black-left-6ae16a5db0ed0.jpg",
-          "path": "images/products/rent-hoodie-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b0b7741bb2a91c4f3065a34238049816/unisex-premium-pullover-hoodie-black-left-6ae16b922c3f0.jpg",
+          "path": "images/products/rent-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/defa955813718c4c268abbebfadc7849/unisex-premium-pullover-hoodie-black-right-6ae16b922c621.jpg",
+          "path": "images/products/rent-hoodie-5.jpg"
         },
         {
           "placement": "back",
           "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ee6937e36ba8d9ab6e4ca48031ca51de/unisex-premium-pullover-hoodie-black-back-6ae16a5db1467.jpg",
-          "path": "images/products/rent-hoodie-back.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dae1418a374228f2a71f9c548be149a5/unisex-premium-pullover-hoodie-black-back-6ae16b922c82a.jpg",
+          "path": "images/products/rent-hoodie-6.jpg"
         },
         {
           "placement": "back",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/14599eafe32bcb7ebd5ebd210e84bd1f/unisex-premium-pullover-hoodie-black-back-6ae16a5db16f9.jpg",
-          "path": "images/products/rent-hoodie-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5a21491baf30cb20787e8a0238088be5/unisex-premium-pullover-hoodie-black-back-6ae16b922ca04.jpg",
+          "path": "images/products/rent-hoodie-7.jpg"
         }
       ],
       "cost": {
@@ -65,35 +72,35 @@
     "liberty-crew": {
       "sync_product_id": 486689950,
       "images": [
-        "images/products/liberty-crew-front.jpg",
-        "images/products/liberty-crew-front-1.jpg",
-        "images/products/liberty-crew-front-2.jpg",
-        "images/products/liberty-crew-front-3.jpg"
+        "images/products/liberty-crew-1.jpg",
+        "images/products/liberty-crew-2.jpg",
+        "images/products/liberty-crew-3.jpg",
+        "images/products/liberty-crew-4.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1f3bdad03620bdc5b341f20b3fc29637/unisex-premium-sweatshirt-bone-front-6ae16a6b7ddc3.jpg",
-          "path": "images/products/liberty-crew-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/552dee05403c99b2c05c1f65ed7881d6/unisex-premium-sweatshirt-bone-front-6ae16b9d68fbb.jpg",
+          "path": "images/products/liberty-crew-1.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/24cd68f4dd9dde43b4e420213cad55e9/unisex-premium-sweatshirt-bone-left-6ae16a6b7e9b7.jpg",
-          "path": "images/products/liberty-crew-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c5ae695cd98869492cb837fd530aa6aa/unisex-premium-sweatshirt-bone-left-6ae16b9d697d5.jpg",
+          "path": "images/products/liberty-crew-2.jpg"
         },
         {
           "placement": "front",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f6c75ff011cd551fdad7e83722e27f43/unisex-premium-sweatshirt-bone-right-6ae16a6b7eb89.jpg",
-          "path": "images/products/liberty-crew-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/80ca299f1c18b991a95ced33ce2f5736/unisex-premium-sweatshirt-bone-right-6ae16b9d69a47.jpg",
+          "path": "images/products/liberty-crew-3.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7f1eddca8eb1cd29237a107868f2da0b/unisex-premium-sweatshirt-bone-back-6ae16a6b7ed4f.jpg",
-          "path": "images/products/liberty-crew-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0bb34d7499c3f2bf0b8d62df40809c6b/unisex-premium-sweatshirt-bone-back-6ae16b9d69c21.jpg",
+          "path": "images/products/liberty-crew-4.jpg"
         }
       ],
       "cost": {
@@ -113,35 +120,56 @@
     "stripling-hoodie": {
       "sync_product_id": 486689959,
       "images": [
-        "images/products/stripling-hoodie-front.jpg",
-        "images/products/stripling-hoodie-front-1.jpg",
-        "images/products/stripling-hoodie-front-2.jpg",
-        "images/products/stripling-hoodie-front-3.jpg"
+        "images/products/stripling-hoodie-1.jpg",
+        "images/products/stripling-hoodie-2.jpg",
+        "images/products/stripling-hoodie-3.jpg",
+        "images/products/stripling-hoodie-4.jpg",
+        "images/products/stripling-hoodie-5.jpg",
+        "images/products/stripling-hoodie-6.jpg",
+        "images/products/stripling-hoodie-7.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5deec218a223b050a33a19629d6eac34/unisex-premium-pullover-hoodie-black-front-6ae16a7216e68.jpg",
-          "path": "images/products/stripling-hoodie-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2e15c85d4078a9563b16a94091616de4/unisex-premium-pullover-hoodie-black-front-6ae16ba50c70d.jpg",
+          "path": "images/products/stripling-hoodie-1.jpg"
         },
         {
           "placement": "front",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cf3ddaf70dc2cd5fd3ab826c60459daa/unisex-premium-pullover-hoodie-black-front-6ae16a7217714.jpg",
-          "path": "images/products/stripling-hoodie-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a4c637a7c57f73ff742e005a7a698ee3/unisex-premium-pullover-hoodie-black-front-6ae16ba50d1e3.jpg",
+          "path": "images/products/stripling-hoodie-2.jpg"
         },
         {
           "placement": "front",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/917660a15c8fa070362b9967e33e0e79/unisex-premium-pullover-hoodie-black-product-details-6ae16a721796f.jpg",
-          "path": "images/products/stripling-hoodie-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e5f7c29ed146d8a873169ae0067513a1/unisex-premium-pullover-hoodie-black-product-details-6ae16ba50d3ee.jpg",
+          "path": "images/products/stripling-hoodie-3.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b9691a504b0bcf634540c68f4609e075/unisex-premium-pullover-hoodie-black-left-6ae16a7217b6e.jpg",
-          "path": "images/products/stripling-hoodie-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/eb242f3eb5ff13fa4a85625e9706ab2b/unisex-premium-pullover-hoodie-black-left-6ae16ba50d5f6.jpg",
+          "path": "images/products/stripling-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/18381760d08279bf067bdbdcac170d77/unisex-premium-pullover-hoodie-black-right-6ae16ba50d80b.jpg",
+          "path": "images/products/stripling-hoodie-5.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6595e615129c405eddcc8d52b8a56874/unisex-premium-pullover-hoodie-black-back-6ae16ba50da1e.jpg",
+          "path": "images/products/stripling-hoodie-6.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/adcac052b27af6bde94f9286a5b24cd6/unisex-premium-pullover-hoodie-black-back-6ae16ba50dc48.jpg",
+          "path": "images/products/stripling-hoodie-7.jpg"
         }
       ],
       "cost": {
@@ -159,37 +187,37 @@
       }
     },
     "strait-joggers": {
-      "sync_product_id": 486689978,
+      "sync_product_id": 486690767,
       "images": [
-        "images/products/strait-joggers-front.jpg",
-        "images/products/strait-joggers-front-1.jpg",
-        "images/products/strait-joggers-front-2.jpg",
-        "images/products/strait-joggers-front-3.jpg"
+        "images/products/strait-joggers-1.jpg",
+        "images/products/strait-joggers-2.jpg",
+        "images/products/strait-joggers-3.jpg",
+        "images/products/strait-joggers-4.jpg"
       ],
       "mockups": [
         {
           "placement": "leg_front_left",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2e92de8e6859a6b6ac54b9fc893b4fea/unisex-fleece-sweatpants-charcoal-heather-front-6ae16a79c0c50.jpg",
-          "path": "images/products/strait-joggers-front.jpg"
+          "title": "leg_front_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/28ea042f31995f85494a1a864647c40e/unisex-fleece-sweatpants-charcoal-heather-front-6ae16bac710da.jpg",
+          "path": "images/products/strait-joggers-1.jpg"
         },
         {
           "placement": "leg_front_left",
           "title": "Front Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d1c1e7db8d4348fa2f94df5fd71b6ad5/unisex-fleece-sweatpants-charcoal-heather-front-left-6ae16a79c112d.jpg",
-          "path": "images/products/strait-joggers-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4d4d24ee335775c96aa31c9c521f0e3e/unisex-fleece-sweatpants-charcoal-heather-front-left-6ae16bac717d4.jpg",
+          "path": "images/products/strait-joggers-2.jpg"
         },
         {
           "placement": "leg_front_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a0a658a19af2385f328ce54fc43b7fd7/unisex-fleece-sweatpants-charcoal-heather-back-6ae16a79c120f.jpg",
-          "path": "images/products/strait-joggers-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d9be95d61db5887362098bcace220818/unisex-fleece-sweatpants-charcoal-heather-back-6ae16bac71917.jpg",
+          "path": "images/products/strait-joggers-3.jpg"
         },
         {
           "placement": "leg_front_left",
           "title": "Front Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c84dfff70ba105e656c9f9a3624df782/unisex-fleece-sweatpants-charcoal-heather-front-right-6ae16a79c1284.jpg",
-          "path": "images/products/strait-joggers-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c68c393661dfb8ddfabf7eaf8a94a299/unisex-fleece-sweatpants-charcoal-heather-front-right-6ae16bac719e2.jpg",
+          "path": "images/products/strait-joggers-4.jpg"
         }
       ],
       "cost": {
@@ -207,19 +235,86 @@
       }
     },
     "flag-cap": {
-      "error": "no print area \"embroidery_front\" for variant 8745. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left"
+      "error": "no print area \"embroidery_front\" for variant 8745. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left",
+      "sync_product_id": 486690784,
+      "images": [
+        "images/products/flag-cap-1.jpg",
+        "images/products/flag-cap-2.jpg",
+        "images/products/flag-cap-3.jpg",
+        "images/products/flag-cap-4.jpg",
+        "images/products/flag-cap-5.jpg",
+        "images/products/flag-cap-6.jpg",
+        "images/products/flag-cap-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_front_large",
+          "title": "embroidery_front_large",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c432185bbf91496aaa5428160660514b/classic-dad-hat-spruce-front-6ae16bb3ec8e9.jpg",
+          "path": "images/products/flag-cap-1.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/af038c2a15c48f374944118bfa94d134/classic-dad-hat-spruce-right-side-6ae16bb3ece30.jpg",
+          "path": "images/products/flag-cap-2.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d835202f81efb393b429ab17e3da16b8/classic-dad-hat-spruce-right-front-6ae16bb3ecf41.jpg",
+          "path": "images/products/flag-cap-3.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/02136cf6b59fb4630bae7b5ca9f69ff2/classic-dad-hat-spruce-left-side-6ae16bb3ed02d.jpg",
+          "path": "images/products/flag-cap-4.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e364ebbd827791789848c7c6ec54f698/classic-dad-hat-spruce-left-front-6ae16bb3ed109.jpg",
+          "path": "images/products/flag-cap-5.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9c5d297ddee181f92224625276beabef/classic-dad-hat-spruce-back-6ae16bb3ed1e0.jpg",
+          "path": "images/products/flag-cap-6.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a7c67eac204f4abb478acab8c18a2c38/classic-dad-hat-spruce-product-details-6ae16bb3ed2a1.jpg",
+          "path": "images/products/flag-cap-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 14.94,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.92,
+        "vat": 0,
+        "total": 28.45
+      }
     },
     "flag-beanie": {
       "sync_product_id": 486690023,
       "images": [
-        "images/products/flag-beanie-front.jpg"
+        "images/products/flag-beanie-1.jpg"
       ],
       "mockups": [
         {
           "placement": "embroidery_front",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/82b11ecaca7af339032ed5bece18aa79/cuffed-beanie-red-front-6ae16a847a7d6.jpg",
-          "path": "images/products/flag-beanie-front.jpg"
+          "title": "embroidery_front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/50880408aa9fd3bb1582562b9d87c325/cuffed-beanie-red-front-6ae16bbb556f8.jpg",
+          "path": "images/products/flag-beanie-1.jpg"
         }
       ],
       "cost": {
@@ -239,35 +334,35 @@
     "shelem-fleece": {
       "sync_product_id": 486690056,
       "images": [
-        "images/products/shelem-fleece-front.jpg",
-        "images/products/shelem-fleece-front-1.jpg",
-        "images/products/shelem-fleece-front-2.jpg",
-        "images/products/shelem-fleece-front-3.jpg"
+        "images/products/shelem-fleece-1.jpg",
+        "images/products/shelem-fleece-2.jpg",
+        "images/products/shelem-fleece-3.jpg",
+        "images/products/shelem-fleece-4.jpg"
       ],
       "mockups": [
         {
           "placement": "embroidery_chest_left",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5ba3e1afb97594294757e8881dd8abde/unisex-fleece-pullover-black-front-6ae16a8be82bc.jpg",
-          "path": "images/products/shelem-fleece-front.jpg"
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/32ea6ccf18f31b6f72351e431c8c8f36/unisex-fleece-pullover-black-front-6ae16bc20762e.jpg",
+          "path": "images/products/shelem-fleece-1.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ae138580edab562e912e71df2454552e/unisex-fleece-pullover-black-back-6ae16a8be87ad.jpg",
-          "path": "images/products/shelem-fleece-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bded8c330275ffcb8d19b7a37497f5ec/unisex-fleece-pullover-black-back-6ae16bc20853b.jpg",
+          "path": "images/products/shelem-fleece-2.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f2674540fc65e7fb8c9559a6b76870a3/unisex-fleece-pullover-black-left-6ae16a8be8883.jpg",
-          "path": "images/products/shelem-fleece-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a8b9b7e4589e7f5a22667066fc76affa/unisex-fleece-pullover-black-left-6ae16bc20863a.jpg",
+          "path": "images/products/shelem-fleece-3.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ee85403d20df6ec33203bec947002699/unisex-fleece-pullover-black-right-6ae16a8be8978.jpg",
-          "path": "images/products/shelem-fleece-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3097f3f7aafd50a78835dc03c2bbe085/unisex-fleece-pullover-black-right-6ae16bc208707.jpg",
+          "path": "images/products/shelem-fleece-4.jpg"
         }
       ],
       "cost": {
@@ -287,21 +382,21 @@
     "hagoth-windbreaker": {
       "sync_product_id": 486690066,
       "images": [
-        "images/products/hagoth-windbreaker-front.jpg",
-        "images/products/hagoth-windbreaker-front-1.jpg"
+        "images/products/hagoth-windbreaker-1.jpg",
+        "images/products/hagoth-windbreaker-2.jpg"
       ],
       "mockups": [
         {
           "placement": "embroidery_chest_left",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/15d3ff9691c9ea589767aa2061082e90/unisex-basic-windbreaker-forest-green-front-6ae16a94693c0.jpg",
-          "path": "images/products/hagoth-windbreaker-front.jpg"
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/38874d6cdf4627f319b0f98138f52ba6/unisex-basic-windbreaker-forest-green-front-6ae16bc935aef.jpg",
+          "path": "images/products/hagoth-windbreaker-1.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a17a12071153ce60b601a3d3c79aa8fd/unisex-basic-windbreaker-forest-green-back-6ae16a94698a8.jpg",
-          "path": "images/products/hagoth-windbreaker-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e9c127c39624a43e350faf50d05a8936/unisex-basic-windbreaker-forest-green-back-6ae16bc935cff.jpg",
+          "path": "images/products/hagoth-windbreaker-2.jpg"
         }
       ],
       "cost": {
@@ -321,35 +416,35 @@
     "ironrod-anorak": {
       "sync_product_id": 486690071,
       "images": [
-        "images/products/ironrod-anorak-front.jpg",
-        "images/products/ironrod-anorak-front-1.jpg",
-        "images/products/ironrod-anorak-front-2.jpg",
-        "images/products/ironrod-anorak-front-3.jpg"
+        "images/products/ironrod-anorak-1.jpg",
+        "images/products/ironrod-anorak-2.jpg",
+        "images/products/ironrod-anorak-3.jpg",
+        "images/products/ironrod-anorak-4.jpg"
       ],
       "mockups": [
         {
           "placement": "embroidery_chest_left",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c43009d445d42fe2e007d7880560bac2/unisex-champion-packable-anorak-navy-front-6ae16a9c1e6f0.jpg",
-          "path": "images/products/ironrod-anorak-front.jpg"
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2f1444abb20ec34c7527a6e57f461022/unisex-champion-packable-anorak-navy-front-6ae16bd06b99e.jpg",
+          "path": "images/products/ironrod-anorak-1.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/71f82105a1d30e5210d030b10e69642a/unisex-champion-packable-anorak-navy-left-6ae16a9c1e9f8.jpg",
-          "path": "images/products/ironrod-anorak-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a6a5399928245d2a08ef6531c8c5d097/unisex-champion-packable-anorak-navy-left-6ae16bd06c5fd.jpg",
+          "path": "images/products/ironrod-anorak-2.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a1b191610c3c71983e87a5c12e434fdf/unisex-champion-packable-anorak-navy-right-6ae16a9c1ea4b.jpg",
-          "path": "images/products/ironrod-anorak-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/befb90e91812f6fd3df2ca01591770a4/unisex-champion-packable-anorak-navy-right-6ae16bd06c64c.jpg",
+          "path": "images/products/ironrod-anorak-3.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3c01f41aadadff6e3dcec3806a059427/unisex-champion-packable-anorak-navy-back-6ae16a9c1ea87.jpg",
-          "path": "images/products/ironrod-anorak-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9aac2b898e722a44902ec62cbe6a61fc/unisex-champion-packable-anorak-navy-back-6ae16bd06c687.jpg",
+          "path": "images/products/ironrod-anorak-4.jpg"
         }
       ],
       "cost": {
@@ -369,35 +464,21 @@
     "barge-tee": {
       "sync_product_id": 486690076,
       "images": [
-        "images/products/barge-tee-front.jpg",
-        "images/products/barge-tee-front-1.jpg",
-        "images/products/barge-tee-back.jpg",
-        "images/products/barge-tee-back-1.jpg"
+        "images/products/barge-tee-1.jpg",
+        "images/products/barge-tee-2.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/91ea65061b5ff0036569f5e2dc068c9c/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16aa4c68f8.jpg",
-          "path": "images/products/barge-tee-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/148ad920ba74060d9e41ae6e3b2a0ee5/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16bd9b9707.jpg",
+          "path": "images/products/barge-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e14f0496f58970dfa0c8467a2625a56e/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16aa4c6eda.jpg",
-          "path": "images/products/barge-tee-front-1.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/91ea65061b5ff0036569f5e2dc068c9c/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16aa4c68f8.jpg",
-          "path": "images/products/barge-tee-back.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e14f0496f58970dfa0c8467a2625a56e/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16aa4c6eda.jpg",
-          "path": "images/products/barge-tee-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cc8262a406424b1729260c9420c4dbaa/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16bd9b9c06.jpg",
+          "path": "images/products/barge-tee-2.jpg"
         }
       ],
       "cost": {
@@ -417,35 +498,21 @@
     "irreantum-tee": {
       "sync_product_id": 486690081,
       "images": [
-        "images/products/irreantum-tee-front.jpg",
-        "images/products/irreantum-tee-front-1.jpg",
-        "images/products/irreantum-tee-back.jpg",
-        "images/products/irreantum-tee-back-1.jpg"
+        "images/products/irreantum-tee-1.jpg",
+        "images/products/irreantum-tee-2.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3b5a864a806bcbd417afaf31a9ee2956/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae16aac1d6b6.jpg",
-          "path": "images/products/irreantum-tee-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/613bade0f5111c2e81f56409ab3c14dc/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae16be1541db.jpg",
+          "path": "images/products/irreantum-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b01b7dd480d86f2716103cf0a2ec8195/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae16aac1d9b3.jpg",
-          "path": "images/products/irreantum-tee-front-1.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3b5a864a806bcbd417afaf31a9ee2956/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae16aac1d6b6.jpg",
-          "path": "images/products/irreantum-tee-back.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b01b7dd480d86f2716103cf0a2ec8195/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae16aac1d9b3.jpg",
-          "path": "images/products/irreantum-tee-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c5ee018bb8ae81df699cb776ae01f6ae/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae16be1546a6.jpg",
+          "path": "images/products/irreantum-tee-2.jpg"
         }
       ],
       "cost": {
@@ -465,35 +532,35 @@
     "deseret-crew": {
       "sync_product_id": 486690111,
       "images": [
-        "images/products/deseret-crew-front.jpg",
-        "images/products/deseret-crew-front-1.jpg",
-        "images/products/deseret-crew-front-2.jpg",
-        "images/products/deseret-crew-front-3.jpg"
+        "images/products/deseret-crew-1.jpg",
+        "images/products/deseret-crew-2.jpg",
+        "images/products/deseret-crew-3.jpg",
+        "images/products/deseret-crew-4.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bf30d06f2abb0bf130fd97c5e0f93563/unisex-premium-sweatshirt-khaki-front-6ae16ab1f123e.jpg",
-          "path": "images/products/deseret-crew-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7224c3ce202d95c2e51abab671139002/unisex-premium-sweatshirt-khaki-front-6ae16beb6251a.jpg",
+          "path": "images/products/deseret-crew-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/eeb1115a012f4005d4544c091bcdc194/unisex-premium-sweatshirt-khaki-back-6ae16ab1f1b93.jpg",
-          "path": "images/products/deseret-crew-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/87e1ecd93723a14b4c4fde71bc1ccbaf/unisex-premium-sweatshirt-khaki-back-6ae16beb63129.jpg",
+          "path": "images/products/deseret-crew-2.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9b293b9fa6a56fb8904089e5713f3c42/unisex-premium-sweatshirt-khaki-left-6ae16ab1f1de1.jpg",
-          "path": "images/products/deseret-crew-front-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/67bb1d0c5b1bc9843af07054d8c7d414/unisex-premium-sweatshirt-khaki-left-6ae16beb633c0.jpg",
+          "path": "images/products/deseret-crew-3.jpg"
         },
         {
           "placement": "front",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e95c3fea58922280a2ce4f7567b24525/unisex-premium-sweatshirt-khaki-right-6ae16ab1f1fe1.jpg",
-          "path": "images/products/deseret-crew-front-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9c8a9b8c7d3944a659f56f8ebf162652/unisex-premium-sweatshirt-khaki-right-6ae16beb635a0.jpg",
+          "path": "images/products/deseret-crew-4.jpg"
         }
       ],
       "cost": {
@@ -513,35 +580,21 @@
     "samuel-tee": {
       "sync_product_id": 486690119,
       "images": [
-        "images/products/samuel-tee-front.jpg",
-        "images/products/samuel-tee-front-1.jpg",
-        "images/products/samuel-tee-back.jpg",
-        "images/products/samuel-tee-back-1.jpg"
+        "images/products/samuel-tee-1.jpg",
+        "images/products/samuel-tee-2.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b3fc0b674440e8e27ebbfc101630a113/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae16abb6c69f.jpg",
-          "path": "images/products/samuel-tee-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c90ab9e1b60c08b0a49ca759451b7e5b/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae16bf356b22.jpg",
+          "path": "images/products/samuel-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/516a379694bedabe90c87f912abf758e/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae16abb6cbc7.jpg",
-          "path": "images/products/samuel-tee-front-1.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b3fc0b674440e8e27ebbfc101630a113/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae16abb6c69f.jpg",
-          "path": "images/products/samuel-tee-back.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/516a379694bedabe90c87f912abf758e/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae16abb6cbc7.jpg",
-          "path": "images/products/samuel-tee-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ac6ca0e9b6a15aeac656afd55d3f665a/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae16bf356f6a.jpg",
+          "path": "images/products/samuel-tee-2.jpg"
         }
       ],
       "cost": {
@@ -561,21 +614,21 @@
     "stones-tee": {
       "sync_product_id": 486690130,
       "images": [
-        "images/products/stones-tee-front.jpg",
-        "images/products/stones-tee-front-1.jpg"
+        "images/products/stones-tee-1.jpg",
+        "images/products/stones-tee-2.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a44e54f602c574df58eb0e409c067093/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae16ac191093.jpg",
-          "path": "images/products/stones-tee-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/104fd5a3c12dfae272f08754d514d48e/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae16bf8b8bad.jpg",
+          "path": "images/products/stones-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/588abb304e98f99bd07f34b619037c71/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae16ac191275.jpg",
-          "path": "images/products/stones-tee-front-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a54d1bdea752433fba17c89fb69545b5/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae16bf8b8dc9.jpg",
+          "path": "images/products/stones-tee-2.jpg"
         }
       ],
       "cost": {
@@ -593,40 +646,93 @@
       }
     },
     "curelom-cap": {
-      "error": "no print area \"embroidery_front\" for variant 7855. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left"
+      "error": "no print area \"embroidery_front\" for variant 7855. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left",
+      "sync_product_id": 486691079,
+      "images": [
+        "images/products/curelom-cap-1.jpg",
+        "images/products/curelom-cap-2.jpg",
+        "images/products/curelom-cap-3.jpg",
+        "images/products/curelom-cap-4.jpg",
+        "images/products/curelom-cap-5.jpg",
+        "images/products/curelom-cap-6.jpg",
+        "images/products/curelom-cap-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_front_large",
+          "title": "embroidery_front_large",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0f4afeb3ec475bad84477428072e5c8b/classic-dad-hat-khaki-front-6ae16bffed079.jpg",
+          "path": "images/products/curelom-cap-1.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6525a9dbfd72733352e7be3a51e47b82/classic-dad-hat-khaki-right-side-6ae16bffedb4f.jpg",
+          "path": "images/products/curelom-cap-2.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/64e6d0570ee181111258a64527e84e9c/classic-dad-hat-khaki-right-front-6ae16bffedd8d.jpg",
+          "path": "images/products/curelom-cap-3.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/92db45667349888e537663c499395839/classic-dad-hat-khaki-left-side-6ae16bffedf26.jpg",
+          "path": "images/products/curelom-cap-4.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3169e507266dac536b229c5019a03879/classic-dad-hat-khaki-left-front-6ae16bffee05b.jpg",
+          "path": "images/products/curelom-cap-5.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ab642c5576fa39d8b84e7abf4e1faa14/classic-dad-hat-khaki-back-6ae16bffee146.jpg",
+          "path": "images/products/curelom-cap-6.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cc51699744e5bc5d1e17828c2b92bbd2/classic-dad-hat-khaki-product-details-6ae16bffee20e.jpg",
+          "path": "images/products/curelom-cap-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 14.94,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.92,
+        "vat": 0,
+        "total": 28.45
+      }
     },
     "stories-tee": {
       "sync_product_id": 486690167,
       "images": [
-        "images/products/stories-tee-front.jpg",
-        "images/products/stories-tee-front-1.jpg",
-        "images/products/stories-tee-back.jpg",
-        "images/products/stories-tee-back-1.jpg"
+        "images/products/stories-tee-1.jpg",
+        "images/products/stories-tee-2.jpg"
       ],
       "mockups": [
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cc6a40f39efe3e6cba4b3627b1fbd943/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16aca29875.jpg",
-          "path": "images/products/stories-tee-front.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3d0229c9c41c6641fb9011bd300f589c/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16c0dca105.jpg",
+          "path": "images/products/stories-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6ce64bb3e5204763216e0a9c679ebefb/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16aca29b74.jpg",
-          "path": "images/products/stories-tee-front-1.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cc6a40f39efe3e6cba4b3627b1fbd943/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16aca29875.jpg",
-          "path": "images/products/stories-tee-back.jpg"
-        },
-        {
-          "placement": "back",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6ce64bb3e5204763216e0a9c679ebefb/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16aca29b74.jpg",
-          "path": "images/products/stories-tee-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d0bbbbd922a25b7d325f7c4d258347f6/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16c0dcab8e.jpg",
+          "path": "images/products/stories-tee-2.jpg"
         }
       ],
       "cost": {
@@ -646,63 +752,56 @@
     "stories-hoodie": {
       "sync_product_id": 486690172,
       "images": [
-        "images/products/stories-hoodie-back.jpg",
-        "images/products/stories-hoodie-back-1.jpg",
-        "images/products/stories-hoodie-back-2.jpg",
-        "images/products/stories-hoodie-back-3.jpg",
-        "images/products/stories-hoodie-front.jpg",
-        "images/products/stories-hoodie-front-1.jpg",
-        "images/products/stories-hoodie-front-2.jpg",
-        "images/products/stories-hoodie-front-3.jpg"
+        "images/products/stories-hoodie-1.jpg",
+        "images/products/stories-hoodie-2.jpg",
+        "images/products/stories-hoodie-3.jpg",
+        "images/products/stories-hoodie-4.jpg",
+        "images/products/stories-hoodie-5.jpg",
+        "images/products/stories-hoodie-6.jpg",
+        "images/products/stories-hoodie-7.jpg"
       ],
       "mockups": [
         {
           "placement": "back",
           "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0e0038e8b76bb3b930f3e7fb179ad105/unisex-premium-pullover-hoodie-bone-back-6ae16ad1c54ee.jpg",
-          "path": "images/products/stories-hoodie-back.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a2986bfbfa18d3cf4b60cf1f47364eab/unisex-premium-pullover-hoodie-bone-back-6ae16c13c4af0.jpg",
+          "path": "images/products/stories-hoodie-1.jpg"
         },
         {
           "placement": "back",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/622750cf5665257774b3baf7e6bedd81/unisex-premium-pullover-hoodie-bone-front-6ae16ad1c645e.jpg",
-          "path": "images/products/stories-hoodie-back-1.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f06ddb1e0f79b63344451ba24ed2cfde/unisex-premium-pullover-hoodie-bone-front-6ae16c13c5458.jpg",
+          "path": "images/products/stories-hoodie-2.jpg"
         },
         {
           "placement": "back",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a8ea59f309a1c926afe7c3a67c72cb0c/unisex-premium-pullover-hoodie-bone-product-details-6ae16ad1c6709.jpg",
-          "path": "images/products/stories-hoodie-back-2.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8ddbf82aaac6f57cb5e39ab790a6211f/unisex-premium-pullover-hoodie-bone-product-details-6ae16c13c569b.jpg",
+          "path": "images/products/stories-hoodie-3.jpg"
         },
         {
           "placement": "back",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/20c92247a1034f26c6525d5a0d72d0f7/unisex-premium-pullover-hoodie-bone-front-6ae16ad1c6917.jpg",
-          "path": "images/products/stories-hoodie-back-3.jpg"
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/127f1443ebf010c2b2825506091be578/unisex-premium-pullover-hoodie-bone-front-6ae16c13c58a5.jpg",
+          "path": "images/products/stories-hoodie-4.jpg"
         },
         {
-          "placement": "front",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0e0038e8b76bb3b930f3e7fb179ad105/unisex-premium-pullover-hoodie-bone-back-6ae16ad1c54ee.jpg",
-          "path": "images/products/stories-hoodie-front.jpg"
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4dce770224fb2213db9e6c0db09bdff0/unisex-premium-pullover-hoodie-bone-back-6ae16c13c5a8f.jpg",
+          "path": "images/products/stories-hoodie-5.jpg"
         },
         {
-          "placement": "front",
-          "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/622750cf5665257774b3baf7e6bedd81/unisex-premium-pullover-hoodie-bone-front-6ae16ad1c645e.jpg",
-          "path": "images/products/stories-hoodie-front-1.jpg"
+          "placement": "back",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/461103893b4d019b59034fbfd4b3b300/unisex-premium-pullover-hoodie-bone-left-6ae16c13c5c98.jpg",
+          "path": "images/products/stories-hoodie-6.jpg"
         },
         {
-          "placement": "front",
-          "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a8ea59f309a1c926afe7c3a67c72cb0c/unisex-premium-pullover-hoodie-bone-product-details-6ae16ad1c6709.jpg",
-          "path": "images/products/stories-hoodie-front-2.jpg"
-        },
-        {
-          "placement": "front",
-          "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/20c92247a1034f26c6525d5a0d72d0f7/unisex-premium-pullover-hoodie-bone-front-6ae16ad1c6917.jpg",
-          "path": "images/products/stories-hoodie-front-3.jpg"
+          "placement": "back",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/66a8b495dadea71b42885d806b363dcb/unisex-premium-pullover-hoodie-bone-right-6ae16c13c5eeb.jpg",
+          "path": "images/products/stories-hoodie-7.jpg"
         }
       ],
       "cost": {
@@ -718,7 +817,171 @@
         "vat": 0,
         "total": 46.1
       }
+    },
+    "lehi-tee": {
+      "sync_product_id": 486691176,
+      "images": [
+        "images/products/lehi-tee-1.jpg",
+        "images/products/lehi-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/21a4b68216bd7793abf39f63ba1f44e1/unisex-garment-dyed-drop-shoulder-t-shirt-mocha-front-6ae16c20689ea.jpg",
+          "path": "images/products/lehi-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/151a366a72459cf0c97d76323bfb3446/unisex-garment-dyed-drop-shoulder-t-shirt-mocha-back-6ae16c2068fdd.jpg",
+          "path": "images/products/lehi-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "liahona-crew": {
+      "sync_product_id": 486691178,
+      "images": [
+        "images/products/liahona-crew-1.jpg",
+        "images/products/liahona-crew-2.jpg",
+        "images/products/liahona-crew-3.jpg",
+        "images/products/liahona-crew-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c7c7dc6eaefa3b7321d0978bcbba39d3/unisex-premium-sweatshirt-forest-green-front-6ae16c26ab8fd.jpg",
+          "path": "images/products/liahona-crew-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2d62fa50162bf1fa7d0e57384c95625b/unisex-premium-sweatshirt-forest-green-left-6ae16c26ac4a6.jpg",
+          "path": "images/products/liahona-crew-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/005635d5d011e2e7e141ca0d79bb26a7/unisex-premium-sweatshirt-forest-green-right-6ae16c26ac8a5.jpg",
+          "path": "images/products/liahona-crew-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/508b5e51046fdde3d813d300b991d3bc/unisex-premium-sweatshirt-forest-green-back-6ae16c26acbf8.jpg",
+          "path": "images/products/liahona-crew-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 24.53,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.45,
+        "vat": 0,
+        "total": 36.17
+      }
+    },
+    "barge-mug": {
+      "sync_product_id": 486691184,
+      "images": [
+        "images/products/barge-mug-1.jpg",
+        "images/products/barge-mug-2.jpg",
+        "images/products/barge-mug-3.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/48ca7b74eb57c184a87679332548a062/white-glossy-mug-white-11-oz-handle-on-right-6ae16c2d20489.jpg",
+          "path": "images/products/barge-mug-1.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Handle on Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9a4098b7faced76ede17c3db5e3c3174/white-glossy-mug-white-11-oz-handle-on-left-6ae16c2d204fb.jpg",
+          "path": "images/products/barge-mug-2.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Front view",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bbe86b41636b71621a351f39c828ea6f/white-glossy-mug-white-11-oz-front-view-6ae16c2d2051d.jpg",
+          "path": "images/products/barge-mug-3.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 6.07,
+        "discount": 0,
+        "shipping": 7.090000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.96,
+        "vat": 0,
+        "total": 14.12
+      }
+    },
+    "lehi-mug": {
+      "sync_product_id": 486691189,
+      "images": [
+        "images/products/lehi-mug-1.jpg",
+        "images/products/lehi-mug-2.jpg",
+        "images/products/lehi-mug-3.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0d481821b5a81c3eb2cb059da16d749a/enamel-mug-white-12-oz-right-6ae16c353d0cd.jpg",
+          "path": "images/products/lehi-mug-1.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a4003bb9cac170bf8a0ded517b43c49a/enamel-mug-white-12-oz-front-6ae16c353d142.jpg",
+          "path": "images/products/lehi-mug-2.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c1e4a5cdf7e32dde1a18d9751eaaef78/enamel-mug-white-12-oz-left-6ae16c353d165.jpg",
+          "path": "images/products/lehi-mug-3.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 12.67,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.29,
+        "vat": 0,
+        "total": 19.05
+      }
     }
   },
-  "generatedAt": "2026-10-28T03:24:10.333Z"
+  "generatedAt": "2026-10-28T03:30:02.170Z"
 }
