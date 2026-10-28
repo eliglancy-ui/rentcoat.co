@@ -1,7 +1,7 @@
 {
   "products": {
     "rent-hoodie": {
-      "sync_product_id": 486689930,
+      "sync_product_id": 486817852,
       "images": [
         "images/products/rent-hoodie-1.jpg",
         "images/products/rent-hoodie-2.jpg",
@@ -117,8 +117,7 @@
           "Right sleeve",
           "Zoomed-in"
         ]
-      },
-      "error": "create product: Printful 400: \"Unsupported file type: label_inside\""
+      }
     },
     "liberty-crew": {
       "sync_product_id": 486689950,
@@ -557,7 +556,7 @@
       }
     },
     "shelem-fleece": {
-      "sync_product_id": 486759841,
+      "sync_product_id": 486817902,
       "images": [
         "images/products/shelem-fleece-1.jpg",
         "images/products/shelem-fleece-2.jpg",
@@ -626,8 +625,7 @@
           "Right wrist",
           "Zoomed-in"
         ]
-      },
-      "error": "no print area \"label_inside_dtf\" for variant 16715. Areas: embroidery_chest_left, embroidery_large_center, embroidery_wrist_left, embroidery_wrist_right"
+      }
     },
     "hagoth-windbreaker": {
       "sync_product_id": 486759855,
@@ -1170,7 +1168,7 @@
       }
     },
     "stories-hoodie": {
-      "sync_product_id": 486690172,
+      "sync_product_id": 486817937,
       "images": [
         "images/products/stories-hoodie-1.jpg",
         "images/products/stories-hoodie-2.jpg",
@@ -1286,8 +1284,7 @@
           "Right sleeve",
           "Zoomed-in"
         ]
-      },
-      "error": "create product: Printful 400: \"Unsupported file type: label_inside\""
+      }
     },
     "lehi-tee": {
       "sync_product_id": 486759909,
@@ -1556,5 +1553,5 @@
       }
     }
   },
-  "generatedAt": "2026-10-28T13:49:21.081Z"
+  "generatedAt": "2026-10-28T13:50:31.549Z"
 }
