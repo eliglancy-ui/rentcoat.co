@@ -67,6 +67,56 @@
         "tax": 3.12,
         "vat": 0,
         "total": 46.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
       }
     },
     "liberty-crew": {
@@ -115,6 +165,42 @@
         "tax": 2.45,
         "vat": 0,
         "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
       }
     },
     "stripling-hoodie": {
@@ -184,6 +270,56 @@
         "tax": 2.69,
         "vat": 0,
         "total": 39.72
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
       }
     },
     "strait-joggers": {
@@ -232,6 +368,31 @@
         "tax": 2.84,
         "vat": 0,
         "total": 42.01
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Men's",
+          "Men's 2",
+          "Men's 3",
+          "Men's 4",
+          "Women's",
+          "Women's 2"
+        ],
+        "options": [
+          "Back",
+          "Back Left Leg",
+          "Back Right Leg",
+          "Front",
+          "Front Left",
+          "Front Left Leg",
+          "Front Right",
+          "Front Right Leg",
+          "Left",
+          "Left Front",
+          "Right",
+          "Right Front"
+        ]
       }
     },
     "flag-cap": {
@@ -301,6 +462,48 @@
         "tax": 1.92,
         "vat": 0,
         "total": 28.45
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Flat",
+          "Flat Lifestyle",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Men's",
+          "Men's 2, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "Product details",
+          "Production",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3",
+          "Women's, Premium"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left Front",
+          "Left Side",
+          "Product details",
+          "Right",
+          "Right Back",
+          "Right Front",
+          "Right Side"
+        ]
       }
     },
     "flag-beanie": {
@@ -328,6 +531,28 @@
         "tax": 1.79,
         "vat": 0,
         "total": 26.43
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat Lifestyle",
+          "Flat Lifestyle 2",
+          "Halloween",
+          "Holiday season",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's Lifestyle 3",
+          "Production",
+          "Spring/summer vibes",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3"
+        ],
+        "options": [
+          "Front",
+          "Front 2"
+        ]
       }
     },
     "shelem-fleece": {
@@ -376,6 +601,30 @@
         "tax": 2.85,
         "vat": 0,
         "total": 42.15
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Ghost",
+          "Men's",
+          "Men's Lifestyle",
+          "Product details",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left wrist",
+          "Product details",
+          "Right",
+          "Right wrist",
+          "Zoomed-in"
+        ]
       }
     },
     "hagoth-windbreaker": {
@@ -410,6 +659,27 @@
         "tax": 2.65,
         "vat": 0,
         "total": 39.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Ghost",
+          "Men's",
+          "Men's Lifestyle",
+          "Product details",
+          "Women's"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Product details",
+          "Product details 2",
+          "Product details 3",
+          "Zoomed-in",
+          "Zoomed-in 2"
+        ]
       }
     },
     "ironrod-anorak": {
@@ -458,6 +728,33 @@
         "tax": 4.29,
         "vat": 0,
         "total": 63.4
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Ghost",
+          "Men's",
+          "Men's 2",
+          "Men's Lifestyle",
+          "On Hanger",
+          "Packed",
+          "Product details",
+          "Spring/summer vibes",
+          "Ultra Flat",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Product details",
+          "Right",
+          "Zoomed-in"
+        ]
       }
     },
     "barge-tee": {
@@ -492,6 +789,15 @@
         "tax": 2.32,
         "vat": 0,
         "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "irreantum-tee": {
@@ -526,6 +832,15 @@
         "tax": 2.32,
         "vat": 0,
         "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "deseret-crew": {
@@ -574,6 +889,42 @@
         "tax": 2.45,
         "vat": 0,
         "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
       }
     },
     "samuel-tee": {
@@ -608,6 +959,15 @@
         "tax": 2.32,
         "vat": 0,
         "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "stones-tee": {
@@ -642,6 +1002,15 @@
         "tax": 1.89,
         "vat": 0,
         "total": 27.95
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "curelom-cap": {
@@ -711,6 +1080,48 @@
         "tax": 2.34,
         "vat": 0,
         "total": 34.77
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Flat",
+          "Flat Lifestyle",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Men's",
+          "Men's 2, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "Product details",
+          "Production",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3",
+          "Women's, Premium"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left Front",
+          "Left Side",
+          "Product details",
+          "Right",
+          "Right Back",
+          "Right Front",
+          "Right Side"
+        ]
       }
     },
     "stories-tee": {
@@ -745,6 +1156,15 @@
         "tax": 2.32,
         "vat": 0,
         "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "stories-hoodie": {
@@ -814,6 +1234,56 @@
         "tax": 3.12,
         "vat": 0,
         "total": 46.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
       }
     },
     "lehi-tee": {
@@ -848,6 +1318,15 @@
         "tax": 2.32,
         "vat": 0,
         "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
       }
     },
     "liahona-crew": {
@@ -896,6 +1375,42 @@
         "tax": 2.45,
         "vat": 0,
         "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
       }
     },
     "barge-mug": {
@@ -937,6 +1452,43 @@
         "tax": 0.96,
         "vat": 0,
         "total": 14.12
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Environment",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Lifestyle 2",
+          "Lifestyle 2, Premium",
+          "Lifestyle 3",
+          "Lifestyle 3, Premium",
+          "Lifestyle 4, Premium",
+          "Lifestyle, Premium",
+          "Placeholder",
+          "Product specs",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Templates",
+          "Valentine's Day"
+        ],
+        "options": [
+          "Cookies",
+          "Cutting board",
+          "Donuts",
+          "Front",
+          "Front view",
+          "Halloween",
+          "Handle on Left",
+          "Handle on Right",
+          "Office environment",
+          "Pineapple",
+          "Watermelon",
+          "Woman",
+          "default"
+        ]
       }
     },
     "lehi-mug": {
@@ -978,8 +1530,28 @@
         "tax": 1.29,
         "vat": 0,
         "total": 19.05
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Lifestyle",
+          "Lifestyle 2",
+          "Lifestyle 3",
+          "Lifestyle 4",
+          "Lifestyle 5",
+          "Lifestyle 6",
+          "Lifestyle 7",
+          "Lifestyle 8",
+          "Men's Lifestyle",
+          "Women's Lifestyle"
+        ],
+        "options": [
+          "Front",
+          "Left",
+          "Right"
+        ]
       }
     }
   },
-  "generatedAt": "2026-10-28T09:41:38.646Z"
+  "generatedAt": "2026-10-28T09:47:38.282Z"
 }
