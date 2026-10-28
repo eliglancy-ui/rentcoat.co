@@ -204,16 +204,8 @@
       }
     },
     "stripling-hoodie": {
-      "sync_product_id": 486759814,
-      "images": [
-        "images/products/stripling-hoodie-1.jpg",
-        "images/products/stripling-hoodie-2.jpg",
-        "images/products/stripling-hoodie-3.jpg",
-        "images/products/stripling-hoodie-4.jpg",
-        "images/products/stripling-hoodie-5.jpg",
-        "images/products/stripling-hoodie-6.jpg",
-        "images/products/stripling-hoodie-7.jpg"
-      ],
+      "sync_product_id": 486853635,
+      "images": [],
       "mockups": [
         {
           "placement": "front",
@@ -1551,7 +1543,40 @@
           "Right"
         ]
       }
+    },
+    "stripling-tee": {
+      "sync_product_id": 486853663
+    },
+    "shelem-hoodie": {
+      "sync_product_id": 486853672
+    },
+    "shelem-tee": {
+      "sync_product_id": 486853702
+    },
+    "tree-hoodie": {
+      "sync_product_id": 486853721
+    },
+    "tree-tee": {
+      "sync_product_id": 486853742
+    },
+    "samuel-hoodie": {
+      "sync_product_id": 486853769
+    },
+    "samuel-wall-tee": {
+      "sync_product_id": 486853787
+    },
+    "ship-hoodie": {
+      "sync_product_id": 486853801
+    },
+    "ship-tee": {
+      "sync_product_id": 486853820
+    },
+    "liahona-hoodie": {
+      "sync_product_id": 486853835
+    },
+    "liahona-tee": {
+      "sync_product_id": 486853855
     }
   },
-  "generatedAt": "2026-10-28T13:50:31.549Z"
+  "generatedAt": "2026-10-28T16:04:24.655Z"
 }
