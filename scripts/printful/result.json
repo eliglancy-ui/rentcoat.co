@@ -117,7 +117,8 @@
           "Right sleeve",
           "Zoomed-in"
         ]
-      }
+      },
+      "error": "create product: Printful 400: \"Unsupported file type: label_inside\""
     },
     "liberty-crew": {
       "sync_product_id": 486689950,
@@ -625,7 +626,8 @@
           "Right wrist",
           "Zoomed-in"
         ]
-      }
+      },
+      "error": "no print area \"label_inside_dtf\" for variant 16715. Areas: embroidery_chest_left, embroidery_large_center, embroidery_wrist_left, embroidery_wrist_right"
     },
     "hagoth-windbreaker": {
       "sync_product_id": 486759855,
@@ -1284,7 +1286,8 @@
           "Right sleeve",
           "Zoomed-in"
         ]
-      }
+      },
+      "error": "create product: Printful 400: \"Unsupported file type: label_inside\""
     },
     "lehi-tee": {
       "sync_product_id": 486759909,
@@ -1553,5 +1556,5 @@
       }
     }
   },
-  "generatedAt": "2026-10-28T09:53:20.811Z"
+  "generatedAt": "2026-10-28T13:49:21.081Z"
 }
