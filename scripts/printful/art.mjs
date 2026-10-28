@@ -7,12 +7,13 @@
 //   HAT     750 x 270   5" x 1.8" embroidered hat front
 //   BEANIE  750 x 300   5" x 2" embroidered beanie cuff
 //   LEG     420 x 1800  a strip that sits at the top of the left leg
+//   MUG    1350 x 525   9" x 3.5" wrap around a mug
 // Embroidered files use only Printful thread colors (THREAD), with lettering at least 0.25" tall.
 
 export const INK = { gold: "#C9A45C", goldDark: "#9C7A36", bone: "#ECE8DF", red: "#A83A2C", night: "#16201B" };
 export const THREAD = { white: "#FFFFFF", black: "#000000", oldGold: "#A67843", maroon: "#660000", red: "#CC3333", grey: "#96A1A8" };
 
-export const SIZE = { DTG: [1800, 2400], CHEST: [600, 600], HAT: [750, 270], BEANIE: [750, 300], LEG: [420, 1800] };
+export const SIZE = { DTG: [1800, 2400], CHEST: [600, 600], HAT: [750, 270], BEANIE: [750, 300], LEG: [420, 1800], MUG: [1350, 525] };
 
 const FLAG = "M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z";
 const flag = (cx, cy, s, cloth, pole) => `<g transform="translate(${cx - s / 2} ${cy - s / 2}) scale(${s / 100})"><circle cx="11" cy="5" r="5" fill="${pole}"/><rect x="8" y="8" width="6" height="92" rx="2" fill="${pole}"/><path d="${FLAG}" fill="${cloth}"/></g>`;
@@ -68,6 +69,12 @@ function storiesBack(ink, accent) {
 const storiesFront = (ink, accent) => chest(`<rect x="-200" y="-150" width="400" height="300" rx="26" fill="none" stroke="${ink}" stroke-width="7"/>`
   + t(0, -66, 36, "BOOK OF MORMON", { f: "m", fill: ink, ls: 7, w: 600 }) + t(0, 52, 132, "Stories", { f: "s", fill: accent }) + t(0, 112, 30, "VOL. I", { f: "m", fill: ink, ls: 8 }));
 
+// A ridge tent with its door open, drawn around cx, cy at scale s (about 200 x 150 at s = 1).
+const tent = (cx, cy, s, ink, accent) => `<g transform="translate(${cx} ${cy}) scale(${s})" fill="none" stroke="${ink}" stroke-width="${8 / Math.max(s, 1) * Math.min(s, 2)}" stroke-linejoin="round" stroke-linecap="round">`
+  + `<path d="M-100 70 L0 -80 L100 70 Z"/><path d="M0 -80 L0 -102"/><path d="M0 -102 L22 -95 L0 -88" fill="${accent}" stroke="none"/>`
+  + `<path d="M0 -40 L-34 70 L0 70 Z" fill="${accent}" stroke="none"/><path d="M0 -40 L28 70"/><path d="M-130 70 L130 70"/>`
+  + `<path d="M-100 70 L-124 86 M100 70 L124 86"/></g>`;
+
 // ---- The files. id: product id in products.json; place: Printful placement; size: canvas key. ----
 export const FILES = [
   // The Standard
@@ -82,8 +89,8 @@ export const FILES = [
   { id: "stripling-hoodie", place: "front", size: "DTG", svg: () => t(900, 420, 150, "STRIPLING", { ls: 56, wd: 80 })
       + `<text x="900" y="1130" text-anchor="middle" fill="none" stroke="${INK.gold}" stroke-width="16" style="font-family:'Archivo';font-weight:900;font-stretch:62%;font-size:700px">2000</text>`
       + t(900, 1300, 64, "ALMA 56:48", { f: "m", ls: 20 }) },
-  { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 900) rotate(-90)">${t(0, -10, 150, "STRAIT & NARROW", { wd: 78, ls: 14 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
-  { id: "flag-cap", place: "embroidery_front", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 135, 250, THREAD.oldGold, THREAD.white) },
+  { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 640) rotate(-90)">${t(0, -10, 128, "STRAIT & NARROW", { wd: 78, ls: 10 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
+  { id: "flag-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 135, 250, THREAD.oldGold, THREAD.white) },
   { id: "flag-beanie", place: "embroidery_front", size: "BEANIE", threads: [THREAD.white], svg: () => flag(375, 150, 260, THREAD.white, THREAD.white) },
 
   // Wilderness Supply
@@ -134,11 +141,36 @@ export const FILES = [
   { id: "stones-tee", place: "front", size: "DTG", svg: () => `<defs><radialGradient id="glow"><stop offset="0" stop-color="#FFFDF5"/><stop offset=".5" stop-color="#F3EBD2"/><stop offset="1" stop-color="#F3EBD2" stop-opacity="0"/></radialGradient></defs>`
       + Array.from({ length: 16 }, (_, i) => `<circle cx="${585 + (i % 4) * 210}" cy="${300 + Math.floor(i / 4) * 210}" r="92" fill="url(#glow)"/>`).join("")
       + t(900, 1240, 64, "SIXTEEN SMALL STONES", { f: "m", ls: 20 }) + t(900, 1340, 52, "ETHER 3:1", { f: "m", fill: INK.gold, ls: 16 }) },
-  { id: "curelom-cap", place: "embroidery_front", size: "HAT", threads: [THREAD.black], svg: () => t(375, 150, 150, "C&C", { fill: THREAD.black, wd: 80, ls: 14 }) + t(375, 246, 66, "WILDLIFE SOCIETY", { f: "m", fill: THREAD.black, w: 600, ls: 4 }) },
+  { id: "curelom-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.black], svg: () => t(375, 150, 150, "C&C", { fill: THREAD.black, wd: 80, ls: 14 }) + t(375, 246, 66, "WILDLIFE SOCIETY", { f: "m", fill: THREAD.black, w: 600, ls: 4 }) },
   { id: "stories-tee", place: "front", size: "DTG", svg: () => storiesFront(INK.night, INK.red) },
   { id: "stories-tee", place: "back", size: "DTG", svg: () => storiesBack(INK.night, INK.red) },
   { id: "stories-hoodie", place: "front", size: "DTG", svg: () => storiesFront(INK.night, INK.red) },
   { id: "stories-hoodie", place: "back", size: "DTG", svg: () => storiesBack(INK.night, INK.red) },
+
+  // Added after the first batch
+  { id: "lehi-tee", place: "front", size: "DTG", svg: () => chest(tent(0, -40, .9, INK.bone, INK.gold) + t(0, 90, 50, "LEHI'S TENT CO.", { f: "m", ls: 6, w: 600 })) },
+  { id: "lehi-tee", place: "back", size: "DTG", svg: () => t(900, 300, 66, "EST. IN THE VALLEY OF LEMUEL", { f: "m", ls: 18, fill: INK.gold })
+      + tent(900, 900, 4.2, INK.bone, INK.gold)
+      + t(900, 1640, 260, "LEHI'S TENT CO.", { wd: 62, ls: 4 })
+      + t(900, 1860, 150, "And my father dwelt in a tent.", { f: "s", fill: INK.gold })
+      + t(900, 2030, 60, "1 NEPHI 2:15", { f: "m", ls: 18 }) },
+  { id: "liahona-crew", place: "front", size: "DTG", svg: () => `<g transform="translate(900 560)" fill="none" stroke="${INK.gold}"><circle r="300" stroke-width="26"/><ellipse rx="150" ry="300" stroke-width="9"/><ellipse rx="300" ry="104" stroke-width="9"/><path d="M0 -300 L0 300" stroke-width="9"/>`
+      + `<path d="M0 0 L-118 -150" stroke="${INK.bone}" stroke-width="30" stroke-linecap="round"/><path d="M0 0 L150 84" stroke="${INK.bone}" stroke-width="30" stroke-linecap="round"/><circle r="38" fill="${INK.gold}" stroke="none"/></g>`
+      + t(900, 1100, 150, "CURIOUS WORKMANSHIP", { wd: 60, ls: 4 })
+      + t(900, 1250, 104, "a round ball of fine brass", { f: "s", fill: INK.gold })
+      + t(900, 1370, 56, "1 NEPHI 16:10", { f: "m", ls: 16 }) },
+  { id: "barge-mug", place: "default", size: "MUG", svg: () => {
+      const n = INK.night, s = `fill="none" stroke="${n}" stroke-width="7"`;
+      return `<g transform="translate(330 262)"><path d="M-250 0 C-150 -130 150 -130 250 0 C150 130 -150 130 -250 0 Z" ${s}/><path d="M-210 0 L210 0" ${s} stroke-width="5" stroke-dasharray="14 16"/><circle cy="-60" r="16" ${s}/><circle cy="60" r="16" ${s}/><path d="M0 -76 L0 -170 L130 -170 M0 76 L0 170 L130 170" ${s} stroke-width="4"/></g>`
+        + t(470, 98, 24, "HOLE IN THE TOP", { f: "m", fill: n, a: "start", ls: 1 }) + t(470, 438, 24, "HOLE IN THE BOTTOM", { f: "m", fill: n, a: "start", ls: 1 })
+        + t(1010, 200, 92, "JAREDITE", { fill: n, wd: 62, ls: 4 }) + t(1010, 290, 92, "BARGE WORKS", { fill: n, wd: 62, ls: 4 })
+        + t(1010, 378, 64, "tight like unto a dish", { f: "s", fill: INK.red }) + t(1010, 438, 26, "ETHER 2:17", { f: "m", fill: n, ls: 8 });
+    } },
+  { id: "lehi-mug", place: "default", size: "MUG", svg: () => tent(330, 250, 1.75, INK.night, INK.red)
+      + t(990, 180, 96, "LEHI'S TENT CO.", { fill: INK.night, wd: 62, ls: 2 })
+      + t(990, 268, 54, "And my father dwelt in a tent.", { f: "s", fill: INK.red })
+      + t(990, 350, 26, "EST. IN THE VALLEY OF LEMUEL", { f: "m", fill: INK.night, ls: 6 })
+      + t(990, 400, 26, "1 NEPHI 2:15", { f: "m", fill: INK.night, ls: 8 }) },
 ];
 
 export const fileName = f => `${f.id}-${f.place}.png`;

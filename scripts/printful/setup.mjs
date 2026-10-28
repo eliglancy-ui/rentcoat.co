@@ -11,14 +11,20 @@
 //
 // Env: PRINTFUL_TOKEN (required), FILE_BASE (URL of the /print folder Printful downloads from),
 //      ONLY=id,id to run some pieces, REDO_PHOTOS=1 to make photos again.
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
+// scripts/printful/run.json can also set these for the next push: { "redo_photos": true, "replace": ["id"] }.
+// "replace" deletes those pieces from Printful and creates them again (use it after changing their print files).
+import { mkdirSync, writeFileSync, existsSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { PRODUCTS, PRINTFUL_STORE_ID } from "../../netlify/lib/store.mjs";
 import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
+const RUN = existsSync("scripts/printful/run.json") ? JSON.parse(readFileSync("scripts/printful/run.json", "utf8")) : {};
 const ONLY = (process.env.ONLY || "").split(",").filter(Boolean);
+const REDO_PHOTOS = Boolean(process.env.REDO_PHOTOS || RUN.redo_photos);
+const REPLACE = new Set(RUN.replace || []);
 if (!TOKEN) {
   console.error("PRINTFUL_TOKEN is not set. Add it in GitHub: Settings > Secrets and variables > Actions > New repository secret.");
   process.exit(1);
@@ -104,7 +110,14 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     const options = await threadOptions(cat.product, files);
 
     // 1. The product.
-    const existing = await pf(`store/products/@rc-${id}`);
+    let existing = await pf(`store/products/@rc-${id}`);
+    if (existing.ok && REPLACE.has(id)) {
+      const gone = await pf(`store/products/@rc-${id}`, { method: "DELETE" });
+      if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
+      console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
+      existing = { ok: false };
+      out.images = [];
+    }
     if (existing.ok) {
       out.sync_product_id = existing.data.result.sync_product.id;
       console.log(`  already in Printful (#${out.sync_product_id}), leaving it as is`);
@@ -130,7 +143,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     // 2. Photos, made on size M (or the one size).
     const photoVariant = cat.variants.M || cat.variants.OS;
     const have = (out.images || []).length && out.images.every(p => existsSync(`public/${p}`));
-    if (!have || process.env.REDO_PHOTOS) {
+    if (!have || REDO_PHOTOS) {
       const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
       const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
         variant_ids: [photoVariant], format: "jpg",
@@ -147,16 +160,24 @@ for (const [id, cat] of Object.entries(CATALOG)) {
         else if (r.data?.result?.status === "failed") throw new Error(`photos failed: ${JSON.stringify(r.data.result.error)}`);
       }
       if (!done) throw new Error("photos took longer than 5 minutes");
+      // Photos are numbered in the order Printful returns them; the same picture is only kept once.
+      for (const f of readdirSync("public/images/products")) if (f.startsWith(`${id}-`) && /^-(front|back|\d)/.test(f.slice(id.length))) rmSync(`public/images/products/${f}`);
       out.images = [];
       out.mockups = [];
+      const seen = new Set();
       for (const m of done.mockups) {
-        const side = m.placement === "back" ? "back" : "front";
-        const shots = [{ title: side, url: m.mockup_url }, ...(m.extra || []).map(x => ({ title: x.title || x.option, url: x.url }))];
-        for (const [n, shot] of shots.slice(0, 4).entries()) {
+        const shots = [{ title: m.placement, url: m.mockup_url }, ...(m.extra || []).map(x => ({ title: x.title || x.option, url: x.url }))];
+        for (const shot of shots) {
+          if (out.images.length >= 8 || seen.has(shot.url)) continue;
+          seen.add(shot.url);
           const img = await fetch(shot.url);
           if (!img.ok) continue;
-          const path = `images/products/${id}-${side}${n ? `-${n}` : ""}.jpg`;
-          writeFileSync(`public/${path}`, Buffer.from(await img.arrayBuffer()));
+          const bytes = Buffer.from(await img.arrayBuffer());
+          const hash = createHash("sha1").update(bytes).digest("hex");
+          if (seen.has(hash)) continue;
+          seen.add(hash);
+          const path = `images/products/${id}-${out.images.length + 1}.jpg`;
+          writeFileSync(`public/${path}`, bytes);
           out.images.push(path);
           out.mockups.push({ placement: m.placement, title: shot.title, url: shot.url, path });
         }

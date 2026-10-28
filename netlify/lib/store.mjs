@@ -28,6 +28,10 @@ const LINE = {
   "curelom-cap": line("curelom-cap", "Cureloms & Cumoms Cap", "Khaki", "images/products/curelom-cap-front.jpg", { default: 3200 }, ["OS"]),
   "stories-tee": line("stories-tee", "Book of Mormon Stories Tee", "Cream", "images/products/stories-tee-back.jpg", { default: 4000, "2XL": 4300 }),
   "stories-hoodie": line("stories-hoodie", "Book of Mormon Stories Hoodie", "Bone", "images/products/stories-hoodie-back.jpg", { default: 6800, "2XL": 7100 }),
+  "lehi-tee": line("lehi-tee", "Lehi's Tent Co. Tee", "Mocha", "images/products/lehi-tee-back.jpg", { default: 4000, "2XL": 4300 }),
+  "liahona-crew": line("liahona-crew", "Curious Workmanship Crewneck", "Forest Green", "images/products/liahona-crew-front.jpg", { default: 5800, "2XL": 6100 }),
+  "barge-mug": line("barge-mug", "Jaredite Barge Works Mug", "White, 11 oz", "images/products/barge-mug-front.jpg", { default: 2000 }, ["OS"]),
+  "lehi-mug": line("lehi-mug", "Lehi's Tent Co. Camp Mug", "Enamel, 12 oz", "images/products/lehi-mug-front.jpg", { default: 2600 }, ["OS"]),
 };
 
 export const PRODUCTS = {

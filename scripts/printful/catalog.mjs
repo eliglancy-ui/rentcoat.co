@@ -25,4 +25,9 @@ export const CATALOG = {
   "curelom-cap":        { product: 206,  color: "Khaki",            variants: { OS: 7855 } },
   "stories-tee":        { product: 1626, color: "Cream",            variants: v(50231, 50232, 50233, 50260, 50234) },
   "stories-hoodie":     { product: 380,  color: "Bone",             variants: v(20284, 20285, 20286, 20287, 20288) },
+  // White glossy mug 19 (11 oz) and enamel camp mug 407 (12 oz).
+  "lehi-tee":           { product: 1626, color: "Mocha",            variants: v(50235, 50236, 50237, 50261, 50238) },
+  "liahona-crew":       { product: 411,  color: "Forest Green",     variants: v(16156, 16157, 16158, 16159, 16160) },
+  "barge-mug":          { product: 19,   color: "White",            variants: { OS: 1320 } },
+  "lehi-mug":           { product: 407,  color: "White",            variants: { OS: 11189 } },
 };
