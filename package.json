@@ -1,0 +1,9 @@
+{
+  "name": "rentcoat-co",
+  "private": true,
+  "type": "module",
+  "description": "rentcoat.co: static site and Netlify Functions. Netlify installs these for the functions.",
+  "dependencies": {
+    "@netlify/blobs": "10.7.13"
+  }
+}
