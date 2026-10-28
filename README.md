@@ -51,7 +51,7 @@ The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` ar
 | `STRIPE_WEBHOOK_SECRET` | Stripe > Developers > Webhooks > your endpoint > Signing secret (`whsec_...`) |
 | `PRINTFUL_TOKEN` | Printful developer portal > private token |
 | `PRINTFUL_STORE_ID` | Only if your Printful token covers more than one store (Printful's error will ask for a store ID) |
-| `ADMIN_KEY` | Any long password you make up. Protects the variant-list page. |
+| `ADMIN_KEY` | Any long password you make up. Protects the variant-list page and the visit stats page. |
 | `CLOSED_SUNDAYS` | Leave unset to pause checkout every Sunday (Eastern time) during a drop. Set to `off` to sell on Sundays too. |
 | `PRINTFUL_AUTO_CONFIRM` | Leave unset so orders after launch week go straight to print (Printful charges your billing card for each one). Set to `off` to make every order a draft you confirm by hand. |
 | `STRIPE_TAX` | Leave unset until a parent registers the business for North Carolina sales tax and adds that registration in Stripe > Tax. Then set it to `on` and redeploy: Stripe adds sales tax at checkout (clothing and shipping). |
@@ -72,6 +72,12 @@ Action rebuilds that piece in Printful and commits new photos. It needs the `PRI
 (Settings > Secrets and variables > Actions). Costs and photo links from the last run are in `scripts/printful/result.json`.
 
 **Embroidery:** Printful charges a one-time $6.50 digitizing fee per embroidered design, on its first order.
+
+## Visit counts
+
+Every page sends one tiny "page viewed" ping to `/api/hit`, which adds to that day's totals in Netlify Blobs: views per
+page, per linking site, and phones vs computers. No cookies, no IP addresses, nothing that tells visitors apart.
+See them at **rentcoat.co/api/stats?key=YOUR_ADMIN_KEY** (add `&days=90` for longer). Bots are left out.
 
 ## How an order flows
 
