@@ -25,4 +25,17 @@ export const CATALOG = {
   "lehi-tee":           { product: 1626, color: "Mocha",            variants: v(50235, 50236, 50237, 50261, 50238) },
   "barge-mug":          { product: 19,   color: "White",            variants: { OS: 1320 } },
   "lehi-mug":           { product: 407,  color: "White",            variants: { OS: 11189 } },
+  // Big backs (art from art-bold.mjs, named by `art`): each design as a hoodie and a tee.
+  "stripling-hoodie":   { product: 380,  color: "Bone",             art: "bold-stripling", variants: v(20284, 20285, 20286, 20287, 20288) },
+  "stripling-tee":      { product: 1626, color: "Cream",            art: "bold-stripling", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "shelem-hoodie":      { product: 380,  color: "Navy Blazer",      art: "bold-stones",    variants: v(11491, 11492, 11493, 11494, 11495) },
+  "shelem-tee":         { product: 1626, color: "Black",            art: "bold-stones",    variants: v(50243, 50244, 50245, 50259, 50246) },
+  "tree-hoodie":        { product: 380,  color: "Forest Green",     art: "bold-tree",      variants: v(16162, 16163, 16164, 16165, 16166) },
+  "tree-tee":           { product: 1626, color: "Shadow",           art: "bold-tree",      variants: v(50239, 50240, 50241, 50264, 50242) },
+  "samuel-hoodie":      { product: 380,  color: "Charcoal Heather", art: "bold-samuel",    variants: v(11481, 11482, 11483, 11484, 11485) },
+  "samuel-wall-tee":    { product: 1626, color: "Shadow",           art: "bold-samuel",    variants: v(50239, 50240, 50241, 50264, 50242) },
+  "ship-hoodie":        { product: 380,  color: "Bone",             art: "bold-ship",      variants: v(20284, 20285, 20286, 20287, 20288) },
+  "ship-tee":           { product: 1626, color: "Oatmeal",          art: "bold-ship",      variants: v(50251, 50252, 50253, 50262, 50254) },
+  "liahona-hoodie":     { product: 380,  color: "Maroon",           art: "bold-liahona",   variants: v(11486, 11487, 11488, 11489, 11490) },
+  "liahona-tee":        { product: 1626, color: "Black",            art: "bold-liahona",   variants: v(50243, 50244, 50245, 50259, 50246) },
 };

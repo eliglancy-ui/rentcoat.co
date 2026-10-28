@@ -23,7 +23,7 @@ import { BOLD_FILES, PREVIEWS, TAG_FILES } from "./art-bold.mjs";
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
 const RUN = existsSync("scripts/printful/run.json") ? JSON.parse(readFileSync("scripts/printful/run.json", "utf8")) : {};
-const ONLY = (process.env.ONLY || "").split(",").filter(Boolean);
+const ONLY = [...(process.env.ONLY || "").split(",").filter(Boolean), ...(RUN.only || [])];
 const REDO_PHOTOS = Boolean(process.env.REDO_PHOTOS || RUN.redo_photos);
 const REPLACE = new Set(RUN.replace || []);
 if (!TOKEN) {
@@ -166,7 +166,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
   const product = PRODUCTS[id];
   // Printful's API refuses printed inside tags ("Unsupported file type: label_inside"), so TAG_FILES are only
   // artwork for adding a tag by hand in Printful's dashboard.
-  const files = FILES.filter(f => f.id === id);
+  const files = [...FILES, ...BOLD_FILES].filter(f => f.id === (cat.art || id));
   // A file with forSize (a sized tag) only goes on that size.
   const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);

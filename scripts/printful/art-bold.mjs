@@ -50,7 +50,10 @@ function halftone(cx, cy, R, fill, { step = 30, max = 13, toward = null, clip = 
   return `<g fill="${fill}"${clip ? ` clip-path="url(#${clip})"` : ""}>${out}</g>`;
 }
 const ref = (y, txt, fill) => t(900, y, 64, txt, { f: "m", fill, ls: 22, w: 600 });
-const kicker = (y, txt, fill) => t(900, y, 120, txt, { f: "s", fill });
+// The small italic title under the collar mark. It always sits at y 250, above the illustration (which starts below 380).
+const kicker = (y, txt, fill) => t(900, 250, 104, txt, { f: "s", fill });
+// Shrinks an illustration around a point so it clears the title above and the verse below.
+const fit = (inner, cy, k) => `<g transform="translate(900 ${cy}) scale(${k}) translate(-900 ${-cy})">${inner}</g>`;
 const neck = (ink, accent) => lock(900, 96, 66, ink, accent);
 const front = (ink, accent) => chest(lock(0, 0, 44, ink, accent));
 
@@ -97,9 +100,9 @@ const DESIGNS = {
     }
     const { svg } = block([["TOUCH THESE STONES, O LORD,", b], ["WITH THY FINGER, AND", g], ["PREPARE THEM THAT THEY", b], ["MAY SHINE FORTH", g], ["IN DARKNESS", b]], 1420, { max: 200, gap: 18 });
     return neck(b, g) + worn(
-      kicker(300, "mount shelem", g) + stones
+      kicker(300, "mount shelem", g) + fit(stones
       + `<path d="M120 1340 L560 860 L690 960 L900 660 L1110 960 L1230 870 L1680 1340 Z" fill="${b}"/>`
-      + `<path d="M900 660 L840 760 L900 735 L955 790 L1000 740 Z M560 860 L520 920 L570 905 Z" fill="${g}"/>`
+      + `<path d="M900 660 L840 760 L900 735 L955 790 L1000 740 Z M560 860 L520 920 L570 905 Z" fill="${g}"/>`, 1340, 0.9)
       + svg + ref(2290, "ETHER 3:4", g));
   }, front: () => front(C.bone, C.gold) },
 
@@ -145,9 +148,9 @@ const DESIGNS = {
     const waves = Array.from({ length: 5 }, (_, i) => `<path d="M140 ${1180 + i * 62} q90 -46 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0" fill="none" stroke="${n}" stroke-width="26" stroke-linecap="round"/>`).join("");
     const { svg } = block([["THOU SHALT", n], ["CONSTRUCT A SHIP,", r], ["AFTER THE MANNER", n], ["WHICH I SHALL", r], ["SHOW THEE", n]], 1480, { max: 190, gap: 16 });
     return neck(n, r) + worn(
-      kicker(300, "nephi's ship", r) + halftone(900, 800, 470, r, { step: 30, max: 15 })
+      kicker(300, "nephi's ship", r) + fit(halftone(900, 800, 470, r, { step: 30, max: 15 })
       + `<g fill="${n}"><path d="M430 1110 L1370 1110 L1270 1220 L530 1220 Z"/><path d="M880 420 L880 1100 L520 1100 Z"/><path d="M920 480 L920 1100 L1270 1100 Z"/><rect x="890" y="380" width="22" height="740"/><path d="M912 380 L990 402 L912 424 Z"/></g>`
-      + waves + svg + ref(2290, "1 NEPHI 17:8", r));
+      + waves, 1440, 0.84) + svg + ref(2290, "1 NEPHI 17:8", r));
   }, front: () => front(INK.night, INK.red) },
 
   // The Liahona: an engraved ball of fine brass with its two spindles.
@@ -157,11 +160,12 @@ const DESIGNS = {
     for (let i = 0; i < 48; i++) { const a = (i * Math.PI) / 24, r0 = i % 4 ? 470 : 440; ticks += `<path d="M${(900 + r0 * Math.cos(a)).toFixed(1)} ${(820 + r0 * Math.sin(a)).toFixed(1)} L${(900 + 500 * Math.cos(a)).toFixed(1)} ${(820 + 500 * Math.sin(a)).toFixed(1)}"/>`; }
     const { svg } = block([["BY SMALL MEANS", b], ["THE LORD CAN BRING", g], ["ABOUT GREAT THINGS", b]], 1450, { max: 250 });
     return neck(b, g) + worn(
-      kicker(300, "a round ball of curious workmanship", g)
+      kicker(300, "a round ball of curious workmanship", g) + fit(``
       + `<clipPath id="ball"><circle cx="900" cy="820" r="520"/></clipPath>` + halftone(900, 820, 520, g, { step: 26, max: 12, toward: [0.6, 0.8], clip: "ball" })
       + `<g fill="none" stroke="${g}"><circle cx="900" cy="820" r="520" stroke-width="30"/><ellipse cx="900" cy="820" rx="260" ry="520" stroke-width="12"/><ellipse cx="900" cy="820" rx="520" ry="180" stroke-width="12"/><ellipse cx="900" cy="820" rx="520" ry="380" stroke-width="8"/><ellipse cx="900" cy="820" rx="420" ry="520" stroke-width="8"/></g>`
       + `<path d="M900 820 L690 560" stroke="${b}" stroke-width="44" stroke-linecap="round"/><path d="M660 520 L740 560 L690 600 Z" fill="${b}"/>`
       + `<path d="M900 820 L1150 960" stroke="${b}" stroke-width="44" stroke-linecap="round"/><circle cx="900" cy="820" r="62" fill="${b}"/><circle cx="900" cy="820" r="26" fill="${g}"/>`
+, 1400, 0.86)
       + svg + ref(2290, "1 NEPHI 16:29", g));
   }, front: () => front(C.bone, C.gold) },
 

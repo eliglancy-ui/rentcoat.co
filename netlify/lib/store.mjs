@@ -73,6 +73,19 @@ const LINE_PIECES = {
     name: "Lehi's Tent Co. Camp Mug", kind: "Mug", color: "Enamel, 12 oz", swatch: "#FFFFFF", price: { default: 2600 }, sizes: ONE, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
     blurb: "An enamel camp mug for the man who dwelt in a tent. Hand wash only." },
 };
+// Big backs: one bold illustration and the verse set big, each as a hoodie and a tee.
+const BIG = [
+  ["stripling", "Stripling 2000", ["Bone", "#F5E8CE"], ["Cream", "#F3EEE1"], "Alma 56:48", ["alma", 56, 48], "Two thousand young warriors marching under a big red 2000, and the words of their mothers."],
+  ["shelem", "Mount Shelem", ["Navy Blazer", "#171F2C"], ["Black", "#000000"], "Ether 3:4", ["ether", 3, 4], "Sixteen stones shining above the peak, and the brother of Jared's prayer."],
+  ["tree", "Tree of Life", ["Forest Green", "#335231"], ["Shadow", "#4A4748"], "1 Nephi 8:10", ["1-ne", 8, 10], "Lehi's tree, its white fruit and the rod of iron leading to it."],
+  ["samuel", "Samuel on the Wall", ["Charcoal Heather", "#463E3D"], ["Shadow", "#4A4748"], "Helaman 16:2", ["hel", 16, 2], "Samuel on the city wall, arms raised, while every arrow misses."],
+  ["ship", "Nephi's Ship", ["Bone", "#F5E8CE"], ["Oatmeal", "#B7A99A"], "1 Nephi 17:8", ["1-ne", 17, 8], "Nephi's ship on the waves under a red halftone sun."],
+  ["liahona", "The Liahona", ["Maroon", "#7D263A"], ["Black", "#000000"], "1 Nephi 16:29", ["1-ne", 16, 29], "The brass ball with its two spindles. By small means, great things."],
+];
+for (const [k, name, [hc, hs], [tc, ts], ref, verse, blurb] of BIG) {
+  LINE_PIECES[`${k}-hoodie`] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb };
+  LINE_PIECES[k === "samuel" ? "samuel-wall-tee" : `${k}-tee`] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb };
+}
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>

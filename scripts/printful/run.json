@@ -1,1 +1,1 @@
-{}
+{ "only": ["stripling-hoodie", "stripling-tee", "shelem-hoodie", "shelem-tee", "tree-hoodie", "tree-tee", "samuel-hoodie", "samuel-wall-tee", "ship-hoodie", "ship-tee", "liahona-hoodie", "liahona-tee"], "replace": ["stripling-hoodie"], "styles": true }
