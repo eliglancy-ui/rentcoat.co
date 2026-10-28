@@ -1085,7 +1085,7 @@ function tick() {
   const m = Math.floor(left / 6e4); left -= m * 6e4;
   const s = Math.floor(left / 1e3);
   $("cd-d").textContent = pad(d); $("cd-h").textContent = pad(h); $("cd-m").textContent = pad(m); $("cd-s").textContent = pad(s);
-  $("clock-label").textContent = ph === "before" ? "Launch week opens in" : launch ? "$35 launch price ends in" : "Printed to order · ships in about a week";
+  $("clock-label").textContent = ph === "before" ? "Launch week opens in" : launch ? "$35 launch price ends in" : "Printed to order · arrives in 1 to 2 weeks";
   $("clock-state").textContent = ph === "before" ? "Upcoming" : ph === "sunday" ? "Closed Sunday" : launch ? "● Launch week" : "● Shop open";
   const pct = ph === "before" ? 0 : launch ? (n - opens) / (closes - opens) * 100 : 100;
   $("cd-bar").style.width = pct.toFixed(2) + "%";
