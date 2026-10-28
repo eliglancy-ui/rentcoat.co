@@ -18,7 +18,7 @@ import { createHash } from "node:crypto";
 import { PRODUCTS, PRINTFUL_STORE_ID } from "../../netlify/lib/store.mjs";
 import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
-import { BOLD_FILES, PREVIEWS } from "./art-bold.mjs";
+import { BOLD_FILES, PREVIEWS, TAG_FILES } from "./art-bold.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
@@ -164,7 +164,9 @@ let failures = 0;
 for (const [id, cat] of Object.entries(CATALOG)) {
   if (ONLY.length && !ONLY.includes(id)) continue;
   const product = PRODUCTS[id];
-  const files = FILES.filter(f => f.id === id);
+  const files = [...FILES, ...TAG_FILES].filter(f => f.id === id);
+  // A file with forSize (a sized tag) only goes on that size.
+  const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);
   const out = (result.products[id] ||= {});
   delete out.error;
@@ -187,7 +189,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
       if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
       console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
       existing = { ok: false };
-      out.images = [];
+      if (!RUN.keep_photos) out.images = [];
     }
     if (existing.ok) {
       out.sync_product_id = existing.data.result.sync_product.id;
@@ -201,7 +203,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
           variant_id,
           external_id: product.variants[size],
           retail_price: (price / 100).toFixed(2),
-          files: await Promise.all(files.map(async f => ({ type: f.place, url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, variant_id, f) }))),
+          files: await Promise.all(filesFor(size).map(async f => ({ type: f.place, url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, variant_id, f) }))),
           ...(options.length && { options }),
         });
       }
@@ -220,7 +222,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
       const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
       const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
         variant_ids: [photoVariant], format: "jpg", option_groups: style.groups, options: style.views,
-        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
+        files: await Promise.all(filesFor(cat.variants.M ? "M" : "OS").map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
         ...(options.length && { product_options }),
       } });
       if (!task.ok) throw new Error(`start styled photos: ${why(task)}`);
@@ -253,11 +255,11 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     // 2. Photos, made on size M (or the one size).
     const photoVariant = cat.variants.M || cat.variants.OS;
     const have = (out.images || []).length && out.images.every(p => existsSync(`public/${p}`));
-    if (!have || REDO_PHOTOS) {
+    if ((!have || REDO_PHOTOS) && !RUN.keep_photos) {
       const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
       const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
         variant_ids: [photoVariant], format: "jpg",
-        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
+        files: await Promise.all(filesFor(cat.variants.M ? "M" : "OS").map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
         ...(options.length && { product_options }),
       } });
       if (!task.ok) throw new Error(`start photos: ${why(task)}`);

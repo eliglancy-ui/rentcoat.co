@@ -190,4 +190,4 @@ for (const f of FILES) {
   if (FIT[key]) f.fit = FIT[key];
 }
 
-export const fileName = f => `${f.id}-${f.place}.png`;
+export const fileName = f => f.file || `${f.id}-${f.place}.png`;

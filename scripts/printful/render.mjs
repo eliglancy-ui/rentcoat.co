@@ -6,9 +6,9 @@ import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { FILES as BASE, SIZE, fileName } from "./art.mjs";
-import { BOLD_FILES } from "./art-bold.mjs";
+import { BOLD_FILES, TAG_FILES } from "./art-bold.mjs";
 const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
-const FILES = [...BASE, ...BOLD_FILES].filter(f => !ONLY || ONLY.test(f.id));
+const FILES = [...BASE, ...BOLD_FILES, ...TAG_FILES].filter(f => !ONLY || ONLY.test(f.id));
 
 const fonts = resolve("public/fonts");
 const head = `<style>

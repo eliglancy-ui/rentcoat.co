@@ -190,10 +190,25 @@ const SWEATS = {
       + `<g transform="translate(320 980) rotate(-90)">${t(0, 0, 48, "1 NEPHI 8:30 · RENT COAT CO.", { f: "m", fill: C.gold, ls: 10 })}</g>` },
 };
 
-// The custom inside tag printed where the manufacturer's label was (hoodies only; the tees' blank has no tag option).
+// The custom inside tag printed where the manufacturer's label was. Printful requires the size, material and country
+// of origin on it, so each size gets its own file. Only some blanks take one (the hoodies and the fleece; not the tees).
 const TAG = (ink, accent) => flag(300, 170, 200, accent, ink)
   + t(300, 345, 72, "RENT COAT CO.", { fill: ink, wd: 72, ls: 4 }) + t(300, 405, 26, "BOOK OF MORMON STREETWEAR", { f: "m", fill: ink, ls: 2 })
   + `<path d="M120 440 L480 440" stroke="${ink}" stroke-width="3"/>` + t(300, 490, 30, "IN MEMORY OF OUR GOD", { f: "m", fill: accent, ls: 5 }) + t(300, 540, 26, "MADE TO ORDER · RENTCOAT.CO", { f: "m", fill: ink, ls: 4 });
+
+// A sized tag: what Printful requires, under the brand.
+export const sizedTag = (ink, accent, size, material, origin) => flag(300, 92, 120, accent, ink)
+  + t(300, 205, 56, "RENT COAT CO.", { fill: ink, wd: 72, ls: 4 })
+  + `<rect x="235" y="232" width="130" height="104" rx="10" fill="none" stroke="${ink}" stroke-width="5"/>` + t(300, 312, size.length > 2 ? 62 : 80, size, { fill: ink, wd: 72 })
+  + t(300, 392, 28, material, { f: "m", fill: ink, ls: 2 }) + t(300, 434, 28, origin, { f: "m", fill: ink, ls: 3 })
+  + t(300, 476, 24, "WASH COLD · INSIDE OUT", { f: "m", fill: ink, ls: 2 }) + t(300, 540, 26, "IN MEMORY OF OUR GOD", { f: "m", fill: accent, ls: 4 });
+const SIZES = ["S", "M", "L", "XL", "2XL"];
+// Tags for the pieces already in Printful whose blank takes one.
+const TAGGED = { "rent-hoodie": ["dark", "label_inside"], "stories-hoodie": ["light", "label_inside"], "shelem-fleece": ["dark", "label_inside_dtf"] };
+export const TAG_FILES = Object.entries(TAGGED).flatMap(([id, [tone, place]]) => SIZES.map(size => ({
+  id, place, size: "TAG", forSize: size, file: `${id}-tag-${size}.png`,
+  svg: () => tone === "dark" ? sizedTag(INK.bone, INK.gold, size, "65% COTTON / 35% POLYESTER", "MADE IN PAKISTAN") : sizedTag(INK.night, INK.red, size, "65% COTTON / 35% POLYESTER", "MADE IN PAKISTAN"),
+})));
 
 export const BOLD_FILES = [
   ...Object.entries(DESIGNS).flatMap(([k, d]) => [
