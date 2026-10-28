@@ -1,38 +1,95 @@
 // Shared store settings for the Rent Coat Co. checkout and order functions.
 // Prices are in cents. Edit here, then redeploy.
 
-// The Fall/Winter line. Each piece is created in Printful by scripts/printful/setup.mjs, which gives every
-// variant the external ID line(id, size) builds here, so these work as soon as that script has run.
-// live: false keeps a piece out of checkout. To launch one: set live: true, add its card to the homepage, redeploy.
-// price: that piece's own price in cents (the Drop 001 tees above use PRICE and LAUNCH_PRICE instead).
+// The Fall/Winter line. scripts/printful/setup.mjs creates each piece in Printful and gives every variant the
+// external ID built here (rc-<id>-<size>), so a piece can be sold as soon as that script has run for it.
+// live: false keeps a piece off the site and out of checkout. To launch one, set live: true and redeploy:
+// the homepage shows every live piece in "The line" section on its own (it reads them from /api/config).
+// price: that piece's own price in cents (the Drop 001 tees use PRICE and LAUNCH_PRICE instead).
+// images: product photos, the first one leads. ref/verse: the scripture the piece points to (book slug, chapter, verse).
 const APPAREL = ["S", "M", "L", "XL", "2XL"];
-const line = (id, name, color, image, price, sizes = APPAREL) => ({
-  name, color, image, price, live: false,
-  variants: Object.fromEntries(sizes.map(size => [size, `rc-${id}-${size}`])),
-});
-const LINE = {
-  "rent-hoodie": line("rent-hoodie", "Rent Coat Hoodie", "Black", "images/products/rent-hoodie-back.jpg", { default: 6800, "2XL": 7100 }),
-  "liberty-crew": line("liberty-crew", "Title of Liberty Crewneck", "Bone", "images/products/liberty-crew-front.jpg", { default: 5800, "2XL": 6100 }),
-  "stripling-hoodie": line("stripling-hoodie", "Stripling 2000 Hoodie", "Black", "images/products/stripling-hoodie-front.jpg", { default: 6800, "2XL": 7100 }),
-  "strait-joggers": line("strait-joggers", "Strait & Narrow Joggers", "Charcoal Heather", "images/products/strait-joggers-front.jpg", { default: 6200, "2XL": 6500 }),
-  "flag-cap": line("flag-cap", "Rent Coat Dad Cap", "Spruce", "images/products/flag-cap-front.jpg", { default: 3200 }, ["OS"]),
-  "flag-beanie": line("flag-beanie", "Torn Flag Beanie", "Red", "images/products/flag-beanie-front.jpg", { default: 2800 }, ["OS"]),
-  "shelem-fleece": line("shelem-fleece", "Mount Shelem Alpine Club Fleece", "Black", "images/products/shelem-fleece-front.jpg", { default: 7800, "2XL": 8100 }),
-  "hagoth-windbreaker": line("hagoth-windbreaker", "Hagoth Shipbuilding Co. Windbreaker", "Forest Green", "images/products/hagoth-windbreaker-front.jpg", { default: 8500, "2XL": 8800 }),
-  "ironrod-anorak": line("ironrod-anorak", "Iron Rod Trail Club Anorak", "Navy", "images/products/ironrod-anorak-front.jpg", { default: 9500, "2XL": 9800 }),
-  "barge-tee": line("barge-tee", "Jaredite Barge Works Tee", "Cream", "images/products/barge-tee-back.jpg", { default: 4000, "2XL": 4300 }),
-  "irreantum-tee": line("irreantum-tee", "Irreantum Surf Club Tee", "Oatmeal", "images/products/irreantum-tee-back.jpg", { default: 4000, "2XL": 4300 }),
-  "deseret-crew": line("deseret-crew", "Deseret Apiary Crewneck", "Khaki", "images/products/deseret-crew-front.jpg", { default: 5800, "2XL": 6100 }),
-  "samuel-tee": line("samuel-tee", "Samuel's Wall Archery Club Tee", "Shadow", "images/products/samuel-tee-back.jpg", { default: 4000, "2XL": 4300 }),
-  "stones-tee": line("stones-tee", "Sixteen Small Stones Tee", "Black", "images/products/stones-tee-front.jpg", { default: 4000, "2XL": 4300 }),
-  "curelom-cap": line("curelom-cap", "Cureloms & Cumoms Cap", "Khaki", "images/products/curelom-cap-front.jpg", { default: 3200 }, ["OS"]),
-  "stories-tee": line("stories-tee", "Book of Mormon Stories Tee", "Cream", "images/products/stories-tee-back.jpg", { default: 4000, "2XL": 4300 }),
-  "stories-hoodie": line("stories-hoodie", "Book of Mormon Stories Hoodie", "Bone", "images/products/stories-hoodie-back.jpg", { default: 6800, "2XL": 7100 }),
-  "lehi-tee": line("lehi-tee", "Lehi's Tent Co. Tee", "Mocha", "images/products/lehi-tee-back.jpg", { default: 4000, "2XL": 4300 }),
-  "liahona-crew": line("liahona-crew", "Curious Workmanship Crewneck", "Forest Green", "images/products/liahona-crew-front.jpg", { default: 5800, "2XL": 6100 }),
-  "barge-mug": line("barge-mug", "Jaredite Barge Works Mug", "White, 11 oz", "images/products/barge-mug-front.jpg", { default: 2000 }, ["OS"]),
-  "lehi-mug": line("lehi-mug", "Lehi's Tent Co. Camp Mug", "Enamel, 12 oz", "images/products/lehi-mug-front.jpg", { default: 2600 }, ["OS"]),
+const ONE = ["OS"];
+const tee = { default: 4000, "2XL": 4300 }, hoodie = { default: 6800, "2XL": 7100 }, crew = { default: 5800, "2XL": 6100 };
+function piece(id, o) {
+  const [book, chapter, verse] = o.verse || [];
+  return {
+    name: o.name, color: o.color, swatch: o.swatch, price: o.price, live: Boolean(o.live), kind: o.kind,
+    sizes: o.sizes || APPAREL, images: o.images || [], image: (o.images || [])[0] || "images/og-image-v3.jpg",
+    ref: o.ref, refUrl: book ? `https://www.churchofjesuschrist.org/study/scriptures/bofm/${book}/${chapter}?lang=eng&id=p${verse}#p${verse}`
+      : "https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",
+    blurb: o.blurb,
+    variants: Object.fromEntries((o.sizes || APPAREL).map(size => [size, `rc-${id}-${size}`])),
+  };
+}
+const LINE_PIECES = {
+  "rent-hoodie": { images: ["images/products/rent-hoodie-6.jpg", "images/products/rent-hoodie-1.jpg", "images/products/rent-hoodie-7.jpg"],
+    name: "Rent Coat Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "Alma 46:12", verse: ["alma", 46, 12],
+    blurb: "Heavyweight Cotton Heritage hoodie. A small gold flag on the chest and the whole title of liberty across the back." },
+  "liberty-crew": { images: ["images/products/liberty-crew-1.jpg", "images/products/liberty-crew-2.jpg"],
+    name: "Title of Liberty Crewneck", kind: "Crewneck", color: "Bone", swatch: "#F5E8CE", price: crew, ref: "Alma 46:12", verse: ["alma", 46, 12],
+    blurb: "The quiet one. The words Moroni wrote on his coat, set like a book plate across the chest." },
+  "stripling-hoodie": { images: ["images/products/stripling-hoodie-1.jpg", "images/products/stripling-hoodie-2.jpg"],
+    name: "Stripling 2000 Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "Alma 56:48", verse: ["alma", 56, 48],
+    blurb: "Two thousand young men, and not one of them fell. Gold outline numerals on a heavyweight hoodie." },
+  "strait-joggers": { images: ["images/products/strait-joggers-1.jpg", "images/products/strait-joggers-4.jpg"],
+    name: "Strait & Narrow Joggers", kind: "Joggers", color: "Charcoal Heather", swatch: "#3A3A38", price: { default: 6200, "2XL": 6500 }, ref: "1 Nephi 8:20", verse: ["1-ne", 8, 20],
+    blurb: "Fleece joggers with STRAIT & NARROW running up the left thigh. Made to go with any of the hoodies." },
+  "flag-cap": { images: ["images/products/flag-cap-1.jpg", "images/products/flag-cap-3.jpg", "images/products/flag-cap-6.jpg"],
+    name: "Rent Coat Dad Cap", kind: "Cap", color: "Spruce", swatch: "#183A31", price: { default: 3200 }, sizes: ONE, ref: "Alma 46:13", verse: ["alma", 46, 13],
+    blurb: "Washed cotton dad cap with the torn flag stitched in old gold." },
+  "flag-beanie": { images: ["images/products/flag-beanie-1.jpg"],
+    name: "Torn Flag Beanie", kind: "Beanie", color: "Red", swatch: "#B91616", price: { default: 2800 }, sizes: ONE, ref: "Alma 46:12", verse: ["alma", 46, 12],
+    blurb: "Cuffed knit beanie in rent red with a white flag on the cuff." },
+  "shelem-fleece": { images: ["images/products/shelem-fleece-1.jpg", "images/products/shelem-fleece-3.jpg"],
+    name: "Mount Shelem Alpine Club Fleece", kind: "Fleece", color: "Black", swatch: "#151515", price: { default: 7800, "2XL": 8100 }, ref: "Ether 3:1", verse: ["ether", 3, 1],
+    blurb: "Quarter-zip fleece with the club crest stitched on the chest. Named for the mount of exceeding height." },
+  "hagoth-windbreaker": { images: ["images/products/hagoth-windbreaker-1.jpg", "images/products/hagoth-windbreaker-2.jpg"],
+    name: "Hagoth Shipbuilding Co. Windbreaker", kind: "Windbreaker", color: "Forest Green", swatch: "#283D2C", price: { default: 8500, "2XL": 8800 }, ref: "Alma 63:5", verse: ["alma", 63, 5],
+    blurb: "Lightweight full-zip windbreaker with an embroidered boatyard crest, for an exceedingly curious man." },
+  "ironrod-anorak": { images: ["images/products/ironrod-anorak-1.jpg", "images/products/ironrod-anorak-2.jpg"],
+    name: "Iron Rod Trail Club Anorak", kind: "Anorak", color: "Navy", swatch: "#1E303F", price: { default: 9500, "2XL": 9800 }, ref: "1 Nephi 8:24", verse: ["1-ne", 8, 24],
+    blurb: "Champion packable half-zip rain shell. A straight rod running to a tree, stitched on the chest." },
+  "barge-tee": { images: ["images/products/barge-tee-2.jpg", "images/products/barge-tee-1.jpg"],
+    name: "Jaredite Barge Works Tee", kind: "Tee", color: "Cream", swatch: "#F3EEE1", price: tee, ref: "Ether 2:17", verse: ["ether", 2, 17],
+    blurb: "A patent drawing of the barge, holes in the top and bottom included. Tight like unto a dish." },
+  "irreantum-tee": { images: ["images/products/irreantum-tee-2.jpg", "images/products/irreantum-tee-1.jpg"],
+    name: "Irreantum Surf Club Tee", kind: "Tee", color: "Oatmeal", swatch: "#B7A99A", price: tee, ref: "1 Nephi 17:5", verse: ["1-ne", 17, 5],
+    blurb: "An old surf shop sun over stacked waves, for the sea Lehi's family named many waters." },
+  "deseret-crew": { images: ["images/products/deseret-crew-1.jpg", "images/products/deseret-crew-3.jpg"],
+    name: "Deseret Apiary Crewneck", kind: "Crewneck", color: "Khaki", swatch: "#D2A26F", price: crew, ref: "Ether 2:3", verse: ["ether", 2, 3],
+    blurb: "A honey label crewneck: a hexagon bee and the word's definition, straight from Ether." },
+  "samuel-tee": { images: ["images/products/samuel-tee-2.jpg", "images/products/samuel-tee-1.jpg"],
+    name: "Samuel's Wall Archery Club Tee", kind: "Tee", color: "Shadow", swatch: "#4A4748", price: tee, ref: "Helaman 16:2", verse: ["hel", 16, 2],
+    blurb: "A target with every arrow around the outside. The club with a perfect record of missing." },
+  "stones-tee": { images: ["images/products/stones-tee-1.jpg", "images/products/stones-tee-2.jpg"],
+    name: "Sixteen Small Stones Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee, ref: "Ether 3:1", verse: ["ether", 3, 1],
+    blurb: "Sixteen glowing stones in a grid, white and clear, even as transparent glass." },
+  "curelom-cap": { images: ["images/products/curelom-cap-1.jpg", "images/products/curelom-cap-3.jpg", "images/products/curelom-cap-6.jpg"],
+    name: "Cureloms & Cumoms Cap", kind: "Cap", color: "Khaki", swatch: "#B49771", price: { default: 3200 }, sizes: ONE, ref: "Ether 9:19", verse: ["ether", 9, 19],
+    blurb: "The Wildlife Society on a dad cap, to wear with the Cureloms tee." },
+  "stories-tee": { images: ["images/products/stories-tee-2.jpg", "images/products/stories-tee-1.jpg"],
+    name: "Book of Mormon Stories Tee", kind: "Tee", color: "Cream", swatch: "#F3EEE1", price: tee, ref: "Twelve stories",
+    blurb: "Twelve stories on the back, from Lehi's dream to the sixteen stones, each with its chapter." },
+  "stories-hoodie": { images: ["images/products/stories-hoodie-1.jpg", "images/products/stories-hoodie-4.jpg", "images/products/stories-hoodie-2.jpg"],
+    name: "Book of Mormon Stories Hoodie", kind: "Hoodie", color: "Bone", swatch: "#F5E8CE", price: hoodie, ref: "Twelve stories",
+    blurb: "The storybook back on a heavyweight hoodie, with a small Vol. I badge on the chest." },
+  "lehi-tee": { images: ["images/products/lehi-tee-2.jpg", "images/products/lehi-tee-1.jpg"],
+    name: "Lehi's Tent Co. Tee", kind: "Tee", color: "Mocha", swatch: "#77574C", price: tee, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
+    blurb: "The shortest verse in the book, on a camp supply tee. Est. in the valley of Lemuel." },
+  "liahona-crew": { images: ["images/products/liahona-crew-1.jpg", "images/products/liahona-crew-2.jpg"],
+    name: "Curious Workmanship Crewneck", kind: "Crewneck", color: "Forest Green", swatch: "#335231", price: crew, ref: "1 Nephi 16:10", verse: ["1-ne", 16, 10],
+    blurb: "A round ball of fine brass with its two spindles, in gold on forest green." },
+  "barge-mug": { images: ["images/products/barge-mug-1.jpg", "images/products/barge-mug-2.jpg", "images/products/barge-mug-3.jpg"],
+    name: "Jaredite Barge Works Mug", kind: "Mug", color: "White, 11 oz", swatch: "#FFFFFF", price: { default: 2000 }, sizes: ONE, ref: "Ether 2:17", verse: ["ether", 2, 17],
+    blurb: "The barge drawing wrapped around a ceramic mug. Holds water like unto a dish." },
+  "lehi-mug": { images: ["images/products/lehi-mug-1.jpg", "images/products/lehi-mug-2.jpg", "images/products/lehi-mug-3.jpg"],
+    name: "Lehi's Tent Co. Camp Mug", kind: "Mug", color: "Enamel, 12 oz", swatch: "#FFFFFF", price: { default: 2600 }, sizes: ONE, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
+    blurb: "An enamel camp mug for the man who dwelt in a tent. Hand wash only." },
 };
+export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
+// What the homepage needs to show the live pieces.
+export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>
+  ({ id, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
 
 export const PRODUCTS = {
   liberty: {

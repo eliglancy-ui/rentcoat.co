@@ -784,6 +784,14 @@ footer .wrap { padding-block: 56px 40px }
   </div>
   <p class="eyebrow drop-fine" id="drop-fine">Launch week $35 each · $38 for 2XL · then $40 · flat $5.99 US shipping · checkout by Stripe</p>
 </div></section>
+<!-- The line: filled from /api/config with every piece marked live in netlify/lib/store.mjs. Hidden while none are. -->
+<section class="drop-sec line-sec" id="line" aria-labelledby="line-title" hidden><div class="wrap">
+  <div class="sec-head">
+    <div><p class="eyebrow kicker">Hoodies · jackets · caps · more</p><h2 class="big" id="line-title">The <em>line</em></h2></div>
+    <p>Everyday pieces from the same book. Each one is printed or stitched after you order and ships in about a week.</p>
+  </div>
+  <div class="grid" id="line-grid"></div>
+</div></section>
 <div class="torn" aria-hidden="true" style="background:var(--bone)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
 <section class="dark" id="how" aria-labelledby="how-title"><div class="wrap">
@@ -921,7 +929,8 @@ const PRODUCTS = [
   { id: "stripling", name: "Stripling 2000", color: "Black", back: "images/stripling-back-v3.jpg" },
   { id: "cureloms", name: "Cureloms & Cumoms", color: "Cream", back: "images/cureloms-back-v2.jpg" },
 ];
-const SIZES = ["S", "M", "L", "XL", "2XL"];
+const SIZES = ["S", "M", "L", "XL", "2XL", "OS"];
+const sizeText = size => size === "OS" ? "One size" : `Size ${size}`;
 let opens = new Date(DROP.opens), closes = new Date(DROP.closes), skew = 0;
 const now = () => Date.now() + skew;
 const fmt = d => d.toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
@@ -953,7 +962,7 @@ remind.addEventListener("submit", async e => {
   btn.disabled = false;
 });
 
-document.querySelectorAll(".card").forEach(card => {
+function wireCard(card) {
   const shot = card.querySelector(".shot"), sides = card.querySelectorAll(".flip button");
   const show = side => {
     sides.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.side === side)));
@@ -974,7 +983,44 @@ document.querySelectorAll(".card").forEach(card => {
     note.textContent = "";
     addToBag(buy.dataset.id, size);
   });
-});
+}
+document.querySelectorAll(".card").forEach(wireCard);
+
+// Cards for the live pieces of the line. Same layout as the Drop 001 cards; the two photos flip like front and back.
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+function showLine(line) {
+  if (!Array.isArray(line) || !line.length) return;
+  const grid = $("line-grid");
+  for (const p of line) {
+    if (byId[p.id]) continue;
+    byId[p.id] = { id: p.id, name: p.name, color: p.color, back: p.images[0], price: p.price };
+    const [a, b] = p.images;
+    const sizes = p.sizes.map(size => `<label><input type="radio" name="size-${esc(p.id)}" value="${esc(size)}"${size === "M" || p.sizes.length === 1 ? " checked" : ""}><span>${size === "OS" ? "One size" : esc(size)}</span></label>`).join("");
+    const card = document.createElement("article");
+    card.className = "card"; card.id = p.id; card.dataset.line = "";
+    card.innerHTML = `<div class="shot">
+        <img src="${esc(a)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}">
+        ${b ? `<img class="alt" src="${esc(b)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}, another view">` : ""}
+        <span class="tag eyebrow">${esc(p.kind)}</span>
+        ${b ? `<div class="flip" role="group" aria-label="Show photo"><button type="button" aria-pressed="true" data-side="back">Photo 1</button><button type="button" aria-pressed="false" data-side="front">Photo 2</button></div>` : ""}
+      </div>
+      <div class="info">
+        <div class="row"><h3>${esc(p.name)}</h3><span class="price"></span></div>
+        <span class="eyebrow meta"><span class="swatch"><i style="background:${esc(p.swatch)}" aria-hidden="true"></i>${esc(p.color)}</span><a class="ref" href="${esc(p.refUrl)}" target="_blank" rel="noopener">${esc(p.ref)}</a></span>
+        <p class="blurb">${esc(p.blurb)}</p>
+        <div class="size-wrap">
+          <fieldset class="sizes"${p.sizes.length === 1 ? " hidden" : ""}><legend>Size</legend>${sizes}</fieldset>
+          <button type="button" class="btn rent buy" data-id="${esc(p.id)}">Add to bag</button>
+          <p class="note" aria-live="polite"></p>
+        </div>
+      </div>`;
+    grid.append(card);
+    wireCard(card);
+  }
+  $("line").hidden = false;
+  restoreBag();
+  refreshPrices(); renderBag();
+}
 
 const shortDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" });
 const yearOf = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric" });
@@ -1031,6 +1077,7 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
+  showLine(c.line);
   lastPhase = ""; showDates(); renderBag(); refreshPrices(); tick();
 }).catch(() => {});
 
@@ -1038,32 +1085,39 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
 // Before and during launch week cards show the launch price; from Nov 21 the regular price.
 const priceTable = () => now() < closes ? LAUNCH_PRICE : PRICE;
 const priceOf = size => { const t = priceTable(); return Object.hasOwn(t, size) ? t[size] : t.default; };
+// Pieces of the line have their own price; the Drop 001 tees use the launch and regular prices.
+const priceFor = (id, size) => { const t = byId[id]?.price; return t ? (Object.hasOwn(t, size) ? t[size] : t.default) : priceOf(size); };
 const money = c => "$" + (c / 100).toFixed(c % 100 ? 2 : 0);
 // Each card shows the price for the size that's picked (2XL costs $3 more), and the button repeats it while checkout is open.
 function setBuyLabel(card, ph = phase()) {
   const size = card.querySelector(".sizes input:checked")?.value || "M", b = card.querySelector(".buy");
-  if (b) b.textContent = canBuy(ph) ? `Add to bag · ${size} · ${money(priceOf(size))}` : ph === "before" ? "Opens Nov 14" : "Back Monday";
+  if (b) b.textContent = canBuy(ph) ? `Add to bag · ${size === "OS" ? "One size" : size} · ${money(priceFor(card.id, size))}` : ph === "before" ? "Opens Nov 14" : "Back Monday";
 }
 function refreshPrices() {
   document.querySelectorAll(".card").forEach(card => {
     const size = card.querySelector(".sizes input:checked")?.value || "M", el = card.querySelector(".price");
-    if (el) el.innerHTML = now() < closes ? `${money(priceOf(size))} <s>${money(Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default)}</s>` : money(priceOf(size));
+    if (el) el.innerHTML = card.hasAttribute("data-line") ? money(priceFor(card.id, size))
+      : now() < closes ? `${money(priceOf(size))} <s>${money(Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default)}</s>` : money(priceOf(size));
     setBuyLabel(card);
   });
 }
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 let bag = [];
-try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]").filter(l => byId[l.id] && SIZES.includes(l.size)); } catch (e) { bag = []; }
+// Reads the saved bag, keeping only things this page can sell. Runs again once the line's pieces have loaded.
+function restoreBag() {
+  try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]").filter(l => byId[l.id] && SIZES.includes(l.size)); } catch (e) { bag = []; }
+}
+restoreBag();
 const save = () => { try { localStorage.setItem("rc-bag", JSON.stringify(bag)); } catch (e) {} };
 let lastFocus = null, toastTimer = 0;
 
 function addToBag(id, size) {
   const line = bag.find(l => l.id === id && l.size === size);
   const count = bag.reduce((n, l) => n + l.qty, 0);
-  if (count >= 10) { showToast("Max 10 shirts per order"); return; }
+  if (count >= 10) { showToast("Max 10 items per order"); return; }
   if (line) line.qty++; else bag.push({ id, size, qty: 1 });
   save(); renderBag();
-  showToast(`${byId[id].name} · ${size} added`);
+  showToast(`${byId[id].name} · ${size === "OS" ? "one size" : size} added`);
 }
 function showToast(text) {
   const t = $("toast"); t.textContent = text; t.hidden = false;
@@ -1084,16 +1138,16 @@ function renderBag() {
       <div class="qty"><button type="button" aria-label="One fewer">−</button><span></span><button type="button" aria-label="One more">+</button></div>
       <button type="button" class="rm">Remove</button></div><span class="amt"></span>`;
     li.querySelector("h3").textContent = p.name;
-    li.querySelector("p").textContent = `${p.color} · Size ${l.size}`;
+    li.querySelector("p").textContent = `${p.color} · ${sizeText(l.size)}`;
     li.querySelector(".qty span").textContent = l.qty;
-    li.querySelector(".amt").textContent = money(priceOf(l.size) * l.qty);
+    li.querySelector(".amt").textContent = money(priceFor(l.id, l.size) * l.qty);
     const [minus, plus] = li.querySelectorAll(".qty button");
     minus.onclick = () => { l.qty > 1 ? l.qty-- : bag.splice(i, 1); save(); renderBag(); };
     plus.onclick = () => { if (count < 10) { l.qty++; save(); renderBag(); } };
     li.querySelector(".rm").onclick = () => { bag.splice(i, 1); save(); renderBag(); };
     list.append(li);
   });
-  const sub = bag.reduce((n, l) => n + priceOf(l.size) * l.qty, 0);
+  const sub = bag.reduce((n, l) => n + priceFor(l.id, l.size) * l.qty, 0);
   $("t-sub").textContent = money(sub);
   $("t-ship").textContent = bag.length ? money(SHIPPING_CENTS) : "$0";
   $("t-total").textContent = money(sub + (bag.length ? SHIPPING_CENTS : 0));

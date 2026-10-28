@@ -105,6 +105,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
   const files = FILES.filter(f => f.id === id);
   const sizes = Object.keys(product.variants);
   const out = (result.products[id] ||= {});
+  delete out.error;
   console.log(`\n${product.name} (${cat.color})`);
   try {
     const options = await threadOptions(cat.product, files);

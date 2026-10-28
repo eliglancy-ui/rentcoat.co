@@ -235,7 +235,6 @@
       }
     },
     "flag-cap": {
-      "error": "no print area \"embroidery_front\" for variant 8745. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left",
       "sync_product_id": 486690784,
       "images": [
         "images/products/flag-cap-1.jpg",
@@ -646,7 +645,6 @@
       }
     },
     "curelom-cap": {
-      "error": "no print area \"embroidery_front\" for variant 7855. Areas: embroidery_front_large, embroidery_back, embroidery_right, embroidery_left",
       "sync_product_id": 486691079,
       "images": [
         "images/products/curelom-cap-1.jpg",
