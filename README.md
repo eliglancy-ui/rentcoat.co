@@ -58,6 +58,21 @@ The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` ar
 
 Never put these keys in the code or send them to anyone.
 
+## The line (hoodies, jackets, caps, mugs)
+
+Sixteen more pieces live in `LINE_PIECES` in `netlify/lib/store.mjs`. All of them are already created in the
+Printful store, with photos in `public/images/products`. They stay off the site until you launch them.
+
+**To launch a piece:** set `live: true` on it in `LINE_PIECES` and deploy. The homepage shows a "The line" section with
+every live piece (it reads them from `/api/config`), and checkout accepts it. Nothing else to edit.
+
+**To change a design:** edit it in `scripts/printful/art.mjs`, run `node scripts/printful/render.mjs` (needs Playwright),
+put its id in `"replace"` in `scripts/printful/run.json`, and push to the `new-line` branch. The **Printful setup** GitHub
+Action rebuilds that piece in Printful and commits new photos. It needs the `PRINTFUL_TOKEN` repository secret
+(Settings > Secrets and variables > Actions). Costs and photo links from the last run are in `scripts/printful/result.json`.
+
+**Embroidery:** Printful charges a one-time $6.50 digitizing fee per embroidered design, on its first order.
+
 ## How an order flows
 
 1. Shopper adds shirts to the bag and taps Checkout.

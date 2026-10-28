@@ -1,0 +1,1557 @@
+{
+  "products": {
+    "rent-hoodie": {
+      "sync_product_id": 486689930,
+      "images": [
+        "images/products/rent-hoodie-1.jpg",
+        "images/products/rent-hoodie-2.jpg",
+        "images/products/rent-hoodie-3.jpg",
+        "images/products/rent-hoodie-4.jpg",
+        "images/products/rent-hoodie-5.jpg",
+        "images/products/rent-hoodie-6.jpg",
+        "images/products/rent-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/222006fbcbede7c0044231f3cf624f20/unisex-premium-pullover-hoodie-black-front-6ae16b922b981.jpg",
+          "path": "images/products/rent-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/30e4971b79131b3f6e5d6a264fbcd992/unisex-premium-pullover-hoodie-black-front-6ae16b922bf82.jpg",
+          "path": "images/products/rent-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5183fc9da72967e509f78493889efc93/unisex-premium-pullover-hoodie-black-product-details-6ae16b922c1df.jpg",
+          "path": "images/products/rent-hoodie-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b0b7741bb2a91c4f3065a34238049816/unisex-premium-pullover-hoodie-black-left-6ae16b922c3f0.jpg",
+          "path": "images/products/rent-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/defa955813718c4c268abbebfadc7849/unisex-premium-pullover-hoodie-black-right-6ae16b922c621.jpg",
+          "path": "images/products/rent-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dae1418a374228f2a71f9c548be149a5/unisex-premium-pullover-hoodie-black-back-6ae16b922c82a.jpg",
+          "path": "images/products/rent-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5a21491baf30cb20787e8a0238088be5/unisex-premium-pullover-hoodie-black-back-6ae16b922ca04.jpg",
+          "path": "images/products/rent-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "liberty-crew": {
+      "sync_product_id": 486689950,
+      "images": [
+        "images/products/liberty-crew-1.jpg",
+        "images/products/liberty-crew-2.jpg",
+        "images/products/liberty-crew-3.jpg",
+        "images/products/liberty-crew-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/552dee05403c99b2c05c1f65ed7881d6/unisex-premium-sweatshirt-bone-front-6ae16b9d68fbb.jpg",
+          "path": "images/products/liberty-crew-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c5ae695cd98869492cb837fd530aa6aa/unisex-premium-sweatshirt-bone-left-6ae16b9d697d5.jpg",
+          "path": "images/products/liberty-crew-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/80ca299f1c18b991a95ced33ce2f5736/unisex-premium-sweatshirt-bone-right-6ae16b9d69a47.jpg",
+          "path": "images/products/liberty-crew-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0bb34d7499c3f2bf0b8d62df40809c6b/unisex-premium-sweatshirt-bone-back-6ae16b9d69c21.jpg",
+          "path": "images/products/liberty-crew-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 24.53,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.45,
+        "vat": 0,
+        "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "stripling-hoodie": {
+      "sync_product_id": 486759814,
+      "images": [
+        "images/products/stripling-hoodie-1.jpg",
+        "images/products/stripling-hoodie-2.jpg",
+        "images/products/stripling-hoodie-3.jpg",
+        "images/products/stripling-hoodie-4.jpg",
+        "images/products/stripling-hoodie-5.jpg",
+        "images/products/stripling-hoodie-6.jpg",
+        "images/products/stripling-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/610f8ccf34cfcf1ab012642e58f5027e/unisex-premium-pullover-hoodie-black-front-6ae1c2cbd5e52.jpg",
+          "path": "images/products/stripling-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/798b4a7994eb323e452286180fc98452/unisex-premium-pullover-hoodie-black-front-6ae1c2cbd66ab.jpg",
+          "path": "images/products/stripling-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6e8c61283b1285197fca28b4da31060d/unisex-premium-pullover-hoodie-black-product-details-6ae1c2cbd6995.jpg",
+          "path": "images/products/stripling-hoodie-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8978ac687156591e81b7a459918c186f/unisex-premium-pullover-hoodie-black-left-6ae1c2cbd6bbe.jpg",
+          "path": "images/products/stripling-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6e1cece125ba53dca6f806ffebed4a4f/unisex-premium-pullover-hoodie-black-right-6ae1c2cbd6e81.jpg",
+          "path": "images/products/stripling-hoodie-5.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/23ffe9f22c7ad18d541e14b749e6b4fb/unisex-premium-pullover-hoodie-black-back-6ae1c2cbd717d.jpg",
+          "path": "images/products/stripling-hoodie-6.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9663975fcb1615260f6b1e67348e8748/unisex-premium-pullover-hoodie-black-back-6ae1c2cbd740b.jpg",
+          "path": "images/products/stripling-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 27.84,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.69,
+        "vat": 0,
+        "total": 39.72
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "strait-joggers": {
+      "sync_product_id": 486759817,
+      "images": [
+        "images/products/strait-joggers-1.jpg",
+        "images/products/strait-joggers-2.jpg",
+        "images/products/strait-joggers-3.jpg",
+        "images/products/strait-joggers-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "leg_front_left",
+          "title": "leg_front_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6533dbb9d8c54c4521eb418393114c63/unisex-fleece-sweatpants-charcoal-heather-front-6ae1c2d297c7b.jpg",
+          "path": "images/products/strait-joggers-1.jpg"
+        },
+        {
+          "placement": "leg_front_left",
+          "title": "Front Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d62f162b4d9f9d57e4e51a0eeaf4487a/unisex-fleece-sweatpants-charcoal-heather-front-left-6ae1c2d29867c.jpg",
+          "path": "images/products/strait-joggers-2.jpg"
+        },
+        {
+          "placement": "leg_front_left",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/95554e55ff095d6e027d5fe5bde985ec/unisex-fleece-sweatpants-charcoal-heather-back-6ae1c2d29872c.jpg",
+          "path": "images/products/strait-joggers-3.jpg"
+        },
+        {
+          "placement": "leg_front_left",
+          "title": "Front Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6502696888722cad1a1e6d88d785d04a/unisex-fleece-sweatpants-charcoal-heather-front-right-6ae1c2d2987a8.jpg",
+          "path": "images/products/strait-joggers-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 29.98,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.84,
+        "vat": 0,
+        "total": 42.01
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Men's",
+          "Men's 2",
+          "Men's 3",
+          "Men's 4",
+          "Women's",
+          "Women's 2"
+        ],
+        "options": [
+          "Back",
+          "Back Left Leg",
+          "Back Right Leg",
+          "Front",
+          "Front Left",
+          "Front Left Leg",
+          "Front Right",
+          "Front Right Leg",
+          "Left",
+          "Left Front",
+          "Right",
+          "Right Front"
+        ]
+      }
+    },
+    "flag-cap": {
+      "sync_product_id": 486759821,
+      "images": [
+        "images/products/flag-cap-1.jpg",
+        "images/products/flag-cap-2.jpg",
+        "images/products/flag-cap-3.jpg",
+        "images/products/flag-cap-4.jpg",
+        "images/products/flag-cap-5.jpg",
+        "images/products/flag-cap-6.jpg",
+        "images/products/flag-cap-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_front_large",
+          "title": "embroidery_front_large",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2ab33491d9edbd78c9c6a8bbe6713266/classic-dad-hat-spruce-front-6ae1c2dc4cda7.jpg",
+          "path": "images/products/flag-cap-1.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4a25fdf5457bd7643f55b84ca634932c/classic-dad-hat-spruce-right-side-6ae1c2dc4d75e.jpg",
+          "path": "images/products/flag-cap-2.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/eb6832da52551e661eb3cf6f43a568f0/classic-dad-hat-spruce-right-front-6ae1c2dc4d85b.jpg",
+          "path": "images/products/flag-cap-3.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/854d8c2d789ea7e66fa03987d9d54bb0/classic-dad-hat-spruce-left-side-6ae1c2dc4d945.jpg",
+          "path": "images/products/flag-cap-4.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a01e5788d971835313f72363410fce9f/classic-dad-hat-spruce-left-front-6ae1c2dc4da1b.jpg",
+          "path": "images/products/flag-cap-5.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4d45c652fdfaddd98e15f8e248aeedeb/classic-dad-hat-spruce-back-6ae1c2dc4db08.jpg",
+          "path": "images/products/flag-cap-6.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a167b6fcd5130d141b332f8b0a399a16/classic-dad-hat-spruce-product-details-6ae1c2dc4dbd4.jpg",
+          "path": "images/products/flag-cap-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 14.94,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.92,
+        "vat": 0,
+        "total": 28.45
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Flat",
+          "Flat Lifestyle",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Men's",
+          "Men's 2, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "Product details",
+          "Production",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3",
+          "Women's, Premium"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left Front",
+          "Left Side",
+          "Product details",
+          "Right",
+          "Right Back",
+          "Right Front",
+          "Right Side"
+        ]
+      }
+    },
+    "flag-beanie": {
+      "sync_product_id": 486759826,
+      "images": [
+        "images/products/flag-beanie-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_front",
+          "title": "embroidery_front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f3525573928f25de59035e37bbbf1ab8/cuffed-beanie-red-front-6ae1c2e3bde62.jpg",
+          "path": "images/products/flag-beanie-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 13.05,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.79,
+        "vat": 0,
+        "total": 26.43
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat Lifestyle",
+          "Flat Lifestyle 2",
+          "Halloween",
+          "Holiday season",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's Lifestyle 3",
+          "Production",
+          "Spring/summer vibes",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3"
+        ],
+        "options": [
+          "Front",
+          "Front 2"
+        ]
+      }
+    },
+    "shelem-fleece": {
+      "sync_product_id": 486759841,
+      "images": [
+        "images/products/shelem-fleece-1.jpg",
+        "images/products/shelem-fleece-2.jpg",
+        "images/products/shelem-fleece-3.jpg",
+        "images/products/shelem-fleece-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_chest_left",
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/be33a67379359e8e80c0c5434d465f91/unisex-fleece-pullover-black-front-6ae1c2ec28c9d.jpg",
+          "path": "images/products/shelem-fleece-1.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6fad1e22226dceb80d531668262728b1/unisex-fleece-pullover-black-back-6ae1c2ec29188.jpg",
+          "path": "images/products/shelem-fleece-2.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8c525452d381a20d864e43645bcd5338/unisex-fleece-pullover-black-left-6ae1c2ec29213.jpg",
+          "path": "images/products/shelem-fleece-3.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/99af5995f2d6f35d3ecf9e6a2d2a56e4/unisex-fleece-pullover-black-right-6ae1c2ec29292.jpg",
+          "path": "images/products/shelem-fleece-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 23.61,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.85,
+        "vat": 0,
+        "total": 42.15
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Ghost",
+          "Men's",
+          "Men's Lifestyle",
+          "Product details",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left wrist",
+          "Product details",
+          "Right",
+          "Right wrist",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "hagoth-windbreaker": {
+      "sync_product_id": 486759855,
+      "images": [
+        "images/products/hagoth-windbreaker-1.jpg",
+        "images/products/hagoth-windbreaker-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_chest_left",
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/fd8be968da8ad74543bae7b34469a458/unisex-basic-windbreaker-forest-green-front-6ae1c2f96beb7.jpg",
+          "path": "images/products/hagoth-windbreaker-1.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ccb7e5c2c008d6dec7aec7eb51e40bca/unisex-basic-windbreaker-forest-green-back-6ae1c2f96c36a.jpg",
+          "path": "images/products/hagoth-windbreaker-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.76,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.65,
+        "vat": 0,
+        "total": 39.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Ghost",
+          "Men's",
+          "Men's Lifestyle",
+          "Product details",
+          "Women's"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Product details",
+          "Product details 2",
+          "Product details 3",
+          "Zoomed-in",
+          "Zoomed-in 2"
+        ]
+      }
+    },
+    "ironrod-anorak": {
+      "sync_product_id": 486759859,
+      "images": [
+        "images/products/ironrod-anorak-1.jpg",
+        "images/products/ironrod-anorak-2.jpg",
+        "images/products/ironrod-anorak-3.jpg",
+        "images/products/ironrod-anorak-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_chest_left",
+          "title": "embroidery_chest_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7e49605ddff3a6f93a4dd3858d5e27bf/unisex-champion-packable-anorak-navy-front-6ae1c300407e2.jpg",
+          "path": "images/products/ironrod-anorak-1.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b3221ee6873cc77e1f1e06c006e4eb64/unisex-champion-packable-anorak-navy-left-6ae1c30041017.jpg",
+          "path": "images/products/ironrod-anorak-2.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/706af78afc7ac46d9c189cafb640d5f9/unisex-champion-packable-anorak-navy-right-6ae1c30041063.jpg",
+          "path": "images/products/ironrod-anorak-3.jpg"
+        },
+        {
+          "placement": "embroidery_chest_left",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d29f0e17bff3c5552fd5836e1e695376/unisex-champion-packable-anorak-navy-back-6ae1c3004109c.jpg",
+          "path": "images/products/ironrod-anorak-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 43.42,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 6.5,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 4.29,
+        "vat": 0,
+        "total": 63.4
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Ghost",
+          "Men's",
+          "Men's 2",
+          "Men's Lifestyle",
+          "On Hanger",
+          "Packed",
+          "Product details",
+          "Spring/summer vibes",
+          "Ultra Flat",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Product details",
+          "Right",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "barge-tee": {
+      "sync_product_id": 486759860,
+      "images": [
+        "images/products/barge-tee-1.jpg",
+        "images/products/barge-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3e3487db0e06bd989a58387a33708a04/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae1c308e739d.jpg",
+          "path": "images/products/barge-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8a477515115a368c777e447229d3e0fe/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae1c308e77bc.jpg",
+          "path": "images/products/barge-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "irreantum-tee": {
+      "sync_product_id": 486759865,
+      "images": [
+        "images/products/irreantum-tee-1.jpg",
+        "images/products/irreantum-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/22c488749badff4a7f4061bbc63c8a16/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae1c30fbd59e.jpg",
+          "path": "images/products/irreantum-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6f82a45b86fd9df45387e1c8e4e46b5d/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae1c30fbdec1.jpg",
+          "path": "images/products/irreantum-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "deseret-crew": {
+      "sync_product_id": 486759886,
+      "images": [
+        "images/products/deseret-crew-1.jpg",
+        "images/products/deseret-crew-2.jpg",
+        "images/products/deseret-crew-3.jpg",
+        "images/products/deseret-crew-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/240c6f9e168fc78904ae1c07a8e88247/unisex-premium-sweatshirt-khaki-front-6ae1c315666ca.jpg",
+          "path": "images/products/deseret-crew-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bebb59e118a49cf07454df92a6a483df/unisex-premium-sweatshirt-khaki-back-6ae1c3156774b.jpg",
+          "path": "images/products/deseret-crew-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/247a71b14680c2aa2199c8cbcff325e1/unisex-premium-sweatshirt-khaki-left-6ae1c315679b8.jpg",
+          "path": "images/products/deseret-crew-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8054faab2ad40f03101e4eeeda831d2d/unisex-premium-sweatshirt-khaki-right-6ae1c31567bab.jpg",
+          "path": "images/products/deseret-crew-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 24.53,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.45,
+        "vat": 0,
+        "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "samuel-tee": {
+      "sync_product_id": 486759889,
+      "images": [
+        "images/products/samuel-tee-1.jpg",
+        "images/products/samuel-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5f2dd0110ccf0b8712018e9c994eb9e1/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae1c31e6111d.jpg",
+          "path": "images/products/samuel-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/87189a757df48603d47e833945b93357/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae1c31e61423.jpg",
+          "path": "images/products/samuel-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "stones-tee": {
+      "sync_product_id": 486759893,
+      "images": [
+        "images/products/stones-tee-1.jpg",
+        "images/products/stones-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5d106a5e2faa2079e198af455be31950/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae1c324472e5.jpg",
+          "path": "images/products/stones-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9d81ffbb11f530b59eaa7869991d656b/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae1c32447bca.jpg",
+          "path": "images/products/stones-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "curelom-cap": {
+      "sync_product_id": 486759898,
+      "images": [
+        "images/products/curelom-cap-1.jpg",
+        "images/products/curelom-cap-2.jpg",
+        "images/products/curelom-cap-3.jpg",
+        "images/products/curelom-cap-4.jpg",
+        "images/products/curelom-cap-5.jpg",
+        "images/products/curelom-cap-6.jpg",
+        "images/products/curelom-cap-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "embroidery_front_large",
+          "title": "embroidery_front_large",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6464edc1c526043fe25f95314ee16fe9/classic-dad-hat-khaki-front-6ae1c32c46da0.jpg",
+          "path": "images/products/curelom-cap-1.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9a058a82e74e1bf36747e6a9926f93d3/classic-dad-hat-khaki-right-side-6ae1c32c472aa.jpg",
+          "path": "images/products/curelom-cap-2.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Right Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/aa1469d4677f4e4a126c725198b47943/classic-dad-hat-khaki-right-front-6ae1c32c4739f.jpg",
+          "path": "images/products/curelom-cap-3.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Side",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/64b5302e0c714d80ebd8cb0fcb7f900f/classic-dad-hat-khaki-left-side-6ae1c32c47487.jpg",
+          "path": "images/products/curelom-cap-4.jpg"
+        },
+        {
+          "placement": "embroidery_front_large",
+          "title": "Left Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/858dc802a2c0a8da5b0587ac71c4550c/classic-dad-hat-khaki-left-front-6ae1c32c4755d.jpg",
+          "path": "images/products/curelom-cap-5.jpg"
+        },
+        {
+          "placement": "embroidery_back",
+          "title": "embroidery_back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1dc20341c07fba7ef6c0d17c73df312c/classic-dad-hat-khaki-back-6ae1c32c4762e.jpg",
+          "path": "images/products/curelom-cap-6.jpg"
+        },
+        {
+          "placement": "embroidery_back",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/73b60406a07476011beacec17726d6ce/classic-dad-hat-khaki-product-details-6ae1c32c476d6.jpg",
+          "path": "images/products/curelom-cap-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 17.89,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 9.45,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.34,
+        "vat": 0,
+        "total": 34.77
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Flat",
+          "Flat Lifestyle",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Men's",
+          "Men's 2, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "Product details",
+          "Production",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's Lifestyle",
+          "Women's Lifestyle 2",
+          "Women's Lifestyle 3",
+          "Women's, Premium"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Left",
+          "Left Front",
+          "Left Side",
+          "Product details",
+          "Right",
+          "Right Back",
+          "Right Front",
+          "Right Side"
+        ]
+      }
+    },
+    "stories-tee": {
+      "sync_product_id": 486690167,
+      "images": [
+        "images/products/stories-tee-1.jpg",
+        "images/products/stories-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3d0229c9c41c6641fb9011bd300f589c/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae16c0dca105.jpg",
+          "path": "images/products/stories-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d0bbbbd922a25b7d325f7c4d258347f6/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae16c0dcab8e.jpg",
+          "path": "images/products/stories-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "stories-hoodie": {
+      "sync_product_id": 486690172,
+      "images": [
+        "images/products/stories-hoodie-1.jpg",
+        "images/products/stories-hoodie-2.jpg",
+        "images/products/stories-hoodie-3.jpg",
+        "images/products/stories-hoodie-4.jpg",
+        "images/products/stories-hoodie-5.jpg",
+        "images/products/stories-hoodie-6.jpg",
+        "images/products/stories-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a2986bfbfa18d3cf4b60cf1f47364eab/unisex-premium-pullover-hoodie-bone-back-6ae16c13c4af0.jpg",
+          "path": "images/products/stories-hoodie-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f06ddb1e0f79b63344451ba24ed2cfde/unisex-premium-pullover-hoodie-bone-front-6ae16c13c5458.jpg",
+          "path": "images/products/stories-hoodie-2.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8ddbf82aaac6f57cb5e39ab790a6211f/unisex-premium-pullover-hoodie-bone-product-details-6ae16c13c569b.jpg",
+          "path": "images/products/stories-hoodie-3.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/127f1443ebf010c2b2825506091be578/unisex-premium-pullover-hoodie-bone-front-6ae16c13c58a5.jpg",
+          "path": "images/products/stories-hoodie-4.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4dce770224fb2213db9e6c0db09bdff0/unisex-premium-pullover-hoodie-bone-back-6ae16c13c5a8f.jpg",
+          "path": "images/products/stories-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/461103893b4d019b59034fbfd4b3b300/unisex-premium-pullover-hoodie-bone-left-6ae16c13c5c98.jpg",
+          "path": "images/products/stories-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/66a8b495dadea71b42885d806b363dcb/unisex-premium-pullover-hoodie-bone-right-6ae16c13c5eeb.jpg",
+          "path": "images/products/stories-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      },
+      "styles": {
+        "option_groups": [
+          "Flat",
+          "Flat 2",
+          "Flat, Premium",
+          "Folded, Premium",
+          "Ghost",
+          "Halloween",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "Men's 2, Premium",
+          "Men's 3, Premium",
+          "Men's Lifestyle",
+          "Men's Lifestyle 2",
+          "Men's, Premium",
+          "On Hanger",
+          "On Hanger, Premium",
+          "Product details",
+          "Product specs",
+          "Spring/summer vibes",
+          "Template",
+          "Women's",
+          "Women's 2",
+          "Women's 2, Premium",
+          "Women's 3",
+          "Women's 3, Premium",
+          "Women's 6",
+          "Women's, Premium",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Back 2",
+          "Front",
+          "Front 2",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left sleeve",
+          "Outside label",
+          "Product details",
+          "Product details 2",
+          "Right",
+          "Right Front",
+          "Right sleeve",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "lehi-tee": {
+      "sync_product_id": 486759909,
+      "images": [
+        "images/products/lehi-tee-1.jpg",
+        "images/products/lehi-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/47556f40967f0014fa36c6931092a59a/unisex-garment-dyed-drop-shoulder-t-shirt-mocha-front-6ae1c33a1ca38.jpg",
+          "path": "images/products/lehi-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ed61a6764f388349f0239a51ee4f6c62/unisex-garment-dyed-drop-shoulder-t-shirt-mocha-back-6ae1c33a1cf5f.jpg",
+          "path": "images/products/lehi-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      },
+      "styles": {
+        "option_groups": [
+          "Flat"
+        ],
+        "options": [
+          "Back",
+          "Front"
+        ]
+      }
+    },
+    "liahona-crew": {
+      "sync_product_id": 486759914,
+      "images": [
+        "images/products/liahona-crew-1.jpg",
+        "images/products/liahona-crew-2.jpg",
+        "images/products/liahona-crew-3.jpg",
+        "images/products/liahona-crew-4.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d3d1f361e895c2d47a2bfba3798e5da9/unisex-premium-sweatshirt-forest-green-front-6ae1c33f8b8cb.jpg",
+          "path": "images/products/liahona-crew-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cd3bc014162bba0c6b7f435bd6e6980c/unisex-premium-sweatshirt-forest-green-left-6ae1c33f8c43d.jpg",
+          "path": "images/products/liahona-crew-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1452d4214b143fa1ff5384e7fe1033b8/unisex-premium-sweatshirt-forest-green-right-6ae1c33f8c693.jpg",
+          "path": "images/products/liahona-crew-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/414af2f18eb7cd9b1bd9eff7e78bd10b/unisex-premium-sweatshirt-forest-green-back-6ae1c33f8c85f.jpg",
+          "path": "images/products/liahona-crew-4.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 24.53,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.45,
+        "vat": 0,
+        "total": 36.17
+      },
+      "styles": {
+        "option_groups": [
+          "Collage Flat",
+          "Collage Ghost",
+          "Flat",
+          "Folded",
+          "Ghost",
+          "Labels",
+          "Men's",
+          "Men's 2",
+          "On Hanger",
+          "Product details",
+          "Product specs",
+          "Women's",
+          "Women's 2",
+          "Women's Lifestyle",
+          "Wrinkled",
+          "Zoomed in"
+        ],
+        "options": [
+          "Back",
+          "Front",
+          "Front 2",
+          "Front and Back",
+          "Inside label",
+          "Left",
+          "Left Front",
+          "Left zoomed in",
+          "Outside label",
+          "Product details",
+          "Right",
+          "Right Front",
+          "Right zoomed in",
+          "Zoomed-in"
+        ]
+      }
+    },
+    "barge-mug": {
+      "sync_product_id": 486759923,
+      "images": [
+        "images/products/barge-mug-1.jpg",
+        "images/products/barge-mug-2.jpg",
+        "images/products/barge-mug-3.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d365f9590aba80ba4743f7994be275c3/white-glossy-mug-white-11-oz-handle-on-right-6ae1c3460b54f.jpg",
+          "path": "images/products/barge-mug-1.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Handle on Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e017abb50022d322573a4957f01a1bb8/white-glossy-mug-white-11-oz-handle-on-left-6ae1c3460b6f4.jpg",
+          "path": "images/products/barge-mug-2.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Front view",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/121d762fababf1266b9e6d521cf4e18a/white-glossy-mug-white-11-oz-front-view-6ae1c3460b739.jpg",
+          "path": "images/products/barge-mug-3.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 6.07,
+        "discount": 0,
+        "shipping": 7.090000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.96,
+        "vat": 0,
+        "total": 14.12
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Environment",
+          "Flat, Premium",
+          "Halloween",
+          "Holiday season",
+          "Lifestyle",
+          "Lifestyle 2",
+          "Lifestyle 2, Premium",
+          "Lifestyle 3",
+          "Lifestyle 3, Premium",
+          "Lifestyle 4, Premium",
+          "Lifestyle, Premium",
+          "Placeholder",
+          "Product specs",
+          "Red, white & blue",
+          "Spring/summer vibes",
+          "Templates",
+          "Valentine's Day"
+        ],
+        "options": [
+          "Cookies",
+          "Cutting board",
+          "Donuts",
+          "Front",
+          "Front view",
+          "Halloween",
+          "Handle on Left",
+          "Handle on Right",
+          "Office environment",
+          "Pineapple",
+          "Watermelon",
+          "Woman",
+          "default"
+        ]
+      }
+    },
+    "lehi-mug": {
+      "sync_product_id": 486759929,
+      "images": [
+        "images/products/lehi-mug-1.jpg",
+        "images/products/lehi-mug-2.jpg",
+        "images/products/lehi-mug-3.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/014e89e64e7b4537d494fbda386f0872/enamel-mug-white-12-oz-right-6ae1c34dbe1ba.jpg",
+          "path": "images/products/lehi-mug-1.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2b23f3d0ecd89654a60b8756c05fad74/enamel-mug-white-12-oz-front-6ae1c34dbe20d.jpg",
+          "path": "images/products/lehi-mug-2.jpg"
+        },
+        {
+          "placement": "default",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3eafd76a8e4d8abab44af74701347c67/enamel-mug-white-12-oz-left-6ae1c34dbe22d.jpg",
+          "path": "images/products/lehi-mug-3.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 12.67,
+        "discount": 0,
+        "shipping": 5.090000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.29,
+        "vat": 0,
+        "total": 19.05
+      },
+      "styles": {
+        "option_groups": [
+          "Default",
+          "Lifestyle",
+          "Lifestyle 2",
+          "Lifestyle 3",
+          "Lifestyle 4",
+          "Lifestyle 5",
+          "Lifestyle 6",
+          "Lifestyle 7",
+          "Lifestyle 8",
+          "Men's Lifestyle",
+          "Women's Lifestyle"
+        ],
+        "options": [
+          "Front",
+          "Left",
+          "Right"
+        ]
+      }
+    }
+  },
+  "generatedAt": "2026-10-28T09:53:20.811Z"
+}
