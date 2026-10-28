@@ -82,9 +82,12 @@ const BIG = [
   ["ship", "Nephi's Ship", ["Bone", "#F5E8CE"], ["Oatmeal", "#B7A99A"], "1 Nephi 17:8", ["1-ne", 17, 8], "Nephi's ship on the waves under a red halftone sun."],
   ["liahona", "The Liahona", ["Maroon", "#7D263A"], ["Black", "#000000"], "1 Nephi 16:29", ["1-ne", 16, 29], "The brass ball with its two spindles. By small means, great things."],
 ];
+// Photos come from Printful (Front first, then Back), numbered images/products/<id>-<n>.jpg.
+const views = (id, labels) => labels.map((label, i) => ({ src: `images/products/${id}-${i + 1}.jpg`, label }));
 for (const [k, name, [hc, hs], [tc, ts], ref, verse, blurb] of BIG) {
-  LINE_PIECES[`${k}-hoodie`] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb };
-  LINE_PIECES[k === "samuel" ? "samuel-wall-tee" : `${k}-tee`] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb };
+  const h = `${k}-hoodie`, tid = k === "samuel" ? "samuel-wall-tee" : `${k}-tee`;
+  LINE_PIECES[h] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb, images: views(h, ["Front", "Back", "Women's", "Flat"]) };
+  LINE_PIECES[tid] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb, images: views(tid, ["Front", "Back"]) };
 }
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
