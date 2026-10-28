@@ -1,15 +1,16 @@
 // POST /api/checkout  { items: [{ id, size, qty }] }  ->  { url }  (a Stripe Checkout page)
-import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, dropPhase, encodeItems, unitPrice, stripe, json } from "../lib/store.mjs";
+import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, storePhase, shippingLabel, encodeItems, unitPrice, stripe, json } from "../lib/store.mjs";
 
 const closeDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
 
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
 
-  const phase = dropPhase();
-  if (phase === "before") return json({ error: "Preorders aren't open yet. Check the countdown." }, 409);
+  const now = Date.now();
+  const phase = storePhase(now);
+  if (phase === "before") return json({ error: "Launch week hasn't started yet. Check the countdown." }, 409);
   if (phase === "sunday") return json({ error: "We're closed on Sundays. Your bag is saved, so check out on Monday." }, 409);
-  if (phase === "closed") return json({ error: "Drop 001 has closed. Follow @rentcoat.co for the next one." }, 409);
+  const launch = phase === "launch";
 
   let items;
   try {
@@ -28,7 +29,9 @@ export default async (req) => {
     // Stripe's shortest allowed lifetime, so a page opened just before the drop closes can't be paid hours later.
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     custom_text: {
-      submit: { message: `Preorder: your shirt is printed after the drop closes on ${closeDay.format(Date.parse(DROP.closes))} and arrives about 2 to 3 weeks after that. Made to order, so no fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms.` },
+      submit: { message: launch
+        ? `Launch week preorder: your shirt is printed after launch week ends on ${closeDay.format(Date.parse(DROP.closes))} and arrives about 2 to 3 weeks after that. Made to order, so no fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms.`
+        : "Made to order: your shirt is printed after you order and usually arrives in 1 to 2 weeks. No fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms." },
     },
     // "How did you find us?" so ad spend can be measured without a tracking pixel. Answers show on each payment in Stripe.
     custom_fields: [{
@@ -50,7 +53,7 @@ export default async (req) => {
     shipping_options: [{
       shipping_rate_data: {
         type: "fixed_amount",
-        display_name: SHIPPING.label,
+        display_name: shippingLabel(phase),
         fixed_amount: { amount: SHIPPING.amount, currency: "usd" },
         ...(tax && { tax_behavior: "exclusive", tax_code: "txcd_92010001" }),
       },
@@ -59,7 +62,7 @@ export default async (req) => {
       quantity: i.qty,
       price_data: {
         currency: "usd",
-        unit_amount: unitPrice(i.size),
+        unit_amount: unitPrice(i.size, now),
         ...(tax && { tax_behavior: "exclusive" }),
         product_data: {
           name: `${PRODUCTS[i.id].name} (${PRODUCTS[i.id].color}), size ${i.size}`,
@@ -69,8 +72,9 @@ export default async (req) => {
       },
     })),
     ...(tax && { automatic_tax: { enabled: true } }),
-    metadata: { items: encodeItems(items), drop: "001" },
-    payment_intent_data: { description: "Rent Coat Co. Drop 001 preorder", metadata: { items: encodeItems(items) } },
+    // "001" orders become Printful drafts, confirmed together after launch week; "shop" orders print right away.
+    metadata: { items: encodeItems(items), drop: launch ? "001" : "shop" },
+    payment_intent_data: { description: launch ? "Rent Coat Co. Drop 001 launch week preorder" : "Rent Coat Co. order", metadata: { items: encodeItems(items) } },
   };
 
   try {
