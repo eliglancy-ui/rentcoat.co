@@ -95,8 +95,11 @@ export default async (req) => {
     return json({ received: true, printful: res.data?.result?.id });
   }
   const msg = JSON.stringify(res.data?.error || res.data);
+  // A retried webhook hits Printful's "external_id already exists" 400. Other 400s also mention "external" (a wrong
+  // external_variant_id, say), so only call it a duplicate once Printful shows an order with this external_id.
   if (res.status === 400 && /external/i.test(msg)) {
-    return json({ received: true, duplicate: true }); // Stripe retried; the order already exists.
+    const existing = await printful(`orders/@${order.external_id}`);
+    if (existing.ok) return json({ received: true, duplicate: true, printful: existing.data?.result?.id });
   }
   console.error(`Printful rejected ${session.id}: ${res.status} ${msg}`);
   return json({ error: "Printful order failed" }, 500); // 500 makes Stripe retry for up to 3 days
