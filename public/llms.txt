@@ -40,4 +40,4 @@
 - Returns: no fit returns on made-to-order shirts; damaged or misprinted shirts are replaced free within 30 days of delivery.
 - Cancellations: launch week orders can be cancelled free until launch week ends; orders after that go to print soon after ordering and can be cancelled only before printing starts.
 - Late shipping: if an order can't ship by the stated date, buyers are emailed a new date and can cancel for a full refund.
-- Privacy: no cookies, analytics or ad tracking on rentcoat.co; fonts are self-hosted; personal information is never sold.
+- Privacy: Google Analytics counts visits (ad features off, skipped on Global Privacy Control or Do Not Track); no ad tracking; fonts are self-hosted; personal information is never sold.

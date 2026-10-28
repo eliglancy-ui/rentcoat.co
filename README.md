@@ -9,7 +9,7 @@ public/                     the website (what visitors see)
   policies.html             shipping, returns, cancellations, accessibility and contact
   terms.html                terms of sale (preorders, delays, cancellations, disputes)
   privacy.html              privacy policy
-  cookies.html              cookie policy (the site sets no cookies; only the bag in local storage)
+  cookies.html              cookie policy (Google Analytics cookies, plus the bag in local storage)
   about.html                the story behind the name, written so Google and AI search can quote it
   title-of-liberty-shirt/   one page per shirt, each aimed at what people search for (also
   stripling-warrior-shirt/  stripling and curelom), with its own FAQ and structured data
@@ -89,7 +89,7 @@ See them at **rentcoat.co/api/stats?key=YOUR_ADMIN_KEY** (add `&days=90` for lon
 
 ## Policy pages
 
-`terms.html`, `privacy.html`, `cookies.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, self-hosted fonts, no cookies or analytics. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` and `cookies.html` first (and add a consent banner before any non-essential cookie). `/terms`, `/privacy`, `/cookies`, `/shipping` and `/about` are short links set in `netlify.toml`, which also sets the security and caching headers.
+`terms.html`, `privacy.html`, `cookies.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, self-hosted fonts, Google Analytics (G-LMHFP3JK9N, skipped on Global Privacy Control or Do Not Track), no ad trackers. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` and `cookies.html` first (and add a consent banner before any non-essential cookie). `/terms`, `/privacy`, `/cookies`, `/shipping` and `/about` are short links set in `netlify.toml`, which also sets the security and caching headers.
 
 ## Before each drop (SEO checklist)
 
