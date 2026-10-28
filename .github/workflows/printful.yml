@@ -49,3 +49,13 @@ jobs:
           if git diff --cached --quiet; then echo "Nothing new to commit."; exit 0; fi
           git commit -m "Add Printful product photos and setup results"
           git push
+      - name: Push styled photo candidates to the photo-candidates branch
+        if: always() && hashFiles('candidates/**') != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan photo-candidates-tmp
+          git rm -rq --cached .
+          git add candidates
+          git commit -qm "Styled photo candidates from Printful"
+          git push -f origin HEAD:refs/heads/photo-candidates

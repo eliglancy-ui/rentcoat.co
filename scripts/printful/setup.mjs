@@ -94,6 +94,22 @@ async function threadOptions(product, files) {
   return out;
 }
 
+// Photo styles to try per catalog product, from Printful's own option groups for each blank (see "list_styles").
+// "Premium" styles are left out.
+const STYLES = {
+  380: { groups: ["Men's", "Men's 2", "Men's Lifestyle", "Men's Lifestyle 2", "Women's", "Women's 2", "Flat", "Flat 2"], views: ["Front", "Back"] },
+  411: { groups: ["Men's", "Men's 2", "Women's", "Women's Lifestyle", "Flat", "Folded"], views: ["Front", "Back"] },
+  412: { groups: ["Men's", "Men's 2", "Men's 3", "Flat"], views: ["Front", "Front Left", "Front Left Leg", "Left Front"] },
+  206: { groups: ["Men's", "Men's Lifestyle", "Men's Lifestyle 2", "Lifestyle", "Flat Lifestyle", "Women's Lifestyle"], views: ["Front", "Right Front", "Left Front", "Back"] },
+  266: { groups: ["Men's Lifestyle", "Men's Lifestyle 2", "Women's Lifestyle", "Flat Lifestyle", "Flat"], views: ["Front", "Front 2"] },
+  674: { groups: ["Men's", "Men's Lifestyle", "Women's", "Women's Lifestyle", "Flat"], views: ["Front", "Front 2", "Zoomed-in"] },
+  661: { groups: ["Men's", "Men's Lifestyle", "Women's", "Flat"], views: ["Front", "Front 2", "Zoomed-in"] },
+  399: { groups: ["Men's", "Men's 2", "Men's Lifestyle", "Women's Lifestyle", "Flat", "On Hanger"], views: ["Front", "Front 2", "Zoomed-in"] },
+  1626: { groups: ["Flat"], views: ["Front", "Back"] },
+  19: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Environment"], views: ["Front", "Handle on Right", "Handle on Left", "Woman", "Office environment", "Cutting board"] },
+  407: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Lifestyle 4", "Men's Lifestyle", "Women's Lifestyle"], views: ["Front", "Left", "Right"] },
+};
+
 const resultPath = "scripts/printful/result.json";
 const result = existsSync(resultPath) ? JSON.parse(readFileSync(resultPath, "utf8")) : { products: {} };
 mkdirSync("public/images/products", { recursive: true });
@@ -147,6 +163,45 @@ for (const [id, cat] of Object.entries(CATALOG)) {
       if (!made.ok) throw new Error(`create product: ${why(made)}`);
       out.sync_product_id = made.data.result.id;
       console.log(`  created in Printful (#${out.sync_product_id}) with sizes ${sizes.join(", ")}`);
+    }
+
+    // "styles": make photos in the styles listed in STYLES (models, lifestyle, flat lays) and save every one
+    // to candidates/<id>/ so the best can be picked by eye. The workflow pushes them to the photo-candidates branch.
+    if (RUN.styles) {
+      const style = STYLES[cat.product];
+      if (!style) { console.log("  no styles listed for this blank"); continue; }
+      const photoVariant = cat.variants.M || cat.variants.OS;
+      const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
+      const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
+        variant_ids: [photoVariant], format: "jpg", option_groups: style.groups, options: style.views,
+        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
+        ...(options.length && { product_options }),
+      } });
+      if (!task.ok) throw new Error(`start styled photos: ${why(task)}`);
+      let done;
+      for (let i = 0; i < 90 && !done; i++) {
+        await sleep(5000);
+        const r = await pf(`mockup-generator/task?task_key=${encodeURIComponent(task.data.result.task_key)}`);
+        if (r.data?.result?.status === "completed") done = r.data.result;
+        else if (r.data?.result?.status === "failed") throw new Error(`styled photos failed: ${JSON.stringify(r.data.result.error)}`);
+      }
+      if (!done) throw new Error("styled photos took longer than 7 minutes");
+      mkdirSync(`candidates/${id}`, { recursive: true });
+      const list = [], seen = new Set();
+      for (const m of done.mockups) {
+        for (const shot of [{ option: m.placement, url: m.mockup_url }, ...(m.extra || [])]) {
+          if (list.length >= 40 || seen.has(shot.url)) continue;
+          seen.add(shot.url);
+          const img = await fetch(shot.url);
+          if (!img.ok) continue;
+          const file = `${list.length + 1}.jpg`;
+          writeFileSync(`candidates/${id}/${file}`, Buffer.from(await img.arrayBuffer()));
+          list.push({ file, placement: m.placement, group: shot.option_group || "", view: shot.option || shot.title || "", url: shot.url });
+        }
+      }
+      writeFileSync(`candidates/${id}/index.json`, JSON.stringify(list, null, 2) + "\n");
+      console.log(`  saved ${list.length} styled photos`);
+      continue;
     }
 
     // 2. Photos, made on size M (or the one size).
