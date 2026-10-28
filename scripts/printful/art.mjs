@@ -5,6 +5,7 @@
 //   DTG    1800 x 2400  the full 12" x 16" print area; small chest prints sit inside it where they belong
 //   CHEST   600 x 600   4" x 4" embroidered chest patch
 //   HAT     750 x 270   5" x 1.8" embroidered hat front
+//   HATBACK 600 x 150   4" x 1" embroidered above the strap
 //   BEANIE  750 x 300   5" x 2" embroidered beanie cuff
 //   LEG     420 x 1800  a strip that sits at the top of the left leg
 //   MUG    1350 x 525   9" x 3.5" wrap around a mug
@@ -13,7 +14,7 @@
 export const INK = { gold: "#C9A45C", goldDark: "#9C7A36", bone: "#ECE8DF", red: "#A83A2C", night: "#16201B" };
 export const THREAD = { white: "#FFFFFF", black: "#000000", oldGold: "#A67843", maroon: "#660000", red: "#CC3333", grey: "#96A1A8" };
 
-export const SIZE = { DTG: [1800, 2400], CHEST: [600, 600], HAT: [750, 270], BEANIE: [750, 300], LEG: [420, 1800], MUG: [1350, 525] };
+export const SIZE = { DTG: [1800, 2400], CHEST: [600, 600], HAT: [750, 270], HATBACK: [600, 150], BEANIE: [750, 300], LEG: [420, 1800], MUG: [1350, 525] };
 
 const FLAG = "M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z";
 const flag = (cx, cy, s, cloth, pole) => `<g transform="translate(${cx - s / 2} ${cy - s / 2}) scale(${s / 100})"><circle cx="11" cy="5" r="5" fill="${pole}"/><rect x="8" y="8" width="6" height="92" rx="2" fill="${pole}"/><path d="${FLAG}" fill="${cloth}"/></g>`;
@@ -26,6 +27,12 @@ function t(x, y, size, txt, o = {}) {
     f === "d" ? `font-stretch:${o.wd || 66}%` : "", f === "s" ? "font-style:italic" : "", `letter-spacing:${o.ls || 0}px`].filter(Boolean).join(";");
   return `<text x="${x}" y="${y}" fill="${o.fill || INK.bone}" text-anchor="${o.a || "middle"}" style="${st}">${esc(txt)}</text>`;
 }
+// The Rent Coat Co. mark: the torn flag beside the name, sitting on baseline y. render.mjs centers it on cx once the
+// fonts have loaded, so it lines up the same on every piece. Every piece in the line carries it somewhere.
+export const lock = (cx, y, size, ink, cloth, pole = ink) => `<g class="lock" data-cx="${cx}">${flag(size * 0.5, y - size * 0.6, size * 1.2, cloth, pole)}`
+  + `${t(size * 1.15, y, size, "RENT COAT CO.", { a: "start", fill: ink, wd: 78, ls: size * 0.06 })}</g>`;
+// Each file may add `mark` (extra SVG drawn on top, usually the mark) and `fit` (a transform that makes room for it).
+
 // Left-chest graphics on a DTG front: centered 3.6" right of center (the wearer's left), 1.9" below the top of the area.
 const chest = inner => `<g transform="translate(1440 280)">${inner}</g>`;
 
@@ -89,9 +96,9 @@ export const FILES = [
   { id: "stripling-hoodie", place: "front", size: "DTG", svg: () => t(900, 420, 150, "STRIPLING", { ls: 56, wd: 80 })
       + `<text x="900" y="1130" text-anchor="middle" fill="none" stroke="${INK.gold}" stroke-width="16" style="font-family:'Archivo';font-weight:900;font-stretch:62%;font-size:700px">2000</text>`
       + t(900, 1300, 64, "ALMA 56:48", { f: "m", ls: 20 }) },
-  { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 640) rotate(-90)">${t(0, -10, 128, "STRAIT & NARROW", { wd: 78, ls: 10 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
-  { id: "flag-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 135, 250, THREAD.oldGold, THREAD.white) },
-  { id: "flag-beanie", place: "embroidery_front", size: "BEANIE", threads: [THREAD.white], svg: () => flag(375, 150, 260, THREAD.white, THREAD.white) },
+  { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 600) rotate(-90)">${t(0, -10, 116, "STRAIT & NARROW", { wd: 78, ls: 8 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
+  { id: "flag-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 84, 160, THREAD.oldGold, THREAD.white) + t(375, 252, 74, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
+  { id: "flag-beanie", place: "embroidery_front", size: "BEANIE", threads: [THREAD.white], svg: () => flag(375, 96, 172, THREAD.white, THREAD.white) + t(375, 282, 76, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
 
   // Wilderness Supply
   { id: "shelem-fleece", place: "embroidery_chest_left", size: "CHEST", threads: [THREAD.white, THREAD.oldGold], svg: () =>
@@ -135,13 +142,14 @@ export const FILES = [
   { id: "samuel-tee", place: "front", size: "DTG", svg: () => chest(t(0, 10, 62, "SAMUEL'S WALL", { f: "m", ls: 6, w: 600 }) + t(0, 76, 44, "ARCHERY CLUB", { f: "m", fill: INK.gold, ls: 10 })) },
   { id: "samuel-tee", place: "back", size: "DTG", svg: () => [400, 280, 160].map(r => `<circle cx="900" cy="980" r="${r}" fill="none" stroke="${INK.bone}" stroke-width="56"/>`).join("")
       + `<circle cx="900" cy="980" r="58" fill="${INK.bone}"/>`
-      + [[300, 520, 34], [1520, 620, -36], [330, 1480, -24], [1490, 1420, 30], [900, 380, 0], [1620, 1020, 12]].map(([x, y, a]) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M0 0 L0 -220" stroke="${INK.gold}" stroke-width="18"/><path d="M-34 -220 L0 -290 L34 -220 Z" fill="${INK.gold}"/><path d="M-26 0 L0 -40 L26 0 M-26 30 L0 -10 L26 30" fill="none" stroke="${INK.gold}" stroke-width="10"/></g>`).join("")
+      + [[300, 520, 34], [1520, 620, -36], [330, 1480, -24], [1490, 1420, 30], [900, 440, 0], [1620, 1020, 12]].map(([x, y, a]) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M0 0 L0 -220" stroke="${INK.gold}" stroke-width="18"/><path d="M-34 -220 L0 -290 L34 -220 Z" fill="${INK.gold}"/><path d="M-26 0 L0 -40 L26 0 M-26 30 L0 -10 L26 30" fill="none" stroke="${INK.gold}" stroke-width="10"/></g>`).join("")
       + t(900, 1880, 168, "THEY COULD NOT HIT HIM", { wd: 60 })
       + t(900, 2040, 60, "HELAMAN 16:2", { f: "m", fill: INK.gold, ls: 18 }) },
   { id: "stones-tee", place: "front", size: "DTG", svg: () => `<defs><radialGradient id="glow"><stop offset="0" stop-color="#FFFDF5"/><stop offset=".5" stop-color="#F3EBD2"/><stop offset="1" stop-color="#F3EBD2" stop-opacity="0"/></radialGradient></defs>`
       + Array.from({ length: 16 }, (_, i) => `<circle cx="${585 + (i % 4) * 210}" cy="${300 + Math.floor(i / 4) * 210}" r="92" fill="url(#glow)"/>`).join("")
       + t(900, 1240, 64, "SIXTEEN SMALL STONES", { f: "m", ls: 20 }) + t(900, 1340, 52, "ETHER 3:1", { f: "m", fill: INK.gold, ls: 16 }) },
   { id: "curelom-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.black], svg: () => t(375, 150, 150, "C&C", { fill: THREAD.black, wd: 80, ls: 14 }) + t(375, 246, 66, "WILDLIFE SOCIETY", { f: "m", fill: THREAD.black, w: 600, ls: 4 }) },
+  { id: "curelom-cap", place: "embroidery_back", size: "HATBACK", threads: [THREAD.black], svg: () => t(300, 104, 70, "RENT COAT CO.", { fill: THREAD.black, wd: 72, ls: 6 }) },
   { id: "stories-tee", place: "front", size: "DTG", svg: () => storiesFront(INK.night, INK.red) },
   { id: "stories-tee", place: "back", size: "DTG", svg: () => storiesBack(INK.night, INK.red) },
   { id: "stories-hoodie", place: "front", size: "DTG", svg: () => storiesFront(INK.night, INK.red) },
@@ -172,5 +180,40 @@ export const FILES = [
       + t(990, 350, 26, "EST. IN THE VALLEY OF LEMUEL", { f: "m", fill: INK.night, ls: 6 })
       + t(990, 400, 26, "1 NEPHI 2:15", { f: "m", fill: INK.night, ls: 8 }) },
 ];
+
+// Where the mark goes on pieces whose main design doesn't already say Rent Coat Co.
+const MARK = {
+  // Back prints: at the top of the back, just under the collar.
+  "barge-tee:back": () => lock(900, 96, 66, INK.night, INK.red),
+  "irreantum-tee:back": () => lock(900, 96, 66, INK.night, INK.red),
+  "samuel-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
+  "lehi-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
+  // Front-only prints: under the scripture line.
+  "stripling-hoodie:front": () => lock(900, 1460, 64, INK.bone, INK.gold),
+  "deseret-crew:front": () => lock(900, 1270, 64, INK.night, INK.red),
+  "stones-tee:front": () => lock(900, 1500, 64, INK.bone, INK.gold),
+  "liahona-crew:front": () => lock(900, 1520, 64, INK.bone, INK.gold),
+  // Joggers: further up the same leg.
+  "strait-joggers:leg_front_left": () => `<g transform="translate(210 1490) rotate(-90)">${lock(0, 22, 48, INK.bone, INK.gold)}</g>`,
+  // Embroidered patches: the club crest shrinks a little and the mark goes underneath.
+  "shelem-fleece:embroidery_chest_left": () => lock(300, 568, 50, THREAD.white, THREAD.oldGold),
+  "hagoth-windbreaker:embroidery_chest_left": () => lock(300, 568, 50, THREAD.white, THREAD.oldGold),
+  "ironrod-anorak:embroidery_chest_left": () => lock(300, 568, 50, THREAD.white, THREAD.oldGold),
+  // Mugs: under the drawing.
+  "barge-mug:default": () => lock(330, 506, 40, INK.night, INK.red),
+  "lehi-mug:default": () => lock(330, 500, 40, INK.night, INK.red),
+};
+const FIT = {
+  // Back prints move down a little to make room for the mark under the collar.
+  "barge-tee:back": "translate(0 90)", "irreantum-tee:back": "translate(0 90)", "samuel-tee:back": "translate(0 90)", "lehi-tee:back": "translate(0 90)",
+  "shelem-fleece:embroidery_chest_left": "translate(60 0) scale(.8)",
+  "hagoth-windbreaker:embroidery_chest_left": "translate(60 0) scale(.8)",
+  "ironrod-anorak:embroidery_chest_left": "translate(60 0) scale(.8)",
+};
+for (const f of FILES) {
+  const key = `${f.id}:${f.place}`;
+  if (MARK[key]) f.mark = MARK[key];
+  if (FIT[key]) f.fit = FIT[key];
+}
 
 export const fileName = f => `${f.id}-${f.place}.png`;
