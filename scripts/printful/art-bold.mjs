@@ -208,7 +208,9 @@ export const sizedTag = (ink, accent, size, material, origin) => flag(300, 92, 1
   + t(300, 476, 24, "WASH COLD · INSIDE OUT", { f: "m", fill: ink, ls: 2 }) + t(300, 540, 26, "IN MEMORY OF OUR GOD", { f: "m", fill: accent, ls: 4 });
 const SIZES = ["S", "M", "L", "XL", "2XL"];
 // Tags for the pieces already in Printful whose blank takes one.
-const TAGGED = { "rent-hoodie": ["dark", "label_inside"], "stories-hoodie": ["light", "label_inside"], "shelem-fleece": ["dark", "label_inside_dtf"] };
+const TAGGED = { "rent-hoodie": ["dark", "label_inside"], "stories-hoodie": ["light", "label_inside"], "shelem-fleece": ["dark", "label_inside_dtf"],
+  "stripling-hoodie": ["light", "label_inside"], "shelem-hoodie": ["dark", "label_inside"], "tree-hoodie": ["dark", "label_inside"],
+  "samuel-hoodie": ["dark", "label_inside"], "ship-hoodie": ["light", "label_inside"], "liahona-hoodie": ["dark", "label_inside"] };
 export const TAG_FILES = Object.entries(TAGGED).flatMap(([id, [tone, place]]) => SIZES.map(size => ({
   id, place, size: "TAG", forSize: size, file: `${id}-tag-${size}.png`,
   svg: () => tone === "dark" ? sizedTag(INK.bone, INK.gold, size, "65% COTTON / 35% POLYESTER", "MADE IN PAKISTAN") : sizedTag(INK.night, INK.red, size, "65% COTTON / 35% POLYESTER", "MADE IN PAKISTAN"),
