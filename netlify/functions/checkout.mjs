@@ -1,5 +1,5 @@
 // POST /api/checkout  { items: [{ id, size, qty }] }  ->  { url }  (a Stripe Checkout page)
-import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, storePhase, shippingLabel, encodeItems, unitPrice, stripe, json } from "../lib/store.mjs";
+import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, storePhase, shippingLabel, encodeItems, unitPrice, sizeLabel, stripe, json } from "../lib/store.mjs";
 
 const closeDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
 
@@ -62,10 +62,10 @@ export default async (req) => {
       quantity: i.qty,
       price_data: {
         currency: "usd",
-        unit_amount: unitPrice(i.size, now),
+        unit_amount: unitPrice(i.id, i.size, now),
         ...(tax && { tax_behavior: "exclusive" }),
         product_data: {
-          name: `${PRODUCTS[i.id].name} (${PRODUCTS[i.id].color}), size ${i.size}`,
+          name: `${PRODUCTS[i.id].name} (${PRODUCTS[i.id].color}), ${sizeLabel(i.size)}`,
           images: [`${site}/${PRODUCTS[i.id].image}`],
           ...(tax && { tax_code: "txcd_30011000" }),
         },
