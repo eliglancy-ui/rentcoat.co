@@ -18,11 +18,13 @@ import { createHash } from "node:crypto";
 import { PRODUCTS, PRINTFUL_STORE_ID } from "../../netlify/lib/store.mjs";
 import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
+import { BOLD_FILES, PREVIEWS, TAG_FILES } from "./art-bold.mjs";
+import { TYPE_FILES } from "./art-type.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
 const RUN = existsSync("scripts/printful/run.json") ? JSON.parse(readFileSync("scripts/printful/run.json", "utf8")) : {};
-const ONLY = (process.env.ONLY || "").split(",").filter(Boolean);
+const ONLY = [...(process.env.ONLY || "").split(",").filter(Boolean), ...(RUN.only || [])];
 const REDO_PHOTOS = Boolean(process.env.REDO_PHOTOS || RUN.redo_photos);
 const REPLACE = new Set(RUN.replace || []);
 if (!TOKEN) {
@@ -106,6 +108,7 @@ const STYLES = {
   661: { groups: ["Men's", "Men's Lifestyle", "Women's", "Flat"], views: ["Front", "Front 2", "Zoomed-in"] },
   399: { groups: ["Men's", "Men's 2", "Men's Lifestyle", "Women's Lifestyle", "Flat", "On Hanger"], views: ["Front", "Front 2", "Zoomed-in"] },
   1626: { groups: ["Flat"], views: ["Front", "Back"] },
+  895: { groups: ["Men's", "Men's 2", "Men's 3", "Women's", "Flat"], views: ["Front", "Front Left", "Left Front", "Front Left Leg", "Front Right"] },
   19: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Environment"], views: ["Front", "Handle on Right", "Handle on Left", "Woman", "Office environment", "Cutting board"] },
   407: { groups: ["Lifestyle", "Lifestyle 2", "Lifestyle 3", "Lifestyle 4", "Men's Lifestyle", "Women's Lifestyle"], views: ["Front", "Left", "Right"] },
 };
@@ -114,11 +117,72 @@ const resultPath = "scripts/printful/result.json";
 const result = existsSync(resultPath) ? JSON.parse(readFileSync(resultPath, "utf8")) : { products: {} };
 mkdirSync("public/images/products", { recursive: true });
 
+// "dump": save what Printful has for these sync variants (by external ID), files and positions included, to
+// result.dump, without changing anything. Used to copy a piece designed in Printful's own designer.
+if (RUN.dump) {
+  result.dump = {};
+  for (const ext of RUN.dump) {
+    const r = await pf(`store/variants/@${ext}`);
+    result.dump[ext] = r.ok ? r.data.result : { error: why(r) };
+    console.log(`dump ${ext}: ${r.ok ? `${r.data.result.files?.length} files` : why(r)}`);
+  }
+  writeFileSync(resultPath, JSON.stringify(result, null, 2) + "\n");
+  process.exit(0);
+}
+
+// "preview": photograph the designs in art-bold.mjs on their blanks without creating any products, and save the
+// photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
+if (RUN.preview) {
+  let bad = 0;
+  for (const pv of PREVIEWS) {
+    if (ONLY.length && !ONLY.includes(pv.key)) continue;
+    console.log(`\npreview ${pv.key} (${pv.color})`);
+    try {
+      const pfs = await printfiles(pv.product);
+      const style = STYLES[pv.product] || { groups: [], views: [] };
+      const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
+      const views = style.views.filter(v => (pfs.options || []).includes(v));
+      const files = pv.files.flatMap(id => BOLD_FILES.filter(f => f.id === id)).filter(f => pfs.available_placements?.[f.place]);
+      const task = await pf(`mockup-generator/create-task/${pv.product}`, { method: "POST", body: {
+        variant_ids: [pv.variant], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
+        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(pv.product, pv.variant, f) }))),
+      } });
+      if (!task.ok) throw new Error(`start preview: ${why(task)}`);
+      let done;
+      for (let i = 0; i < 90 && !done; i++) {
+        await sleep(5000);
+        const r = await pf(`mockup-generator/task?task_key=${encodeURIComponent(task.data.result.task_key)}`);
+        if (r.data?.result?.status === "completed") done = r.data.result;
+        else if (r.data?.result?.status === "failed") throw new Error(`preview failed: ${JSON.stringify(r.data.result.error)}`);
+      }
+      if (!done) throw new Error("preview took longer than 7 minutes");
+      const dir = `candidates/preview/${pv.key}`, list = [], seen = new Set();
+      mkdirSync(dir, { recursive: true });
+      for (const m of done.mockups) for (const shot of [{ option: m.placement, url: m.mockup_url }, ...(m.extra || [])]) {
+        if (list.length >= 30 || seen.has(shot.url)) continue;
+        seen.add(shot.url);
+        const img = await fetch(shot.url);
+        if (!img.ok) continue;
+        const file = `${list.length + 1}.jpg`;
+        writeFileSync(`${dir}/${file}`, Buffer.from(await img.arrayBuffer()));
+        list.push({ file, placement: m.placement, group: shot.option_group || "", view: shot.option || "" });
+      }
+      writeFileSync(`${dir}/index.json`, JSON.stringify(list, null, 2) + "\n");
+      console.log(`  saved ${list.length} photos (styles: ${groups.join(", ") || "default"})`);
+    } catch (e) { bad++; console.error(`  FAILED: ${e.message}`); }
+  }
+  process.exit(bad ? 1 : 0);
+}
+
 let failures = 0;
 for (const [id, cat] of Object.entries(CATALOG)) {
   if (ONLY.length && !ONLY.includes(id)) continue;
   const product = PRODUCTS[id];
-  const files = FILES.filter(f => f.id === id);
+  // Printful's API refuses printed inside tags ("Unsupported file type: label_inside"), so TAG_FILES are only
+  // artwork for adding a tag by hand in Printful's dashboard.
+  const files = [...FILES, ...BOLD_FILES, ...TYPE_FILES].filter(f => f.id === (cat.art || id));
+  // A file with forSize (a sized tag) only goes on that size.
+  const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);
   const out = (result.products[id] ||= {});
   delete out.error;
@@ -135,15 +199,9 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     }
 
     // 1. The product.
-    let existing = await pf(`store/products/@rc-${id}`);
-    if (existing.ok && REPLACE.has(id)) {
-      const gone = await pf(`store/products/@rc-${id}`, { method: "DELETE" });
-      if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
-      console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
-      existing = { ok: false };
-      out.images = [];
-    }
-    if (existing.ok) {
+    const existing = await pf(`store/products/@rc-${id}`);
+    const replacing = existing.ok && REPLACE.has(id);
+    if (existing.ok && !replacing) {
       out.sync_product_id = existing.data.result.sync_product.id;
       console.log(`  already in Printful (#${out.sync_product_id}), leaving it as is`);
     } else {
@@ -155,9 +213,16 @@ for (const [id, cat] of Object.entries(CATALOG)) {
           variant_id,
           external_id: product.variants[size],
           retail_price: (price / 100).toFixed(2),
-          files: await Promise.all(files.map(async f => ({ type: f.place, url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, variant_id, f) }))),
+          files: await Promise.all(filesFor(size).map(async f => ({ type: f.place, url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, variant_id, f) }))),
           ...(options.length && { options }),
         });
+      }
+      // The new version is fully built before the old one is deleted, so a failure never leaves the piece missing.
+      if (replacing) {
+        const gone = await pf(`store/products/@rc-${id}`, { method: "DELETE" });
+        if (!gone.ok) throw new Error(`delete old product: ${why(gone)}`);
+        console.log(`  deleted the old version (#${existing.data.result.sync_product.id}) to make it again`);
+        if (!RUN.keep_photos) out.images = [];
       }
       const made = await pf("store/products", { method: "POST", body: { sync_product: { name: `${product.name} | ${cat.color}`, external_id: `rc-${id}` }, sync_variants } });
       if (!made.ok) throw new Error(`create product: ${why(made)}`);
@@ -174,7 +239,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
       const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
       const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
         variant_ids: [photoVariant], format: "jpg", option_groups: style.groups, options: style.views,
-        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
+        files: await Promise.all(filesFor(cat.variants.M ? "M" : "OS").map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
         ...(options.length && { product_options }),
       } });
       if (!task.ok) throw new Error(`start styled photos: ${why(task)}`);
@@ -207,11 +272,11 @@ for (const [id, cat] of Object.entries(CATALOG)) {
     // 2. Photos, made on size M (or the one size).
     const photoVariant = cat.variants.M || cat.variants.OS;
     const have = (out.images || []).length && out.images.every(p => existsSync(`public/${p}`));
-    if (!have || REDO_PHOTOS) {
+    if ((!have || REDO_PHOTOS) && !RUN.keep_photos) {
       const product_options = Object.fromEntries(options.map(o => [o.id, o.value]));
       const task = await pf(`mockup-generator/create-task/${cat.product}`, { method: "POST", body: {
         variant_ids: [photoVariant], format: "jpg",
-        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
+        files: await Promise.all(filesFor(cat.variants.M ? "M" : "OS").map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(cat.product, photoVariant, f) }))),
         ...(options.length && { product_options }),
       } });
       if (!task.ok) throw new Error(`start photos: ${why(task)}`);

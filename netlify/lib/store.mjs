@@ -20,6 +20,8 @@ function piece(id, o) {
     ref: o.ref, refUrl: book ? `https://www.churchofjesuschrist.org/study/scriptures/bofm/${book}/${chapter}?lang=eng&id=p${verse}#p${verse}`
       : "https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",
     blurb: o.blurb,
+    // Colors of the same design share a group; the site shows one card per group with a color picker.
+    group: o.group || id,
     variants: Object.fromEntries((o.sizes || APPAREL).map(size => [size, `rc-${id}-${size}`])),
   };
 }
@@ -73,16 +75,76 @@ const LINE_PIECES = {
     name: "Lehi's Tent Co. Camp Mug", kind: "Mug", color: "Enamel, 12 oz", swatch: "#FFFFFF", price: { default: 2600 }, sizes: ONE, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
     blurb: "An enamel camp mug for the man who dwelt in a tent. Hand wash only." },
 };
+// Big backs: one bold illustration and the verse set big, each as a hoodie and a tee.
+const BIG = [
+  ["stripling", "Stripling 2000", ["Bone", "#F5E8CE"], ["Cream", "#F3EEE1"], "Alma 56:48", ["alma", 56, 48], "Two thousand young warriors marching under a big red 2000, and the words of their mothers."],
+  ["shelem", "Mount Shelem", ["Navy Blazer", "#171F2C"], ["Black", "#000000"], "Ether 3:4", ["ether", 3, 4], "Sixteen stones shining above the peak, and the brother of Jared's prayer."],
+  ["tree", "Tree of Life", ["Forest Green", "#335231"], ["Shadow", "#4A4748"], "1 Nephi 8:10", ["1-ne", 8, 10], "Lehi's tree, its white fruit and the rod of iron leading to it."],
+  ["samuel", "Samuel on the Wall", ["Charcoal Heather", "#463E3D"], ["Shadow", "#4A4748"], "Helaman 16:2", ["hel", 16, 2], "Samuel on the city wall, arms raised, while every arrow misses."],
+  ["ship", "Nephi's Ship", ["Bone", "#F5E8CE"], ["Oatmeal", "#B7A99A"], "1 Nephi 17:8", ["1-ne", 17, 8], "Nephi's ship on the waves under a red halftone sun."],
+  ["liahona", "The Liahona", ["Maroon", "#7D263A"], ["Black", "#000000"], "1 Nephi 16:29", ["1-ne", 16, 29], "The brass ball with its two spindles. By small means, great things."],
+];
+// Photos come from Printful (Front first, then Back), numbered images/products/<id>-<n>.jpg.
+const views = (id, labels) => labels.map((label, i) => ({ src: `images/products/${id}-${i + 1}.jpg`, label }));
+for (const [k, name, [hc, hs], [tc, ts], ref, verse, blurb] of BIG) {
+  const h = `${k}-hoodie`, tid = k === "samuel" ? "samuel-wall-tee" : `${k}-tee`;
+  LINE_PIECES[h] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb, images: views(h, ["Front", "Back", "Women's", "Flat"]) };
+  LINE_PIECES[tid] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb, images: views(tid, ["Front", "Back"]) };
+}
+// Type tees: a chest line and a verse set big across the back (art in scripts/printful/art-type.mjs).
+const TYPE = [
+  ["jesus-king-tee", "Jesus Is King Tee", "Black", "#000000", "2 Nephi 10:14", ["2-ne", 10, 14], "Jesus is King across the chest, and the king of heaven set big across the shoulders."],
+  ["jesus-king-cream-tee", "Jesus Is King Tee", "Cream", "#F3EEE1", "2 Nephi 10:14", ["2-ne", 10, 14], "Jesus is King across the chest, and the king of heaven set big across the shoulders."],
+  ["talk-christ-tee", "We Talk of Christ Tee", "Cream", "#F3EEE1", "2 Nephi 25:26", ["2-ne", 25, 26], "Nephi's four lines about Christ, stacked big across the back."],
+  ["sure-foundation-tee", "Sure Foundation Tee", "Shadow", "#4A4748", "Helaman 5:12", ["hel", 5, 12], "Upon the rock of our Redeemer, in big gold and bone type across the back."],
+  ["light-life-tee", "Light and Life Tee", "Black", "#000000", "3 Nephi 11:11", ["3-ne", 11, 11], "The Savior's words at Bountiful: I am the light and the life of the world."],
+  ["come-unto-tee", "Come Unto Christ Tee", "Oatmeal", "#B7A99A", "Moroni 10:32", ["moro", 10, 32], "Moroni's last invitation, set big across the back."],
+  ["seek-jesus-tee", "Seek This Jesus Tee", "Oatmeal", "#B7A99A", "Ether 12:41", ["ether", 12, 41], "Moroni's counsel to seek this Jesus, across the shoulders."],
+  ["none-other-tee", "None Other Name Tee", "Black", "#000000", "2 Nephi 25:20", ["2-ne", 25, 20], "There is none other name given under heaven, in five bold lines."],
+  ["press-forward-tee", "Press Forward Tee", "Cream", "#F3EEE1", "2 Nephi 31:20", ["2-ne", 31, 20], "Press forward with a steadfastness in Christ, big across the back."],
+  ["son-of-god-tee", "Thou Son of God Tee", "Black", "#000000", "Alma 36:18", ["alma", 36, 18], "Alma's prayer at the turning point of his life."],
+  ["hosanna-tee", "Hosanna Tee", "Oatmeal", "#B7A99A", "3 Nephi 11:17", ["3-ne", 11, 17], "The multitude's cry at Bountiful, big across the back."],
+  ["king-earth-tee", "King of All the Earth Tee", "Shadow", "#4A4748", "Alma 5:50", ["alma", 5, 50], "Behold the glory of the King of all the earth, in gold and bone."],
+];
+for (const [id, name, color, swatch, ref, verse, blurb] of TYPE)
+  LINE_PIECES[id] = { name, kind: "Tee", color, swatch, price: tee, ref, verse, blurb, images: views(id, ["Front", "Back"]) };
+// Extra colors: the same art on another color of the same blank, picked so the ink still reads well (light ink on
+// dark shirts, dark ink on light ones). Each color is its own piece with its own Printful product; `group` ties it
+// to the base piece. [base piece, new piece, color, swatch]
+const COLORS = [
+  ["jesus-king-tee", "jesus-king-cream-tee", null, null], ["jesus-king-tee", "jesus-king-shadow-tee", "Shadow", "#4A4748"],
+  ["talk-christ-tee", "talk-christ-oatmeal-tee", "Oatmeal", "#B7A99A"], ["sure-foundation-tee", "sure-foundation-black-tee", "Black", "#000000"],
+  ["light-life-tee", "light-life-shadow-tee", "Shadow", "#4A4748"], ["come-unto-tee", "come-unto-cream-tee", "Cream", "#F3EEE1"],
+  ["seek-jesus-tee", "seek-jesus-cream-tee", "Cream", "#F3EEE1"], ["none-other-tee", "none-other-shadow-tee", "Shadow", "#4A4748"],
+  ["press-forward-tee", "press-forward-oatmeal-tee", "Oatmeal", "#B7A99A"], ["son-of-god-tee", "son-of-god-shadow-tee", "Shadow", "#4A4748"],
+  ["hosanna-tee", "hosanna-cream-tee", "Cream", "#F3EEE1"], ["king-earth-tee", "king-earth-black-tee", "Black", "#000000"],
+  ["stripling-tee", "stripling-oatmeal-tee", "Oatmeal", "#B7A99A"], ["shelem-tee", "shelem-shadow-tee", "Shadow", "#4A4748"],
+  ["tree-tee", "tree-black-tee", "Black", "#000000"], ["samuel-wall-tee", "samuel-wall-black-tee", "Black", "#000000"],
+  ["ship-tee", "ship-cream-tee", "Cream", "#F3EEE1"], ["liahona-tee", "liahona-shadow-tee", "Shadow", "#4A4748"],
+  ["barge-tee", "barge-oatmeal-tee", "Oatmeal", "#B7A99A"], ["irreantum-tee", "irreantum-cream-tee", "Cream", "#F3EEE1"],
+  ["samuel-tee", "samuel-black-tee", "Black", "#000000"], ["stories-tee", "stories-oatmeal-tee", "Oatmeal", "#B7A99A"],
+  ["lehi-tee", "lehi-black-tee", "Black", "#000000"],
+  ["rent-hoodie", "rent-navy-hoodie", "Navy Blazer", "#171F2C"], ["shelem-hoodie", "shelem-black-hoodie", "Black", "#080808"],
+  ["tree-hoodie", "tree-black-hoodie", "Black", "#080808"], ["samuel-hoodie", "samuel-black-hoodie", "Black", "#080808"],
+  ["liahona-hoodie", "liahona-black-hoodie", "Black", "#080808"],
+];
+// Printful's default photos: a tee's first two are front and back; a hoodie's back comes 6th, after four front views.
+const shots = id => id.endsWith("-hoodie") ? [{ src: `images/products/${id}-1.jpg`, label: "Front" }, { src: `images/products/${id}-6.jpg`, label: "Back" }] : views(id, ["Front", "Back"]);
+// A null color means the piece already exists and only joins the group.
+for (const [base, id, color, swatch] of COLORS)
+  LINE_PIECES[id] = color ? { ...LINE_PIECES[base], group: base, color, swatch, images: shots(id) } : { ...LINE_PIECES[id], group: base };
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>
-  ({ id, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
+  ({ id, group: p.group, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
 
 export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
     color: "Shadow",
     image: "images/liberty-back-v3.jpg",
+    group: "liberty", swatch: "#4A4A47",
+    images: [{ src: "images/liberty-front.jpg", label: "Front" }, { src: "images/liberty-back-v3.jpg", label: "Back" }],
     // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
     // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
     // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
@@ -92,16 +154,23 @@ export const PRODUCTS = {
     name: "Stripling 2000 Tee",
     color: "Black",
     image: "images/stripling-back-v3.jpg",
+    group: "stripling", swatch: "#1B1B1B",
+    images: [{ src: "images/stripling-front-v3.jpg", label: "Front" }, { src: "images/stripling-back-v3.jpg", label: "Back" }],
     variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
     color: "Cream",
     image: "images/cureloms-back-v2.jpg",
+    group: "cureloms", swatch: "#EFEAD8",
+    images: [{ src: "images/cureloms-front.jpg", label: "Front" }, { src: "images/cureloms-back-v2.jpg", label: "Back" }],
     variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
   },
   ...LINE,
 };
+// The Drop 001 tees and their colors, for the homepage's color picker (every color in a group shares one card).
+export const dropTees = () => Object.entries(PRODUCTS).filter(([id]) => !LINE[id]).map(([id, p]) =>
+  ({ id, group: p.group || id, name: p.name, color: p.color, swatch: p.swatch, images: p.images }));
 
 // The Printful store orders go to ("Rent Coat Co.", the Manual order / API store). Not a secret.
 // The PRINTFUL_STORE_ID environment variable overrides it.

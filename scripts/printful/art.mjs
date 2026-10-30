@@ -17,11 +17,11 @@ export const THREAD = { white: "#FFFFFF", black: "#000000", oldGold: "#A67843", 
 export const SIZE = { DTG: [1800, 2400], CHEST: [600, 600], HAT: [750, 270], HATBACK: [600, 150], BEANIE: [750, 300], LEG: [420, 1800], MUG: [1350, 525] };
 
 const FLAG = "M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z";
-const flag = (cx, cy, s, cloth, pole) => `<g transform="translate(${cx - s / 2} ${cy - s / 2}) scale(${s / 100})"><circle cx="11" cy="5" r="5" fill="${pole}"/><rect x="8" y="8" width="6" height="92" rx="2" fill="${pole}"/><path d="${FLAG}" fill="${cloth}"/></g>`;
+export const flag = (cx, cy, s, cloth, pole) => `<g transform="translate(${cx - s / 2} ${cy - s / 2}) scale(${s / 100})"><circle cx="11" cy="5" r="5" fill="${pole}"/><rect x="8" y="8" width="6" height="92" rx="2" fill="${pole}"/><path d="${FLAG}" fill="${cloth}"/></g>`;
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const FONT = { d: "Archivo", s: "Instrument Serif", m: "IBM Plex Mono" };
 // t(x, y, size, text, {f: d|s|m, w: weight, fill, ls: letter-spacing, a: anchor, wd: width %})
-function t(x, y, size, txt, o = {}) {
+export function t(x, y, size, txt, o = {}) {
   const f = o.f || "d";
   const st = [`font-family:'${FONT[f]}'`, `font-size:${size}px`, `font-weight:${o.w || (f === "d" ? 900 : f === "m" ? 500 : 400)}`,
     f === "d" ? `font-stretch:${o.wd || 66}%` : "", f === "s" ? "font-style:italic" : "", `letter-spacing:${o.ls || 0}px`].filter(Boolean).join(";");
@@ -34,7 +34,7 @@ export const lock = (cx, y, size, ink, cloth, pole = ink) => `<g class="lock" da
 // Each file may add `mark` (extra SVG drawn on top, usually the mark) and `fit` (a transform that makes room for it).
 
 // Left-chest graphics on a DTG front: centered 3.6" right of center (the wearer's left), 1.9" below the top of the area.
-const chest = inner => `<g transform="translate(1440 280)">${inner}</g>`;
+export const chest = inner => `<g transform="translate(1440 280)">${inner}</g>`;
 
 // ---- Icons for the Book of Mormon Stories grid. Each draws in a 200 x 200 box centered on 0,0. ----
 const ICON = (ink, accent) => {
@@ -190,4 +190,4 @@ for (const f of FILES) {
   if (FIT[key]) f.fit = FIT[key];
 }
 
-export const fileName = f => `${f.id}-${f.place}.png`;
+export const fileName = f => f.file || `${f.id}-${f.place}.png`;
