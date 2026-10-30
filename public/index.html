@@ -495,6 +495,18 @@ section { padding-block: clamp(64px, 8vw, 120px) }
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--muted) }
 .swatch { display: inline-flex; align-items: center; gap: 8px }
 .swatch i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(22,32,27,.3) }
+/* Color picker: shown instead of the single swatch when a design comes in more than one color. 22px swatches in a 30px
+   target; the negative margin keeps the meta row (and so every card in the row) the same height as with one color. */
+.swatch.picker { gap: 10px }
+.swatches { display: inline-flex; flex-wrap: wrap; gap: 4px; margin: -15px 0 -15px -4px }
+.sw { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer }
+.sw::before { content: ""; width: 22px; height: 22px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(22,32,27,.3) }
+.sw:hover::before { box-shadow: inset 0 0 0 1px rgba(22,32,27,.65) }
+.sw[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--ink) }
+@media (forced-colors: active) {
+  .sw::before { forced-color-adjust: none; border: 1px solid CanvasText; box-shadow: none }
+  .sw[aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: 0 }
+}
 .ref { color: var(--rent); text-underline-offset: 3px }
 .ref:hover { color: var(--rent-dark) }
 .blurb { margin: 0; font-size: 16px; color: var(--text) }
@@ -933,10 +945,11 @@ let LAUNCH_PRICE = { default: 3500, "2XL": 3800 };
 let SHIPPING_CENTS = 599;
 let closedSundays = true;
 
+// The Drop 001 tees as the page first shows them. Other colors of a design (same group) arrive in /api/config's tees.
 const PRODUCTS = [
-  { id: "liberty", name: "Title of Liberty", color: "Shadow", back: "images/liberty-back-v3.jpg" },
-  { id: "stripling", name: "Stripling 2000", color: "Black", back: "images/stripling-back-v3.jpg" },
-  { id: "cureloms", name: "Cureloms & Cumoms", color: "Cream", back: "images/cureloms-back-v2.jpg" },
+  { id: "liberty", group: "liberty", name: "Title of Liberty", color: "Shadow", swatch: "#4A4A47", back: "images/liberty-back-v3.jpg", front: "images/liberty-front.jpg" },
+  { id: "stripling", group: "stripling", name: "Stripling 2000", color: "Black", swatch: "#1B1B1B", back: "images/stripling-back-v3.jpg", front: "images/stripling-front-v3.jpg" },
+  { id: "cureloms", group: "cureloms", name: "Cureloms & Cumoms", color: "Cream", swatch: "#EFEAD8", back: "images/cureloms-back-v2.jpg", front: "images/cureloms-front.jpg" },
 ];
 const SIZES = ["S", "M", "L", "XL", "2XL", "OS"];
 const sizeText = size => size === "OS" ? "One size" : `Size ${size}`;
@@ -1002,60 +1015,147 @@ function wireCard(card) {
 }
 document.querySelectorAll(".card").forEach(wireCard);
 
-// Cards for the live pieces of the line. Same layout as the Drop 001 cards; the two photos flip like front and back.
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+// Color picker: each color of a design is its own product id, and colors of one design share a group and one card.
+// The card's single swatch becomes a row of swatch buttons; pick(id) shows that color on the card.
+function colorPicker(card, ids, current, pick) {
+  const holder = card.querySelector(".meta .swatch");
+  if (!holder || ids.length < 2 || holder.classList.contains("picker")) return;
+  const row = document.createElement("span"), label = document.createElement("span");
+  row.className = "swatches"; row.setAttribute("role", "group"); row.setAttribute("aria-label", "Color");
+  label.className = "color-name";
+  const mark = id => {
+    row.querySelectorAll(".sw").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+    label.textContent = byId[id].color;
+  };
+  for (const id of ids) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "sw"; b.dataset.id = id; b.title = byId[id].color;
+    b.setAttribute("aria-label", byId[id].color);
+    b.style.setProperty("--c", byId[id].swatch || "#ccc");
+    b.addEventListener("click", () => { if (b.getAttribute("aria-pressed") !== "true") { mark(id); pick(id); } });
+    row.append(b);
+  }
+  // Left and right arrows move between the colors, as well as Tab.
+  row.addEventListener("keydown", e => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const all = [...row.querySelectorAll(".sw")], i = all.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    all[(i + (e.key === "ArrowRight" ? 1 : all.length - 1)) % all.length].focus();
+  });
+  holder.textContent = ""; holder.classList.add("picker"); holder.append(row, label);
+  mark(current);
+}
+
+// Drop 001 tees in more colors (/api/config's tees). A design with one color keeps its card exactly as the HTML has it.
+function showColors(tees) {
+  if (!Array.isArray(tees)) return;
+  const groups = new Map();
+  for (const t of tees) {
+    if (!t?.id || !Array.isArray(t.images) || !t.images.length) continue;
+    const g = t.group || t.id, base = PRODUCTS.find(x => x.group === g);
+    const src = label => t.images.find(i => i.label === label)?.src;
+    if (!byId[t.id]) byId[t.id] = { id: t.id, group: g, name: base?.name || String(t.name || "").replace(/ Tee$/, ""), color: t.color, swatch: t.swatch,
+      front: src("Front") || t.images[0].src, back: src("Back") || (t.images[1] || t.images[0]).src };
+    groups.has(g) ? groups.get(g).push(t.id) : groups.set(g, [t.id]);
+  }
+  for (const [g, ids] of groups) {
+    const card = document.getElementById(g), buy = card?.querySelector(".buy");
+    if (!buy || card.hasAttribute("data-line") || ids.length < 2) continue;
+    if (!ids.includes(buy.dataset.id)) ids.unshift(buy.dataset.id);
+    const back = card.querySelector(".shot img:not(.alt)"), front = card.querySelector(".shot img.alt");
+    // Alt text keeps its wording; only the color changes.
+    const first = byId[buy.dataset.id].color;
+    for (const img of [back, front]) if (img) img.dataset.alt = img.alt.replace(` in ${first},`, " in {color},");
+    colorPicker(card, ids, buy.dataset.id, id => {
+      const p = byId[id];
+      if (back) { back.src = p.back; back.alt = back.dataset.alt.replace("{color}", p.color); }
+      if (front) { front.src = p.front; front.alt = front.dataset.alt.replace("{color}", p.color); }
+      buy.dataset.id = id;
+      refreshPrices();
+    });
+  }
+}
+
+// Cards for the live pieces of the line, one per design (group); the first piece of a group is the color it opens on.
+// Same layout as the Drop 001 cards; the photo buttons switch views and hovering shows the back.
 function showLine(line) {
   if (!Array.isArray(line) || !line.length) return;
-  const grid = $("line-grid");
+  const grid = $("line-grid"), groups = new Map();
   for (const p of line) {
-    if (byId[p.id]) continue;
-    byId[p.id] = { id: p.id, name: p.name, color: p.color, back: p.images[0].src, price: p.price };
-    // Each photo is { src, label }: the buttons are its labels (Back, Front, On model), and tapping the photo shows the next one.
-    const views = p.images.map((img, i) => `<button type="button" aria-pressed="${i === 0}" data-src="${esc(img.src)}">${esc(img.label || `Photo ${i + 1}`)}</button>`).join("");
-    const sizes = p.sizes.map(size => `<label><input type="radio" name="size-${esc(p.id)}" value="${esc(size)}"${size === "M" || p.sizes.length === 1 ? " checked" : ""}><span>${size === "OS" ? "One size" : esc(size)}</span></label>`).join("");
+    if (!p?.id || byId[p.id] || !Array.isArray(p.images) || !p.images.length) continue;
+    byId[p.id] = { id: p.id, group: p.group || p.id, name: p.name, color: p.color, swatch: p.swatch, back: p.images[0].src, price: p.price };
+    const g = p.group || p.id;
+    groups.has(g) ? groups.get(g).push(p) : groups.set(g, [p]);
+  }
+  if (!groups.size) return;
+  const sizesHtml = (name, sizes) => sizes.map(size => `<label><input type="radio" name="${esc(name)}" value="${esc(size)}"${size === "M" || sizes.length === 1 ? " checked" : ""}><span>${size === "OS" ? "One size" : esc(size)}</span></label>`).join("");
+  for (const [g, pieces] of groups) {
+    const p = pieces[0];
     const card = document.createElement("article");
-    card.className = "card"; card.id = p.id; card.dataset.line = "";
+    card.className = "card"; card.id = g; card.dataset.line = "";
     card.innerHTML = `<div class="shot">
-        <img class="view" src="${esc(p.images[0].src)}" width="1000" height="1000" loading="lazy" alt="${esc(p.name)} in ${esc(p.color)}, ${esc((p.images[0].label || "photo").toLowerCase())}">
+        <img class="view" src="${esc(p.images[0].src)}" width="1000" height="1000" loading="lazy" alt="">
         <span class="tag eyebrow">${esc(p.kind)}</span>
-        ${p.images.length > 1 ? `<div class="views" role="group" aria-label="Show view">${views}</div>` : ""}
+        <div class="views" role="group" aria-label="Show view"></div>
       </div>
       <div class="info">
         <div class="row"><h3>${esc(p.name)}</h3><span class="price"></span></div>
         <span class="eyebrow meta"><span class="swatch"><i style="background:${esc(p.swatch)}" aria-hidden="true"></i>${esc(p.color)}</span><a class="ref" href="${esc(p.refUrl)}" target="_blank" rel="noopener">${esc(p.ref)}</a></span>
         <p class="blurb">${esc(p.blurb)}</p>
         <div class="size-wrap">
-          <fieldset class="sizes"${p.sizes.length === 1 ? " hidden" : ""}><legend>Size</legend>${sizes}</fieldset>
+          <fieldset class="sizes"${p.sizes.length === 1 ? " hidden" : ""}><legend>Size</legend>${sizesHtml(`size-${g}`, p.sizes)}</fieldset>
           <button type="button" class="btn rent buy" data-id="${esc(p.id)}">Add to bag</button>
           <p class="note" aria-live="polite"></p>
         </div>
       </div>`;
     grid.append(card);
     wireCard(card);
-    const view = card.querySelector("img.view"), buttons = [...card.querySelectorAll(".views button")];
+    const view = card.querySelector("img.view"), viewsEl = card.querySelector(".views"), buy = card.querySelector(".buy"), fs = card.querySelector(".sizes");
+    let cur = p;
+    // Each photo is { src, label }: the buttons are its labels (Front, Back, Women's), and tapping the photo shows the next one.
+    const buttons = () => [...viewsEl.querySelectorAll("button")];
+    const picked = () => buttons().find(x => x.getAttribute("aria-pressed") === "true");
     const pick = b => {
-      buttons.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      buttons().forEach(x => x.setAttribute("aria-pressed", String(x === b)));
       view.src = b.dataset.src;
-      view.alt = `${p.name} in ${p.color}, ${b.textContent.toLowerCase()}`;
+      view.alt = `${cur.name} in ${cur.color}, ${(b.dataset.label || "photo").toLowerCase()}`;
     };
-    buttons.forEach(b => b.addEventListener("click", () => pick(b)));
+    const setPiece = q => {
+      const was = picked()?.dataset.label;
+      cur = q;
+      viewsEl.innerHTML = q.images.map((img, i) => `<button type="button" aria-pressed="false" data-src="${esc(img.src)}" data-label="${esc(img.label || "")}">${esc(img.label || `Photo ${i + 1}`)}</button>`).join("");
+      viewsEl.hidden = q.images.length < 2;
+      buttons().forEach(b => b.addEventListener("click", () => pick(b)));
+      pick(buttons().find(b => was && b.dataset.label === was) || buttons()[0]);
+      buy.dataset.id = q.id;
+      // Colors of one design normally share sizes; if one doesn't, its own sizes replace the buttons.
+      if ([...fs.querySelectorAll("input")].map(i => i.value).join() !== q.sizes.join()) {
+        const size = fs.querySelector("input:checked")?.value;
+        fs.innerHTML = `<legend>Size</legend>${sizesHtml(`size-${g}`, q.sizes)}`;
+        fs.hidden = q.sizes.length === 1;
+        const keep = [...fs.querySelectorAll("input")].find(i => i.value === size);
+        if (keep) keep.checked = true;
+        fs.querySelectorAll("input").forEach(r => r.addEventListener("change", refreshPrices));
+      }
+    };
+    setPiece(p);
+    colorPicker(card, pieces.map(x => x.id), p.id, id => { setPiece(pieces.find(x => x.id === id)); refreshPrices(); });
     // On a mouse, hovering shows the back (or the second photo) without changing the picked view.
-    const peek = buttons.find(b => b.textContent === "Back") || buttons[1];
-    const picked = () => buttons.find(x => x.getAttribute("aria-pressed") === "true");
-    if (peek && matchMedia("(hover: hover)").matches) {
+    const peek = () => buttons().find(b => b.dataset.label === "Back") || buttons()[1];
+    if (matchMedia("(hover: hover)").matches) {
       const shot = card.querySelector(".shot");
-      shot.addEventListener("mouseenter", () => { if (picked() !== peek) view.src = peek.dataset.src; });
-      shot.addEventListener("mouseleave", () => { view.src = picked().dataset.src; });
+      shot.addEventListener("mouseenter", () => { const k = peek(); if (k && picked() !== k) view.src = k.dataset.src; });
+      shot.addEventListener("mouseleave", () => { const b = picked(); if (b) view.src = b.dataset.src; });
     }
     view.addEventListener("click", () => {
-      if (!buttons.length) return;
-      const i = buttons.findIndex(x => x.getAttribute("aria-pressed") === "true");
-      pick(buttons[(i + 1) % buttons.length]);
+      const all = buttons();
+      if (all.length > 1) pick(all[(all.indexOf(picked()) + 1) % all.length]);
     });
   }
   $("line").hidden = false;
-  restoreBag();
-  refreshPrices(); renderBag();
 }
 
 const shortDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" });
@@ -1113,7 +1213,10 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
+  showColors(c.tees);
   showLine(c.line);
+  // Colors and line pieces are known now, so a bag saved with them comes back in full.
+  restoreBag(true);
   lastPhase = ""; showDates(); renderBag(); refreshPrices(); tick();
 }).catch(() => {});
 
@@ -1127,24 +1230,30 @@ const money = c => "$" + (c / 100).toFixed(c % 100 ? 2 : 0);
 // Each card shows the price for the size that's picked (2XL costs $3 more), and the button repeats it while checkout is open.
 function setBuyLabel(card, ph = phase()) {
   const size = card.querySelector(".sizes input:checked")?.value || "M", b = card.querySelector(".buy");
-  if (b) b.textContent = canBuy(ph) ? `Add to bag · ${size === "OS" ? "One size" : size} · ${money(priceFor(card.id, size))}` : ph === "before" ? "Opens Nov 14" : "Back Monday";
+  if (b) b.textContent = canBuy(ph) ? `Add to bag · ${size === "OS" ? "One size" : size} · ${money(priceFor(b.dataset.id, size))}` : ph === "before" ? "Opens Nov 14" : "Back Monday";
 }
 function refreshPrices() {
   document.querySelectorAll(".card").forEach(card => {
     const size = card.querySelector(".sizes input:checked")?.value || "M", el = card.querySelector(".price");
-    if (el) el.innerHTML = card.hasAttribute("data-line") ? money(priceFor(card.id, size))
+    if (el) el.innerHTML = card.hasAttribute("data-line") ? money(priceFor(card.querySelector(".buy")?.dataset.id, size))
       : now() < closes ? `${money(priceOf(size))} <s>${money(Object.hasOwn(PRICE, size) ? PRICE[size] : PRICE.default)}</s>` : money(priceOf(size));
     setBuyLabel(card);
   });
 }
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
-let bag = [];
-// Reads the saved bag, keeping only things this page can sell. Runs again once the line's pieces have loaded.
-function restoreBag() {
-  try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]").filter(l => byId[l.id] && SIZES.includes(l.size)); } catch (e) { bag = []; }
+let bag = [], held = [];
+// Reads the saved bag, keeping only things this page can sell. Runs again (final) once /api/config has brought the other
+// colors and the line's pieces; until then their saved lines are held, so changing the bag early doesn't drop them.
+function restoreBag(final) {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem("rc-bag") || "[]"); } catch (e) {}
+  if (!Array.isArray(saved)) saved = [];
+  const ok = l => byId[l?.id] && SIZES.includes(l.size);
+  bag = saved.filter(ok);
+  held = final ? [] : saved.filter(l => !ok(l) && typeof l?.id === "string" && SIZES.includes(l.size));
 }
 restoreBag();
-const save = () => { try { localStorage.setItem("rc-bag", JSON.stringify(bag)); } catch (e) {} };
+const save = () => { try { localStorage.setItem("rc-bag", JSON.stringify([...bag, ...held])); } catch (e) {} };
 let lastFocus = null, toastTimer = 0;
 
 function addToBag(id, size) {
@@ -1153,7 +1262,7 @@ function addToBag(id, size) {
   if (count >= 10) { showToast("Max 10 items per order"); return; }
   if (line) line.qty++; else bag.push({ id, size, qty: 1 });
   save(); renderBag();
-  showToast(`${byId[id].name} · ${size === "OS" ? "one size" : size} added`);
+  showToast(`${byId[id].name} · ${byId[id].color} · ${size === "OS" ? "one size" : size} added`);
 }
 function showToast(text) {
   const t = $("toast"); t.textContent = text; t.hidden = false;
