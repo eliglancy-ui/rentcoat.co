@@ -3579,5 +3579,23 @@
     "raw:v2/variants/5590946542": {
       "error": "Printful 404: \"Not found\""
     }
+  },
+  "probeAreas": {
+    "1626:front": {
+      "printfile_id": 1964,
+      "width": 4500,
+      "height": 5100,
+      "dpi": 300,
+      "fill_mode": "fit",
+      "can_rotate": false
+    },
+    "1626:back": {
+      "printfile_id": 1964,
+      "width": 4500,
+      "height": 5100,
+      "dpi": 300,
+      "fill_mode": "fit",
+      "can_rotate": false
+    }
   }
 }
