@@ -20,6 +20,8 @@ function piece(id, o) {
     ref: o.ref, refUrl: book ? `https://www.churchofjesuschrist.org/study/scriptures/bofm/${book}/${chapter}?lang=eng&id=p${verse}#p${verse}`
       : "https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",
     blurb: o.blurb,
+    // Colors of the same design share a group; the site shows one card per group with a color picker.
+    group: o.group || id,
     variants: Object.fromEntries((o.sizes || APPAREL).map(size => [size, `rc-${id}-${size}`])),
   };
 }
@@ -106,16 +108,41 @@ const TYPE = [
 ];
 for (const [id, name, color, swatch, ref, verse, blurb] of TYPE)
   LINE_PIECES[id] = { name, kind: "Tee", color, swatch, price: tee, ref, verse, blurb, images: views(id, ["Front", "Back"]) };
+// Extra colors: the same art on another color of the same blank, picked so the ink still reads well (light ink on
+// dark shirts, dark ink on light ones). Each color is its own piece with its own Printful product; `group` ties it
+// to the base piece. [base piece, new piece, color, swatch]
+const COLORS = [
+  ["jesus-king-tee", "jesus-king-cream-tee", null, null], ["jesus-king-tee", "jesus-king-shadow-tee", "Shadow", "#4A4748"],
+  ["talk-christ-tee", "talk-christ-oatmeal-tee", "Oatmeal", "#B7A99A"], ["sure-foundation-tee", "sure-foundation-black-tee", "Black", "#000000"],
+  ["light-life-tee", "light-life-shadow-tee", "Shadow", "#4A4748"], ["come-unto-tee", "come-unto-cream-tee", "Cream", "#F3EEE1"],
+  ["seek-jesus-tee", "seek-jesus-cream-tee", "Cream", "#F3EEE1"], ["none-other-tee", "none-other-shadow-tee", "Shadow", "#4A4748"],
+  ["press-forward-tee", "press-forward-oatmeal-tee", "Oatmeal", "#B7A99A"], ["son-of-god-tee", "son-of-god-shadow-tee", "Shadow", "#4A4748"],
+  ["hosanna-tee", "hosanna-cream-tee", "Cream", "#F3EEE1"], ["king-earth-tee", "king-earth-black-tee", "Black", "#000000"],
+  ["stripling-tee", "stripling-oatmeal-tee", "Oatmeal", "#B7A99A"], ["shelem-tee", "shelem-shadow-tee", "Shadow", "#4A4748"],
+  ["tree-tee", "tree-black-tee", "Black", "#000000"], ["samuel-wall-tee", "samuel-wall-black-tee", "Black", "#000000"],
+  ["ship-tee", "ship-cream-tee", "Cream", "#F3EEE1"], ["liahona-tee", "liahona-shadow-tee", "Shadow", "#4A4748"],
+  ["barge-tee", "barge-oatmeal-tee", "Oatmeal", "#B7A99A"], ["irreantum-tee", "irreantum-cream-tee", "Cream", "#F3EEE1"],
+  ["samuel-tee", "samuel-black-tee", "Black", "#000000"], ["stories-tee", "stories-oatmeal-tee", "Oatmeal", "#B7A99A"],
+  ["lehi-tee", "lehi-black-tee", "Black", "#000000"],
+  ["rent-hoodie", "rent-navy-hoodie", "Navy Blazer", "#171F2C"], ["shelem-hoodie", "shelem-black-hoodie", "Black", "#080808"],
+  ["tree-hoodie", "tree-black-hoodie", "Black", "#080808"], ["samuel-hoodie", "samuel-black-hoodie", "Black", "#080808"],
+  ["liahona-hoodie", "liahona-black-hoodie", "Black", "#080808"],
+];
+// A null color means the piece already exists and only joins the group.
+for (const [base, id, color, swatch] of COLORS)
+  LINE_PIECES[id] = color ? { ...LINE_PIECES[base], group: base, color, swatch, images: views(id, ["Front", "Back"]) } : { ...LINE_PIECES[id], group: base };
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>
-  ({ id, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
+  ({ id, group: p.group, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
 
 export const PRODUCTS = {
   liberty: {
     name: "Title of Liberty Tee",
     color: "Shadow",
     image: "images/liberty-back-v3.jpg",
+    group: "liberty", swatch: "#4A4A47",
+    images: [{ src: "images/liberty-front.jpg", label: "Front" }, { src: "images/liberty-back-v3.jpg", label: "Back" }],
     // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
     // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
     // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
@@ -125,16 +152,23 @@ export const PRODUCTS = {
     name: "Stripling 2000 Tee",
     color: "Black",
     image: "images/stripling-back-v3.jpg",
+    group: "stripling", swatch: "#1B1B1B",
+    images: [{ src: "images/stripling-front-v3.jpg", label: "Front" }, { src: "images/stripling-back-v3.jpg", label: "Back" }],
     variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
   },
   cureloms: {
     name: "Cureloms & Cumoms Tee",
     color: "Cream",
     image: "images/cureloms-back-v2.jpg",
+    group: "cureloms", swatch: "#EFEAD8",
+    images: [{ src: "images/cureloms-front.jpg", label: "Front" }, { src: "images/cureloms-back-v2.jpg", label: "Back" }],
     variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
   },
   ...LINE,
 };
+// The Drop 001 tees and their colors, for the homepage's color picker (every color in a group shares one card).
+export const dropTees = () => Object.entries(PRODUCTS).filter(([id]) => !LINE[id]).map(([id, p]) =>
+  ({ id, group: p.group || id, name: p.name, color: p.color, swatch: p.swatch, images: p.images }));
 
 // The Printful store orders go to ("Rent Coat Co.", the Manual order / API store). Not a secret.
 // The PRINTFUL_STORE_ID environment variable overrides it.
