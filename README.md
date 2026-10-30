@@ -9,7 +9,7 @@ public/                     the website (what visitors see)
   policies.html             shipping, returns, cancellations, accessibility and contact
   terms.html                terms of sale (preorders, delays, cancellations, disputes)
   privacy.html              privacy policy
-  cookies.html              cookie policy (the site sets no cookies; only the bag in local storage)
+  cookies.html              cookie policy (Google Analytics cookies, plus the bag in local storage)
   about.html                the story behind the name, written so Google and AI search can quote it
   title-of-liberty-shirt/   one page per shirt, each aimed at what people search for (also
   stripling-warrior-shirt/  stripling and curelom), with its own FAQ and structured data
@@ -51,7 +51,7 @@ The `DROP`, `PRICE` and `SHIPPING_CENTS` values at the bottom of `index.html` ar
 | `STRIPE_WEBHOOK_SECRET` | Stripe > Developers > Webhooks > your endpoint > Signing secret (`whsec_...`) |
 | `PRINTFUL_TOKEN` | Printful developer portal > private token |
 | `PRINTFUL_STORE_ID` | Only if your Printful token covers more than one store (Printful's error will ask for a store ID) |
-| `ADMIN_KEY` | Any long password you make up. Protects the variant-list page. |
+| `ADMIN_KEY` | Any long password you make up. Protects the variant-list page and the visit stats page. |
 | `CLOSED_SUNDAYS` | Leave unset to pause checkout every Sunday (Eastern time) during a drop. Set to `off` to sell on Sundays too. |
 | `PRINTFUL_AUTO_CONFIRM` | Leave unset so orders after launch week go straight to print (Printful charges your billing card for each one). Set to `off` to make every order a draft you confirm by hand. |
 | `STRIPE_TAX` | Leave unset until a parent registers the business for North Carolina sales tax and adds that registration in Stripe > Tax. Then set it to `on` and redeploy: Stripe adds sales tax at checkout (clothing and shipping). |
@@ -73,6 +73,12 @@ Action rebuilds that piece in Printful and commits new photos. It needs the `PRI
 
 **Embroidery:** Printful charges a one-time $6.50 digitizing fee per embroidered design, on its first order.
 
+## Visit counts
+
+Every page sends one tiny "page viewed" ping to `/api/hit`, which adds to that day's totals in Netlify Blobs: views per
+page, per linking site, and phones vs computers. No cookies, no IP addresses, nothing that tells visitors apart.
+See them at **rentcoat.co/api/stats?key=YOUR_ADMIN_KEY** (add `&days=90` for longer). Bots are left out.
+
 ## How an order flows
 
 1. Shopper adds shirts to the bag and taps Checkout.
@@ -83,7 +89,7 @@ Action rebuilds that piece in Printful and commits new photos. It needs the `PRI
 
 ## Policy pages
 
-`terms.html`, `privacy.html`, `cookies.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, self-hosted fonts, no cookies or analytics. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` and `cookies.html` first (and add a consent banner before any non-essential cookie). `/terms`, `/privacy`, `/cookies`, `/shipping` and `/about` are short links set in `netlify.toml`, which also sets the security and caching headers.
+`terms.html`, `privacy.html`, `cookies.html` and `policies.html` are written for how the shop works today: Stripe, Printful, Netlify, Gmail, self-hosted fonts, Google Analytics (G-LMHFP3JK9N, skipped on Global Privacy Control or Do Not Track), no ad trackers. Before each new drop, update the close date and the "ship by" date in `terms.html` (Preorders) and `policies.html` (Shipping), and the "Last updated" line. US law (the FTC mail order rule) requires shipping by the date you state, or emailing buyers before then with a new date and the option to cancel for a full refund. If you add analytics, ads, a new app, or texts, update `privacy.html` and `cookies.html` first (and add a consent banner before any non-essential cookie). `/terms`, `/privacy`, `/cookies`, `/shipping` and `/about` are short links set in `netlify.toml`, which also sets the security and caching headers.
 
 ## Before each drop (SEO checklist)
 
