@@ -27,7 +27,7 @@ const WEAR = `<filter id="wear" x="0" y="0" width="100%" height="100%" filterUni
   <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" result="n"/>
   <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.1" result="m"/>
   <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>`;
-const worn = inner => `<defs>${WEAR}</defs><g filter="url(#wear)">${inner}</g>`;
+export const worn = inner => `<defs>${WEAR}</defs><g filter="url(#wear)">${inner}</g>`;
 const rays = (cx, cy, r, n, fill, skip = 0) => {
   let d = "";
   for (let i = 0; i < n; i++) {
@@ -49,12 +49,12 @@ function halftone(cx, cy, R, fill, { step = 30, max = 13, toward = null, clip = 
   }
   return `<g fill="${fill}"${clip ? ` clip-path="url(#${clip})"` : ""}>${out}</g>`;
 }
-const ref = (y, txt, fill) => t(900, y, 64, txt, { f: "m", fill, ls: 22, w: 600 });
+export const ref = (y, txt, fill) => t(900, y, 64, txt, { f: "m", fill, ls: 22, w: 600 });
 // The small italic title under the collar mark. It always sits at y 250, above the illustration (which starts below 380).
 const kicker = (y, txt, fill) => t(900, 250, 104, txt, { f: "s", fill });
 // Shrinks an illustration around a point so it clears the title above and the verse below.
 const fit = (inner, cy, k) => `<g transform="translate(900 ${cy}) scale(${k}) translate(-900 ${-cy})">${inner}</g>`;
-const neck = (ink, accent) => lock(900, 96, 66, ink, accent);
+export const neck = (ink, accent) => lock(900, 96, 66, ink, accent);
 const front = (ink, accent) => chest(lock(0, 0, 44, ink, accent));
 
 const DESIGNS = {

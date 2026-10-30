@@ -89,6 +89,23 @@ for (const [k, name, [hc, hs], [tc, ts], ref, verse, blurb] of BIG) {
   LINE_PIECES[h] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb, images: views(h, ["Front", "Back", "Women's", "Flat"]) };
   LINE_PIECES[tid] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb, images: views(tid, ["Front", "Back"]) };
 }
+// Type tees: a chest line and a verse set big across the back (art in scripts/printful/art-type.mjs).
+const TYPE = [
+  ["jesus-king-tee", "Jesus Is King Tee", "Black", "#000000", "2 Nephi 10:14", ["2-ne", 10, 14], "Jesus is King across the chest, and the king of heaven set big across the shoulders."],
+  ["jesus-king-cream-tee", "Jesus Is King Tee", "Cream", "#F3EEE1", "2 Nephi 10:14", ["2-ne", 10, 14], "Jesus is King across the chest, and the king of heaven set big across the shoulders."],
+  ["talk-christ-tee", "We Talk of Christ Tee", "Cream", "#F3EEE1", "2 Nephi 25:26", ["2-ne", 25, 26], "Nephi's four lines about Christ, stacked big across the back."],
+  ["sure-foundation-tee", "Sure Foundation Tee", "Shadow", "#4A4748", "Helaman 5:12", ["hel", 5, 12], "Upon the rock of our Redeemer, in big gold and bone type across the back."],
+  ["light-life-tee", "Light and Life Tee", "Black", "#000000", "3 Nephi 11:11", ["3-ne", 11, 11], "The Savior's words at Bountiful: I am the light and the life of the world."],
+  ["come-unto-tee", "Come Unto Christ Tee", "Oatmeal", "#B7A99A", "Moroni 10:32", ["moro", 10, 32], "Moroni's last invitation, set big across the back."],
+  ["seek-jesus-tee", "Seek This Jesus Tee", "Oatmeal", "#B7A99A", "Ether 12:41", ["ether", 12, 41], "Moroni's counsel to seek this Jesus, across the shoulders."],
+  ["none-other-tee", "None Other Name Tee", "Black", "#000000", "2 Nephi 25:20", ["2-ne", 25, 20], "There is none other name given under heaven, in five bold lines."],
+  ["press-forward-tee", "Press Forward Tee", "Cream", "#F3EEE1", "2 Nephi 31:20", ["2-ne", 31, 20], "Press forward with a steadfastness in Christ, big across the back."],
+  ["son-of-god-tee", "Thou Son of God Tee", "Black", "#000000", "Alma 36:18", ["alma", 36, 18], "Alma's prayer at the turning point of his life."],
+  ["hosanna-tee", "Hosanna Tee", "Oatmeal", "#B7A99A", "3 Nephi 11:17", ["3-ne", 11, 17], "The multitude's cry at Bountiful, big across the back."],
+  ["king-earth-tee", "King of All the Earth Tee", "Shadow", "#4A4748", "Alma 5:50", ["alma", 5, 50], "Behold the glory of the King of all the earth, in gold and bone."],
+];
+for (const [id, name, color, swatch, ref, verse, blurb] of TYPE)
+  LINE_PIECES[id] = { name, kind: "Tee", color, swatch, price: tee, ref, verse, blurb, images: views(id, ["Front", "Back"]) };
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>

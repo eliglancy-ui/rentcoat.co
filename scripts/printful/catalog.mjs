@@ -38,4 +38,17 @@ export const CATALOG = {
   "ship-tee":           { product: 1626, color: "Oatmeal",          art: "bold-ship",      variants: v(50251, 50252, 50253, 50262, 50254) },
   "liahona-hoodie":     { product: 380,  color: "Maroon",           art: "bold-liahona",   variants: v(11486, 11487, 11488, 11489, 11490) },
   "liahona-tee":        { product: 1626, color: "Black",            art: "bold-liahona",   variants: v(50243, 50244, 50245, 50259, 50246) },
+  // Type tees (art from art-type.mjs): a chest line and a verse set big across the back.
+  "jesus-king-tee":       { product: 1626, color: "Black",            art: "type-king", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "jesus-king-cream-tee": { product: 1626, color: "Cream",            art: "type-king-light", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "talk-christ-tee":      { product: 1626, color: "Cream",            art: "type-talk", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "sure-foundation-tee":  { product: 1626, color: "Shadow",           art: "type-rock", variants: v(50239, 50240, 50241, 50264, 50242) },
+  "light-life-tee":       { product: 1626, color: "Black",            art: "type-light", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "come-unto-tee":        { product: 1626, color: "Oatmeal",          art: "type-come", variants: v(50251, 50252, 50253, 50262, 50254) },
+  "seek-jesus-tee":       { product: 1626, color: "Oatmeal",          art: "type-seek", variants: v(50251, 50252, 50253, 50262, 50254) },
+  "none-other-tee":       { product: 1626, color: "Black",            art: "type-name", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "press-forward-tee":    { product: 1626, color: "Cream",            art: "type-press", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "son-of-god-tee":       { product: 1626, color: "Black",            art: "type-mercy", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "hosanna-tee":          { product: 1626, color: "Oatmeal",          art: "type-hosanna", variants: v(50251, 50252, 50253, 50262, 50254) },
+  "king-earth-tee":       { product: 1626, color: "Shadow",           art: "type-glory", variants: v(50239, 50240, 50241, 50264, 50242) },
 };
