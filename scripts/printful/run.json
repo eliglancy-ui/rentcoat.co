@@ -1,1 +1,1 @@
-{ "dump": ["raw:store/products?limit=100", "raw:store/products?limit=100&offset=100"] }
+{}
