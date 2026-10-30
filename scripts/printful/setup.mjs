@@ -131,6 +131,40 @@ if (RUN.dump) {
   process.exit(0);
 }
 
+// "probe": photograph a Drop 001 tee's own Printful files at a known spot, on its own blank, so the photo can be
+// measured against the shop's photos to work out where the designer placed each file. Nothing is created.
+// Each probe: { name, product, variant, files: [{ type, src, left, top, width }] } in print-area pixels (null = centered/top).
+if (RUN.probe) {
+  for (const pr of RUN.probe) {
+    const pfs = await printfiles(pr.product);
+    const files = [];
+    for (const f of pr.files) {
+      const pid = pfs.variant_printfiles.find(v => v.variant_id === pr.variant)?.placements?.[f.type];
+      const area = pfs.printfiles.find(p => p.printfile_id === pid);
+      result.probeAreas ||= {}; result.probeAreas[`${pr.product}:${f.type}`] = area;
+      const width = f.width, height = Math.round(width * f.h / f.w);
+      files.push({ placement: f.type, image_url: f.src, position: { area_width: area.width, area_height: area.height, width, height,
+        top: f.top ?? 0, left: f.left ?? Math.round((area.width - width) / 2), limit_to_print_area: false } });
+    }
+    const task = await pf(`mockup-generator/create-task/${pr.product}`, { method: "POST", body: { variant_ids: [pr.variant], format: "jpg", files } });
+    if (!task.ok) { console.log(`probe ${pr.name}: ${why(task)}`); continue; }
+    let done;
+    for (let i = 0; i < 60 && !done; i++) {
+      await sleep(5000);
+      const r = await pf(`mockup-generator/task?task_key=${encodeURIComponent(task.data.result.task_key)}`);
+      if (r.data?.result?.status === "completed") done = r.data.result;
+    }
+    let n = 0;
+    for (const m of done?.mockups || []) {
+      const img = await fetch(m.mockup_url);
+      writeFileSync(`public/images/products/probe-${pr.name}-${m.placement}-${++n}.jpg`, Buffer.from(await img.arrayBuffer()));
+    }
+    console.log(`probe ${pr.name}: ${n} photos`);
+  }
+  writeFileSync(resultPath, JSON.stringify(result, null, 2) + "\n");
+  process.exit(0);
+}
+
 // "preview": photograph the designs in art-bold.mjs on their blanks without creating any products, and save the
 // photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
 if (RUN.preview) {
