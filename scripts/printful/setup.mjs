@@ -117,6 +117,19 @@ const resultPath = "scripts/printful/result.json";
 const result = existsSync(resultPath) ? JSON.parse(readFileSync(resultPath, "utf8")) : { products: {} };
 mkdirSync("public/images/products", { recursive: true });
 
+// "dump": save what Printful has for these sync variants (by external ID), files and positions included, to
+// result.dump, without changing anything. Used to copy a piece designed in Printful's own designer.
+if (RUN.dump) {
+  result.dump = {};
+  for (const ext of RUN.dump) {
+    const r = await pf(`store/variants/@${ext}`);
+    result.dump[ext] = r.ok ? r.data.result : { error: why(r) };
+    console.log(`dump ${ext}: ${r.ok ? `${r.data.result.files?.length} files` : why(r)}`);
+  }
+  writeFileSync(resultPath, JSON.stringify(result, null, 2) + "\n");
+  process.exit(0);
+}
+
 // "preview": photograph the designs in art-bold.mjs on their blanks without creating any products, and save the
 // photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
 if (RUN.preview) {
