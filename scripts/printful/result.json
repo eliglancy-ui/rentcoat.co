@@ -1576,7 +1576,415 @@
     },
     "liahona-tee": {
       "sync_product_id": 486853855
+    },
+    "jesus-king-tee": {
+      "sync_product_id": 487314532,
+      "images": [
+        "images/products/jesus-king-tee-1.jpg",
+        "images/products/jesus-king-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/692a6dbb954578d6a29e0839d695cfc0/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae3ffa46fb32.jpg",
+          "path": "images/products/jesus-king-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c5b86f00d1d81a5da9ac1a3627452978/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae3ffa470133.jpg",
+          "path": "images/products/jesus-king-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "jesus-king-cream-tee": {
+      "sync_product_id": 487314586,
+      "images": [
+        "images/products/jesus-king-cream-tee-1.jpg",
+        "images/products/jesus-king-cream-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/476501a39757e1611545f2f1533849a2/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae3ffb1afbdd.jpg",
+          "path": "images/products/jesus-king-cream-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/425127cf1896095e4fb1c3a35f078fb0/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae3ffb1afe5d.jpg",
+          "path": "images/products/jesus-king-cream-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "talk-christ-tee": {
+      "sync_product_id": 487314611,
+      "images": [
+        "images/products/talk-christ-tee-1.jpg",
+        "images/products/talk-christ-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6c9ac35e7a8833d5b787837206ab9296/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae3ffbd8297d.jpg",
+          "path": "images/products/talk-christ-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ed38ecfd02e21b4efb570a55736f1adf/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae3ffbd82c27.jpg",
+          "path": "images/products/talk-christ-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "sure-foundation-tee": {
+      "sync_product_id": 487314636,
+      "images": [
+        "images/products/sure-foundation-tee-1.jpg",
+        "images/products/sure-foundation-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d6699581992589d4167ffb03aeb2bb9b/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae3ffcb2e3e9.jpg",
+          "path": "images/products/sure-foundation-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7e35a6e5df59dc57da1ee0f176d22803/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae3ffcb2e814.jpg",
+          "path": "images/products/sure-foundation-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "light-life-tee": {
+      "sync_product_id": 487314665,
+      "images": [
+        "images/products/light-life-tee-1.jpg",
+        "images/products/light-life-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/144f1576037dbe059b29fafd5bdf4f05/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae3ffd736bfd.jpg",
+          "path": "images/products/light-life-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/483261a7e29e389f3364ced1e5bbed73/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae3ffd736e70.jpg",
+          "path": "images/products/light-life-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "come-unto-tee": {
+      "sync_product_id": 487314690,
+      "images": [
+        "images/products/come-unto-tee-1.jpg",
+        "images/products/come-unto-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/57595cdec2d37c4b54bc94833c2487d6/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae3ffe426b79.jpg",
+          "path": "images/products/come-unto-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5add46579b0645b7c634cab94fc433e2/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae3ffe426e9d.jpg",
+          "path": "images/products/come-unto-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "seek-jesus-tee": {
+      "sync_product_id": 487314714,
+      "images": [
+        "images/products/seek-jesus-tee-1.jpg",
+        "images/products/seek-jesus-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/379c512cdce4d2096e6b39470a14f607/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae3fff21cb4b.jpg",
+          "path": "images/products/seek-jesus-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7dffcafaa301dd7b44095cc2ee3f7e8e/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae3fff21d654.jpg",
+          "path": "images/products/seek-jesus-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "none-other-tee": {
+      "sync_product_id": 487314742,
+      "images": [
+        "images/products/none-other-tee-1.jpg",
+        "images/products/none-other-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/02bfe5b3a6d5de0d8d7189a1561807a2/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae3fffeef3e7.jpg",
+          "path": "images/products/none-other-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8eb21f17396796a8aa36d5ef79d8e5f4/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae3fffeef698.jpg",
+          "path": "images/products/none-other-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "press-forward-tee": {
+      "sync_product_id": 487314764,
+      "images": [
+        "images/products/press-forward-tee-1.jpg",
+        "images/products/press-forward-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/272b0b83464d05f5965339c5780a453a/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae4000b392de.jpg",
+          "path": "images/products/press-forward-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/61190b2bf31bf1aa69279a7f1cb2b56c/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae4000b39c36.jpg",
+          "path": "images/products/press-forward-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "son-of-god-tee": {
+      "sync_product_id": 487314794,
+      "images": [
+        "images/products/son-of-god-tee-1.jpg",
+        "images/products/son-of-god-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4122af18128fc8cb1378ae1454ab0553/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae4001771aa6.jpg",
+          "path": "images/products/son-of-god-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e9bff9295f60163511d2e42efd243591/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae4001772617.jpg",
+          "path": "images/products/son-of-god-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "hosanna-tee": {
+      "sync_product_id": 487314815,
+      "images": [
+        "images/products/hosanna-tee-1.jpg",
+        "images/products/hosanna-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/568e2f2b4be23b66ff75cf313b7455cd/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-front-6ae4002547be5.jpg",
+          "path": "images/products/hosanna-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1fafa86f6a32242d0ea6e24ce03bb697/unisex-garment-dyed-drop-shoulder-t-shirt-oatmeal-back-6ae40025480c5.jpg",
+          "path": "images/products/hosanna-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "king-earth-tee": {
+      "sync_product_id": 487314841,
+      "images": [
+        "images/products/king-earth-tee-1.jpg",
+        "images/products/king-earth-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6797c0287dfc01ea1d64a0d28289681d/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae400315f249.jpg",
+          "path": "images/products/king-earth-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c3d57867ceac387de0fc63476f0c421e/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae400315f771.jpg",
+          "path": "images/products/king-earth-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
     }
   },
-  "generatedAt": "2026-10-28T16:04:24.655Z"
+  "generatedAt": "2026-10-30T02:26:00.281Z"
 }
