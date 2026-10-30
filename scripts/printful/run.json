@@ -1,1 +1,10 @@
-{}
+{ "dump": [
+  "raw:store/products/484447898",
+  "raw:product-templates?limit=100",
+  "raw:v2/sync-products/484447898",
+  "raw:v2/store-products/484447898",
+  "raw:v2/sync-variants/5590946542",
+  "raw:v2/stores/18950104/products/484447898",
+  "raw:v2/products/484447898",
+  "raw:v2/variants/5590946542"
+] }

@@ -122,9 +122,10 @@ mkdirSync("public/images/products", { recursive: true });
 if (RUN.dump) {
   result.dump = {};
   for (const ext of RUN.dump) {
-    const r = await pf(`store/variants/@${ext}`);
+    // "raw:<path>" fetches any Printful path as is (to look for where Printful keeps a design's placement).
+    const r = await pf(ext.startsWith("raw:") ? ext.slice(4) : `store/variants/@${ext}`);
     result.dump[ext] = r.ok ? r.data.result : { error: why(r) };
-    console.log(`dump ${ext}: ${r.ok ? `${r.data.result.files?.length} files` : why(r)}`);
+    console.log(`dump ${ext}: ${r.ok ? "ok" : why(r)}`);
   }
   writeFileSync(resultPath, JSON.stringify(result, null, 2) + "\n");
   process.exit(0);
