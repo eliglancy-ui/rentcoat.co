@@ -128,9 +128,11 @@ const COLORS = [
   ["tree-hoodie", "tree-black-hoodie", "Black", "#080808"], ["samuel-hoodie", "samuel-black-hoodie", "Black", "#080808"],
   ["liahona-hoodie", "liahona-black-hoodie", "Black", "#080808"],
 ];
+// Printful's default photos: a tee's first two are front and back; a hoodie's back comes 6th, after four front views.
+const shots = id => id.endsWith("-hoodie") ? [{ src: `images/products/${id}-1.jpg`, label: "Front" }, { src: `images/products/${id}-6.jpg`, label: "Back" }] : views(id, ["Front", "Back"]);
 // A null color means the piece already exists and only joins the group.
 for (const [base, id, color, swatch] of COLORS)
-  LINE_PIECES[id] = color ? { ...LINE_PIECES[base], group: base, color, swatch, images: views(id, ["Front", "Back"]) } : { ...LINE_PIECES[id], group: base };
+  LINE_PIECES[id] = color ? { ...LINE_PIECES[base], group: base, color, swatch, images: shots(id) } : { ...LINE_PIECES[id], group: base };
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>
