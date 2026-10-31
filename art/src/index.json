@@ -266,5 +266,47 @@
     "title": "NASA’s Aerial Survey of Polar Ice Expands Its Arctic Reach",
     "license": "NASA public domain",
     "nasa_id": "GSFC_20171208_Archive_e000122"
+  },
+  "mother-loc-1": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Son_tries_to_persuade_his_mother%2C_a_school_teacher%2C_8d20246v.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Son tries to persuade his mother, a school teacher, 8d20246v.jpg",
+    "license": "Public domain",
+    "artist": "Marjory Collins"
+  },
+  "mother-loc-2": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Mother_photographing_her_son_feeding_ducks_8d21047v.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Mother photographing her son feeding ducks 8d21047v.jpg",
+    "license": "Public domain",
+    "artist": "Marjory Collins"
+  },
+  "mother-loc-3": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Victory_Program._This_mother_has_found_in_her_closet_some_metal_hangers_8c34822v.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Victory Program. This mother has found in her closet some metal hangers 8c34822v.jpg",
+    "license": "Public domain",
+    "artist": "Marjory Collins"
+  },
+  "mother-loc-4": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Books_from_the_Library_of_Congress_%28IA_portraitbiograph00carr%29.pdf/page1-500px-Books_from_the_Library_of_Congress_%28IA_portraitbiograph00carr%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Books from the Library of Congress (IA portraitbiograph00carr).pdf",
+    "license": "Public domain",
+    "artist": "\nCarr, Daniel M[atthew] 1864-"
+  },
+  "nasa-clouds-1": {
+    "url": "https://images-assets.nasa.gov/image/iss016e027426/iss016e027426~orig.jpg",
+    "title": "Earth Observations taken by the Expedition 16 Crew",
+    "license": "NASA public domain",
+    "nasa_id": "iss016e027426"
+  },
+  "nasa-clouds-2": {
+    "url": "https://images-assets.nasa.gov/image/sl4-136-3388/sl4-136-3388~orig.jpg",
+    "title": "View of a South Pacific storm photographed from Skylab space station",
+    "license": "NASA public domain",
+    "nasa_id": "sl4-136-3388"
+  },
+  "nasa-clouds-3": {
+    "url": "https://images-assets.nasa.gov/image/iss020e047807/iss020e047807~orig.jpg",
+    "title": "Earth Observation taken by the Expedition 20 crew",
+    "license": "NASA public domain",
+    "nasa_id": "iss020e047807"
   }
 }
