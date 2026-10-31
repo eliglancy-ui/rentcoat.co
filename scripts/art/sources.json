@@ -1,6 +1,32 @@
 {
-  "dore-mariner": { "wikimedia": "Doré Rime of the Ancient Mariner ship storm engraving" },
-  "mountain-nps": { "wikimedia": "Grand Teton National Park NPS photo public domain mountain peak" },
-  "compass-engraving": { "wikimedia": "antique compass rose engraving 19th century" },
-  "nasa-mountain": { "nasa": "mountain peak aerial" }
+  "dore-mariner": {
+    "wikimedia": "Dor\u00e9 Rime of the Ancient Mariner ship storm engraving"
+  },
+  "mountain-nps": {
+    "wikimedia": "Grand Teton National Park NPS photo public domain mountain peak"
+  },
+  "compass-engraving": {
+    "wikimedia": "antique compass rose engraving 19th century"
+  },
+  "nasa-mountain": {
+    "nasa": "mountain peak aerial"
+  },
+  "lion-usgov": {
+    "wikimedia": "African lion Panthera leo male portrait USFWS"
+  },
+  "lion-pd": {
+    "wikimedia": "lion male mane portrait incategory:\"CC-Zero\""
+  },
+  "mother-son-loc": {
+    "wikimedia": "mother son farewell soldier train station Library of Congress 1940s photograph"
+  },
+  "mother-loc": {
+    "wikimedia": "mother with son Farm Security Administration photograph Library of Congress"
+  },
+  "nasa-clouds": {
+    "nasa": "cumulonimbus storm clouds from space station"
+  },
+  "nasa-nebula": {
+    "nasa": "Hubble cosmic cliffs Carina nebula"
+  }
 }
