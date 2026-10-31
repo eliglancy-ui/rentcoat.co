@@ -1,7 +1,7 @@
 {
   "products": {
     "rent-hoodie": {
-      "sync_product_id": 486817852,
+      "sync_product_id": 487616731,
       "images": [
         "images/products/rent-hoodie-1.jpg",
         "images/products/rent-hoodie-2.jpg",
@@ -15,43 +15,43 @@
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/222006fbcbede7c0044231f3cf624f20/unisex-premium-pullover-hoodie-black-front-6ae16b922b981.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/910af6caf2f9b844d9131f6f31847a09/unisex-premium-pullover-hoodie-black-front-6ae5622dd2bde.jpg",
           "path": "images/products/rent-hoodie-1.jpg"
         },
         {
           "placement": "front",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/30e4971b79131b3f6e5d6a264fbcd992/unisex-premium-pullover-hoodie-black-front-6ae16b922bf82.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/83cd2a5ebfe3d0da4c1e82b69c01d701/unisex-premium-pullover-hoodie-black-front-6ae5622dd33c6.jpg",
           "path": "images/products/rent-hoodie-2.jpg"
         },
         {
           "placement": "front",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5183fc9da72967e509f78493889efc93/unisex-premium-pullover-hoodie-black-product-details-6ae16b922c1df.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/fcd5c9606e7f6753357da125da0377c0/unisex-premium-pullover-hoodie-black-product-details-6ae5622dd37c1.jpg",
           "path": "images/products/rent-hoodie-3.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b0b7741bb2a91c4f3065a34238049816/unisex-premium-pullover-hoodie-black-left-6ae16b922c3f0.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4f288b3615cf1112680852ca2719555c/unisex-premium-pullover-hoodie-black-left-6ae5622dd3b19.jpg",
           "path": "images/products/rent-hoodie-4.jpg"
         },
         {
           "placement": "front",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/defa955813718c4c268abbebfadc7849/unisex-premium-pullover-hoodie-black-right-6ae16b922c621.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0134cdfd5fb2680dbd3ce5a7ad14dad3/unisex-premium-pullover-hoodie-black-right-6ae5622dd3ebf.jpg",
           "path": "images/products/rent-hoodie-5.jpg"
         },
         {
           "placement": "back",
           "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dae1418a374228f2a71f9c548be149a5/unisex-premium-pullover-hoodie-black-back-6ae16b922c82a.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e7d648c9013c37c2a573fab3e2edc7d4/unisex-premium-pullover-hoodie-black-back-6ae5622dd4294.jpg",
           "path": "images/products/rent-hoodie-6.jpg"
         },
         {
           "placement": "back",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5a21491baf30cb20787e8a0238088be5/unisex-premium-pullover-hoodie-black-back-6ae16b922ca04.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/030bba2d10d861d505f3d3ef5a639dc7/unisex-premium-pullover-hoodie-black-back-6ae5622dd45cb.jpg",
           "path": "images/products/rent-hoodie-7.jpg"
         }
       ],
@@ -204,64 +204,72 @@
       }
     },
     "stripling-hoodie": {
-      "sync_product_id": 486853635,
-      "images": [],
+      "sync_product_id": 487616820,
+      "images": [
+        "images/products/stripling-hoodie-1.jpg",
+        "images/products/stripling-hoodie-2.jpg",
+        "images/products/stripling-hoodie-3.jpg",
+        "images/products/stripling-hoodie-4.jpg",
+        "images/products/stripling-hoodie-5.jpg",
+        "images/products/stripling-hoodie-6.jpg",
+        "images/products/stripling-hoodie-7.jpg"
+      ],
       "mockups": [
         {
-          "placement": "front",
-          "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/610f8ccf34cfcf1ab012642e58f5027e/unisex-premium-pullover-hoodie-black-front-6ae1c2cbd5e52.jpg",
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/11387f88aa7d5afd61990faeb244c004/unisex-premium-pullover-hoodie-bone-back-6ae56254c74e8.jpg",
           "path": "images/products/stripling-hoodie-1.jpg"
         },
         {
-          "placement": "front",
+          "placement": "back",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/798b4a7994eb323e452286180fc98452/unisex-premium-pullover-hoodie-black-front-6ae1c2cbd66ab.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/366e453d19574e9ab77eaf9c5090c231/unisex-premium-pullover-hoodie-bone-front-6ae56254c7b9f.jpg",
           "path": "images/products/stripling-hoodie-2.jpg"
         },
         {
-          "placement": "front",
+          "placement": "back",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6e8c61283b1285197fca28b4da31060d/unisex-premium-pullover-hoodie-black-product-details-6ae1c2cbd6995.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/912f5a014ecf9d3d52dd6a2368b9f890/unisex-premium-pullover-hoodie-bone-product-details-6ae56254c7dc9.jpg",
           "path": "images/products/stripling-hoodie-3.jpg"
         },
         {
-          "placement": "front",
-          "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8978ac687156591e81b7a459918c186f/unisex-premium-pullover-hoodie-black-left-6ae1c2cbd6bbe.jpg",
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bb98ac9487ffb1650fb2f70baadf5ac7/unisex-premium-pullover-hoodie-bone-front-6ae56254c7fc2.jpg",
           "path": "images/products/stripling-hoodie-4.jpg"
         },
         {
-          "placement": "front",
-          "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6e1cece125ba53dca6f806ffebed4a4f/unisex-premium-pullover-hoodie-black-right-6ae1c2cbd6e81.jpg",
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a3577f3a3ada1411700649443fe71f60/unisex-premium-pullover-hoodie-bone-back-6ae56254c81e4.jpg",
           "path": "images/products/stripling-hoodie-5.jpg"
         },
         {
-          "placement": "front",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/23ffe9f22c7ad18d541e14b749e6b4fb/unisex-premium-pullover-hoodie-black-back-6ae1c2cbd717d.jpg",
+          "placement": "back",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f0c5a44686a693eaa8e13f93d2b8c5c2/unisex-premium-pullover-hoodie-bone-left-6ae56254c83ed.jpg",
           "path": "images/products/stripling-hoodie-6.jpg"
         },
         {
-          "placement": "front",
-          "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9663975fcb1615260f6b1e67348e8748/unisex-premium-pullover-hoodie-black-back-6ae1c2cbd740b.jpg",
+          "placement": "back",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/62458501f8a1735fc9ea7f9056955352/unisex-premium-pullover-hoodie-bone-right-6ae56254c865a.jpg",
           "path": "images/products/stripling-hoodie-7.jpg"
         }
       ],
       "cost": {
         "currency": "USD",
-        "subtotal": 27.84,
+        "subtotal": 33.79,
         "discount": 0,
         "shipping": 9.19,
         "digitization": 0,
         "additional_fee": 0,
         "fulfillment_fee": 0,
         "retail_delivery_fee": 0,
-        "tax": 2.69,
+        "tax": 3.12,
         "vat": 0,
-        "total": 39.72
+        "total": 46.1
       },
       "styles": {
         "option_groups": [
@@ -548,7 +556,7 @@
       }
     },
     "shelem-fleece": {
-      "sync_product_id": 486817902,
+      "sync_product_id": 487616746,
       "images": [
         "images/products/shelem-fleece-1.jpg",
         "images/products/shelem-fleece-2.jpg",
@@ -559,25 +567,25 @@
         {
           "placement": "embroidery_chest_left",
           "title": "embroidery_chest_left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/be33a67379359e8e80c0c5434d465f91/unisex-fleece-pullover-black-front-6ae1c2ec28c9d.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4294a246dd4997e34a1db6b1174dc02a/unisex-fleece-pullover-black-front-6ae5623c1db10.jpg",
           "path": "images/products/shelem-fleece-1.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6fad1e22226dceb80d531668262728b1/unisex-fleece-pullover-black-back-6ae1c2ec29188.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/98a2a10b221f11cb8ace2823dbdc0edc/unisex-fleece-pullover-black-back-6ae5623c1de33.jpg",
           "path": "images/products/shelem-fleece-2.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8c525452d381a20d864e43645bcd5338/unisex-fleece-pullover-black-left-6ae1c2ec29213.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0eea6d70270e3c7baa64db6e70084b62/unisex-fleece-pullover-black-left-6ae5623c1deb2.jpg",
           "path": "images/products/shelem-fleece-3.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/99af5995f2d6f35d3ecf9e6a2d2a56e4/unisex-fleece-pullover-black-right-6ae1c2ec29292.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1e130992c037a0f01c87635c13c2677b/unisex-fleece-pullover-black-right-6ae5623c1df2e.jpg",
           "path": "images/products/shelem-fleece-4.jpg"
         }
       ],
@@ -620,7 +628,7 @@
       }
     },
     "hagoth-windbreaker": {
-      "sync_product_id": 486759855,
+      "sync_product_id": 487616762,
       "images": [
         "images/products/hagoth-windbreaker-1.jpg",
         "images/products/hagoth-windbreaker-2.jpg"
@@ -629,13 +637,13 @@
         {
           "placement": "embroidery_chest_left",
           "title": "embroidery_chest_left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/fd8be968da8ad74543bae7b34469a458/unisex-basic-windbreaker-forest-green-front-6ae1c2f96beb7.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c44b3ca97002fd37976d01fecce0acdd/unisex-basic-windbreaker-forest-green-front-6ae56249cfabc.jpg",
           "path": "images/products/hagoth-windbreaker-1.jpg"
         },
         {
           "placement": "embroidery_chest_left",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ccb7e5c2c008d6dec7aec7eb51e40bca/unisex-basic-windbreaker-forest-green-back-6ae1c2f96c36a.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1800a8b4f5b696b7d672dcfb00f31d56/unisex-basic-windbreaker-forest-green-back-6ae56249d02a6.jpg",
           "path": "images/products/hagoth-windbreaker-2.jpg"
         }
       ],
@@ -2734,7 +2742,7 @@
       }
     },
     "rent-navy-hoodie": {
-      "sync_product_id": 487316863,
+      "sync_product_id": 487616878,
       "images": [
         "images/products/rent-navy-hoodie-1.jpg",
         "images/products/rent-navy-hoodie-2.jpg",
@@ -2748,43 +2756,43 @@
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dace7fcbd2567e46ec0045ce19a86745/unisex-premium-pullover-hoodie-navy-blazer-front-6ae404edebfa0.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/33f9c80df4ab3cf5b2e4659cc38d6e0a/unisex-premium-pullover-hoodie-navy-blazer-front-6ae5625e65718.jpg",
           "path": "images/products/rent-navy-hoodie-1.jpg"
         },
         {
           "placement": "front",
           "title": "Front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b00729bd408aa04e49b3521f89341adc/unisex-premium-pullover-hoodie-navy-blazer-front-6ae404edec82e.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5e5f2a761db3b64c71ce2de6da66dfe5/unisex-premium-pullover-hoodie-navy-blazer-front-6ae5625e65f44.jpg",
           "path": "images/products/rent-navy-hoodie-2.jpg"
         },
         {
           "placement": "front",
           "title": "Product details",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a2cf29fb4266fc19335f48ec299d3ce2/unisex-premium-pullover-hoodie-navy-blazer-product-details-6ae404edecaa8.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/443f4283dccd6a4dc9a381cb747b333a/unisex-premium-pullover-hoodie-navy-blazer-product-details-6ae5625e6616f.jpg",
           "path": "images/products/rent-navy-hoodie-3.jpg"
         },
         {
           "placement": "front",
           "title": "Left",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dfea80142febd47115a44c0b10d0301c/unisex-premium-pullover-hoodie-navy-blazer-left-6ae404edecccf.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/811766ddb2d610b33d5f031cc8d9fe86/unisex-premium-pullover-hoodie-navy-blazer-left-6ae5625e66397.jpg",
           "path": "images/products/rent-navy-hoodie-4.jpg"
         },
         {
           "placement": "front",
           "title": "Right",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b71e0d725829bbe8b389efa20b4cdfa0/unisex-premium-pullover-hoodie-navy-blazer-right-6ae404edecee6.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3fb63d74f46e9bf85e4744a374c59912/unisex-premium-pullover-hoodie-navy-blazer-right-6ae5625e665bf.jpg",
           "path": "images/products/rent-navy-hoodie-5.jpg"
         },
         {
           "placement": "back",
           "title": "back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/fee31fc3798e64ac50acad7cdefea734/unisex-premium-pullover-hoodie-navy-blazer-back-6ae404eded102.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b31f8912c25e3cefa5727fc3fd28513a/unisex-premium-pullover-hoodie-navy-blazer-back-6ae5625e667bf.jpg",
           "path": "images/products/rent-navy-hoodie-6.jpg"
         },
         {
           "placement": "back",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4c2311e210151db023622f87808d8a8b/unisex-premium-pullover-hoodie-navy-blazer-back-6ae404eded2d7.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0dd754026451c5e542b58dedc011cf71/unisex-premium-pullover-hoodie-navy-blazer-back-6ae5625e66999.jpg",
           "path": "images/products/rent-navy-hoodie-7.jpg"
         }
       ],
@@ -3079,7 +3087,7 @@
       }
     }
   },
-  "generatedAt": "2026-10-31T02:29:17.366Z",
+  "generatedAt": "2026-10-31T03:37:06.987Z",
   "dump": {
     "raw:store/products/484447898": {
       "sync_product": {
