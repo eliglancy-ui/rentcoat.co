@@ -93,4 +93,5 @@ def mom():
     d.text((2560, 560), "Missionary", font=f, fill=NIGHT, anchor="mm"); d.text((2560, 800), "Mom", font=font("goth2", 300), fill=RED, anchor="mm")
     save(img, "concept-mom-front")
 
-for fn in (jik_hoodie, samuel, storm, shelem, liahona, mom): fn()
+if __name__ == "__main__":
+    for fn in (jik_hoodie, samuel, storm, shelem, liahona, mom): fn()
