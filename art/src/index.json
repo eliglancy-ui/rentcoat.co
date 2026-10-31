@@ -206,5 +206,65 @@
     "title": "File:Baptism of Limhi, by George Ottinger.png",
     "license": "Public domain",
     "artist": "George M. Ottinger (credits on pages i, xiv)"
+  },
+  "dore-mariner-1": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/America_revisited_-_from_the_bay_of_New_York_to_the_Gulf_of_Mexico_and_from_Lake_Michigan_to_the_Pacific_%28IA_americarevisited00salauoft%29.pdf/page1-500px-America_revisited_-_from_the_bay_of_New_York_to_the_Gulf_of_Mexico_and_from_Lake_Michigan_to_the_Pacific_%28IA_americarevisited00salauoft%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:America revisited - from the bay of New York to the Gulf of Mexico and from Lake Michigan to the Pacific (IA americarevisited00salauoft).pdf",
+    "license": "Public domain",
+    "artist": "\nSala, George Augustus, 1828-1895"
+  },
+  "mountain-nps-1": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Morning_Light_on_Grand_Teton_%2840323150280%29.jpg/3840px-Morning_Light_on_Grand_Teton_%2840323150280%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Morning Light on Grand Teton (40323150280).jpg",
+    "license": "Public domain",
+    "artist": "GrandTetonNPS"
+  },
+  "mountain-nps-2": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Nez_Perce_Peak_and_Grand_Teton.jpg/3840px-Nez_Perce_Peak_and_Grand_Teton.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Nez Perce Peak and Grand Teton.jpg",
+    "license": "Public domain",
+    "artist": "Eva DiDonato / NPS Natural Resources"
+  },
+  "mountain-nps-3": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Colter_Peak_ne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Colter Peak ne.jpg",
+    "license": "Public domain",
+    "artist": "Yellowstone National Park"
+  },
+  "mountain-nps-4": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Courier_Newsmagazine_of_the_National_Park_Service%2C_Volume_36%2C_No.4%2C_U.S._Department_of_the_Interior%2C_1991_%28IA_doi-report_i-299636-4%29.pdf/page1-960px-Courier_Newsmagazine_of_the_National_Park_Service%2C_Volume_36%2C_No.4%2C_U.S._Department_of_the_Interior%2C_1991_%28IA_doi-report_i-299636-4%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Courier Newsmagazine of the National Park Service, Volume 36, No.4, U.S. Department of the Interior, 1991 (IA doi-report i-299636-4).pdf",
+    "license": "Public domain",
+    "artist": "\nDepartment of the Interior"
+  },
+  "compass-engraving-1": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Compass_rose_detail_from_1748_Bowen_Mariner%E2%80%99s_Compass_and_Armillary_Sphere_-_Geographicus_-_CircleofWinds-bowen-1747_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Compass rose detail from 1748 Bowen Mariner’s Compass and Armillary Sphere - Geographicus - CircleofWinds-bowen-1747 (cropped).jpg",
+    "license": "Public domain",
+    "artist": "\nhttp://www.geographicus.com/mm5/cartographers/bowen.txt"
+  },
+  "compass-engraving-2": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/1748_Bowen_Mariner%E2%80%99s_Compass_and_Armillary_Sphere_-_Geographicus_-_CircleofWinds-bowen-1747.jpg/3840px-1748_Bowen_Mariner%E2%80%99s_Compass_and_Armillary_Sphere_-_Geographicus_-_CircleofWinds-bowen-1747.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:1748 Bowen Mariner’s Compass and Armillary Sphere - Geographicus - CircleofWinds-bowen-1747.jpg",
+    "license": "Public domain",
+    "artist": "\nhttp://www.geographicus.com/mm5/cartographers/bowen.txt"
+  },
+  "compass-engraving-3": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/32/1852_Vuillemin_Astronomical_and_Cosmographical_Chart_-_Geographicus_-_Cosmographique-vuillemin-1852.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:1852 Vuillemin Astronomical and Cosmographical Chart - Geographicus - Cosmographique-vuillemin-1852.jpg",
+    "license": "Public domain",
+    "artist": "\nhttp://www.geographicus.com/mm5/cartographers/vuillemin.txt"
+  },
+  "compass-engraving-4": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/1838_Monin_Map_or_Physical_Tableau_and_Astronomy_Chart_%28Zodiac%29_-_Geographicus_-_Tableau-monin-1838.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:1838 Monin Map or Physical Tableau and Astronomy Chart (Zodiac) - Geographicus - Tableau-monin-1838.jpg",
+    "license": "Public domain",
+    "artist": "Charles V. Monin"
+  },
+  "nasa-mountain-1": {
+    "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000122/GSFC_20171208_Archive_e000122~orig.jpg",
+    "title": "NASA’s Aerial Survey of Polar Ice Expands Its Arctic Reach",
+    "license": "NASA public domain",
+    "nasa_id": "GSFC_20171208_Archive_e000122"
   }
 }
