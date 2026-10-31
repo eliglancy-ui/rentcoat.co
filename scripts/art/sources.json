@@ -1,8 +1,9 @@
 {
-  "dore-tempest": { "wikimedia": "Doré Bible Jesus stilling the tempest" },
-  "dore-entry": { "wikimedia": "Doré Bible entry of Jesus into Jerusalem" },
-  "dore-sermon": { "wikimedia": "Doré Bible Sermon on the Mount" },
-  "dore-ascension": { "wikimedia": "Doré Bible ascension" },
+  "dore-tempest": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Jesus Stilling the Tempest" },
+  "dore-entry": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Entry of Jesus into Jerusalem" },
+  "dore-walking": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Jesus Walking on the Sea" },
+  "dore-ascension": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Ascension" },
+  "dore-sermon": { "wikimedia": "filetype:bitmap Dore Bible Sermon on the Mount" },
   "nasa-earth": { "nasa": "blue marble earth" },
   "nasa-sunrise": { "nasa": "sunrise over earth international space station" }
 }
