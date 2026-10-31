@@ -1,0 +1,14 @@
+[
+  {
+    "file": "1.jpg",
+    "placement": "back",
+    "group": "",
+    "view": "back"
+  },
+  {
+    "file": "2.jpg",
+    "placement": "back",
+    "group": "Flat",
+    "view": "Front"
+  }
+]

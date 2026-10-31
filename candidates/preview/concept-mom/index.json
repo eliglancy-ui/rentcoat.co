@@ -1,0 +1,98 @@
+[
+  {
+    "file": "1.jpg",
+    "placement": "back",
+    "group": "",
+    "view": "back"
+  },
+  {
+    "file": "2.jpg",
+    "placement": "back",
+    "group": "Flat 2",
+    "view": "Front"
+  },
+  {
+    "file": "3.jpg",
+    "placement": "back",
+    "group": "Flat",
+    "view": "Back"
+  },
+  {
+    "file": "4.jpg",
+    "placement": "back",
+    "group": "Women's",
+    "view": "Front"
+  },
+  {
+    "file": "5.jpg",
+    "placement": "back",
+    "group": "Women's",
+    "view": "Back"
+  },
+  {
+    "file": "6.jpg",
+    "placement": "back",
+    "group": "Men's",
+    "view": "Back"
+  },
+  {
+    "file": "7.jpg",
+    "placement": "back",
+    "group": "Women's 2",
+    "view": "Front"
+  },
+  {
+    "file": "8.jpg",
+    "placement": "back",
+    "group": "Women's 2",
+    "view": "Back"
+  },
+  {
+    "file": "9.jpg",
+    "placement": "back",
+    "group": "Men's Lifestyle",
+    "view": "Back"
+  },
+  {
+    "file": "10.jpg",
+    "placement": "back",
+    "group": "Flat 2",
+    "view": "Back"
+  },
+  {
+    "file": "11.jpg",
+    "placement": "back",
+    "group": "Men's",
+    "view": "Front"
+  },
+  {
+    "file": "12.jpg",
+    "placement": "back",
+    "group": "Men's Lifestyle",
+    "view": "Front"
+  },
+  {
+    "file": "13.jpg",
+    "placement": "back",
+    "group": "Men's 2",
+    "view": "Front"
+  },
+  {
+    "file": "14.jpg",
+    "placement": "back",
+    "group": "Men's 2",
+    "view": "Back"
+  },
+  {
+    "file": "15.jpg",
+    "placement": "back",
+    "group": "Men's Lifestyle 2",
+    "view": "Front"
+  },
+  {
+    "file": "16.jpg",
+    "placement": "back",
+    "group": "Men's Lifestyle 2",
+    "view": "Back"
+  }
+]
