@@ -20,6 +20,7 @@ import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
 import { BOLD_FILES, PREVIEWS, TAG_FILES } from "./art-bold.mjs";
 import { TYPE_FILES } from "./art-type.mjs";
+import { CONCEPT_FILES, CONCEPT_PREVIEWS } from "./art-concepts.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
@@ -169,7 +170,7 @@ if (RUN.probe) {
 // photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
 if (RUN.preview) {
   let bad = 0;
-  for (const pv of PREVIEWS) {
+  for (const pv of [...PREVIEWS, ...CONCEPT_PREVIEWS]) {
     if (ONLY.length && !ONLY.includes(pv.key)) continue;
     console.log(`\npreview ${pv.key} (${pv.color})`);
     try {
@@ -177,7 +178,7 @@ if (RUN.preview) {
       const style = STYLES[pv.product] || { groups: [], views: [] };
       const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
       const views = style.views.filter(v => (pfs.options || []).includes(v));
-      const files = pv.files.flatMap(id => BOLD_FILES.filter(f => f.id === id)).filter(f => pfs.available_placements?.[f.place]);
+      const files = pv.files.flatMap(id => [...BOLD_FILES, ...CONCEPT_FILES].filter(f => f.id === id)).filter(f => pfs.available_placements?.[f.place]);
       const task = await pf(`mockup-generator/create-task/${pv.product}`, { method: "POST", body: {
         variant_ids: [pv.variant], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
         files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: `${FILE_BASE}/${fileName(f)}`, position: await position(pv.product, pv.variant, f) }))),
