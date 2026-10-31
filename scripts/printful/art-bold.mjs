@@ -9,7 +9,7 @@ const C = { ...INK, sky: "#ECE8DF" };
 
 // Every line of the verse block is set to the same width, like a printed poster.
 // The block shrinks as a whole (width and size together) until it fits between y0 and `bottom`.
-function block(lines, y0, { W = 1560, max = 230, lead = 0.96, gap = 26, bottom = 2190 } = {}) {
+export function block(lines, y0, { W = 1560, max = 230, lead = 0.96, gap = 26, bottom = 2190 } = {}) {
   const natural = lines.map(([txt]) => Math.min(max, W / (txt.length * 0.47)));
   const height = natural.reduce((h, size) => h + size * lead + gap, -gap);
   const k = Math.min(1, (bottom - y0) / height), w = W * k;
@@ -28,7 +28,7 @@ const WEAR = `<filter id="wear" x="0" y="0" width="100%" height="100%" filterUni
   <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.1" result="m"/>
   <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>`;
 export const worn = inner => `<defs>${WEAR}</defs><g filter="url(#wear)">${inner}</g>`;
-const rays = (cx, cy, r, n, fill, skip = 0) => {
+export const rays = (cx, cy, r, n, fill, skip = 0) => {
   let d = "";
   for (let i = 0; i < n; i++) {
     const a0 = (2 * Math.PI * i) / n + skip, a1 = a0 + Math.PI / n;
@@ -37,7 +37,7 @@ const rays = (cx, cy, r, n, fill, skip = 0) => {
   return `<path d="${d}" fill="${fill}"/>`;
 };
 // Halftone dots that shrink toward the edge of a disc (or toward a direction with `toward`).
-function halftone(cx, cy, R, fill, { step = 30, max = 13, toward = null, clip = null } = {}) {
+export function halftone(cx, cy, R, fill, { step = 30, max = 13, toward = null, clip = null } = {}) {
   let out = "";
   for (let y = cy - R; y <= cy + R; y += step) for (let x = cx - R; x <= cx + R; x += step) {
     const d = Math.hypot(x - cx, y - cy) / R;
@@ -53,7 +53,7 @@ export const ref = (y, txt, fill) => t(900, y, 64, txt, { f: "m", fill, ls: 22, 
 // The small italic title under the collar mark. It always sits at y 250, above the illustration (which starts below 380).
 const kicker = (y, txt, fill) => t(900, 250, 104, txt, { f: "s", fill });
 // Shrinks an illustration around a point so it clears the title above and the verse below.
-const fit = (inner, cy, k) => `<g transform="translate(900 ${cy}) scale(${k}) translate(-900 ${-cy})">${inner}</g>`;
+export const fit = (inner, cy, k) => `<g transform="translate(900 ${cy}) scale(${k}) translate(-900 ${-cy})">${inner}</g>`;
 export const neck = (ink, accent) => lock(900, 96, 66, ink, accent);
 const front = (ink, accent) => chest(lock(0, 0, 44, ink, accent));
 
