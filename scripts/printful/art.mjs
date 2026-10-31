@@ -86,10 +86,10 @@ const tent = (cx, cy, s, ink, accent) => `<g transform="translate(${cx} ${cy}) s
 export const FILES = [
   // The Standard
   { id: "rent-hoodie", place: "front", size: "DTG", svg: () => chest(flag(0, 0, 330, INK.gold, INK.bone)) },
-  { id: "rent-hoodie", place: "back", size: "DTG", svg: () => flag(900, 420, 560, INK.gold, INK.bone)
-      + t(900, 1050, 300, "IN MEMORY") + t(900, 1340, 300, "OF OUR GOD")
-      + t(900, 1540, 130, "our religion, and freedom", { f: "s", fill: INK.gold })
-      + t(900, 1720, 56, "ALMA 46:12 · RENT COAT CO.", { f: "m", ls: 14 }) },
+  { id: "rent-hoodie", place: "back", size: "DTG", svg: () => flag(900, 720, 560, INK.gold, INK.bone)  // starts 2 in down so the hood doesn't cover the flag
+      + t(900, 1350, 300, "IN MEMORY") + t(900, 1640, 300, "OF OUR GOD")
+      + t(900, 1840, 130, "our religion, and freedom", { f: "s", fill: INK.gold })
+      + t(900, 2020, 56, "ALMA 46:12 · RENT COAT CO.", { f: "m", ls: 14 }) },
   { id: "strait-joggers", place: "leg_front_left", size: "LEG", svg: () => `<g transform="translate(210 600) rotate(-90)">${t(0, -10, 116, "STRAIT & NARROW", { wd: 78, ls: 8 })}${t(0, 110, 64, "1 NEPHI 8:20", { f: "m", ls: 16, fill: INK.gold })}</g>` },
   { id: "flag-cap", place: "embroidery_front_large", size: "HAT", threads: [THREAD.oldGold, THREAD.white], svg: () => flag(375, 84, 160, THREAD.oldGold, THREAD.white) + t(375, 252, 74, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
   { id: "flag-beanie", place: "embroidery_front", size: "BEANIE", threads: [THREAD.white], svg: () => flag(375, 96, 172, THREAD.white, THREAD.white) + t(375, 282, 76, "RENT COAT CO.", { fill: THREAD.white, wd: 72, ls: 5 }) },
@@ -97,10 +97,10 @@ export const FILES = [
   // Wilderness Supply
   { id: "shelem-fleece", place: "embroidery_chest_left", size: "CHEST", threads: [THREAD.white, THREAD.oldGold], svg: () =>
       `<path d="M120 300 L250 100 L320 200 L370 140 L480 300 Z" fill="${THREAD.white}"/><path d="M250 100 L214 156 L250 144 L278 172 Z" fill="${THREAD.oldGold}"/>`
-      + t(300, 420, 82, "MOUNT SHELEM", { wd: 72, fill: THREAD.white, ls: 2 }) + t(300, 520, 62, "ALPINE CLUB", { f: "m", fill: THREAD.oldGold, ls: 10, w: 600 }) },
+      + t(300, 420, 82, "MOUNT SHELEM", { wd: 72, fill: THREAD.white, ls: 2 }) + t(300, 530, 74, "ALPINE CLUB", { f: "m", fill: THREAD.oldGold, ls: 6, w: 600 }) },
   { id: "hagoth-windbreaker", place: "embroidery_chest_left", size: "CHEST", threads: [THREAD.white, THREAD.oldGold], svg: () =>
       `<g transform="translate(300 200) scale(3.4)" fill="${THREAD.white}"><path d="M-30 6 L30 6 L22 18 L-22 18 Z"/><path d="M-2 -34 L-2 4 L-26 4 Z"/><path d="M2 -28 L2 4 L22 4 Z" fill="${THREAD.oldGold}"/></g>`
-      + t(300, 420, 104, "HAGOTH", { wd: 72, fill: THREAD.white, ls: 8 }) + t(300, 515, 52, "SHIPBUILDING CO.", { f: "m", fill: THREAD.oldGold, ls: 4, w: 600 }) },
+      + t(300, 420, 104, "HAGOTH", { wd: 72, fill: THREAD.white, ls: 8 }) + t(300, 525, 66, "SHIPBUILDING CO.", { f: "m", fill: THREAD.oldGold, ls: 0, w: 600 }) },
   { id: "ironrod-anorak", place: "embroidery_chest_left", size: "CHEST", threads: [THREAD.white, THREAD.oldGold], svg: () =>
       `<path d="M90 260 L380 260" stroke="${THREAD.oldGold}" stroke-width="22" stroke-linecap="round"/><circle cx="90" cy="260" r="22" fill="${THREAD.oldGold}"/><rect x="434" y="190" width="22" height="80" fill="${THREAD.white}"/><circle cx="445" cy="150" r="64" fill="${THREAD.white}"/>`
       + t(300, 420, 100, "IRON ROD", { wd: 72, fill: THREAD.white, ls: 8 }) + t(300, 515, 60, "TRAIL CLUB", { f: "m", fill: THREAD.oldGold, ls: 10, w: 600 }) },

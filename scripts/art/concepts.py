@@ -42,12 +42,23 @@ def mark(img, ink, cloth, y=200):
     d.polygon([(x0 + 14, y - 70), (x0 + 120, y - 70), (x0 + 104, y - 44), (x0 + 124, y - 20), (x0 + 100, y), (x0 + 118, y + 22), (x0 + 14, y + 22)], fill=cloth)
     d.text((x0 + 150, y + 6), label, font=f, fill=ink, anchor="lm")
 
-def ink_from_engraving(path, color, size, contrast=1.6, gamma=1.0):
-    """Turns a black-on-paper engraving into one ink color: dark lines become solid ink, paper becomes clear."""
+def ink_from_engraving(path, color, size, contrast=1.6, gamma=1.0, screen=0, crisp=False):
+    """Turns a black-on-paper engraving into one ink color: dark lines become solid ink, paper becomes clear.
+    screen=N redraws soft, tonal art (photo-engravings) as a halftone dot screen with N-pixel cells, so it prints
+    sharp at any size; crisp=True sharpens line art that has been enlarged."""
     im = Image.open(path).convert("L"); im = ImageOps.autocontrast(im, cutoff=1)
     im = im.resize(size, Image.LANCZOS)
+    if crisp: im = im.filter(ImageFilter.UnsharpMask(radius=4, percent=180, threshold=2))
     a = 1 - np.asarray(im, dtype=np.float32) / 255
     a = np.clip((a - 0.12) * contrast, 0, 1) ** gamma
+    if crisp: a = np.clip((a - 0.5) * 2.2 + 0.5, 0, 1)
+    if screen:
+        yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+        # 45-degree screen: dot area matches the tone
+        u, v = (xx + yy) / np.sqrt(2), (xx - yy) / np.sqrt(2)
+        cu, cv = (u % screen) - screen / 2, (v % screen) - screen / 2
+        r = np.sqrt(cu ** 2 + cv ** 2) / (screen / 2)
+        a = (r < np.sqrt(np.clip(a, 0, 1)) * 1.15).astype(np.float32)
     out = np.zeros((*a.shape, 4), np.uint8); out[..., :3] = color; out[..., 3] = (a * 255).astype(np.uint8)
     return Image.fromarray(out, "RGBA")
 

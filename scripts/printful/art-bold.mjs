@@ -73,7 +73,7 @@ const DESIGNS = {
   }, front: () => front(C.bone, C.gold) },
 
   // Two thousand young warriors marching under a giant 2000.
-  stripling: { back() {
+  stripling: { back(hood) {
     const n = INK.night, r = INK.red;
     let army = "";
     for (let row = 0; row < 3; row++) {
@@ -84,10 +84,12 @@ const DESIGNS = {
       }
     }
     const { svg } = block([["WE DO NOT DOUBT", n], ["OUR MOTHERS", r], ["KNEW IT.", n]], 1440, { max: 260 });
-    return neck(n, r) + worn(
+    // On the hoodie the neck mark would sit under the hood, so it is left off and the art moves down to clear it.
+    const art = worn(
       kicker(300, "two thousand stripling sons", r)
       + `<text x="900" y="980" text-anchor="middle" fill="${r}" style="font-family:'Archivo';font-weight:900;font-stretch:62%;font-size:700px">2000</text>`
       + `<g fill="${n}">${army}</g>` + svg + ref(2290, "ALMA 56:48", r));
+    return hood ? `<g transform="translate(72 150) scale(.92)">${art}</g>` : neck(n, r) + art;
   }, front: () => front(INK.night, INK.red) },
 
   // Sixteen stones above the peak of Mount Shelem, each shining.
@@ -221,6 +223,8 @@ export const BOLD_FILES = [
     { id: `bold-${k}`, place: "back", size: "DTG", svg: d.back },
     { id: `bold-${k}`, place: "front", size: "DTG", svg: d.front },
   ]),
+  { id: "bold-stripling-hood", place: "back", size: "DTG", svg: () => DESIGNS.stripling.back(true) },
+  { id: "bold-stripling-hood", place: "front", size: "DTG", svg: DESIGNS.stripling.front },
   ...Object.entries(SWEATS).flatMap(([k, s]) => [
     { id: `sweats-${k}`, place: "leg_front_left", size: "LEG", svg: s.left },
     { id: `sweats-${k}`, place: "leg_front_right", size: "LEG", svg: () => `<g transform="translate(210 1500) rotate(-90)">${lock(0, 18, 40, s.ink, s.accent)}</g>` },

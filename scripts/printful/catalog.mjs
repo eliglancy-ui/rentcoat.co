@@ -26,7 +26,7 @@ export const CATALOG = {
   "barge-mug":          { product: 19,   color: "White",            variants: { OS: 1320 } },
   "lehi-mug":           { product: 407,  color: "White",            variants: { OS: 11189 } },
   // Big backs (art from art-bold.mjs, named by `art`): each design as a hoodie and a tee.
-  "stripling-hoodie":   { product: 380,  color: "Bone",             art: "bold-stripling", variants: v(20284, 20285, 20286, 20287, 20288) },
+  "stripling-hoodie":   { product: 380,  color: "Bone",             art: "bold-stripling-hood", variants: v(20284, 20285, 20286, 20287, 20288) },
   "stripling-tee":      { product: 1626, color: "Cream",            art: "bold-stripling", variants: v(50231, 50232, 50233, 50260, 50234) },
   "shelem-hoodie":      { product: 380,  color: "Navy Blazer",      art: "bold-stones",    variants: v(11491, 11492, 11493, 11494, 11495) },
   "shelem-tee":         { product: 1626, color: "Black",            art: "bold-stones",    variants: v(50243, 50244, 50245, 50259, 50246) },
