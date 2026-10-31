@@ -11,22 +11,19 @@
   "nasa-mountain": {
     "nasa": "mountain peak aerial"
   },
-  "lion-usgov": {
-    "wikimedia": "African lion Panthera leo male portrait USFWS"
-  },
-  "lion-pd": {
-    "wikimedia": "lion male mane portrait incategory:\"CC-Zero\""
-  },
-  "mother-son-loc": {
-    "wikimedia": "mother son farewell soldier train station Library of Congress 1940s photograph"
-  },
   "mother-loc": {
     "wikimedia": "mother with son Farm Security Administration photograph Library of Congress"
   },
   "nasa-clouds": {
     "nasa": "cumulonimbus storm clouds from space station"
   },
-  "nasa-nebula": {
-    "nasa": "Hubble cosmic cliffs Carina nebula"
+  "lion-a": {
+    "wikimedia": "Lion Panthera leo USFWS photo"
+  },
+  "lion-b": {
+    "wikimedia": "lion portrait filetype:bitmap incategory:\"Panthera leo\" PD-USGov"
+  },
+  "lion-c": {
+    "wikimedia": "male lion face close up public domain"
   }
 }
