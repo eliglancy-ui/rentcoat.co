@@ -308,5 +308,35 @@
     "title": "Earth Observation taken by the Expedition 20 crew",
     "license": "NASA public domain",
     "nasa_id": "iss020e047807"
+  },
+  "lion-a-1": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Panthera_leo_%2829645869986%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Panthera leo (29645869986).jpg",
+    "license": "CC BY 2.0",
+    "artist": "U.S. Fish and Wildlife Service Headquarters"
+  },
+  "lion-c-1": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Proud_lion_in_close-up_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "title": "File:Proud lion in close-up (Unsplash).jpg",
+    "license": "CC0",
+    "artist": "Tom Skarbek-Wazynski wazynski"
+  },
+  "lion-c-2": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Tarzan_and_the_Golden_Lion_-_McClurg1923.pdf/page1-500px-Tarzan_and_the_Golden_Lion_-_McClurg1923.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Tarzan and the Golden Lion - McClurg1923.pdf",
+    "license": "Public domain",
+    "artist": "Edgar Rice Burroughs"
+  },
+  "lion-c-3": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Face_to_face_with_great_musicians_%28IA_facetofacewithgr01isaa%29.pdf/page1-500px-Face_to_face_with_great_musicians_%28IA_facetofacewithgr01isaa%29.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Face to face with great musicians (IA facetofacewithgr01isaa).pdf",
+    "license": "Public domain",
+    "artist": "\nIsaacson, Charles D\nIsaacson, Charles D. (Charles David), b. 1891"
+  },
+  "lion-c-4": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Tarzan_and_the_Golden_Lion.pdf/page1-500px-Tarzan_and_the_Golden_Lion.pdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "title": "File:Tarzan and the Golden Lion.pdf",
+    "license": "Public domain",
+    "artist": "Edgar Rice Burroughs"
   }
 }
