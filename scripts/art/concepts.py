@@ -177,4 +177,5 @@ def photo_light():  # black tee, warm duotone sunrise from orbit, big type over 
     text(img, (W / 2, 3600), "AND THE LIFE OF THE WORLD", fit_text("AND THE LIFE OF THE WORLD", "black", 3300, 330), (255, 200, 150))
     verse_ref(img, 3960, "3 NEPHI 11:11", BONE); save(img, "concept-photo-light-back")
 
-for fn in (engraving_hosanna, engraving_come, gothic_king, gothic_heaven, photo_earth, photo_light): fn()
+if __name__ == "__main__":
+    for fn in (engraving_hosanna, engraving_come, gothic_king, gothic_heaven, photo_earth): fn()
