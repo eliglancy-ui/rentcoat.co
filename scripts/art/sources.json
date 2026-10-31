@@ -1,10 +1,6 @@
 {
-  "bom-reynolds": { "wikimedia": "Story of the Book of Mormon 1888 Reynolds illustration" },
-  "bom-moroni": { "wikimedia": "Captain Moroni title of liberty engraving" },
-  "bom-nephi-ship": { "wikimedia": "Nephi ship Book of Mormon illustration 19th century" },
-  "bom-lehi-dream": { "wikimedia": "Lehi dream tree of life Book of Mormon illustration" },
-  "bom-samuel": { "wikimedia": "Samuel the Lamanite wall illustration" },
-  "bom-stripling": { "wikimedia": "Helaman stripling warriors illustration" },
-  "bom-christensen": { "wikimedia": "C.C.A. Christensen Book of Mormon painting" },
-  "bom-ottinger": { "wikimedia": "George Ottinger painting Book of Mormon" }
+  "dore-mariner": { "wikimedia": "Doré Rime of the Ancient Mariner ship storm engraving" },
+  "mountain-nps": { "wikimedia": "Grand Teton National Park NPS photo public domain mountain peak" },
+  "compass-engraving": { "wikimedia": "antique compass rose engraving 19th century" },
+  "nasa-mountain": { "nasa": "mountain peak aerial" }
 }
