@@ -3085,9 +3085,556 @@
         "vat": 0,
         "total": 46.1
       }
+    },
+    "hosanna-engraving-tee": {
+      "sync_product_id": 487848872,
+      "images": [
+        "images/products/hosanna-engraving-tee-1.jpg",
+        "images/products/hosanna-engraving-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c9dc27698ac042614fb1f1714a0f367a/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae67680cc9a1.jpg",
+          "path": "images/products/hosanna-engraving-tee-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2c9a0a6ce4dae1747dae41836977f881/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae67680ccd22.jpg",
+          "path": "images/products/hosanna-engraving-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      }
+    },
+    "come-unto-engraving-tee": {
+      "sync_product_id": 487848883,
+      "images": [
+        "images/products/come-unto-engraving-tee-1.jpg",
+        "images/products/come-unto-engraving-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cfb59a9187f1fb060e29f9a5d2ddc625/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae6768a27399.jpg",
+          "path": "images/products/come-unto-engraving-tee-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d732ea5f8ebb169a95858fe668fe1ff2/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae6768a278b8.jpg",
+          "path": "images/products/come-unto-engraving-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      }
+    },
+    "king-silver-tee": {
+      "sync_product_id": 487848897,
+      "images": [
+        "images/products/king-silver-tee-1.jpg",
+        "images/products/king-silver-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/10fc0ad4e622e1059fbb32959c730926/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae676930cf49.jpg",
+          "path": "images/products/king-silver-tee-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/029d80e0b2fd9dc21186d8223306c227/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae676930d3f3.jpg",
+          "path": "images/products/king-silver-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      }
+    },
+    "king-lion-tee": {
+      "sync_product_id": 487848904,
+      "images": [
+        "images/products/king-lion-tee-1.jpg",
+        "images/products/king-lion-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ed243f96eccd36235b496f6bb54d99c5/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae6769d09cd3.jpg",
+          "path": "images/products/king-lion-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5a1317832beb2a4757aa9d6f89134c22/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae6769d09f19.jpg",
+          "path": "images/products/king-lion-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "king-heaven-gold-tee": {
+      "sync_product_id": 487848919,
+      "images": [
+        "images/products/king-heaven-gold-tee-1.jpg",
+        "images/products/king-heaven-gold-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ac142e9727805991781c41db3ecb52bf/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae676a32f957.jpg",
+          "path": "images/products/king-heaven-gold-tee-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/68171bebe2f558ba07240243b35f270a/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae676a32fdbd.jpg",
+          "path": "images/products/king-heaven-gold-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      }
+    },
+    "king-sky-tee": {
+      "sync_product_id": 487848943,
+      "images": [
+        "images/products/king-sky-tee-1.jpg",
+        "images/products/king-sky-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/85b43aff12ece9f4e362eea70b7720f0/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae676ad38d36.jpg",
+          "path": "images/products/king-sky-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dabeefe3590f7eeee4a5aeaa536a758d/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae676ad39198.jpg",
+          "path": "images/products/king-sky-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "king-earth-photo-tee": {
+      "sync_product_id": 487848988,
+      "images": [
+        "images/products/king-earth-photo-tee-1.jpg",
+        "images/products/king-earth-photo-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5dd79b8f4e51a3a2b0e28a5171c8bdfd/unisex-garment-dyed-drop-shoulder-t-shirt-black-back-6ae676b8d7172.jpg",
+          "path": "images/products/king-earth-photo-tee-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/c609b763ce57b4426b388c447d783f0c/unisex-garment-dyed-drop-shoulder-t-shirt-black-front-6ae676b8d76de.jpg",
+          "path": "images/products/king-earth-photo-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 20.71,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 1.89,
+        "vat": 0,
+        "total": 27.95
+      }
+    },
+    "samuel-engraving-tee": {
+      "sync_product_id": 487849018,
+      "images": [
+        "images/products/samuel-engraving-tee-1.jpg",
+        "images/products/samuel-engraving-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/7f459c3769e60fb38fcabf8b2231ffd9/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-front-6ae676c1cd770.jpg",
+          "path": "images/products/samuel-engraving-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b98911defda13b364e1750c7ae642827/unisex-garment-dyed-drop-shoulder-t-shirt-shadow-back-6ae676c1cdbee.jpg",
+          "path": "images/products/samuel-engraving-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "storm-tee": {
+      "sync_product_id": 487849103,
+      "images": [
+        "images/products/storm-tee-1.jpg",
+        "images/products/storm-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a1e4087c62fb8365bf9d16bfe549aff1/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae676cd7acbd.jpg",
+          "path": "images/products/storm-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ad19076197cd7d2d113627511e277b86/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae676cd7b112.jpg",
+          "path": "images/products/storm-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "liahona-compass-tee": {
+      "sync_product_id": 487849217,
+      "images": [
+        "images/products/liahona-compass-tee-1.jpg",
+        "images/products/liahona-compass-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f9477644f1323b0e7c69b411ead0afbf/unisex-garment-dyed-drop-shoulder-t-shirt-cream-front-6ae676dacf5f5.jpg",
+          "path": "images/products/liahona-compass-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2fbcebe3e6ac6e77d1b1073a0421f5cc/unisex-garment-dyed-drop-shoulder-t-shirt-cream-back-6ae676dacf979.jpg",
+          "path": "images/products/liahona-compass-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "jik-hoodie": {
+      "sync_product_id": 487849284,
+      "images": [
+        "images/products/jik-hoodie-1.jpg",
+        "images/products/jik-hoodie-2.jpg",
+        "images/products/jik-hoodie-3.jpg",
+        "images/products/jik-hoodie-4.jpg",
+        "images/products/jik-hoodie-5.jpg",
+        "images/products/jik-hoodie-6.jpg",
+        "images/products/jik-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9b43eed2bb8262cb68378ecf625512c6/unisex-premium-pullover-hoodie-black-front-6ae676e667236.jpg",
+          "path": "images/products/jik-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f37bc94a9bb7d3593eb331a05266f151/unisex-premium-pullover-hoodie-black-front-6ae676e66797a.jpg",
+          "path": "images/products/jik-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5555b35a44462bf6e49f36be4befe290/unisex-premium-pullover-hoodie-black-product-details-6ae676e667ba5.jpg",
+          "path": "images/products/jik-hoodie-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3b3079a768a71797b0f407d669f2be80/unisex-premium-pullover-hoodie-black-left-6ae676e667da4.jpg",
+          "path": "images/products/jik-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ebfc483581ab85ca07a754f179f4f3dd/unisex-premium-pullover-hoodie-black-right-6ae676e667feb.jpg",
+          "path": "images/products/jik-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b5321b7d29b296a90fb7a373f21af65d/unisex-premium-pullover-hoodie-black-back-6ae676e66821f.jpg",
+          "path": "images/products/jik-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b69f5a84d4ca1fae02c6247c0246dc2f/unisex-premium-pullover-hoodie-black-back-6ae676e6683ea.jpg",
+          "path": "images/products/jik-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      }
+    },
+    "shelem-poster-hoodie": {
+      "sync_product_id": 487849316,
+      "images": [
+        "images/products/shelem-poster-hoodie-1.jpg",
+        "images/products/shelem-poster-hoodie-2.jpg",
+        "images/products/shelem-poster-hoodie-3.jpg",
+        "images/products/shelem-poster-hoodie-4.jpg",
+        "images/products/shelem-poster-hoodie-5.jpg",
+        "images/products/shelem-poster-hoodie-6.jpg",
+        "images/products/shelem-poster-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/afcff36a250611ef9249c9fed783639e/unisex-premium-pullover-hoodie-navy-blazer-front-6ae676f5a0bee.jpg",
+          "path": "images/products/shelem-poster-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/07aaccadb36efe7a55ba2e46a5edaf86/unisex-premium-pullover-hoodie-navy-blazer-front-6ae676f5a1571.jpg",
+          "path": "images/products/shelem-poster-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/40533e9ee2b937a16d3d1a13b4e8149b/unisex-premium-pullover-hoodie-navy-blazer-product-details-6ae676f5a1af2.jpg",
+          "path": "images/products/shelem-poster-hoodie-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2a601856679b2af84efade48d1b8e2eb/unisex-premium-pullover-hoodie-navy-blazer-left-6ae676f5a1ef8.jpg",
+          "path": "images/products/shelem-poster-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e7c890d3ed611fb29c8da8566a930f94/unisex-premium-pullover-hoodie-navy-blazer-right-6ae676f5a22fb.jpg",
+          "path": "images/products/shelem-poster-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1c9419d16280c7c498e55866968963e3/unisex-premium-pullover-hoodie-navy-blazer-back-6ae676f5a26d8.jpg",
+          "path": "images/products/shelem-poster-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bf56744d15982f21f15d1b15b564b235/unisex-premium-pullover-hoodie-navy-blazer-back-6ae676f5a2a6e.jpg",
+          "path": "images/products/shelem-poster-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      }
+    },
+    "mom-hoodie": {
+      "sync_product_id": 487849378,
+      "images": [
+        "images/products/mom-hoodie-1.jpg",
+        "images/products/mom-hoodie-2.jpg",
+        "images/products/mom-hoodie-3.jpg",
+        "images/products/mom-hoodie-4.jpg",
+        "images/products/mom-hoodie-5.jpg",
+        "images/products/mom-hoodie-6.jpg",
+        "images/products/mom-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b0ab0ea6f220dad5e160599dfcacaf5f/unisex-premium-pullover-hoodie-bone-back-6ae6770188f76.jpg",
+          "path": "images/products/mom-hoodie-1.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0809ca21b26d65c5212d65ff78a0d520/unisex-premium-pullover-hoodie-bone-front-6ae677018990c.jpg",
+          "path": "images/products/mom-hoodie-2.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/270a45caf49e3f822e2d2c594f578e5b/unisex-premium-pullover-hoodie-bone-product-details-6ae6770189b28.jpg",
+          "path": "images/products/mom-hoodie-3.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f41dc5093282b10709456cc46ed88374/unisex-premium-pullover-hoodie-bone-front-6ae6770189d28.jpg",
+          "path": "images/products/mom-hoodie-4.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2010af82c72ac1e5f847ec80a0ae8b94/unisex-premium-pullover-hoodie-bone-back-6ae6770189f24.jpg",
+          "path": "images/products/mom-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/bfbb297af9baa83ec08333dc2e97693d/unisex-premium-pullover-hoodie-bone-left-6ae677018a12d.jpg",
+          "path": "images/products/mom-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0ddb193f4d85b18ea42eb08955433dd7/unisex-premium-pullover-hoodie-bone-right-6ae677018a3a5.jpg",
+          "path": "images/products/mom-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      }
     }
   },
-  "generatedAt": "2026-10-31T03:37:06.987Z",
+  "generatedAt": "2026-10-31T23:17:29.704Z",
   "dump": {
     "raw:store/products/484447898": {
       "sync_product": {
