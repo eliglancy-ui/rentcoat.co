@@ -26,7 +26,7 @@ function piece(id, o) {
   };
 }
 const LINE_PIECES = {
-  "rent-hoodie": { images: [{ src: "images/products/rent-hoodie-2.jpg", label: "Front" }, { src: "images/products/rent-hoodie-1.jpg", label: "Back" }, { src: "images/products/rent-hoodie-3.jpg", label: "Women's" }, { src: "images/products/rent-hoodie-4.jpg", label: "Flat" }],
+  "rent-hoodie": { images: [{ src: "images/products/rent-hoodie-1.jpg", label: "Front" }, { src: "images/products/rent-hoodie-6.jpg", label: "Back" }, { src: "images/products/rent-hoodie-7.jpg", label: "Flat" }, { src: "images/products/rent-hoodie-3.jpg", label: "Close-up" }],
     name: "Rent Coat Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "Alma 46:12", verse: ["alma", 46, 12],
     blurb: "Heavyweight Cotton Heritage hoodie. A small gold flag on the chest and the whole title of liberty across the back." },
   "strait-joggers": { images: [{ src: "images/products/strait-joggers-1.jpg", label: "Close-up" }, { src: "images/products/strait-joggers-2.jpg", label: "Full look" }, { src: "images/products/strait-joggers-3.jpg", label: "Flat" }],
@@ -38,10 +38,10 @@ const LINE_PIECES = {
   "flag-beanie": { images: [{ src: "images/products/flag-beanie-1.jpg", label: "Men's" }, { src: "images/products/flag-beanie-2.jpg", label: "Women's" }, { src: "images/products/flag-beanie-3.jpg", label: "Front" }, { src: "images/products/flag-beanie-4.jpg", label: "Styled" }],
     name: "Torn Flag Beanie", kind: "Beanie", color: "Red", swatch: "#B91616", price: { default: 2800 }, sizes: ONE, ref: "Alma 46:12", verse: ["alma", 46, 12],
     blurb: "Cuffed knit beanie in rent red with a white flag on the cuff." },
-  "shelem-fleece": { images: [{ src: "images/products/shelem-fleece-1.jpg", label: "Men's" }, { src: "images/products/shelem-fleece-2.jpg", label: "Women's" }, { src: "images/products/shelem-fleece-3.jpg", label: "Close-up" }, { src: "images/products/shelem-fleece-4.jpg", label: "Flat" }],
+  "shelem-fleece": { images: [{ src: "images/products/shelem-fleece-1.jpg", label: "Front" }, { src: "images/products/shelem-fleece-2.jpg", label: "Back" }, { src: "images/products/shelem-fleece-3.jpg", label: "Side" }],
     name: "Mount Shelem Alpine Club Fleece", kind: "Fleece", color: "Black", swatch: "#151515", price: { default: 7800, "2XL": 8100 }, ref: "Ether 3:1", verse: ["ether", 3, 1],
     blurb: "Quarter-zip fleece with the club crest stitched on the chest. Named for the mount of exceeding height." },
-  "hagoth-windbreaker": { images: [{ src: "images/products/hagoth-windbreaker-1.jpg", label: "Men's" }, { src: "images/products/hagoth-windbreaker-2.jpg", label: "Women's" }, { src: "images/products/hagoth-windbreaker-3.jpg", label: "Flat" }],
+  "hagoth-windbreaker": { images: [{ src: "images/products/hagoth-windbreaker-1.jpg", label: "Front" }, { src: "images/products/hagoth-windbreaker-2.jpg", label: "Back" }],
     name: "Hagoth Shipbuilding Co. Windbreaker", kind: "Windbreaker", color: "Forest Green", swatch: "#283D2C", price: { default: 8500, "2XL": 8800 }, ref: "Alma 63:5", verse: ["alma", 63, 5],
     blurb: "Lightweight full-zip windbreaker with an embroidered boatyard crest, for an exceedingly curious man." },
   "ironrod-anorak": { images: [{ src: "images/products/ironrod-anorak-1.jpg", label: "Men's" }, { src: "images/products/ironrod-anorak-2.jpg", label: "Women's" }, { src: "images/products/ironrod-anorak-3.jpg", label: "Close-up" }, { src: "images/products/ironrod-anorak-4.jpg", label: "Flat" }],
@@ -91,6 +91,8 @@ for (const [k, name, [hc, hs], [tc, ts], ref, verse, blurb] of BIG) {
   LINE_PIECES[h] = { name: `${name} Hoodie`, kind: "Hoodie", color: hc, swatch: hs, price: hoodie, ref, verse, blurb, images: views(h, ["Front", "Back", "Women's", "Flat"]) };
   LINE_PIECES[tid] = { name: `${name} Tee`, kind: "Tee", color: tc, swatch: ts, price: tee, ref, verse, blurb, images: views(tid, ["Front", "Back"]) };
 }
+// Printful returned the rebuilt Stripling hoodie's photos in a different order.
+LINE_PIECES["stripling-hoodie"].images = [{ src: "images/products/stripling-hoodie-4.jpg", label: "Front" }, { src: "images/products/stripling-hoodie-1.jpg", label: "Back" }, { src: "images/products/stripling-hoodie-5.jpg", label: "Flat" }, { src: "images/products/stripling-hoodie-3.jpg", label: "Close-up" }];
 // Type tees: a chest line and a verse set big across the back (art in scripts/printful/art-type.mjs).
 const TYPE = [
   ["jesus-king-tee", "Jesus Is King Tee", "Black", "#000000", "2 Nephi 10:14", ["2-ne", 10, 14], "Jesus is King across the chest, and the king of heaven set big across the shoulders."],

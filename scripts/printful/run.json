@@ -1,1 +1,1 @@
-{ "replace": ["rent-hoodie", "rent-navy-hoodie", "stripling-hoodie", "shelem-fleece", "hagoth-windbreaker"], "only": ["rent-hoodie", "rent-navy-hoodie", "stripling-hoodie", "shelem-fleece", "hagoth-windbreaker"] }
+{ "preview": true, "only": ["concept-jik-hoodie", "concept-samuel", "concept-storm", "concept-shelem", "concept-liahona", "concept-mom"] }
