@@ -8,6 +8,20 @@ const v = (S, M, L, XL, XXL) => ({ S, M, L, XL, "2XL": XXL });
 // M2475 fleece pullover 674, SOL'S 32000 windbreaker 661, Champion CO200 packable anorak 399,
 // Yupoong 6245CM dad hat 206, Yupoong 1501KC cuffed beanie 266.
 export const CATALOG = {
+  // The approved drop plan: art from scripts/art/concepts*.py (files named in art-concepts.mjs)
+  "hosanna-engraving-tee": { product: 1626, color: "Black", art: "concept-engraving-hosanna", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "come-unto-engraving-tee": { product: 1626, color: "Cream", art: "concept-engraving-come", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "king-silver-tee": { product: 1626, color: "Black", art: "concept-gothic-king", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "king-lion-tee": { product: 1626, color: "Black", art: "concept-jik-lion", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "king-heaven-gold-tee": { product: 1626, color: "Shadow", art: "concept-gothic-heaven", variants: v(50239, 50240, 50241, 50264, 50242) },
+  "king-sky-tee": { product: 1626, color: "Shadow", art: "concept-heaven-sky", variants: v(50239, 50240, 50241, 50264, 50242) },
+  "king-earth-photo-tee": { product: 1626, color: "Black", art: "concept-photo-earth", variants: v(50243, 50244, 50245, 50259, 50246) },
+  "samuel-engraving-tee": { product: 1626, color: "Shadow", art: "concept-samuel", variants: v(50239, 50240, 50241, 50264, 50242) },
+  "storm-tee": { product: 1626, color: "Cream", art: "concept-storm", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "liahona-compass-tee": { product: 1626, color: "Cream", art: "concept-liahona", variants: v(50231, 50232, 50233, 50260, 50234) },
+  "jik-hoodie": { product: 380, color: "Black", art: "concept-jik-hoodie", variants: v(10779, 10780, 10781, 10782, 10783) },
+  "shelem-poster-hoodie": { product: 380, color: "Navy Blazer", art: "concept-shelem", variants: v(11491, 11492, 11493, 11494, 11495) },
+  "mom-hoodie": { product: 380, color: "Bone", art: "concept-mom", variants: v(20284, 20285, 20286, 20287, 20288) },
   "rent-hoodie":        { product: 380,  color: "Black",            variants: v(10779, 10780, 10781, 10782, 10783) },
   "strait-joggers":     { product: 412,  color: "Charcoal Heather", variants: v(11284, 11285, 11286, 11287, 11288) },
   "flag-cap":           { product: 206,  color: "Spruce",           variants: { OS: 8745 } },

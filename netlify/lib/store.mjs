@@ -135,6 +135,23 @@ const shots = id => id.endsWith("-hoodie") ? [{ src: `images/products/${id}-1.jp
 // A null color means the piece already exists and only joins the group.
 for (const [base, id, color, swatch] of COLORS)
   LINE_PIECES[id] = color ? { ...LINE_PIECES[base], group: base, color, swatch, images: shots(id) } : { ...LINE_PIECES[id], group: base };
+// The approved drop plan: photo, engraving and blackletter back prints (art in scripts/art/concepts*.py).
+const PLAN = {
+  "hosanna-engraving-tee": { name: "Hosanna Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee, ref: "3 Nephi 11:17", verse: ["3-ne", 11, 17], blurb: "The Doré engraving of the triumphal entry in an arch, with the multitude's cry in gold above it.", images: views("hosanna-engraving-tee", ["Front", "Back"]) },
+  "come-unto-engraving-tee": { name: "Come Unto Christ Tee", kind: "Tee", color: "Cream", swatch: "#F3EEE1", price: tee, ref: "Moroni 10:32", verse: ["moro", 10, 32], blurb: "Doré's Sermon on the Mount, with Moroni's last invitation set big underneath.", images: views("come-unto-engraving-tee", ["Front", "Back"]) },
+  "king-silver-tee": { name: "Jesus Is King Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee, ref: "2 Nephi 10:14", verse: ["2-ne", 10, 14], blurb: "Silver chrome blackletter across the back, with the king of heaven verse underneath.", images: views("king-silver-tee", ["Front", "Back"]) },
+  "king-lion-tee": { name: "Jesus Is King Lion Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee, ref: "2 Nephi 10:14", verse: ["2-ne", 10, 14], blurb: "A black-and-white lion over silver blackletter, with the king of heaven verse underneath.", images: views("king-lion-tee", ["Front", "Back"]) },
+  "king-heaven-gold-tee": { name: "The King of Heaven Tee", kind: "Tee", color: "Shadow", swatch: "#4A4748", price: tee, ref: "2 Nephi 10:14", verse: ["2-ne", 10, 14], blurb: "Gold foil blackletter across the back, with the verse set in bone underneath.", images: views("king-heaven-gold-tee", ["Front", "Back"]) },
+  "king-sky-tee": { name: "The King of Heaven Clouds Tee", kind: "Tee", color: "Shadow", swatch: "#4A4748", price: tee, ref: "2 Nephi 10:14", verse: ["2-ne", 10, 14], blurb: "A towering storm cloud in a gold arch, with gold blackletter underneath.", images: views("king-sky-tee", ["Front", "Back"]) },
+  "king-earth-photo-tee": { name: "King of All the Earth Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee, ref: "Alma 5:50", verse: ["alma", 5, 50], blurb: "NASA's Blue Marble in faded print colors, with Alma's words under it.", images: views("king-earth-photo-tee", ["Front", "Back"]) },
+  "samuel-engraving-tee": { name: "Samuel on the Wall Tee", kind: "Tee", color: "Shadow", swatch: "#4A4748", price: tee, ref: "Helaman 16:2", verse: ["hel", 16, 2], blurb: "A 1925 illustration of Samuel on the wall, with the arrows missing, in bone and gold ink.", images: views("samuel-engraving-tee", ["Front", "Back"]) },
+  "storm-tee": { name: "A Sure Foundation Tee", kind: "Tee", color: "Cream", swatch: "#F3EEE1", price: tee, ref: "Helaman 5:12", verse: ["hel", 5, 12], blurb: "An 1888 engraving of the storm, with the promise that it has no power over you in red.", images: views("storm-tee", ["Front", "Back"]) },
+  "liahona-compass-tee": { name: "The Liahona Tee", kind: "Tee", color: "Cream", swatch: "#F3EEE1", price: tee, ref: "1 Nephi 16:29", verse: ["1-ne", 16, 29], blurb: "A 1748 compass rose for the Liahona, with the small-means verse in red and green.", images: views("liahona-compass-tee", ["Front", "Back"]) },
+  "jik-hoodie": { name: "Jesus Is King Hoodie", kind: "Hoodie", color: "Black", swatch: "#000000", price: hoodie, ref: "2 Nephi 10:14", verse: ["2-ne", 10, 14], blurb: "Silver chrome blackletter across the back of a heavyweight hoodie.", images: shots("jik-hoodie") },
+  "shelem-poster-hoodie": { name: "Mount Shelem Hoodie", kind: "Hoodie", color: "Navy Blazer", swatch: "#171F2C", price: hoodie, ref: "Ether 3:1", verse: ["ether", 3, 1], blurb: "A vintage park poster of the mount, with a photo of the peaks, on a navy hoodie.", images: shots("shelem-poster-hoodie") },
+  "mom-hoodie": { name: "Missionary Mom Hoodie", kind: "Hoodie", color: "Bone", swatch: "#F5E8CE", price: hoodie, ref: "Alma 56:48", verse: ["alma", 56, 48], blurb: "We do not doubt our mothers knew it, in blackletter, on a bone hoodie.", images: shots("mom-hoodie") },
+};
+for (const [id, o] of Object.entries(PLAN)) LINE_PIECES[id] = o;
 export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o]) => [id, piece(id, o)]));
 // What the homepage needs to show the live pieces.
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>

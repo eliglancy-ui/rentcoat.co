@@ -216,7 +216,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
   const product = PRODUCTS[id];
   // Printful's API refuses printed inside tags ("Unsupported file type: label_inside"), so TAG_FILES are only
   // artwork for adding a tag by hand in Printful's dashboard.
-  const files = [...FILES, ...BOLD_FILES, ...TYPE_FILES].filter(f => f.id === (cat.art || id));
+  const files = [...FILES, ...BOLD_FILES, ...TYPE_FILES, ...CONCEPT_FILES].filter(f => f.id === (cat.art || id));
   // A file with forSize (a sized tag) only goes on that size.
   const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);
