@@ -1,9 +1,10 @@
 {
-  "dore-tempest": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Jesus Stilling the Tempest" },
-  "dore-entry": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Entry of Jesus into Jerusalem" },
-  "dore-walking": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Jesus Walking on the Sea" },
-  "dore-ascension": { "wikimedia": "filetype:bitmap Gustave Doré Holy Bible Plate Ascension" },
-  "dore-sermon": { "wikimedia": "filetype:bitmap Dore Bible Sermon on the Mount" },
-  "nasa-earth": { "nasa": "blue marble earth" },
-  "nasa-sunrise": { "nasa": "sunrise over earth international space station" }
+  "bom-reynolds": { "wikimedia": "Story of the Book of Mormon 1888 Reynolds illustration" },
+  "bom-moroni": { "wikimedia": "Captain Moroni title of liberty engraving" },
+  "bom-nephi-ship": { "wikimedia": "Nephi ship Book of Mormon illustration 19th century" },
+  "bom-lehi-dream": { "wikimedia": "Lehi dream tree of life Book of Mormon illustration" },
+  "bom-samuel": { "wikimedia": "Samuel the Lamanite wall illustration" },
+  "bom-stripling": { "wikimedia": "Helaman stripling warriors illustration" },
+  "bom-christensen": { "wikimedia": "C.C.A. Christensen Book of Mormon painting" },
+  "bom-ottinger": { "wikimedia": "George Ottinger painting Book of Mormon" }
 }

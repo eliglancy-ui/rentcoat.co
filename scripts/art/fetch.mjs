@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 const UA = { "User-Agent": "RentCoatCo-art-fetch/1.0 (rentcoat.co@gmail.com)" };
 const sources = JSON.parse(readFileSync("scripts/art/sources.json", "utf8"));
 mkdirSync("art/src", { recursive: true });
-const index = {};
+let index = {}; try { index = JSON.parse(readFileSync("art/src/index.json", "utf8")); } catch {}
 const save = async (name, url, meta) => {
   const r = await fetch(url, { headers: UA });
   if (!r.ok) return console.log(`  ${name}: ${r.status} ${url}`);
@@ -16,7 +16,7 @@ const save = async (name, url, meta) => {
 for (const [key, s] of Object.entries(sources)) {
   console.log(key);
   if (s.wikimedia) {
-    const q = new URLSearchParams({ action: "query", list: "search", srsearch: s.wikimedia, srnamespace: "6", srlimit: "3", format: "json" });
+    const q = new URLSearchParams({ action: "query", list: "search", srsearch: s.wikimedia, srnamespace: "6", srlimit: "4", format: "json" });
     const hits = (await (await fetch(`https://commons.wikimedia.org/w/api.php?${q}`, { headers: UA })).json()).query?.search || [];
     for (const [i, h] of hits.entries()) {
       const p = new URLSearchParams({ action: "query", titles: h.title, prop: "imageinfo", iiprop: "url|extmetadata", iiurlwidth: "3000", format: "json" });
