@@ -299,7 +299,7 @@
           "name": "How do I pay for a Rent Coat Co. order?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Checkout runs on Stripe and accepts major cards, Apple Pay and Google Pay. Tees are $35 during launch week (Nov 14–21) and $40 after ($38 and $43 for 2XL), and shipping is a flat $5.99 in the US."
+            "text": "Checkout runs on Stripe and accepts major cards, Apple Pay and Google Pay. Tees are $35 during launch week (Nov 14–21) and $40 after ($38 and $43 for 2XL), and shipping in the US is $5.99, or free on orders of $60 or more."
           }
         },
         {
@@ -672,7 +672,7 @@ footer .wrap { padding-block: 56px 40px }
 <body>
 <a class="skip" href="#drop">Skip to the shirts</a>
 
-<div class="announce"><span id="bar-dates">Drop 001 · Nov 14 – 21, 2026</span><span>Printed to order</span><span>Flat $5.99 US shipping</span></div>
+<div class="announce"><span id="bar-dates">Drop 001 · Nov 14 – 21, 2026</span><span>Printed to order</span><span>$5.99 US shipping, free on $60+</span></div>
 
 <header class="top"><div class="wrap">
   <a class="brand" href="#top" aria-label="Rent Coat Co. home">
@@ -807,7 +807,7 @@ footer .wrap { padding-block: 56px 40px }
       </div>
     </article>
   </div>
-  <p class="eyebrow drop-fine" id="drop-fine">Launch week $35 each · $38 for 2XL · then $40 · flat $5.99 US shipping · checkout by Stripe</p>
+  <p class="eyebrow drop-fine" id="drop-fine">Launch week $35 each · $38 for 2XL · then $40 · $5.99 US shipping, free on $60+ · checkout by Stripe</p>
 </div></section>
 <!-- The line: filled from /api/config with every piece marked live in netlify/lib/store.mjs. Hidden while none are. -->
 <section class="drop-sec line-sec" id="line" aria-labelledby="line-title" hidden><div class="wrap">
@@ -877,7 +877,7 @@ footer .wrap { padding-block: 56px 40px }
     <details><summary>Is this an LDS clothing brand?</summary><p>It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church.</p></details>
     <details open><summary>How does launch week work?</summary><p>Drop 001 launches with a 7-day launch week, Nov 14 to Nov 21 (10 AM Eastern both days), when every tee is $35 ($38 for 2XL). Launch week orders are printed after it ends and usually arrive 2 to 3 weeks later. After that the shirts stay in the shop at $40, printed to order and usually delivered in 1 to 2 weeks.</p></details>
     <details><summary>Why can't I order on Sunday?</summary><p>Checkout pauses on Sundays (Eastern time), because we keep Sunday as a day of rest. Your bag stays saved, so you can check out on Monday.</p></details>
-    <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $35 during launch week and $40 after ($38 and $43 for 2XL), and shipping is a flat $5.99 in the US.</p></details>
+    <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $35 during launch week and $40 after ($38 and $43 for 2XL), and shipping in the US is $5.99, or free on orders of $60 or more.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
     <details><summary>How do the shirts fit?</summary><p>Boxy and oversized, with dropped shoulders and a slightly shorter body. Sizes S to 2XL. Order your usual size for the boxy look, or size down for a closer fit. A medium is about 24¾ inches across the chest and 27¼ inches long.</p></details>
     <details><summary>Size chart</summary><table class="size-table"><caption class="sr-only">Garment measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest (flat)</th><th scope="col">Length</th></tr></thead><tbody><tr><th scope="row">S</th><td>22¾</td><td>26¾</td></tr><tr><th scope="row">M</th><td>24¾</td><td>27¼</td></tr><tr><th scope="row">L</th><td>26½</td><td>29¼</td></tr><tr><th scope="row">XL</th><td>28</td><td>31¼</td></tr><tr><th scope="row">2XL</th><td>30</td><td>31¼</td></tr></tbody></table><p>Garment measurements in inches, laid flat, from the blank maker's spec. Expect about an inch of variation. The cut is boxy and oversized, so size down for a closer fit.</p></details>
@@ -948,6 +948,7 @@ let DROP = { opens: "2026-11-14T10:00:00-05:00", closes: "2026-11-21T10:00:00-05
 let PRICE = { default: 4000, "2XL": 4300 };
 let LAUNCH_PRICE = { default: 3500, "2XL": 3800 };
 let SHIPPING_CENTS = 599;
+let FREE_SHIP_OVER = 6000;
 let closedSundays = true;
 
 // The Drop 001 tees as the page first shows them. Other colors of a design (same group) arrive in /api/config's tees.
@@ -1205,8 +1206,8 @@ function setTiming() {
   $("pill-offer").textContent = after ? "Printed to order" : "Launch week $35";
   $("chip-offer").textContent = after ? "From $40" : "Launch week $35";
   $("drop-fine").textContent = after
-    ? "$40 each · $43 for 2XL · flat $5.99 US shipping · checkout by Stripe"
-    : "Launch week $35 each · $38 for 2XL · then $40 · flat $5.99 US shipping · checkout by Stripe";
+    ? "$40 each · $43 for 2XL · $5.99 US shipping, free on $60+ · checkout by Stripe"
+    : "Launch week $35 each · $38 for 2XL · then $40 · $5.99 US shipping, free on $60+ · checkout by Stripe";
 }
 
 // Use the server's dates, prices and clock, so a test window (DROP_OPENS) or a wrong phone clock can't drift from checkout.
@@ -1216,6 +1217,7 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (c.price?.default) PRICE = c.price;
   if (c.launchPrice?.default) LAUNCH_PRICE = c.launchPrice;
   if (Number.isFinite(c.shipping)) SHIPPING_CENTS = c.shipping;
+  if (Number.isFinite(c.freeShipOver)) FREE_SHIP_OVER = c.freeShipOver;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
   showColors(c.tees);
@@ -1299,8 +1301,9 @@ function renderBag() {
   });
   const sub = bag.reduce((n, l) => n + priceFor(l.id, l.size) * l.qty, 0);
   $("t-sub").textContent = money(sub);
-  $("t-ship").textContent = bag.length ? money(SHIPPING_CENTS) : "$0";
-  $("t-total").textContent = money(sub + (bag.length ? SHIPPING_CENTS : 0));
+  const ship = !bag.length || sub >= FREE_SHIP_OVER ? 0 : SHIPPING_CENTS;
+  $("t-ship").textContent = bag.length && !ship ? "Free" : money(ship);
+  $("t-total").textContent = money(sub + ship);
 }
 function openBag() {
   lastFocus = document.activeElement; $("bag").hidden = false; $("scrim").hidden = false;

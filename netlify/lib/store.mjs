@@ -180,10 +180,11 @@ export const PRINTFUL_STORE_ID = "18950104";
 export const PRICE = { default: 4000, "2XL": 4300 };
 // Launch-week prices: only between DROP.opens and DROP.closes.
 export const LAUNCH_PRICE = { default: 3500, "2XL": 3800 };
-export const SHIPPING = { amount: 599 };
-export const shippingLabel = phase => phase === "launch"
-  ? "Standard shipping (printed after launch week ends Nov 21)"
-  : "Standard shipping";
+// freeOver: a bag subtotal (before promo codes) at or above this ships free.
+export const SHIPPING = { amount: 599, freeOver: 6000 };
+export const shippingCents = subtotal => subtotal >= SHIPPING.freeOver ? 0 : SHIPPING.amount;
+export const shippingLabel = (phase, free) => (free ? "Free standard shipping" : "Standard shipping")
+  + (phase === "launch" ? " (printed after launch week ends Nov 21)" : "");
 export const SHIP_TO = ["US"];
 export const MAX_ITEMS = 10;
 

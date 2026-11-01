@@ -82,7 +82,7 @@ See them at **rentcoat.co/api/stats?key=YOUR_ADMIN_KEY** (add `&days=90` for lon
 ## How an order flows
 
 1. Shopper adds shirts to the bag and taps Checkout.
-2. `/api/checkout` checks the shop is open (not before launch week, not Sunday), prices the bag at launch or regular prices, then opens Stripe Checkout with US shipping at $5.99. The checkout page expires after 30 minutes.
+2. `/api/checkout` checks the shop is open (not before launch week, not Sunday), prices the bag at launch or regular prices, then opens Stripe Checkout with US shipping at $5.99, or free when the bag subtotal is $60 or more (`SHIPPING.freeOver` in `store.mjs`). The checkout page expires after 30 minutes.
 3. Shopper pays with card, Apple Pay or Google Pay. Stripe emails the receipt.
 4. Stripe calls `/api/stripe-webhook`. It checks Stripe's signature and creates the Printful order: a draft for launch week orders (confirm them together after launch week), or a confirmed order that prints right away for orders after it.
 5. If anything is missing (like a variant ID), the payment is still safe in Stripe and Netlify's function log says `ORDER NEEDS MANUAL ENTRY` with the Stripe session ID.
