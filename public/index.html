@@ -577,6 +577,10 @@ summary::after { content: ""; flex: none; width: 20px; height: 20px; background:
   linear-gradient(currentColor, currentColor) center/2.2px 14px no-repeat }
 details[open] summary::after { background: linear-gradient(currentColor, currentColor) center/14px 2.2px no-repeat }
 details p { margin: 0; padding: 0 48px 24px 4px; max-width: 720px; color: var(--text) }
+.size-table { width: 100%; max-width: 720px; border-collapse: collapse; margin: 0 0 12px; font-size: 15px }
+.size-table th, .size-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: right }
+.size-table th:first-child, .size-table td:first-child { text-align: left }
+.size-table th { color: var(--muted); font-weight: 600 }
 details a { color: var(--rent) }
 
 /* reminder */
@@ -876,6 +880,7 @@ footer .wrap { padding-block: 56px 40px }
     <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $35 during launch week and $40 after ($38 and $43 for 2XL), and shipping is a flat $5.99 in the US.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
     <details><summary>How do the shirts fit?</summary><p>Boxy and oversized, with dropped shoulders and a slightly shorter body. Sizes S to 2XL. Order your usual size for the boxy look, or size down for a closer fit. A medium is about 24¾ inches across the chest and 27¼ inches long.</p></details>
+    <details><summary>Size chart</summary><table class="size-table"><caption class="sr-only">Garment measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest (flat)</th><th scope="col">Length</th></tr></thead><tbody><tr><th scope="row">S</th><td>22¾</td><td>26¾</td></tr><tr><th scope="row">M</th><td>24¾</td><td>27¼</td></tr><tr><th scope="row">L</th><td>26½</td><td>29¼</td></tr><tr><th scope="row">XL</th><td>28</td><td>31¼</td></tr><tr><th scope="row">2XL</th><td>30</td><td>31¼</td></tr></tbody></table><p>Garment measurements in inches, laid flat, from the blank maker's spec. Expect about an inch of variation. The cut is boxy and oversized, so size down for a closer fit.</p></details>
     <details><summary>Where does the name come from?</summary><p>From Alma 46:12–13 in the Book of Mormon. Captain Moroni “rent his coat,” wrote on it, fastened it to a pole, and called it the title of liberty.</p></details>
     <details><summary>Can I return or exchange?</summary><p>Because every shirt is printed for you, we can't take fit returns. If your shirt arrives damaged or misprinted, email a photo to <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days of delivery and we'll replace it free. <a href="policies.html">Shipping and returns</a>.</p></details>
   </div>
