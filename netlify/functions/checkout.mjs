@@ -1,5 +1,5 @@
 // POST /api/checkout  { items: [{ id, size, qty }] }  ->  { url }  (a Stripe Checkout page)
-import { DROP, PRODUCTS, SHIPPING, SHIP_TO, cleanCart, storePhase, shippingLabel, encodeItems, unitPrice, sizeLabel, stripe, json } from "../lib/store.mjs";
+import { DROP, PRODUCTS, SHIP_TO, cleanCart, storePhase, shippingCents, shippingLabel, encodeItems, unitPrice, sizeLabel, stripe, json } from "../lib/store.mjs";
 
 const closeDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
 
@@ -18,6 +18,9 @@ export default async (req) => {
   } catch (e) {
     return json({ error: e instanceof SyntaxError ? "Bad request." : e.message }, 400);
   }
+
+  const subtotal = items.reduce((n, i) => n + unitPrice(i.id, i.size, now) * i.qty, 0);
+  const ship = shippingCents(subtotal);
 
   const site = process.env.URL || new URL(req.url).origin;
   // Set STRIPE_TAX=on in Netlify once the business is registered for NC sales tax and that registration is added in Stripe Tax.
@@ -53,8 +56,8 @@ export default async (req) => {
     shipping_options: [{
       shipping_rate_data: {
         type: "fixed_amount",
-        display_name: shippingLabel(phase),
-        fixed_amount: { amount: SHIPPING.amount, currency: "usd" },
+        display_name: shippingLabel(phase, ship === 0),
+        fixed_amount: { amount: ship, currency: "usd" },
         ...(tax && { tax_behavior: "exclusive", tax_code: "txcd_92010001" }),
       },
     }],
