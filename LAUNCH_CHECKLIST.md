@@ -43,5 +43,8 @@ Launch week opens **Sat Nov 14, 2026, 10:00 AM ET** and closes **Sat Nov 21, 10:
 - [ ] Update the site for regular prices: dates and price copy on the home, product and keyword pages, `llms.txt`, and the structured data (`priceValidUntil`, `availabilityStarts`, `availabilityEnds`). The README's "Before each drop" list covers each spot.
 - [ ] Bump `<lastmod>` in `sitemap.xml` and ping IndexNow.
 
+## Later (after launch week)
+- [ ] Checkout look: replace the plain dark green panel with a strong photo of one of the shirts. Stripe's hosted checkout only takes colors, an icon and a logo, so this needs Stripe Embedded Checkout on a rentcoat.co page with the photo beside it. Build it on a branch after Nov 21 and test with a real order. (Stripe branding set Nov 1: brand #16201B, accent #C9A45C, flag icon, font Inter.)
+
 ## By Tue Dec 8
 - [ ] Every launch order has a tracking number. If any won't make it, email that buyer a new date with the full-refund option, as the terms promise.
