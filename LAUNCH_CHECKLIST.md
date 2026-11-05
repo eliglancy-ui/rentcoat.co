@@ -20,7 +20,7 @@ Launch week opens **Sat Nov 14, 2026, 10:00 AM ET** and closes **Sat Nov 21, 10:
 - [ ] **Admin key.** `ADMIN_KEY` is set; `/api/stats?key=...` loads.
 
 ## By Tue Nov 10: sales and content
-- [ ] Decide on the launch-weekend Sunday (Nov 15). Keep the pause, or set `CLOSED_SUNDAYS=off` for launch week and redeploy.
+- [x] Decide on the launch-weekend Sunday (Nov 15). Decided Nov 5: keep the Sunday pause (leave `CLOSED_SUNDAYS` unset in Netlify).
 - [x] Merge the size-chart PR (merged Nov 1). Still check the 2XL length against Shaka Wear's spec.
 - [ ] 5-10 people wearing the shirts in photos or reels, ready to post Nov 14.
 - [ ] About 10 reels made and captioned for Nov 1-14 (countdown, Guess the Verse, the story behind each shirt).
