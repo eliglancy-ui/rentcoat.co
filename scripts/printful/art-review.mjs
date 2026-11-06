@@ -120,7 +120,7 @@ const PICTURES = [
   // Press Forward tee. Aivazovsky, Walking on the Water (1888). File: Po vodam 1888.jpg
   ["press-forward", "aivazovsky-walking-halftone.png", { script: ["press forward with a", 90, 1660, 190], big: ["STEADFASTNESS", 300], ref: "IN CHRIST · 2 NEPHI 31:20" }],
   // Jesus Is King tee. Doré, Christ's Entry into Jerusalem (engraving, 1866). File: Gustave Doré - Christ's Entry into Jerusalem.jpg
-  ["king", "dore-entry-halftone.png", { script: ["will be their", 90, 1660, 230], big: ["KING", 640], ref: "I, THE LORD, THE KING OF HEAVEN · 2 NEPHI 10:14" }],
+  ["king", "dore-entry-halftone.png", { script: ["will be their", 90, 1660, 230], big: ["KING", 640], ref: "THE KING OF HEAVEN · 2 NEPHI 10:14" }],
   // Liahona. Doré, Abraham Journeying into the Land of Canaan (engraving). File: Abraham Journeying into the Land of Canaan (89393798).jpg
   ["liahona", "dore-abraham-halftone.png", { script: ["by small means", 90, 1660, 210], big: ["GREAT THINGS", 380], ref: "THE LORD CAN BRING ABOUT · 1 NEPHI 16:29" }],
   // Barges. Aivazovsky, Among the Waves (1898). File: Ivan Konstantinovich Aivazovsky - Among the Waves, 1898.jpg
