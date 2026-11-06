@@ -24,7 +24,9 @@ def main():
     p.add_argument("--gamma", type=float, default=0.85)
     p.add_argument("--contrast", type=float, default=1.35)
     p.add_argument("--fade", type=float, default=0.18, help="edge fade as a share of each side")
+    p.add_argument("--oval", action="store_true", help="fade to an oval instead of the rectangle's edges, so a light background has no box")
     p.add_argument("--drop-sky", action="store_true", help="knock out pale blue sky so the figure stands on the shirt color")
+    p.add_argument("--drop-haze", action="store_true", help="with --drop-sky: also knock out pale, colorless haze and halo glow (not for white robes)")
     p.add_argument("--protect", action="append", default=[], help="cx,cy,rx,ry in source pixels: an ellipse (a face) the sky knock-out must not touch")
     a = p.parse_args()
 
@@ -42,7 +44,8 @@ def main():
         mx, mn = c.max(axis=2), c.min(axis=2)
         sat = (mx - mn) / np.maximum(mx, 1e-3)
         haze = np.clip((0.16 - sat) / 0.06, 0, 1) * np.clip((g - 0.70) / 0.08, 0, 1)
-        s = np.maximum(s, haze)
+        if a.drop_haze:
+            s = np.maximum(s, haze)
         if a.protect:
             k = a.width / (box[2] - box[0])
             yy0, xx0 = np.mgrid[0:h, 0:a.width].astype(np.float32)
@@ -63,7 +66,11 @@ def main():
     yy, xx = np.mgrid[0:h, 0:a.width].astype(np.float32)
     fx = np.minimum(xx, a.width - 1 - xx) / (a.width * a.fade)
     fy = np.minimum(yy, h - 1 - yy) / (h * a.fade)
-    g *= np.clip(np.minimum(fx, fy), 0, 1) ** 1.5
+    if a.oval:
+        r = np.hypot((xx - a.width / 2) / (a.width / 2), (yy - h / 2) / (h / 2))
+        g *= np.clip((1 - r) / (a.fade * 2), 0, 1) ** 1.5
+    else:
+        g *= np.clip(np.minimum(fx, fy), 0, 1) ** 1.5
 
     # Rotated AM halftone: one round dot per cell, its area equal to the tone at the cell center.
     cell = 300.0 / a.lpi

@@ -70,7 +70,7 @@ function cureloms() {
 // ---- Picture tees: a public-domain Carl Bloch painting as a one-color halftone (made by halftone.py into
 // print/review/src/), with one big line of type and a red script accent over it. Blank: Black.
 const SCRIPT_RED = "#C8503E"; // rent red lifted a step so it holds on a black garment-dyed tee
-const art = (file, y, h) => `<image href="file://${resolve("print/review/src", file)}" x="50" y="${y}" width="1700" height="${h}" preserveAspectRatio="xMidYMin meet"/>`;
+const art = (file, y, h) => `<image href="file://${resolve("print/review/src", file)}" x="50" y="${y}" width="1700" height="${h}" preserveAspectRatio="xMidYMax meet"/>`;
 const script = (x, y, size, txt, rot = -6) =>
   `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${SCRIPT_RED}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
 
