@@ -134,18 +134,22 @@ if (RUN.dump) {
 // no products are created and nothing in the store changes). Saves to picture-mockups/<name>/, which the workflow
 // pushes to the picture-mockups branch.
 if (RUN.pictures) {
-  const PRODUCT = 1626, BLACK_M = 50244;
+  // Each entry is a name ("behold": the black picture tee) or { name, back, tee } for the color line.
+  const PRODUCT = 1626, SIZE_M = { Black: 50244, Shadow: 50240, Cream: 50232, Oatmeal: 50252, Mocha: 50236 };
+  const LIGHT = new Set(["Cream", "Oatmeal"]);
   let bad = 0;
-  for (const name of RUN.pictures) {
-    console.log(`\npicture ${name}`);
+  for (const entry of RUN.pictures) {
+    const { name, back = `${name}-picture-back.png`, tee = "Black" } = typeof entry === "string" ? { name: entry } : entry;
+    const BLACK_M = SIZE_M[tee];
+    console.log(`\npicture ${name} on ${tee}`);
     try {
       const pfs = await printfiles(PRODUCT);
       const style = STYLES[PRODUCT];
       const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
       const views = style.views.filter(v => (pfs.options || []).includes(v));
       const files = [
-        { place: "back", size: "DTG", url: `${FILE_BASE}/review/${name}-picture-back.png` },
-        { place: "front", size: "DTG", url: `${FILE_BASE}/bold-stones-front.png` },
+        { place: "back", size: "DTG", url: `${FILE_BASE}/review/${back}` },
+        { place: "front", size: "DTG", url: `${FILE_BASE}/review/front-mark-${LIGHT.has(tee) ? "forest" : "bone"}.png` },
       ].filter(f => pfs.available_placements?.[f.place]);
       const task = await pf(`mockup-generator/create-task/${PRODUCT}`, { method: "POST", body: {
         variant_ids: [BLACK_M], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
@@ -160,7 +164,7 @@ if (RUN.pictures) {
         else if (r.data?.result?.status === "failed") throw new Error(`mockup failed: ${JSON.stringify(r.data.result.error)}`);
       }
       if (!done) throw new Error("mockup took longer than 7 minutes");
-      const dir = `picture-mockups/${name}`, list = [], seen = new Set();
+      const dir = `picture-mockups/${typeof entry === "string" ? name : `${name}-${tee.toLowerCase()}`}`, list = [], seen = new Set();
       mkdirSync(dir, { recursive: true });
       for (const m of done.mockups) for (const shot of [{ option: m.placement, url: m.mockup_url }, ...(m.extra || [])]) {
         if (list.length >= 12 || seen.has(shot.url)) continue;
