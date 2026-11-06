@@ -137,8 +137,8 @@ main > .btn:hover, main a.btn:hover { background: #33373C; color: #FFFFFF }
 main > svg { width: 32px; height: 36px; fill: var(--ink) }
 main > svg path { fill: var(--rent) }
 main ul:not(.legal-nav) { font-family: var(--body) }
-body > main > ul, body > main > nav > ul { font: 500 14px/1.4 var(--body); letter-spacing: 0; text-transform: none; border-top: 1px solid var(--line) }
-body > main > ul a, body > main > nav > ul a { text-decoration: none; color: var(--text) } body > main > ul a:hover { text-decoration: underline; text-underline-offset: 3px }
+body > main > nav > ul { font: 500 14px/1.4 var(--body); letter-spacing: 0; text-transform: none; border-top: 1px solid var(--line) }
+body > main > nav > ul a { text-decoration: none; color: var(--text) } body > main > nav > ul a:hover { text-decoration: underline; text-underline-offset: 3px }
 main h2 { border-top: 1px solid var(--line) }
 code { font: 500 14px/1 var(--mono); background: var(--soft); border-radius: 6px; padding: 2px 6px }
 .short { background: var(--soft); color: var(--ink); border-radius: var(--radius); padding: 20px 24px }
