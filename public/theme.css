@@ -1,147 +1,157 @@
-/* Clean theme for every page except the home page (which carries the same look inline).
-   Loaded after each page's own <style>, so it remaps that page's color tokens and restyles the
-   shared pieces: white page, near-black type, frosted header, pill buttons, soft panels,
-   rent red as the one accent. Edit tokens here to change all of these pages at once. */
+/* Rent Coat design system: Forest & Cream, for every page except the home page (which carries
+   the same tokens inline; change both together). Loaded after each page's own <style>, so it
+   remaps that page's tokens and restyles the shared pieces.
+   Roles: cream page, forest for brand bands, rent red only for the primary action, gold only for
+   display text on forest. Type: Archivo. Radius: 8 controls, 12 panels. Spacing on an 8px grid. */
 :root {
-  --night: #FFFFFF;      /* old dark bands become white */
-  --night-2: #F4F3F0;    /* raised panels become soft cream-gray */
-  --deep: #F4F3F0;       /* footer */
-  --bone: #F4F3F0;
-  --paper: #FFFFFF;
-  --ink: #15171A;
-  --text: #3D4146;
-  --muted: #656A71;
-  --faint: #878C93;
-  --line: rgba(21,23,26,.10);
-  --line-2: rgba(21,23,26,.18);
-  --soft: #F4F3F0;
-  --soft-2: #ECEAE5;
-  --rent: #A83A2C;
-  --rent-dark: #7E2A20;
-  --gold: #A83A2C;       /* the old gold accent maps to the one accent color */
-  --on-dark: #15171A;
-  --on-dark-2: #3D4146;
-  --on-dark-3: #6E737A;
+  --forest: #1F3A2E; --forest-2: #2B4A3C; --forest-line: rgba(245,240,230,.16);
+  --rent: #A83A2C; --rent-hover: #8F2F23; --rent-press: #7A281E; --rent-dark: #7A281E;
+  --night: #F5F0E6;      /* old dark bands become cream; forest bands are set explicitly below */
+  --night-2: #EDE6D8;
+  --deep: #EDE6D8;
+  --bone: #EDE6D8;
+  --paper: #FFFDF8;
+  --bg: #F5F0E6; --surface: #FFFDF8; --soft: #EDE6D8; --soft-2: #E3DACA;
+  --ink: #17231D; --text: #39453F; --muted: #5B6760; --faint: #6E7B73;
+  --line: #DDD5C5; --line-2: #C6BCA8;
+  --gold: #A83A2C;       /* old gold accent maps to the action color on light pages */
+  --on-dark: #17231D; --on-dark-2: #39453F; --on-dark-3: #5B6760;
+  --success: #2F6B4F; --warning: #9A6412; --error: #B42318;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --radius: 20px;
+  --r-sm: 6px; --r: 8px; --r-lg: 12px; --radius: 12px;
+  --ease: cubic-bezier(.2,.7,.2,1);
 }
-body { background: #FFFFFF; color: var(--ink); font-family: var(--body); line-height: 1.55; text-rendering: optimizeLegibility }
-body::before { background: rgba(255,255,255,.86) }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.6; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased }
+body::before { background: var(--bg) }
 :focus-visible, .dark :focus-visible, .top :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px }
 .torn { display: none !important }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important } }
 
-/* type: sentence case, tight tracking, no condensed caps */
+/* type */
 .eyebrow { font: 600 13px/1.3 var(--body); letter-spacing: .01em; text-transform: none }
 .kicker, .dark .kicker { color: var(--rent) }
-.big, .hero h1, .cta h2, .buy h2, h1 { font-family: var(--display); font-weight: 800; font-stretch: 100%; text-transform: none; letter-spacing: -.035em }
-.big { font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04 }
-.hero h1 { font-size: clamp(48px, 7.4vw, 104px); line-height: 1 ; letter-spacing: -.045em }
+.big, .hero h1, .cta h2, .buy h2, h1 { font-family: var(--display); font-weight: 800; font-stretch: 100%; text-transform: none; letter-spacing: -.03em }
+.big { font-size: clamp(32px, 3.6vw, 44px); line-height: 1.08 }
+.hero h1 { font-size: clamp(40px, 5.6vw, 72px); line-height: 1.02; letter-spacing: -.04em }
 .big em, h1 em, .hero h1 em, .cta h2 em { font: inherit; font-style: normal; letter-spacing: inherit; color: var(--faint) }
 .lede, .hero .lede { color: var(--text) }
 h3 { letter-spacing: -.015em }
 
-/* header: frosted white */
-.top { background: rgba(255,255,255,.82); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); color: var(--ink); border-bottom: 1px solid var(--line) }
-.top .wrap { padding-block: 8px }
+/* header */
+.top { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; color: var(--ink); border-bottom: 1px solid var(--line) }
+.top .wrap { min-height: 64px; padding-block: 0 }
 .brand { font: 800 18px/1 var(--display); font-stretch: 100%; letter-spacing: -.01em }
 .brand svg { width: 18px; height: 20px; fill: var(--ink) }
 .brand svg path { fill: var(--rent) }
-.top nav .link { font: 500 14px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--text) }
+.top nav .link { font: 500 14px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--text); transition: color 180ms var(--ease) }
 .top nav .link:hover { color: var(--ink) }
 
-/* buttons: pills */
-.btn { min-height: 52px; padding: 0 26px; border: 0; border-radius: 999px; font: 600 16px/1 var(--body); font-stretch: 100%; letter-spacing: -.005em; text-transform: none; transition: background .15s, box-shadow .15s, transform .15s }
+/* buttons: 48px, radius 8 */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border: 1px solid transparent; border-radius: var(--r); font: 600 15px/1 var(--body); font-stretch: 100%; letter-spacing: -.005em; text-transform: none; text-decoration: none; line-height: 1;
+  transition: background 120ms var(--ease), border-color 120ms var(--ease), color 120ms var(--ease), transform 120ms var(--ease) }
 .btn:hover { transform: none; filter: none }
-.btn:active { transform: scale(.98) }
+.btn:active { transform: translateY(1px) }
 .btn.sm { min-height: 40px; padding: 0 16px; font-size: 14px }
-.btn.gold, .btn.dark-btn, .btn.rent, .btn.dark { background: var(--ink); color: #FFFFFF }
-.btn.gold:hover, .btn.dark-btn:hover, .btn.rent:hover, .btn.dark:hover { background: #33373C }
-.btn.outline, .btn.ghost { background: transparent; color: var(--ink); border: 0; box-shadow: inset 0 0 0 1px var(--line-2) }
-.btn.outline:hover, .btn.ghost:hover { box-shadow: inset 0 0 0 1px var(--ink); background: transparent }
+.btn.gold, .btn.rent { background: var(--rent); color: #FFFFFF; box-shadow: none }
+.btn.gold:hover, .btn.rent:hover { background: var(--rent-hover) }
+.btn.gold:active, .btn.rent:active { background: var(--rent-press) }
+.btn.dark-btn, .btn.dark { background: var(--ink); color: var(--bg); box-shadow: none }
+.btn.dark-btn:hover, .btn.dark:hover { background: #2A3830 }
+.btn.outline, .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line-2); box-shadow: none }
+.btn.outline:hover, .btn.ghost:hover { border-color: var(--ink); background: transparent }
+.btn[disabled] { background: var(--soft-2); color: var(--muted); cursor: not-allowed; transform: none }
 
 /* bands */
-.dark { background: #FFFFFF; color: var(--ink) }
-.hero.dark, .dark.hero { background: #FFFFFF }
+.dark { background: var(--bg); color: var(--ink) }
+.hero.dark, .dark.hero { background: var(--bg) }
 .hero + section, .facts-sec, .faq-sec { border-top: 0 }
-.facts-sec, .faq-sec, .drops, .shirts-sec + section.dark { background: var(--soft) }
-.cta { background: #15171A; color: #F5F4F1 }
-.cta h2 { color: #F5F4F1 } .cta h2 em { color: #9EA2A8 }
-.cta .btn.gold, .cta .btn.dark-btn { background: #F5F4F1; color: #15171A }
-.cta .btn.gold:hover, .cta .btn.dark-btn:hover { background: #FFFFFF }
-.cta .btn.outline { color: #F5F4F1; box-shadow: inset 0 0 0 1px rgba(245,244,241,.4) }
-.cta .btn.outline:hover { box-shadow: inset 0 0 0 1px #F5F4F1 }
-.cta-lede, .cta .remind-fine, .cta .remind-note { color: #C9CBCE }
-.cta :focus-visible { outline-color: #F5F4F1 }
-.remind input[type=email] { min-height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: #26292D; color: #F5F4F1 }
-.remind input[type=email]::placeholder { color: #9EA2A8 }
-.remind input[type=email]:focus-visible { outline: 2px solid #F5F4F1 }
+.facts-sec, .faq-sec, .drops, .shirts-sec + section.dark { background: var(--bg); border-top: 1px solid var(--line) }
+.cta { background: var(--forest); color: #F5F0E6 }
+.cta h2 { color: #F5F0E6 } .cta h2 em { color: #D9B56A }
+.cta .kicker { color: #D9B56A }
+.cta .btn.gold, .cta .btn.dark-btn { background: var(--rent); color: #FFFFFF }
+.cta .btn.gold:hover, .cta .btn.dark-btn:hover { background: var(--rent-hover) }
+.cta .btn.outline { color: #F5F0E6; border-color: rgba(245,240,230,.36) }
+.cta .btn.outline:hover { border-color: #F5F0E6 }
+.cta-lede, .cta .remind-fine, .cta .remind-note { color: #CBD5CC }
+.cta a:not(.btn) { color: #F5F0E6 }
+.cta :focus-visible { outline-color: #F5F0E6 }
+.remind input[type=email] { min-height: 48px; padding: 0 16px; border: 1px solid var(--forest-line); border-radius: var(--r); background: var(--forest-2); color: #F5F0E6; font-size: 16px }
+.remind input[type=email]::placeholder { color: #A9B8AD }
+.remind input[type=email]:focus-visible { outline: 2px solid #F5F0E6; outline-offset: 2px }
 
-/* panels and cards: soft, rounded, borderless */
-.quote, .cards div, .pick li { background: var(--soft); color: var(--ink); border-radius: var(--radius) }
+/* panels: borders over shadows, radius 12 */
+.quote, .cards div, .pick li { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: none }
+.quote { background: var(--forest); color: #F5F0E6; border: 0 }
 .quote blockquote { font: 700 clamp(24px, 2.4vw, 32px)/1.2 var(--display); letter-spacing: -.02em }
-.quote svg { fill: var(--ink) }
+.quote svg { fill: #D9B56A }
+.quote cite, .quote figcaption { color: #A9B8AD }
 .shirts li { background: transparent; border: 0; border-radius: 0; overflow: visible }
-.shirts .pic { border-radius: var(--radius); background: var(--soft) }
-.shirts .txt { background: transparent; padding: 18px 4px 0 }
-.shirts h3 { font: 700 22px/1.15 var(--display); font-stretch: 100%; text-transform: none; letter-spacing: -.02em }
-.shirts .go, .more { font: 600 15px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--ink); text-decoration: none }
-.shirts .go:hover { text-decoration: underline; text-underline-offset: 3px }
+.shirts .pic { border-radius: var(--r-lg); background: var(--soft) }
+.shirts .txt { background: transparent; padding: 16px 4px 0 }
+.shirts h3 { font: 700 20px/1.2 var(--display); font-stretch: 100%; text-transform: none; letter-spacing: -.015em }
+.shirts .go, .more { font: 600 14px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px }
+.shirts .go:hover, .more:hover { text-decoration-color: currentColor }
 .pick h3 a { color: var(--ink) }
-.pics img { border-radius: var(--radius); background: var(--soft) }
+.pics img { border-radius: var(--r-lg); background: var(--soft) }
 .buy .row { border-bottom: 1px solid var(--line-2) }
-.buy h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.05 }
-.buy .price { font: 700 26px/1 var(--display); font-variant-numeric: tabular-nums }
+.buy h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.08 }
+.buy .price { font: 700 24px/1 var(--display); font-variant-numeric: tabular-nums }
 .buy .price s { color: var(--muted); opacity: 1 }
 .buy .meta, .buy .meta a { color: var(--muted) }
 .facts, .faq { border-top: 1px solid var(--line-2) }
 .facts dt, .specs dt { font: 500 13px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--muted) }
 .facts dd, .specs dd { font-weight: 600 }
-.faq summary { font: 600 18px/1.3 var(--body); letter-spacing: -.01em }
-.faq summary::after { font: 400 24px/1 var(--body); color: var(--muted) }
-.prose blockquote { border-left: 3px solid var(--rent); font: 600 clamp(20px, 2vw, 26px)/1.35 var(--display); letter-spacing: -.015em }
+.faq summary { font: 600 17px/1.35 var(--body); letter-spacing: -.01em }
+.faq summary:hover { color: var(--rent) }
+.faq summary::after { font: 400 22px/1 var(--body); color: var(--muted) }
+.prose blockquote { border-left: 2px solid var(--rent); font: 600 clamp(20px, 2vw, 24px)/1.4 var(--display); letter-spacing: -.015em }
 .prose blockquote cite { font: 600 13px/1.3 var(--body); letter-spacing: 0; text-transform: none; color: var(--muted) }
 .crumbs { color: var(--muted) } .crumbs a { color: var(--text) }
 .size-table { font-variant-numeric: tabular-nums }
 a.ref, .ref { color: var(--text); text-decoration-color: var(--line-2) }
 
-/* footer: quiet */
+/* footer */
 footer { background: var(--soft); color: var(--muted); border-top: 1px solid var(--line); font-size: 13px }
 footer a { color: var(--text); text-decoration: none }
-footer a:hover { text-decoration: underline; text-underline-offset: 3px }
+footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px }
 .disclaim { color: var(--muted); font-size: 12px }
 
 /* legal pages */
 .legal-nav { font: 500 14px/1.4 var(--body); letter-spacing: 0; text-transform: none }
-.legal-nav a { color: var(--text); text-decoration: none } .legal-nav a:hover { text-decoration: underline; text-underline-offset: 3px }
+.legal-nav a { color: var(--text); text-decoration: none } .legal-nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px }
 .legal-nav [aria-current] { color: var(--ink); font-weight: 700 }
-.back { font: 600 15px/1 var(--body); letter-spacing: 0; text-transform: none; text-decoration: none }
+.back { font: 600 14px/1 var(--body); letter-spacing: 0; text-transform: none; text-decoration: none }
 .back:hover { text-decoration: underline; text-underline-offset: 3px }
 main h2 { letter-spacing: -.015em }
 
-/* gift card page: the printable card stays dark so it looks like a real card under the tree */
-.actions .btn:not(.ghost) { background: var(--ink); color: #FFFFFF }
-.card[aria-label="Gift card"] { --night: #15171A; --on-dark: #F5F4F1; --on-dark-2: #C9CBCE; --gold: #C9A45C; background: #15171A; color: #F5F4F1; border-radius: 28px }
-.card[aria-label="Gift card"] .top { position: static; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; color: #F5F4F1; font: 800 18px/1 var(--display); font-stretch: 100%; letter-spacing: -.01em }
-.card[aria-label="Gift card"] h2 { font: 800 clamp(30px, 5vw, 52px)/1.02 var(--display); font-stretch: 100%; letter-spacing: -.035em; text-transform: none }
-.card[aria-label="Gift card"] h2 em { font: inherit; color: #C9A45C }
+/* gift card page: the printable card is a forest card */
+.actions .btn:not(.ghost) { background: var(--rent); color: #FFFFFF }
+.actions .btn:not(.ghost):hover { background: var(--rent-hover) }
+.card[aria-label="Gift card"] { --night: #1F3A2E; --on-dark: #F5F0E6; --on-dark-2: #CBD5CC; --gold: #D9B56A; background: #1F3A2E; color: #F5F0E6; border-radius: var(--r-lg) }
+.card[aria-label="Gift card"] .top { position: static; min-height: 0; background: none; border: 0; color: #F5F0E6; font: 800 18px/1 var(--display); font-stretch: 100%; letter-spacing: -.01em }
+.card[aria-label="Gift card"] h2 { font: 800 clamp(30px, 5vw, 48px)/1.04 var(--display); font-stretch: 100%; letter-spacing: -.03em; text-transform: none }
+.card[aria-label="Gift card"] h2 em { font: inherit; color: #D9B56A }
 .card[aria-label="Gift card"] .fields label { font: 500 13px/1.2 var(--body); letter-spacing: 0; text-transform: none }
-.card[aria-label="Gift card"] :focus-visible { outline-color: #F5F4F1 }
+.card[aria-label="Gift card"] :focus-visible { outline-color: #F5F0E6 }
 
 /* small pages: 404, order confirmed, legal */
 a { color: inherit }
-.btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none }
-a.btn, .btn { line-height: 1 }
-main > .btn, main a.btn { padding: 0 26px; background: var(--ink); color: #FFFFFF }
-main > .btn:hover, main a.btn:hover { background: #33373C; color: #FFFFFF }
+main > .btn, main a.btn { background: var(--ink); color: var(--bg) }
+main > .btn:hover, main a.btn:hover { background: #2A3830; color: var(--bg) }
+main a.btn.gold, main a.btn.rent { background: var(--rent); color: #FFFFFF }
 main > svg { width: 32px; height: 36px; fill: var(--ink) }
 main > svg path { fill: var(--rent) }
 main ul:not(.legal-nav) { font-family: var(--body) }
 body > main > nav > ul { font: 500 14px/1.4 var(--body); letter-spacing: 0; text-transform: none; border-top: 1px solid var(--line) }
 body > main > nav > ul a { text-decoration: none; color: var(--text) } body > main > nav > ul a:hover { text-decoration: underline; text-underline-offset: 3px }
 main h2 { border-top: 1px solid var(--line) }
-code { font: 500 14px/1 var(--mono); background: var(--soft); border-radius: 6px; padding: 2px 6px }
-.short { background: var(--soft); color: var(--ink); border-radius: var(--radius); padding: 20px 24px }
+code { font: 500 14px/1 var(--mono); background: var(--soft); border-radius: var(--r-sm); padding: 2px 6px }
+.short { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 24px }
 .short b { color: var(--rent) }
 th { font-weight: 700 }
-main a.btn, main > .btn { display: inline-flex; align-items: center; min-height: 52px; border-radius: 999px; font: 600 16px/1 var(--body); letter-spacing: -.005em; text-transform: none }
+.quote figcaption a, .quote a { color: #D9B56A; text-decoration-color: rgba(217,181,106,.5) }
+.quote svg path { fill: #D9B56A }
+.quote :focus-visible { outline-color: #F5F0E6 }
+body > main > h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.04 }
