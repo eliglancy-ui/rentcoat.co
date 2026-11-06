@@ -25,6 +25,7 @@ def main():
     p.add_argument("--contrast", type=float, default=1.35)
     p.add_argument("--fade", type=float, default=0.18, help="edge fade as a share of each side")
     p.add_argument("--drop-sky", action="store_true", help="knock out pale blue sky so the figure stands on the shirt color")
+    p.add_argument("--protect", action="append", default=[], help="cx,cy,rx,ry in source pixels: an ellipse (a face) the sky knock-out must not touch")
     a = p.parse_args()
 
     box = tuple(int(v) for v in a.crop.split(","))
@@ -37,7 +38,19 @@ def main():
     if a.drop_sky:
         # Sky: bluer than it is red, and fairly light. Softened so the edge is not a hard cut-out.
         s = np.clip(((c[..., 2] - c[..., 0]) + 0.06) / 0.10, 0, 1) * np.clip((g - 0.55) / 0.12, 0, 1)
-        sky = np.asarray(Image.fromarray((s * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(6)), np.float32) / 255
+        # Pale haze and halo glow: very light and nearly colorless. Skin and robes carry color, so they stay.
+        mx, mn = c.max(axis=2), c.min(axis=2)
+        sat = (mx - mn) / np.maximum(mx, 1e-3)
+        haze = np.clip((0.16 - sat) / 0.06, 0, 1) * np.clip((g - 0.70) / 0.08, 0, 1)
+        s = np.maximum(s, haze)
+        if a.protect:
+            k = a.width / (box[2] - box[0])
+            yy0, xx0 = np.mgrid[0:h, 0:a.width].astype(np.float32)
+            for e in a.protect:
+                cx, cy, rx, ry = (float(v) for v in e.split(","))
+                d = ((xx0 - (cx - box[0]) * k) / (rx * k)) ** 2 + ((yy0 - (cy - box[1]) * k) / (ry * k)) ** 2
+                s *= np.clip(d - 0.6, 0, 1)  # zero inside, ramping back to full at the ellipse edge
+        sky = np.asarray(Image.fromarray((s * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10)), np.float32) / 255
 
     # Tone: stretch to the full range, add contrast around the middle, then gamma.
     lo, hi = np.percentile(g, 2), np.percentile(g, 98)
