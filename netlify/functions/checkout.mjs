@@ -14,7 +14,10 @@ export default async (req) => {
 
   let items;
   try {
-    items = cleanCart((await req.json())?.items);
+    // A real bag is well under 2 KB; refuse anything far bigger before parsing it.
+    const text = await req.text();
+    if (text.length > 10000) return json({ error: "Bad request." }, 413);
+    items = cleanCart(JSON.parse(text)?.items);
   } catch (e) {
     return json({ error: e instanceof SyntaxError ? "Bad request." : e.message }, 400);
   }

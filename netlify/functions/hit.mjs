@@ -11,12 +11,17 @@ export default async (req) => {
   if (req.method !== "POST") return new Response(null, { status: 405 });
   const ua = req.headers.get("user-agent") || "";
   if (BOTS.test(ua)) return new Response(null, { status: 204 });
+  const site = new URL(req.url).hostname;
+  // Only count beacons sent by this site's own pages, so other sites can't pad the numbers.
+  const origin = req.headers.get("origin");
+  if (origin) { try { if (new URL(origin).hostname !== site) return new Response(null, { status: 204 }); } catch { return new Response(null, { status: 204 }); } }
+  const text = await req.text();
+  if (text.length > 1000) return new Response(null, { status: 204 });
   let body = {};
-  try { body = JSON.parse(await req.text()); } catch {}
+  try { body = JSON.parse(text); } catch {}
   const path = clean(body.p, 80);
   if (!path.startsWith("/")) return new Response(null, { status: 204 });
   const ref = clean(body.r, 60).replace(/^www\./, "") || "direct";
-  const site = new URL(req.url).hostname;
 
   const store = getStore("stats");
   const key = day.format(Date.now());
