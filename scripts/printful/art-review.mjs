@@ -110,6 +110,23 @@ const PICTURES = [
   ["ship", "aivazovsky-wave-halftone.png", { script: ["thou shalt construct a", 90, 1660, 190], big: ["SHIP", 640], ref: "1 NEPHI 17:8" }],
   // Friedrich, The Lone Tree (1822)
   ["tree", "friedrich-tree-halftone.png", { script: ["I beheld a", 90, 1660, 230], big: ["TREE", 640], ref: "WHOSE FRUIT WAS DESIRABLE · 1 NEPHI 8:10" }],
+
+  // ---- Round 2 (Nov 6): more public-domain paintings. Files named on Wikimedia Commons; verses checked word for word
+  // on churchofjesuschrist.org the same day. New shirts first, then pictures for shirts that had none.
+  // NEW. Bloch, The Doubting Thomas (Ugerløse Kirke altarpiece). File: 'The Doubting Thomas' by Carl Heinrich Bloch, Ugerløse Kirke.jpg
+  ["come-forth", "bloch-thomas-halftone.png", { script: ["Arise and", 90, 1680, 230], big: ["COME FORTH", 430], ref: "UNTO ME · 3 NEPHI 11:14" }],
+  // NEW. Bloch, The Shepherds and the Angel (1879). File: The Shepherds and the Angel.jpg (only 1024 px wide: print it smaller)
+  ["glad-tidings", "bloch-shepherds-halftone.png", { imgH: 1300, script: ["the glad tidings of", 90, 1600, 190], big: ["GREAT JOY", 450], ref: "I AM COME TO DECLARE UNTO YOU · MOSIAH 3:3" }],
+  // Press Forward tee. Aivazovsky, Walking on the Water (1888). File: Po vodam 1888.jpg
+  ["press-forward", "aivazovsky-walking-halftone.png", { script: ["press forward with a", 90, 1660, 190], big: ["STEADFASTNESS", 300], ref: "IN CHRIST · 2 NEPHI 31:20" }],
+  // Jesus Is King tee. Doré, Christ's Entry into Jerusalem (engraving, 1866). File: Gustave Doré - Christ's Entry into Jerusalem.jpg
+  ["king", "dore-entry-halftone.png", { script: ["will be their", 90, 1660, 230], big: ["KING", 640], ref: "I, THE LORD, THE KING OF HEAVEN · 2 NEPHI 10:14" }],
+  // Liahona. Doré, Abraham Journeying into the Land of Canaan (engraving). File: Abraham Journeying into the Land of Canaan (89393798).jpg
+  ["liahona", "dore-abraham-halftone.png", { script: ["by small means", 90, 1660, 210], big: ["GREAT THINGS", 380], ref: "THE LORD CAN BRING ABOUT · 1 NEPHI 16:29" }],
+  // Barges. Aivazovsky, Among the Waves (1898). File: Ivan Konstantinovich Aivazovsky - Among the Waves, 1898.jpg
+  ["barges", "aivazovsky-among-halftone.png", { script: ["ye shall be as a", 90, 1660, 200], big: ["WHALE", 620], ref: "IN THE MIDST OF THE SEA · ETHER 2:24" }],
+  // Irreantum. Friedrich, Moonrise over the Sea (1822). File: Caspar David Friedrich - Mondaufgang über dem Meer.jpg
+  ["irreantum", "friedrich-moonrise-halftone.png", { script: ["being interpreted, is", 90, 1660, 190], big: ["MANY WATERS", 400], ref: "IRREANTUM · 1 NEPHI 17:5" }],
 ];
 
 const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
