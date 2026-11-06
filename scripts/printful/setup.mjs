@@ -139,21 +139,23 @@ if (RUN.pictures) {
   const LIGHT = new Set(["Cream", "Oatmeal"]);
   let bad = 0;
   for (const entry of RUN.pictures) {
-    const { name, back = `${name}-picture-back.png`, tee = "Black" } = typeof entry === "string" ? { name: entry } : entry;
-    const BLACK_M = SIZE_M[tee];
+    const { name, back = `${name}-picture-back.png`, tee = "Black", product = PRODUCT, variant, extra = [] } = typeof entry === "string" ? { name: entry } : entry;
+    const BLACK_M = variant || SIZE_M[tee];
     console.log(`\npicture ${name} on ${tee}`);
     try {
-      const pfs = await printfiles(PRODUCT);
-      const style = STYLES[PRODUCT];
+      const pfs = await printfiles(product);
+      const style = STYLES[product];
       const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
       const views = style.views.filter(v => (pfs.options || []).includes(v));
       const files = [
         { place: "back", size: "DTG", url: `${FILE_BASE}/review/${back}` },
         { place: "front", size: "DTG", url: `${FILE_BASE}/review/front-mark-${LIGHT.has(tee) ? "forest" : "bone"}.png` },
+        ...extra.map(x => ({ place: x.place, size: x.size || "LEG", url: `${FILE_BASE}/review/${x.file}` })),
       ].filter(f => pfs.available_placements?.[f.place]);
-      const task = await pf(`mockup-generator/create-task/${PRODUCT}`, { method: "POST", body: {
+      console.log(`  placements: ${files.map(f => f.place).join(", ")} (available: ${Object.keys(pfs.available_placements || {}).join(", ")})`);
+      const task = await pf(`mockup-generator/create-task/${product}`, { method: "POST", body: {
         variant_ids: [BLACK_M], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
-        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: f.url, position: await position(PRODUCT, BLACK_M, f) }))),
+        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: f.url, position: await position(product, BLACK_M, f) }))),
       } });
       if (!task.ok) throw new Error(`start mockup: ${why(task)}`);
       let done;

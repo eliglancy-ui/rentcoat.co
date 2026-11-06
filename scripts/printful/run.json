@@ -1,1 +1,8 @@
-{}
+{ "pictures": [
+  { "name": "go-and-do", "back": "idea-go-and-do-back.png", "tee": "Black" },
+  { "name": "he-rent-his-coat", "back": "idea-he-rent-his-coat-back.png", "tee": "Black", "product": 380, "variant": 10780,
+    "extra": [{ "place": "sleeve_left", "file": "idea-he-rent-his-coat-sleeve-left.png" }, { "place": "sleeve_right", "file": "idea-he-rent-his-coat-sleeve-right.png" }] },
+  { "name": "true-at-all-times", "back": "idea-true-at-all-times-back.png", "tee": "Shadow" },
+  { "name": "service-club", "back": "idea-service-club-back.png", "tee": "Cream" },
+  { "name": "children-of-christ", "back": "idea-children-of-christ-back.png", "tee": "Shadow" }
+] }
