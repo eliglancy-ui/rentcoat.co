@@ -67,10 +67,38 @@ function cureloms() {
     + t(900, 2040, 66, "SIGHTINGS: 0 · STILL LOOKING", { f: "m", w: 600, fill: RED, ls: 12 }));
 }
 
+// ---- Picture tees: a public-domain Carl Bloch painting as a one-color halftone (made by halftone.py into
+// print/review/src/), with one big line of type and a red script accent over it. Blank: Black.
+const SCRIPT_RED = "#C8503E"; // rent red lifted a step so it holds on a black garment-dyed tee
+const art = (file, y, h) => `<image href="file://${resolve("print/review/src", file)}" x="50" y="${y}" width="1700" height="${h}" preserveAspectRatio="xMidYMin meet"/>`;
+const script = (x, y, size, txt, rot = -6) =>
+  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${SCRIPT_RED}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
+
+// "Behold, I am JESUS CHRIST" from 3 Nephi 11:10, over Christ from Bloch's Sermon on the Mount (1877).
+function behold() {
+  return lock(900, 110, 56, BONE, RED)
+    + art("bloch-sermon-halftone.png", 170, 1480)
+    + worn(wide(2010, 380, "JESUS CHRIST", BONE)
+      + t(900, 2160, 64, "3 NEPHI 11:10", { f: "m", w: 600, fill: INK.gold, ls: 20 }))
+    + script(80, 1700, 210, "Behold, I am");
+}
+
+// "mine arm of MERCY" from 3 Nephi 9:14, over Bloch's Consolator.
+function mercy() {
+  return lock(900, 110, 56, BONE, RED)
+    + art("bloch-consolator-halftone.png", 170, 1500)
+    + worn(wide(2040, 560, "MERCY", BONE)
+      + t(900, 2190, 58, "MINE ARM OF MERCY IS EXTENDED TOWARDS YOU · 3 NEPHI 9:14", { f: "m", w: 600, fill: INK.gold, ls: 4 }))
+    + script(90, 1600, 220, "mine arm of");
+}
+
+const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
 const FILES = [
   { name: "liberty-v4-back.png", svg: liberty },
   { name: "cureloms-v3-back.png", svg: cureloms },
-];
+  { name: "behold-bloch-back.png", svg: behold },
+  { name: "mercy-bloch-back.png", svg: mercy },
+].filter(f => !ONLY || ONLY.test(f.name));
 
 const fonts = resolve("public/fonts");
 const head = `<style>
