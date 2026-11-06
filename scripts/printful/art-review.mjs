@@ -74,30 +74,49 @@ const art = (file, y, h) => `<image href="file://${resolve("print/review/src", f
 const script = (x, y, size, txt, rot = -6) =>
   `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${SCRIPT_RED}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
 
-// "Behold, I am JESUS CHRIST" from 3 Nephi 11:10, over Christ from Bloch's Sermon on the Mount (1877).
-function behold() {
+// One picture tee: the halftone picture under the collar mark, a red script lead-in, one big word or line, and
+// the verse reference in gold. The picture's faded bottom sits behind the script, so they read as one piece.
+function picture({ file, imgH = 1560, script: [lead, sx = 80, sy = 1700, ssize = 210], big: [word, bsize, bwide = 62], ref }) {
   return lock(900, 110, 56, BONE, RED)
-    + art("bloch-sermon-halftone.png", 170, 1480)
-    + worn(wide(2010, 380, "JESUS CHRIST", BONE)
-      + t(900, 2160, 64, "3 NEPHI 11:10", { f: "m", w: 600, fill: INK.gold, ls: 20 }))
-    + script(80, 1700, 210, "Behold, I am");
+    + art(file, 170, imgH)
+    + worn(wide(2030, bsize, word, BONE, 1700, bwide)
+      + t(900, 2180, 58, ref, { f: "m", w: 600, fill: INK.gold, ls: 4 }))
+    + script(sx, sy, ssize, lead);
 }
 
-// "mine arm of MERCY" from 3 Nephi 9:14, over Bloch's Consolator.
-function mercy() {
-  return lock(900, 110, 56, BONE, RED)
-    + art("bloch-consolator-halftone.png", 170, 1500)
-    + worn(wide(2040, 560, "MERCY", BONE)
-      + t(900, 2190, 58, "MINE ARM OF MERCY IS EXTENDED TOWARDS YOU · 3 NEPHI 9:14", { f: "m", w: 600, fill: INK.gold, ls: 4 }))
-    + script(90, 1600, 220, "mine arm of");
-}
+// Every picture tee. Verses checked word for word on churchofjesuschrist.org. Sources: art-sources/*/SOURCES.md.
+const PICTURES = [
+  // Bloch, The Sermon on the Mount (1877)
+  ["behold", "bloch-sermon-halftone.png", { imgH: 1480, script: ["Behold, I am"], big: ["JESUS CHRIST", 380], ref: "3 NEPHI 11:10" }],
+  // Bloch, Consolator
+  ["mercy", "bloch-consolator-halftone.png", { script: ["mine arm of", 90, 1640, 220], big: ["MERCY", 560], ref: "MINE ARM OF MERCY IS EXTENDED · 3 NEPHI 9:14" }],
+  // Bloch, Christ and Child
+  ["talk", "bloch-christ-and-child-halftone.png", { script: ["And we", 90, 1700, 230], big: ["TALK OF CHRIST", 330], ref: "WE REJOICE IN CHRIST · 2 NEPHI 25:26" }],
+  // Bloch, Let the Little Children Come unto Jesus
+  ["come", "bloch-little-children-halftone.png", { script: ["come unto", 90, 1680, 230], big: ["CHRIST", 540], ref: "AND BE PERFECTED IN HIM · MORONI 10:32" }],
+  // Bloch, The Resurrection (1875)
+  ["hosanna", "bloch-resurrection-halftone.png", { script: ["they did cry", 90, 1690, 210], big: ["HOSANNA!", 470], ref: "BLESSED BE THE NAME · 3 NEPHI 11:17" }],
+  // Bloch, The Transfiguration
+  ["light", "bloch-transfiguration-halftone.png", { script: ["I am the", 90, 1660, 230], big: ["LIGHT", 600], ref: "AND THE LIFE OF THE WORLD · 3 NEPHI 11:11" }],
+  // Bloch, Christ in Gethsemane
+  ["none-other", "bloch-gethsemane-halftone.png", { script: ["there is", 90, 1720, 220], big: ["NONE OTHER NAME", 300], ref: "SAVE IT BE THIS JESUS CHRIST · 2 NEPHI 25:20" }],
+  // Hofmann, Christ and the Rich Young Ruler (1889)
+  ["son-of-god", "hofmann-christ-halftone.png", { script: ["O Jesus, thou", 90, 1700, 210], big: ["SON OF GOD", 420], ref: "HAVE MERCY ON ME · ALMA 36:18" }],
+  // Rembrandt, The Storm on the Sea of Galilee (1633)
+  ["foundation", "rembrandt-storm-halftone.png", { script: ["upon the", 90, 1640, 230], big: ["ROCK", 640], ref: "OF OUR REDEEMER, WHO IS CHRIST · HELAMAN 5:12" }],
+  // Bierstadt, A Storm in the Rocky Mountains, Mt. Rosalie (1866)
+  ["shelem", "bierstadt-mountain-halftone.png", { script: ["shine forth in", 90, 1690, 210], big: ["DARKNESS", 430], ref: "TOUCH THESE STONES, O LORD · ETHER 3:4" }],
+  // Aivazovsky, The Ninth Wave (1850)
+  ["ship", "aivazovsky-wave-halftone.png", { script: ["thou shalt construct a", 90, 1660, 190], big: ["SHIP", 640], ref: "1 NEPHI 17:8" }],
+  // Friedrich, The Lone Tree (1822)
+  ["tree", "friedrich-tree-halftone.png", { script: ["I beheld a", 90, 1660, 230], big: ["TREE", 640], ref: "WHOSE FRUIT WAS DESIRABLE · 1 NEPHI 8:10" }],
+];
 
 const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
 const FILES = [
   { name: "liberty-v4-back.png", svg: liberty },
   { name: "cureloms-v3-back.png", svg: cureloms },
-  { name: "behold-bloch-back.png", svg: behold, needs: "bloch-sermon-halftone.png" },
-  { name: "mercy-bloch-back.png", svg: mercy, needs: "bloch-consolator-halftone.png" },
+  ...PICTURES.map(([id, file, o]) => ({ name: `${id}-picture-back.png`, svg: () => picture({ file, ...o }), needs: file })),
 // A picture tee renders only once its halftone exists (make it with halftone.py; the command is in art-sources/bloch/SOURCES.md).
 ].filter(f => (!ONLY || ONLY.test(f.name)) && (!f.needs || existsSync(resolve("print/review/src", f.needs))));
 
