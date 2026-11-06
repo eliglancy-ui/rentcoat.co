@@ -24,18 +24,27 @@ def main():
     p.add_argument("--gamma", type=float, default=0.85)
     p.add_argument("--contrast", type=float, default=1.35)
     p.add_argument("--fade", type=float, default=0.18, help="edge fade as a share of each side")
+    p.add_argument("--drop-sky", action="store_true", help="knock out pale blue sky so the figure stands on the shirt color")
     a = p.parse_args()
 
     box = tuple(int(v) for v in a.crop.split(","))
-    im = ImageOps.grayscale(Image.open(a.src).convert("RGB").crop(box))
-    h = round(a.width * im.height / im.width)
-    im = im.resize((a.width, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(2))
-    g = np.asarray(im, dtype=np.float32) / 255.0
+    rgb = Image.open(a.src).convert("RGB").crop(box)
+    h = round(a.width * rgb.height / rgb.width)
+    rgb = rgb.resize((a.width, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(2))
+    c = np.asarray(rgb, dtype=np.float32) / 255.0
+    g = np.asarray(ImageOps.grayscale(rgb), dtype=np.float32) / 255.0
+    sky = None
+    if a.drop_sky:
+        # Sky: bluer than it is red, and fairly light. Softened so the edge is not a hard cut-out.
+        s = np.clip(((c[..., 2] - c[..., 0]) + 0.06) / 0.10, 0, 1) * np.clip((g - 0.55) / 0.12, 0, 1)
+        sky = np.asarray(Image.fromarray((s * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(6)), np.float32) / 255
 
     # Tone: stretch to the full range, add contrast around the middle, then gamma.
     lo, hi = np.percentile(g, 2), np.percentile(g, 98)
     g = np.clip((g - lo) / max(hi - lo, 1e-3), 0, 1)
     g = np.clip((g - 0.5) * a.contrast + 0.5, 0, 1) ** a.gamma
+    if sky is not None:
+        g *= 1 - sky
 
     # Fade every edge to nothing, so the picture melts into the shirt.
     yy, xx = np.mgrid[0:h, 0:a.width].astype(np.float32)

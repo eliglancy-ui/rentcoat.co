@@ -5,7 +5,7 @@
 // Rules: no stroke or line thinner than 6 units (about 3 pt), no type smaller than 54 units (0.36 in).
 import { createRequire } from "node:module";
 const { chromium } = createRequire(import.meta.url)("playwright");
-import { mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { mkdirSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { INK, t, lock } from "./art.mjs";
@@ -96,9 +96,10 @@ const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
 const FILES = [
   { name: "liberty-v4-back.png", svg: liberty },
   { name: "cureloms-v3-back.png", svg: cureloms },
-  { name: "behold-bloch-back.png", svg: behold },
-  { name: "mercy-bloch-back.png", svg: mercy },
-].filter(f => !ONLY || ONLY.test(f.name));
+  { name: "behold-bloch-back.png", svg: behold, needs: "bloch-sermon-halftone.png" },
+  { name: "mercy-bloch-back.png", svg: mercy, needs: "bloch-consolator-halftone.png" },
+// A picture tee renders only once its halftone exists (make it with halftone.py; the command is in art-sources/bloch/SOURCES.md).
+].filter(f => (!ONLY || ONLY.test(f.name)) && (!f.needs || existsSync(resolve("print/review/src", f.needs))));
 
 const fonts = resolve("public/fonts");
 const head = `<style>
