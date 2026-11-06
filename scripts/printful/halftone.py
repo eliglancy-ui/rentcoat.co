@@ -24,6 +24,10 @@ def main():
     p.add_argument("--gamma", type=float, default=0.85)
     p.add_argument("--contrast", type=float, default=1.35)
     p.add_argument("--fade", type=float, default=0.18, help="edge fade as a share of each side")
+    p.add_argument("--color", action="store_true", help="keep the painting's colors (a full-color DTG print) instead of a one-color halftone")
+    p.add_argument("--knock", choices=["dark", "light", "none"], default="dark", help="with --color: let the shirt show through the darkest parts (dark tee) or the lightest (light tee)")
+    p.add_argument("--saturation", type=float, default=1.15, help="with --color: color boost")
+    p.add_argument("--invert", action="store_true", help="halftone the dark parts instead of the light ones (dark ink on a light tee)")
     p.add_argument("--oval", action="store_true", help="fade to an oval instead of the rectangle's edges, so a light background has no box")
     p.add_argument("--drop-sky", action="store_true", help="knock out pale blue sky so the figure stands on the shirt color")
     p.add_argument("--drop-haze", action="store_true", help="with --drop-sky: also knock out pale, colorless haze and halo glow (not for white robes)")
@@ -33,7 +37,7 @@ def main():
     box = tuple(int(v) for v in a.crop.split(","))
     rgb = Image.open(a.src).convert("RGB").crop(box)
     h = round(a.width * rgb.height / rgb.width)
-    rgb = rgb.resize((a.width, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(2))
+    rgb = rgb.resize((a.width, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(1.2 if a.color else 2))
     c = np.asarray(rgb, dtype=np.float32) / 255.0
     g = np.asarray(ImageOps.grayscale(rgb), dtype=np.float32) / 255.0
     sky = None
@@ -62,15 +66,42 @@ def main():
     if sky is not None:
         g *= 1 - sky
 
+    if a.invert:
+        g = 1 - g
+
     # Fade every edge to nothing, so the picture melts into the shirt.
     yy, xx = np.mgrid[0:h, 0:a.width].astype(np.float32)
     fx = np.minimum(xx, a.width - 1 - xx) / (a.width * a.fade)
     fy = np.minimum(yy, h - 1 - yy) / (h * a.fade)
     if a.oval:
         r = np.hypot((xx - a.width / 2) / (a.width / 2), (yy - h / 2) / (h / 2))
-        g *= np.clip((1 - r) / (a.fade * 2), 0, 1) ** 1.5
+        fade = np.clip((1 - r) / (a.fade * 2), 0, 1) ** 1.5
     else:
-        g *= np.clip(np.minimum(fx, fy), 0, 1) ** 1.5
+        fade = np.clip(np.minimum(fx, fy), 0, 1) ** 1.5
+
+    if a.color:
+        # Full color: the painting itself, a little punchier, with alpha doing the work a halftone's dots would.
+        from PIL import ImageEnhance
+        im = ImageEnhance.Color(ImageEnhance.Contrast(rgb).enhance(1.08)).enhance(a.saturation)
+        col = np.asarray(im, dtype=np.uint8)
+        lum = np.asarray(ImageOps.grayscale(im), dtype=np.float32) / 255
+        alpha = fade.copy()
+        if sky is not None:
+            alpha *= 1 - sky
+        if a.knock == "dark":    # the darkest paint becomes the shirt itself, like a worn print on a dark tee
+            alpha *= np.clip((lum - 0.04) / 0.18, 0, 1) ** 0.8
+        elif a.knock == "light":  # the palest paint becomes the shirt on a cream or oatmeal tee
+            alpha *= np.clip((0.97 - lum) / 0.14, 0, 1) ** 0.8
+        # Worn texture: small specks where the ink thins out, 3 px blocks so they survive DTG.
+        rng = np.random.default_rng(11)
+        bh, bw = (h + 2) // 3, (a.width + 2) // 3
+        speck = (rng.random((bh, bw)) < 0.10).repeat(3, 0).repeat(3, 1)[:h, :a.width]
+        alpha *= np.where(speck, 0.35, 1.0)
+        rgba = np.dstack([col, (np.clip(alpha, 0, 1) * 255).astype(np.uint8)])
+        Image.fromarray(rgba, "RGBA").save(a.out)
+        print(a.out, a.width, "x", h, f"({a.width / 300:.1f} x {h / 300:.1f} in, color)")
+        return
+    g *= fade
 
     # Rotated AM halftone: one round dot per cell, its area equal to the tone at the cell center.
     cell = 300.0 / a.lpi

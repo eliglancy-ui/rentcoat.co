@@ -8,7 +8,7 @@ const { chromium } = createRequire(import.meta.url)("playwright");
 import { mkdirSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
-import { INK, t, lock } from "./art.mjs";
+import { INK, t, lock, chest } from "./art.mjs";
 import { worn } from "./art-bold.mjs";
 
 const FOREST = "#1F3A2E", RED = INK.red, BONE = INK.bone, NIGHT = INK.night;
@@ -71,18 +71,42 @@ function cureloms() {
 // print/review/src/), with one big line of type and a red script accent over it. Blank: Black.
 const SCRIPT_RED = "#C8503E"; // rent red lifted a step so it holds on a black garment-dyed tee
 const art = (file, y, h) => `<image href="file://${resolve("print/review/src", file)}" x="50" y="${y}" width="1700" height="${h}" preserveAspectRatio="xMidYMax meet"/>`;
-const script = (x, y, size, txt, rot = -6) =>
-  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${SCRIPT_RED}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
+const script = (x, y, size, txt, rot = -6, fill = SCRIPT_RED) =>
+  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${fill}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
 
 // One picture tee: the halftone picture under the collar mark, a red script lead-in, one big word or line, and
 // the verse reference in gold. The picture's faded bottom sits behind the script, so they read as one piece.
-function picture({ file, imgH = 1560, script: [lead, sx = 80, sy = 1700, ssize = 210], big: [word, bsize, bwide = 62], ref }) {
-  return lock(900, 110, 56, BONE, RED)
+// tee "dark" (Black, Shadow, Mocha): bone type, gold reference. tee "light" (Cream, Oatmeal): forest type, red reference.
+function picture({ file, imgH = 1560, script: [lead, sx = 80, sy = 1700, ssize = 210], big: [word, bsize, bwide = 62], ref, tee = "dark" }) {
+  const light = tee === "light", ink = light ? FOREST : BONE;
+  return lock(900, 110, 56, ink, RED)
     + art(file, 170, imgH)
-    + worn(wide(2030, bsize, word, BONE, 1700, bwide)
-      + t(900, 2180, 58, ref, { f: "m", w: 600, fill: INK.gold, ls: 4 }))
-    + script(sx, sy, ssize, lead);
+    + worn(wide(2030, bsize, word, ink, 1700, bwide)
+      + t(900, 2180, 58, ref, { f: "m", w: 600, fill: light ? RED : INK.gold, ls: 4 }))
+    + script(sx, sy, ssize, lead, -6, light ? RED : SCRIPT_RED);
 }
+
+// The color line: the same layouts with the painting in full color, each on its own tee color so the shirts don't
+// all look alike. [id, color source made by halftone.py --color (or --invert for a dark-ink halftone), tee tone, tee].
+// Three stay black and white on purpose: King and Great Things (Doré is black and white already) and None Other Name.
+export const COLOR_LINE = [
+  ["behold", "bloch-sermon-color.png", "light", "Cream"],
+  ["mercy", "bloch-consolator-color.png", "dark", "Black"],
+  ["come", "bloch-little-children-color.png", "light", "Oatmeal"],
+  ["talk", "bloch-christ-and-child-color.png", "dark", "Black"],
+  ["foundation", "rembrandt-storm-color.png", "dark", "Shadow"],
+  ["shelem", "bierstadt-mountain-color.png", "dark", "Black"],
+  ["tree", "friedrich-tree-color.png", "light", "Cream"],
+  ["ship", "aivazovsky-wave-color.png", "dark", "Mocha"],
+  ["come-forth", "bloch-thomas-color.png", "dark", "Black"],
+  ["glad-tidings", "bloch-shepherds-color.png", "dark", "Black"],
+  ["press-forward", "aivazovsky-walking-color.png", "dark", "Shadow"],
+  ["barges", "aivazovsky-among-color.png", "dark", "Shadow"],
+  ["irreantum", "friedrich-moonrise-color.png", "dark", "Mocha"],
+  ["none-other", "bloch-gethsemane-halftone.png", "dark", "Black"],
+  ["king", "dore-entry-ink.png", "light", "Cream"],
+  ["liahona", "dore-abraham-ink.png", "light", "Oatmeal"],
+];
 
 // Every picture tee. Verses checked word for word on churchofjesuschrist.org. Sources: art-sources/*/SOURCES.md.
 const PICTURES = [
@@ -134,6 +158,13 @@ const FILES = [
   { name: "liberty-v4-back.png", svg: liberty },
   { name: "cureloms-v3-back.png", svg: cureloms },
   ...PICTURES.map(([id, file, o]) => ({ name: `${id}-picture-back.png`, svg: () => picture({ file, ...o }), needs: file })),
+  ...COLOR_LINE.map(([id, file, tee]) => {
+    const o = PICTURES.find(p => p[0] === id)[2];
+    return { name: `${id}-color-back.png`, svg: () => picture({ ...o, file, tee }), needs: file };
+  }),
+  // Small chest marks for the front: bone for dark tees, forest for light ones.
+  { name: "front-mark-bone.png", svg: () => chest(lock(0, 0, 44, BONE, RED)) },
+  { name: "front-mark-forest.png", svg: () => chest(lock(0, 0, 44, FOREST, RED)) },
 // A picture tee renders only once its halftone exists (make it with halftone.py; the command is in art-sources/bloch/SOURCES.md).
 ].filter(f => (!ONLY || ONLY.test(f.name)) && (!f.needs || existsSync(resolve("print/review/src", f.needs))));
 
