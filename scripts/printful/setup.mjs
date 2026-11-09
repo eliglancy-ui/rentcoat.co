@@ -130,6 +130,61 @@ if (RUN.dump) {
   process.exit(0);
 }
 
+// "pictures": photograph the picture tees in print/review/ on a black Shaka tee (Printful's mockup generator only:
+// no products are created and nothing in the store changes). Saves to picture-mockups/<name>/, which the workflow
+// pushes to the picture-mockups branch.
+if (RUN.pictures) {
+  // Each entry is a name ("behold": the black picture tee) or { name, back, tee } for the color line.
+  const PRODUCT = 1626, SIZE_M = { Black: 50244, Shadow: 50240, Cream: 50232, Oatmeal: 50252, Mocha: 50236 };
+  const LIGHT = new Set(["Cream", "Oatmeal"]);
+  let bad = 0;
+  for (const entry of RUN.pictures) {
+    const { name, back = `${name}-picture-back.png`, tee = "Black", product = PRODUCT, variant, extra = [] } = typeof entry === "string" ? { name: entry } : entry;
+    const BLACK_M = variant || SIZE_M[tee];
+    console.log(`\npicture ${name} on ${tee}`);
+    try {
+      const pfs = await printfiles(product);
+      const style = STYLES[product];
+      const groups = style.groups.filter(g => (pfs.option_groups || []).includes(g));
+      const views = style.views.filter(v => (pfs.options || []).includes(v));
+      const files = [
+        { place: "back", size: "DTG", url: `${FILE_BASE}/review/${back}` },
+        { place: "front", size: "DTG", url: `${FILE_BASE}/review/front-mark-${LIGHT.has(tee) ? "forest" : "bone"}.png` },
+        ...extra.map(x => ({ place: x.place, size: x.size || "LEG", url: `${FILE_BASE}/review/${x.file}` })),
+      ].filter(f => pfs.available_placements?.[f.place]);
+      console.log(`  placements: ${files.map(f => f.place).join(", ")} (available: ${Object.keys(pfs.available_placements || {}).join(", ")})`);
+      const task = await pf(`mockup-generator/create-task/${product}`, { method: "POST", body: {
+        variant_ids: [BLACK_M], format: "jpg", ...(groups.length && { option_groups: groups }), ...(views.length && { options: views }),
+        files: await Promise.all(files.map(async f => ({ placement: f.place, image_url: f.url, position: await position(product, BLACK_M, f) }))),
+      } });
+      if (!task.ok) throw new Error(`start mockup: ${why(task)}`);
+      let done;
+      for (let i = 0; i < 90 && !done; i++) {
+        await sleep(5000);
+        const r = await pf(`mockup-generator/task?task_key=${encodeURIComponent(task.data.result.task_key)}`);
+        if (r.data?.result?.status === "completed") done = r.data.result;
+        else if (r.data?.result?.status === "failed") throw new Error(`mockup failed: ${JSON.stringify(r.data.result.error)}`);
+      }
+      if (!done) throw new Error("mockup took longer than 7 minutes");
+      const dir = `picture-mockups/${typeof entry === "string" ? name : `${name}-${tee.toLowerCase()}`}`, list = [], seen = new Set();
+      mkdirSync(dir, { recursive: true });
+      for (const m of done.mockups) for (const shot of [{ option: m.placement, url: m.mockup_url }, ...(m.extra || [])]) {
+        if (list.length >= 12 || seen.has(shot.url)) continue;
+        seen.add(shot.url);
+        const img = await fetch(shot.url);
+        if (!img.ok) continue;
+        const file = `${list.length + 1}.jpg`;
+        writeFileSync(`${dir}/${file}`, Buffer.from(await img.arrayBuffer()));
+        list.push({ file, placement: m.placement, group: shot.option_group || "", view: shot.option || "" });
+      }
+      writeFileSync(`${dir}/index.json`, JSON.stringify(list, null, 2) + "\n");
+      console.log(`  saved ${list.length} photos`);
+    } catch (e) { bad++; console.error(`  FAILED: ${e.message}`); }
+    await sleep(3000);
+  }
+  process.exit(bad ? 1 : 0);
+}
+
 // "preview": photograph the designs in art-bold.mjs on their blanks without creating any products, and save the
 // photos to candidates/preview/<key>/ (pushed to the photo-candidates branch) so the owner can choose.
 if (RUN.preview) {

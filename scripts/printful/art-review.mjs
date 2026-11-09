@@ -8,7 +8,7 @@ const { chromium } = createRequire(import.meta.url)("playwright");
 import { mkdirSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
-import { INK, t, lock } from "./art.mjs";
+import { INK, t, lock, chest } from "./art.mjs";
 import { worn } from "./art-bold.mjs";
 
 const FOREST = "#1F3A2E", RED = INK.red, BONE = INK.bone, NIGHT = INK.night;
@@ -71,18 +71,42 @@ function cureloms() {
 // print/review/src/), with one big line of type and a red script accent over it. Blank: Black.
 const SCRIPT_RED = "#C8503E"; // rent red lifted a step so it holds on a black garment-dyed tee
 const art = (file, y, h) => `<image href="file://${resolve("print/review/src", file)}" x="50" y="${y}" width="1700" height="${h}" preserveAspectRatio="xMidYMax meet"/>`;
-const script = (x, y, size, txt, rot = -6) =>
-  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${SCRIPT_RED}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
+const script = (x, y, size, txt, rot = -6, fill = SCRIPT_RED) =>
+  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${fill}" style="font-family:'Instrument Serif';font-style:italic;font-size:${size}px">${txt}</text>`;
 
 // One picture tee: the halftone picture under the collar mark, a red script lead-in, one big word or line, and
 // the verse reference in gold. The picture's faded bottom sits behind the script, so they read as one piece.
-function picture({ file, imgH = 1560, script: [lead, sx = 80, sy = 1700, ssize = 210], big: [word, bsize, bwide = 62], ref }) {
-  return lock(900, 110, 56, BONE, RED)
+// tee "dark" (Black, Shadow, Mocha): bone type, gold reference. tee "light" (Cream, Oatmeal): forest type, red reference.
+function picture({ file, imgH = 1560, script: [lead, sx = 80, sy = 1700, ssize = 210], big: [word, bsize, bwide = 62], ref, tee = "dark" }) {
+  const light = tee === "light", ink = light ? FOREST : BONE;
+  return lock(900, 110, 56, ink, RED)
     + art(file, 170, imgH)
-    + worn(wide(2030, bsize, word, BONE, 1700, bwide)
-      + t(900, 2180, 58, ref, { f: "m", w: 600, fill: INK.gold, ls: 4 }))
-    + script(sx, sy, ssize, lead);
+    + worn(wide(2030, bsize, word, ink, 1700, bwide)
+      + t(900, 2180, 58, ref, { f: "m", w: 600, fill: light ? RED : INK.gold, ls: 4 }))
+    + script(sx, sy, ssize, lead, -6, light ? RED : SCRIPT_RED);
 }
+
+// The color line: the same layouts with the painting in full color, each on its own tee color so the shirts don't
+// all look alike. [id, color source made by halftone.py --color (or --invert for a dark-ink halftone), tee tone, tee].
+// Three stay black and white on purpose: King and Great Things (Doré is black and white already) and None Other Name.
+export const COLOR_LINE = [
+  ["behold", "bloch-sermon-color.png", "light", "Cream"],
+  ["mercy", "bloch-consolator-color.png", "dark", "Black"],
+  ["come", "bloch-little-children-color.png", "light", "Oatmeal"],
+  ["talk", "bloch-christ-and-child-color.png", "dark", "Black"],
+  ["foundation", "rembrandt-storm-color.png", "dark", "Shadow"],
+  ["shelem", "bierstadt-mountain-color.png", "dark", "Black"],
+  ["tree", "friedrich-tree-color.png", "light", "Cream"],
+  ["ship", "aivazovsky-wave-color.png", "dark", "Mocha"],
+  ["come-forth", "bloch-thomas-color.png", "dark", "Black"],
+  ["glad-tidings", "bloch-shepherds-color.png", "dark", "Black"],
+  ["press-forward", "aivazovsky-walking-color.png", "dark", "Shadow"],
+  ["barges", "aivazovsky-among-color.png", "dark", "Shadow"],
+  ["irreantum", "friedrich-moonrise-color.png", "dark", "Mocha"],
+  ["none-other", "bloch-gethsemane-halftone.png", "dark", "Black"],
+  ["king", "dore-entry-ink.png", "light", "Cream"],
+  ["liahona", "dore-abraham-ink.png", "light", "Oatmeal"],
+];
 
 // Every picture tee. Verses checked word for word on churchofjesuschrist.org. Sources: art-sources/*/SOURCES.md.
 const PICTURES = [
@@ -110,6 +134,127 @@ const PICTURES = [
   ["ship", "aivazovsky-wave-halftone.png", { script: ["thou shalt construct a", 90, 1660, 190], big: ["SHIP", 640], ref: "1 NEPHI 17:8" }],
   // Friedrich, The Lone Tree (1822)
   ["tree", "friedrich-tree-halftone.png", { script: ["I beheld a", 90, 1660, 230], big: ["TREE", 640], ref: "WHOSE FRUIT WAS DESIRABLE · 1 NEPHI 8:10" }],
+
+  // ---- Round 2 (Nov 6): more public-domain paintings. Files named on Wikimedia Commons; verses checked word for word
+  // on churchofjesuschrist.org the same day. New shirts first, then pictures for shirts that had none.
+  // NEW. Bloch, The Doubting Thomas (Ugerløse Kirke altarpiece). File: 'The Doubting Thomas' by Carl Heinrich Bloch, Ugerløse Kirke.jpg
+  ["come-forth", "bloch-thomas-halftone.png", { script: ["Arise and", 90, 1680, 230], big: ["COME FORTH", 430], ref: "UNTO ME · 3 NEPHI 11:14" }],
+  // NEW. Bloch, The Shepherds and the Angel (1879). File: The Shepherds and the Angel.jpg (only 1024 px wide: print it smaller)
+  ["glad-tidings", "bloch-shepherds-halftone.png", { imgH: 1300, script: ["the glad tidings of", 90, 1600, 190], big: ["GREAT JOY", 450], ref: "I AM COME TO DECLARE UNTO YOU · MOSIAH 3:3" }],
+  // Press Forward tee. Aivazovsky, Walking on the Water (1888). File: Po vodam 1888.jpg
+  ["press-forward", "aivazovsky-walking-halftone.png", { script: ["press forward with a", 90, 1660, 190], big: ["STEADFASTNESS", 300], ref: "IN CHRIST · 2 NEPHI 31:20" }],
+  // Jesus Is King tee. Doré, Christ's Entry into Jerusalem (engraving, 1866). File: Gustave Doré - Christ's Entry into Jerusalem.jpg
+  ["king", "dore-entry-halftone.png", { script: ["will be their", 90, 1660, 230], big: ["KING", 640], ref: "THE KING OF HEAVEN · 2 NEPHI 10:14" }],
+  // Liahona. Doré, Abraham Journeying into the Land of Canaan (engraving). File: Abraham Journeying into the Land of Canaan (89393798).jpg
+  ["liahona", "dore-abraham-halftone.png", { script: ["by small means", 90, 1660, 210], big: ["GREAT THINGS", 380], ref: "THE LORD CAN BRING ABOUT · 1 NEPHI 16:29" }],
+  // Barges. Aivazovsky, Among the Waves (1898). File: Ivan Konstantinovich Aivazovsky - Among the Waves, 1898.jpg
+  ["barges", "aivazovsky-among-halftone.png", { script: ["ye shall be as a", 90, 1660, 200], big: ["WHALE", 620], ref: "IN THE MIDST OF THE SEA · ETHER 2:24" }],
+  // Irreantum. Friedrich, Moonrise over the Sea (1822). File: Caspar David Friedrich - Mondaufgang über dem Meer.jpg
+  ["irreantum", "friedrich-moonrise-halftone.png", { script: ["being interpreted, is", 90, 1660, 190], big: ["MANY WATERS", 400], ref: "IRREANTUM · 1 NEPHI 17:5" }],
+];
+
+// ---- The five Drop 002 ideas from the design review (type and crest pieces, in the style of the reference shirts).
+const GOLD = INK.gold, SKY = "#9CC8E8";
+const esc = x => String(x).replace(/&/g, "&amp;");
+const scriptK = (x, y, size, txt, fill, rot = -8) =>
+  `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" fill="${fill}" style="font-family:'Kaushan Script';font-size:${size}px">${esc(txt)}</text>`;
+// Text set along a circle arc: top arcs read left to right over the top, bottom arcs under the bottom.
+let arcN = 0;
+function arcText(cx, cy, r, txt, size, fill, { bottom = false, font = "Graduate", ls = 6, weight = 400 } = {}) {
+  const id = `arc${++arcN}`;
+  const d = bottom
+    ? `M ${cx - r} ${cy} A ${r} ${r} 0 0 0 ${cx + r} ${cy}`
+    : `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
+  return `<defs><path id="${id}" d="${d}"/></defs><text fill="${fill}" style="font-family:'${font}';font-size:${size}px;font-weight:${weight};letter-spacing:${ls}px"><textPath href="#${id}" startOffset="50%" text-anchor="middle">${esc(txt)}</textPath></text>`;
+}
+// A laurel branch: leaves along an arc on one side of a crest, from angle a0 to a1 (degrees, 0 = right, 90 = down).
+function laurel(cx, cy, r, a0, a1, fill, n = 13, flip = 1) {
+  let out = "";
+  for (let i = 0; i < n; i++) {
+    const a = (a0 + (a1 - a0) * i / (n - 1)) * Math.PI / 180;
+    const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+    const tang = a * 180 / Math.PI + 90 * flip;
+    for (const side of [-1, 1]) {
+      const ox = x + Math.cos(a) * side * 26, oy = y + Math.sin(a) * side * 26;
+      out += `<ellipse cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" rx="46" ry="17" transform="rotate(${(tang + side * 35).toFixed(1)} ${ox.toFixed(1)} ${oy.toFixed(1)})" fill="${fill}"/>`;
+    }
+  }
+  const p0 = [cx + r * Math.cos(a0 * Math.PI / 180), cy + r * Math.sin(a0 * Math.PI / 180)], p1 = [cx + r * Math.cos(a1 * Math.PI / 180), cy + r * Math.sin(a1 * Math.PI / 180)];
+  return out + `<path d="M ${p0[0].toFixed(1)} ${p0[1].toFixed(1)} A ${r} ${r} 0 0 ${a1 > a0 ? 1 : 0} ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}" stroke="${fill}" stroke-width="8" fill="none"/>`;
+}
+
+// 1. GO AND DO · 1 Nephi 3:7 · Black tee. Huge stacked cream type with a red script "I will" across it.
+function goAndDo() {
+  return lock(900, 110, 56, BONE, RED) + worn(
+    wide(980, 760, "GO AND", BONE, 1700, 62)
+    + wide(1900, 980, "DO", BONE, 1700, 70)
+    + t(900, 2080, 54, "THE THINGS WHICH THE LORD HATH COMMANDED", { f: "m", w: 600, fill: GOLD, ls: 3 })
+    + t(900, 2170, 64, "1 NEPHI 3:7", { f: "m", w: 600, fill: GOLD, ls: 20 }))
+    + scriptK(70, 470, 330, "I will", "#D2533F");
+}
+
+// 2. HE RENT HIS COAT · Alma 46:12 · Black hoodie. Collegiate arch over the torn coat on its pole, verse under it,
+// and a line down each sleeve.
+function rentBack() {
+  return lock(900, 110, 56, BONE, RED) + worn(
+    arcText(900, 1180, 620, "HE RENT HIS COAT", 200, BONE, { ls: 8 })
+    + `<g transform="translate(900 1260) scale(1.0) translate(-950 -1200)"><rect x="690" y="760" width="34" height="880" rx="7" fill="${BONE}"/><circle cx="707" cy="748" r="30" fill="${BONE}"/>`
+    + `<path d="M724 800 C880 760 1010 840 1210 790 L1150 870 L1240 930 L1135 975 L1225 1045 L1115 1080 L1190 1140 C1030 1190 880 1110 724 1160 Z" fill="${RED}"/></g>`
+    + wide(1960, 170, "IN MEMORY OF OUR GOD", BONE, 1500, 70)
+    + t(900, 2080, 90, "our religion, and freedom", { f: "s", fill: GOLD })
+    + t(900, 2200, 60, "ALMA 46:12 · RENT COAT CO.", { f: "m", w: 600, fill: GOLD, ls: 14 }));
+}
+// Sleeves: a 2.8 x 12 in strip, read from the cuff up.
+const sleeve = txt => worn(`<g transform="translate(290 900) rotate(-90)">${t(0, 0, 200, txt, { fill: BONE, wd: 70, ls: 8 })}</g>`);
+
+// 3. TRUE AT ALL TIMES · Alma 53:20 · Shadow tee. A varsity crest: arched title, laurels, a shield with 2000.
+function trueCrest() {
+  const cx = 900, cy = 1180;
+  return lock(900, 110, 56, BONE, RED) + worn(
+    arcText(cx, cy, 640, "TRUE AT ALL TIMES", 190, BONE, { ls: 8 })
+    + laurel(cx, cy + 40, 560, 170, 95, GOLD, 12, 1) + laurel(cx, cy + 40, 560, 10, 85, GOLD, 12, -1)
+    + `<path d="M${cx - 260} ${cy - 330} H${cx + 260} V${cy + 20} C${cx + 260} ${cy + 260} ${cx + 90} ${cy + 380} ${cx} ${cy + 440} C${cx - 90} ${cy + 380} ${cx - 260} ${cy + 260} ${cx - 260} ${cy + 20} Z" fill="none" stroke="${BONE}" stroke-width="24"/>`
+    + `<text x="${cx}" y="${cy + 70}" text-anchor="middle" fill="${RED}" style="font-family:'Graduate';font-size:170px">2000</text>`
+    + t(cx, cy - 190, 56, "STRIPLING", { f: "m", w: 600, fill: BONE, ls: 8 })
+    + t(cx, cy + 190, 50, "EST. ALMA 53", { f: "m", w: 600, fill: BONE, ls: 6 })
+    + wide(2010, 120, "MEN OF TRUTH AND SOBERNESS", BONE, 1500, 70)
+    + t(900, 2140, 60, "ALMA 53:20–21", { f: "m", w: 600, fill: GOLD, ls: 20 }));
+}
+
+// 4. SERVICE CLUB · Mosiah 2:17 · Cream tee. Country-club crest: King Benjamin's tower (Mosiah 2:7) in laurels.
+function serviceCrest() {
+  const cx = 900, cy = 1120, ink = FOREST;
+  const tower = `<g fill="${ink}"><rect x="${cx - 95}" y="${cy - 230}" width="190" height="420"/><rect x="${cx - 130}" y="${cy - 290}" width="260" height="70"/>`
+    + [-130, -65, 0, 65].map(dx => `<rect x="${cx + dx}" y="${cy - 340}" width="44" height="60"/>`).join("")
+    + `<rect x="${cx - 26}" y="${cy + 70}" width="52" height="120" fill="#EFEAD8"/><rect x="${cx - 200}" y="${cy + 190}" width="400" height="34"/></g>`;
+  return lock(900, 110, 56, ink, RED) + worn(
+    arcText(cx, cy, 620, "MOSIAH 2:17", 150, ink, { ls: 14 })
+    + laurel(cx, cy - 40, 470, 160, 95, RED, 10, 1) + laurel(cx, cy - 40, 470, 20, 85, RED, 10, -1)
+    + `<g transform="translate(${cx} ${cy - 60}) scale(1.15) translate(${-cx} ${-cy})">${tower}</g>`
+    + `<path d="M${cx - 560} ${cy + 330} H${cx + 560} L${cx + 500} ${cy + 405} L${cx + 560} ${cy + 480} H${cx - 560} L${cx - 500} ${cy + 405} Z" fill="${ink}"/>`
+    + `<text x="${cx}" y="${cy + 455}" text-anchor="middle" fill="#EFEAD8" style="font-family:'Graduate';font-size:130px;letter-spacing:14px">SERVICE CLUB</text>`
+    + t(900, 1830, 100, "when ye are in the service of your fellow beings", { f: "s", fill: ink })
+    + t(900, 1950, 100, "ye are only in the service of your God", { f: "s", fill: RED })
+    + t(900, 2090, 54, "KING BENJAMIN'S TOWER · MOSIAH 2:7", { f: "m", w: 600, fill: ink, ls: 8 }));
+}
+
+// 5. CHILDREN OF CHRIST · Mosiah 5:7 · Shadow tee. Big light-blue brush script, the verse small underneath.
+function childrenOfChrist() {
+  return lock(900, 110, 56, BONE, RED) + worn(
+    `<text x="900" y="760" text-anchor="middle" fill="${SKY}" style="font-family:'Caveat Brush';font-size:520px">children</text>`
+    + `<text x="900" y="1150" text-anchor="middle" fill="${SKY}" style="font-family:'Caveat Brush';font-size:330px">of</text>`
+    + `<text x="900" y="1640" text-anchor="middle" fill="${SKY}" style="font-family:'Caveat Brush';font-size:560px">Christ</text>`
+    + t(900, 1900, 64, "HIS SONS, AND HIS DAUGHTERS", { f: "m", w: 600, fill: BONE, ls: 10 })
+    + t(900, 2010, 64, "MOSIAH 5:7", { f: "m", w: 600, fill: BONE, ls: 26 }));
+}
+
+export const IDEAS = [
+  // [id, back svg, blank, tee/hoodie color, extra placements]
+  ["go-and-do", goAndDo, "tee", "Black"],
+  ["he-rent-his-coat", rentBack, "hoodie", "Black"],
+  ["true-at-all-times", trueCrest, "tee", "Shadow"],
+  ["service-club", serviceCrest, "tee", "Cream"],
+  ["children-of-christ", childrenOfChrist, "tee", "Shadow"],
 ];
 
 const ONLY = process.argv[2] ? new RegExp(process.argv[2]) : null;
@@ -117,23 +262,38 @@ const FILES = [
   { name: "liberty-v4-back.png", svg: liberty },
   { name: "cureloms-v3-back.png", svg: cureloms },
   ...PICTURES.map(([id, file, o]) => ({ name: `${id}-picture-back.png`, svg: () => picture({ file, ...o }), needs: file })),
+  ...COLOR_LINE.map(([id, file, tee]) => {
+    const o = PICTURES.find(p => p[0] === id)[2];
+    return { name: `${id}-color-back.png`, svg: () => picture({ ...o, file, tee }), needs: file };
+  }),
+  ...IDEAS.map(([id, svg]) => ({ name: `idea-${id}-back.png`, svg })),
+  { name: "idea-he-rent-his-coat-sleeve-left.png", size: [420, 1800], svg: () => sleeve("ALMA 46:12") },
+  { name: "idea-he-rent-his-coat-sleeve-right.png", size: [420, 1800], svg: () => sleeve("TITLE OF LIBERTY") },
+  // Small chest marks for the front: bone for dark tees, forest for light ones.
+  { name: "front-mark-bone.png", svg: () => chest(lock(0, 0, 44, BONE, RED)) },
+  { name: "front-mark-forest.png", svg: () => chest(lock(0, 0, 44, FOREST, RED)) },
 // A picture tee renders only once its halftone exists (make it with halftone.py; the command is in art-sources/bloch/SOURCES.md).
 ].filter(f => (!ONLY || ONLY.test(f.name)) && (!f.needs || existsSync(resolve("print/review/src", f.needs))));
 
 const fonts = resolve("public/fonts");
+const extra = resolve("scripts/printful/fonts"); // Graduate, Kaushan Script, Caveat Brush: SIL Open Font License, licenses beside them
 const head = `<style>
 @font-face { font-family: "Archivo"; font-weight: 100 900; font-stretch: 62% 125%; src: url("file://${fonts}/archivo-variable-latin.woff2") }
 @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("file://${fonts}/instrument-serif-latin-400-italic.woff2") }
 @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("file://${fonts}/ibm-plex-mono-latin-500-normal.woff2") }
 @font-face { font-family: "IBM Plex Mono"; font-weight: 600; src: url("file://${fonts}/ibm-plex-mono-latin-600-normal.woff2") }
+@font-face { font-family: "Graduate"; src: url("file://${extra}/graduate-latin-400-normal.woff2") }
+@font-face { font-family: "Kaushan Script"; src: url("file://${extra}/kaushan-script-latin-400-normal.woff2") }
+@font-face { font-family: "Caveat Brush"; src: url("file://${extra}/caveat-brush-latin-400-normal.woff2") }
 html, body { margin: 0; background: transparent } svg { display: block }
 </style>`;
 mkdirSync("print/review", { recursive: true });
 const browser = await chromium.launch();
 for (const f of FILES) {
-  const page = await browser.newPage({ viewport: { width: 1800, height: 2400 }, deviceScaleFactor: 2 });
+  const [W, H] = f.size || [1800, 2400];
+  const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 2 });
   const tmp = resolve(tmpdir(), `rc-review-${process.pid}.html`);
-  writeFileSync(tmp, `<!doctype html><html><head>${head}</head><body><svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2400" viewBox="0 0 1800 2400">${f.svg()}</svg></body></html>`);
+  writeFileSync(tmp, `<!doctype html><html><head>${head}</head><body><svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${f.svg()}</svg></body></html>`);
   await page.goto(`file://${tmp}`);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => document.querySelectorAll("g.lock").forEach(g => {

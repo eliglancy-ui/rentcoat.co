@@ -59,3 +59,13 @@ jobs:
           git add -f candidates
           git commit -qm "Styled photo candidates from Printful"
           git push -f origin HEAD:refs/heads/photo-candidates
+      - name: Push picture-tee mockups to the picture-mockups branch
+        if: always() && hashFiles('picture-mockups/**') != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan picture-mockups-tmp
+          git rm -rq --cached .
+          git add -f picture-mockups
+          git commit -qm "Picture-tee mockups from Printful"
+          git push -f origin HEAD:refs/heads/picture-mockups

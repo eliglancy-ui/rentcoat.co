@@ -29,3 +29,26 @@ $H art-sources/pd/aivazovsky-ninth-wave.jpg print/review/src/aivazovsky-wave-hal
 $H art-sources/pd/friedrich-lone-tree.jpg print/review/src/friedrich-tree-halftone.png --crop 250,150,850,810 --width 3400 --drop-sky --oval --fade 0.16
 node scripts/printful/art-review.mjs picture
 ```
+
+## Round 2 (added Nov 6 from the Drive folder)
+
+| File | Work | Artist | Used on |
+|---|---|---|---|
+| bloch-thomas.jpg | The Doubting Thomas (Ugerløse Kirke) | Carl Bloch | Come Forth (3 Nephi 11:14) |
+| bloch-shepherds.jpg | The Shepherds and the Angel (1879) | Carl Bloch | Glad Tidings (Mosiah 3:3) |
+| aivazovsky-walking.jpg | Walking on the Water (1888) | Ivan Aivazovsky | Press Forward (2 Nephi 31:20) |
+| dore-entry.jpg | Christ's Entry into Jerusalem (oil sketch) | Gustave Doré (1832–1883) | Jesus Is King (2 Nephi 10:14) |
+| dore-abraham.jpg | Abraham Journeying into the Land of Canaan (engraving) | Gustave Doré | The Liahona (1 Nephi 16:29) |
+| aivazovsky-among-waves.jpg | Among the Waves (1898) | Ivan Aivazovsky | Jaredite Barges (Ether 2:24) |
+| friedrich-moonrise.jpg | Moonrise over the Sea (1822) | Caspar David Friedrich | Irreantum (1 Nephi 17:5) |
+
+```
+H="python3 scripts/printful/halftone.py"
+$H art-sources/pd/bloch-thomas.jpg print/review/src/bloch-thomas-halftone.png --crop 0,400,1218,1900 --width 3400 --fade 0.12
+$H art-sources/pd/bloch-shepherds.jpg print/review/src/bloch-shepherds-halftone.png --crop 0,150,1024,1122 --width 3400 --fade 0.12
+$H art-sources/pd/aivazovsky-walking.jpg print/review/src/aivazovsky-walking-halftone.png --crop 0,100,1200,1500 --width 3400 --oval --fade 0.16
+$H art-sources/pd/dore-entry.jpg print/review/src/dore-entry-halftone.png --crop 0,0,2207,1638 --width 3400 --oval --fade 0.16 --contrast 1.6
+$H art-sources/pd/dore-abraham.jpg print/review/src/dore-abraham-halftone.png --crop 1300,1200,3867,3119 --width 3400 --oval --fade 0.16
+$H art-sources/pd/aivazovsky-among-waves.jpg print/review/src/aivazovsky-among-halftone.png --crop 0,0,1980,1226 --width 3400 --oval --fade 0.16 --contrast 1.8 --gamma 1.3
+$H art-sources/pd/friedrich-moonrise.jpg print/review/src/friedrich-moonrise-halftone.png --crop 600,700,4327,3465 --width 3400 --oval --fade 0.16
+```
