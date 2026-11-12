@@ -94,6 +94,7 @@ export const COLOR_LINE = [
   ["mercy", "bloch-consolator-color.png", "dark", "Black"],
   ["come", "bloch-little-children-color.png", "light", "Oatmeal"],
   ["talk", "bloch-christ-and-child-color.png", "dark", "Black"],
+  ["rejoice", "bloch-christ-and-child-color.png", "light", "Natural"],
   ["foundation", "rembrandt-storm-color.png", "dark", "Shadow"],
   ["shelem", "bierstadt-mountain-color.png", "dark", "Black"],
   ["tree", "friedrich-tree-color.png", "light", "Cream"],
@@ -116,6 +117,8 @@ const PICTURES = [
   ["mercy", "bloch-consolator-halftone.png", { script: ["mine arm of", 90, 1640, 220], big: ["MERCY", 560], ref: "MINE ARM OF MERCY IS EXTENDED · 3 NEPHI 9:14" }],
   // Bloch, Christ and Child
   ["talk", "bloch-christ-and-child-halftone.png", { script: ["And we", 90, 1700, 230], big: ["TALK OF CHRIST", 330], ref: "WE REJOICE IN CHRIST · 2 NEPHI 25:26" }],
+  // Bloch, Christ and Child. The 2027 youth theme ("Rejoice in Christ", see Philippians 4:4), quoted from 2 Nephi 25:26.
+  ["rejoice", "bloch-christ-and-child-halftone.png", { script: ["we", 90, 1700, 260], big: ["REJOICE", 600], ref: "IN CHRIST · 2 NEPHI 25:26" }],
   // Bloch, Let the Little Children Come unto Jesus
   ["come", "bloch-little-children-halftone.png", { script: ["come unto", 90, 1680, 230], big: ["CHRIST", 540], ref: "AND BE PERFECTED IN HIM · MORONI 10:32" }],
   // Bloch, The Resurrection (1875)
