@@ -74,3 +74,10 @@
   for = "/site.webmanifest"
   [headers.values]
     Content-Type = "application/manifest+json; charset=utf-8"
+
+# Stripling 2000 was retired before the store opened (Nov 12, 2026); its old page points people to the shirts.
+[[redirects]]
+  from = "/stripling-warrior-shirt/*"
+  to = "/book-of-mormon-shirts/"
+  status = 301
+  force = true
