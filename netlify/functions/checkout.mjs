@@ -25,13 +25,15 @@ export default async (req) => {
   const subtotal = items.reduce((n, i) => n + unitPrice(i.id, i.size, now) * i.qty, 0);
   const ship = shippingCents(subtotal);
 
-  const site = process.env.URL || new URL(req.url).origin;
+  // On a deploy preview (Stripe test mode), send buyers back to the preview, not the live site.
+  const preview = process.env.CONTEXT && process.env.CONTEXT !== "production";
+  const site = (!preview && process.env.URL) || new URL(req.url).origin;
   // Set STRIPE_TAX=on in Netlify once the business is registered for NC sales tax and that registration is added in Stripe Tax.
   const tax = process.env.STRIPE_TAX === "on";
   const params = {
     mode: "payment",
     success_url: `${site}/thanks.html?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${site}/#drop`,
+    cancel_url: `${site}/#shop`,
     // Stripe's shortest allowed lifetime, so a page opened just before the drop closes can't be paid hours later.
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     custom_text: {
