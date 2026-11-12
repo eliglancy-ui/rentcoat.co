@@ -8,6 +8,18 @@ const v = (S, M, L, XL, XXL) => ({ S, M, L, XL, "2XL": XXL });
 // M2475 fleece pullover 674, SOL'S 32000 windbreaker 661, Champion CO200 packable anorak 399,
 // Yupoong 6245CM dad hat 206, Yupoong 1501KC cuffed beanie 266.
 export const CATALOG = {
+  // The opening set (Black Friday 2026): Bella+Canvas 3010 tees (product 1592) and Cotton Heritage M2580 hoodies,
+  // art placed by inches from scripts/printful/art-opening.mjs. Variant IDs from api.printful.com/products/1592, Nov 12.
+  "cureloms-tee":            { product: 1592, color: "Natural",   art: "open-cureloms",       variants: v(50085, 50119, 50129, 50088, 50081) },
+  "title-of-liberty-tee":    { product: 1592, color: "Dark Grey", art: "open-liberty",        variants: v(50101, 50105, 50127, 50123, 50082) },
+  "liahona-compass-tee":     { product: 1592, color: "Natural",   art: "open-liahona",        variants: v(50085, 50119, 50129, 50088, 50081) },
+  "rejoice-tee":             { product: 1592, color: "Black",     art: "open-rejoice",        variants: v(50106, 50086, 50117, 50107, 50079) },
+  "rejoice-hoodie":          { product: 380,  color: "Black",     art: "open-rejoice-hoodie", variants: v(10779, 10780, 10781, 10782, 10783) },
+  "great-joy-tee":           { product: 1592, color: "Black",     art: "open-great-joy",      variants: v(50106, 50086, 50117, 50107, 50079) },
+  "he-rent-his-coat-hoodie": { product: 380,  color: "Black",     art: "open-rent-hoodie",    variants: v(10779, 10780, 10781, 10782, 10783) },
+  "go-and-do-tee":           { product: 1592, color: "Black",     art: "open-go-and-do",      variants: v(50106, 50086, 50117, 50107, 50079) },
+  "service-club-tee":        { product: 1592, color: "Natural",   art: "open-service-club",   variants: v(50085, 50119, 50129, 50088, 50081) },
+  "lehis-tent-tee":          { product: 1592, color: "Toast",     art: "open-lehi",           variants: v(50095, 50110, 50108, 50096, 50080) },
   "rent-hoodie":        { product: 380,  color: "Black",            variants: v(10779, 10780, 10781, 10782, 10783) },
   "strait-joggers":     { product: 412,  color: "Charcoal Heather", variants: v(11284, 11285, 11286, 11287, 11288) },
   "flag-cap":           { product: 206,  color: "Spruce",           variants: { OS: 8745 } },

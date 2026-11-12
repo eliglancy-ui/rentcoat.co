@@ -8,7 +8,7 @@ export default async (req) => {
 
   const now = Date.now();
   const phase = storePhase(now);
-  if (phase === "before") return json({ error: "Launch week hasn't started yet. Check the countdown." }, 409);
+  if (phase === "before") return json({ error: "The store opens Friday, Nov 27 at 10 AM Eastern. Your bag is saved until then." }, 409);
   if (phase === "sunday") return json({ error: "We're closed on Sundays. Your bag is saved, so check out on Monday." }, 409);
   const launch = phase === "launch";
 
