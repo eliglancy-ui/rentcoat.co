@@ -11,10 +11,10 @@ about where a polo logo sits. Files here are trimmed to the art, transparent PNG
 | chest-lehi.png | Lehi's Tent Co. |
 
 Printful position (Bella+Canvas 3010, front area 4200 x 4800 px = 14 x 16 in at 300 DPI):
-width 3.5 in (1050 px), left edge 2700 px, top 1050 px (about 4.5 in below the collar).
+width 3.5 in (1050 px), left edge 2700 px, top 600 px (about 3 in below the collar, the usual left-chest spot).
 
 Hoodie (Cotton Heritage M2580, front area 1800 x 1800 px = 12 x 12 in at 150 DPI):
-width 3.5 in (525 px), left edge 1200 px, top 450 px.
+width 3.5 in (525 px), left edge 1200 px, top 330 px.
 
 In Printful's designer: Front, upload the file, set width 3.5 in, then drag it to the wearer's left chest
 (the right side of the screen), with its center about 3.75 in from the shirt's center line.
