@@ -3077,9 +3077,419 @@
         "vat": 0,
         "total": 46.1
       }
+    },
+    "cureloms-tee": {
+      "sync_product_id": 492879928,
+      "images": [
+        "images/products/cureloms-tee-1.jpg",
+        "images/products/cureloms-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/193c474539c9dc3623e4dae07aa0ed11/unisex-oversized-boxy-tee-natural-front-6af5f03b268b3.jpg",
+          "path": "images/products/cureloms-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/05b5eb99dc748faec65c4646b9f78f67/unisex-oversized-boxy-tee-natural-back-6af5f03b26e7e.jpg",
+          "path": "images/products/cureloms-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "title-of-liberty-tee": {
+      "sync_product_id": 492880312,
+      "images": [
+        "images/products/title-of-liberty-tee-1.jpg",
+        "images/products/title-of-liberty-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4fc51c41b24f5205fff035b4bf8c3272/unisex-oversized-boxy-tee-dark-grey-front-6af5f042cf372.jpg",
+          "path": "images/products/title-of-liberty-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/dea523518744dc6719bc10014b7f0ef8/unisex-oversized-boxy-tee-dark-grey-back-6af5f042cf892.jpg",
+          "path": "images/products/title-of-liberty-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "liahona-compass-tee": {
+      "sync_product_id": 487849217,
+      "images": [
+        "images/products/liahona-compass-tee-1.jpg",
+        "images/products/liahona-compass-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e9afdfebb2a59377b19a30253bd2e1bc/unisex-oversized-boxy-tee-natural-front-6af5f04a824fa.jpg",
+          "path": "images/products/liahona-compass-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/76c83f833fdfaeb1093eb1dba14f14a7/unisex-oversized-boxy-tee-natural-back-6af5f04a828cf.jpg",
+          "path": "images/products/liahona-compass-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 26.66,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.32,
+        "vat": 0,
+        "total": 34.33
+      }
+    },
+    "rejoice-tee": {
+      "sync_product_id": 492880663,
+      "images": [
+        "images/products/rejoice-tee-1.jpg",
+        "images/products/rejoice-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/a0733d645365d4ccb6c8e2fb529497c9/unisex-oversized-boxy-tee-black-front-6af5f0517688c.jpg",
+          "path": "images/products/rejoice-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/700c7acc70ff0a6566f2084a0c1e63ef/unisex-oversized-boxy-tee-black-back-6af5f051771fb.jpg",
+          "path": "images/products/rejoice-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "rejoice-hoodie": {
+      "sync_product_id": 492880781,
+      "images": [
+        "images/products/rejoice-hoodie-1.jpg",
+        "images/products/rejoice-hoodie-2.jpg",
+        "images/products/rejoice-hoodie-3.jpg",
+        "images/products/rejoice-hoodie-4.jpg",
+        "images/products/rejoice-hoodie-5.jpg",
+        "images/products/rejoice-hoodie-6.jpg",
+        "images/products/rejoice-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/54e102f767e722253f879b9792dbc623/unisex-premium-pullover-hoodie-black-front-6af5f0586b2dd.jpg",
+          "path": "images/products/rejoice-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0eda4c69457d3fa39d53b067d01abd9c/unisex-premium-pullover-hoodie-black-front-6af5f0586b77e.jpg",
+          "path": "images/products/rejoice-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0f937700ec44f16f035f0eb88e8d1f67/unisex-premium-pullover-hoodie-black-product-details-6af5f0586ba45.jpg",
+          "path": "images/products/rejoice-hoodie-3.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/97f327e321b30b4dd0de46396f13fa9e/unisex-premium-pullover-hoodie-black-left-6af5f0586bc73.jpg",
+          "path": "images/products/rejoice-hoodie-4.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d8535f2a6e291cda79d5ed0ac3a9f5ca/unisex-premium-pullover-hoodie-black-right-6af5f0586bea5.jpg",
+          "path": "images/products/rejoice-hoodie-5.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/be4491076d16a5fb9eee93c1f5b4c77e/unisex-premium-pullover-hoodie-black-back-6af5f0586c0b0.jpg",
+          "path": "images/products/rejoice-hoodie-6.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/eb59d0d8c5ff92d22e29200e94865e32/unisex-premium-pullover-hoodie-black-back-6af5f0586c282.jpg",
+          "path": "images/products/rejoice-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 33.79,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.12,
+        "vat": 0,
+        "total": 46.1
+      }
+    },
+    "great-joy-tee": {
+      "sync_product_id": 492880986,
+      "images": [
+        "images/products/great-joy-tee-1.jpg",
+        "images/products/great-joy-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/55d505766a67e5a6b681f6cb013e6769/unisex-oversized-boxy-tee-black-front-6af5f062aed30.jpg",
+          "path": "images/products/great-joy-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/be3136337dccfd138823afefd888d31f/unisex-oversized-boxy-tee-black-back-6af5f062aeff6.jpg",
+          "path": "images/products/great-joy-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "he-rent-his-coat-hoodie": {
+      "sync_product_id": 492881397,
+      "images": [
+        "images/products/he-rent-his-coat-hoodie-1.jpg",
+        "images/products/he-rent-his-coat-hoodie-2.jpg",
+        "images/products/he-rent-his-coat-hoodie-3.jpg",
+        "images/products/he-rent-his-coat-hoodie-4.jpg",
+        "images/products/he-rent-his-coat-hoodie-5.jpg",
+        "images/products/he-rent-his-coat-hoodie-6.jpg",
+        "images/products/he-rent-his-coat-hoodie-7.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/d818428311c669ddab77910cb44d8a71/unisex-premium-pullover-hoodie-black-front-6af5f06f15959.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/808c763cc7df56342b5d7aef078cbc01/unisex-premium-pullover-hoodie-black-front-6af5f06f16059.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-2.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Product details",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/3e3a20271361dc637ced69ee8a8c1c59/unisex-premium-pullover-hoodie-black-product-details-6af5f06f16264.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-3.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/6acb88be188e7a9787e4fbe6a959ee55/unisex-premium-pullover-hoodie-black-back-6af5f06f16468.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-4.jpg"
+        },
+        {
+          "placement": "back",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/8031f26dd1479ac863d4bae91880564c/unisex-premium-pullover-hoodie-black-back-6af5f06f16636.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-5.jpg"
+        },
+        {
+          "placement": "sleeve_left",
+          "title": "sleeve_left",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/0ce4f8db6e88a9460d0ebb192ea0fecf/unisex-premium-pullover-hoodie-black-left-6af5f06f167f6.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-6.jpg"
+        },
+        {
+          "placement": "sleeve_right",
+          "title": "sleeve_right",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5dca6509520dc78ae14cb75af9751c9c/unisex-premium-pullover-hoodie-black-right-6af5f06f169bc.jpg",
+          "path": "images/products/he-rent-his-coat-hoodie-7.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 45.69,
+        "discount": 0,
+        "shipping": 9.19,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 3.98,
+        "vat": 0,
+        "total": 58.86
+      }
+    },
+    "go-and-do-tee": {
+      "sync_product_id": 492881639,
+      "images": [
+        "images/products/go-and-do-tee-1.jpg",
+        "images/products/go-and-do-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/139ba35c62f39f8998908366a2eca809/unisex-oversized-boxy-tee-black-front-6af5f07b6e24a.jpg",
+          "path": "images/products/go-and-do-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/9759222dadc07d918a8e7a2b63c9bf9b/unisex-oversized-boxy-tee-black-back-6af5f07b6e746.jpg",
+          "path": "images/products/go-and-do-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "service-club-tee": {
+      "sync_product_id": 492881827,
+      "images": [
+        "images/products/service-club-tee-1.jpg",
+        "images/products/service-club-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/56519bedf8041c15f13311349975b126/unisex-oversized-boxy-tee-natural-front-6af5f082c9e39.jpg",
+          "path": "images/products/service-club-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/ebd8062e4c2cb0654f1cdc1b8c88bba6/unisex-oversized-boxy-tee-natural-back-6af5f082ca207.jpg",
+          "path": "images/products/service-club-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
+    },
+    "lehis-tent-tee": {
+      "sync_product_id": 492882056,
+      "images": [
+        "images/products/lehis-tent-tee-1.jpg",
+        "images/products/lehis-tent-tee-2.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "front",
+          "title": "front",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b4fd17737a2ae2123de56aacd8a6914a/unisex-oversized-boxy-tee-toast-front-6af5f08b3659a.jpg",
+          "path": "images/products/lehis-tent-tee-1.jpg"
+        },
+        {
+          "placement": "front",
+          "title": "Back",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/b42401867ed13bd9f72aa019db9556bf/unisex-oversized-boxy-tee-toast-back-6af5f08b36855.jpg",
+          "path": "images/products/lehis-tent-tee-2.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 22.92,
+        "discount": 0,
+        "shipping": 5.3500000000000005,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 2.05,
+        "vat": 0,
+        "total": 30.32
+      }
     }
   },
-  "generatedAt": "2026-10-30T02:46:59.909Z",
+  "generatedAt": "2026-11-12T16:59:57.660Z",
   "dump": {
     "6adb8c541a39f3": {
       "id": 5590946542,
