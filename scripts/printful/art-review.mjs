@@ -17,15 +17,15 @@ const FOREST = "#1F3A2E", RED = INK.red, BONE = INK.bone, NIGHT = INK.night;
 const wide = (y, size, txt, fill, w = 1700, stretch = 62) =>
   `<text x="${900 - w / 2}" y="${y}" textLength="${w}" lengthAdjust="spacingAndGlyphs" fill="${fill}" style="font-family:'Archivo';font-weight:900;font-stretch:${stretch}%;font-size:${size}px">${txt.replace(/&/g, "&amp;")}</text>`;
 
-// Title of Liberty v4: the same idea as the live shirt, built to fill the back. Torn coat on a pole across the
+// Title of Liberty v4 (flag leveled and red stripe kept inside the cloth, Nov 11): the same idea as the live shirt, built to fill the back. Torn coat on a pole across the
 // shoulders, TITLE OF / LIBERTY stacked to the full 12 in width, a worn screen-print texture, and the verse line big
 // enough to read. Ink: bone, rent red, gold, night (the flag lettering). Blank: Shadow.
 function liberty() {
-  const cloth = "M190 300 C520 250 820 330 1150 280 C1350 250 1520 290 1660 270 L1590 380 L1690 450 L1580 520 L1670 600 L1560 660 L1640 740 C1400 800 1180 740 950 790 C700 840 450 760 190 820 Z";
+  const cloth = "M190 285 C520 255 820 315 1150 280 C1350 260 1520 295 1660 285 L1590 380 L1690 455 L1580 525 L1670 600 L1560 670 L1640 780 C1400 815 1180 765 950 795 C700 825 450 765 190 790 Z";
   return lock(900, 120, 62, BONE, RED) + worn(
     `<rect x="150" y="250" width="40" height="680" rx="8" fill="${BONE}"/><circle cx="170" cy="236" r="34" fill="${BONE}"/>`
     + `<path d="${cloth}" fill="${BONE}"/>`
-    + `<path d="M190 640 C460 600 700 680 950 640 C1180 600 1400 660 1600 620" stroke="${RED}" stroke-width="44" fill="none"/>`
+    + `<path d="M190 638 C460 615 700 662 950 638 C1180 615 1380 650 1520 638" stroke="${RED}" stroke-width="44" stroke-linecap="butt" fill="none"/>`
     + `<text x="900" y="545" text-anchor="middle" fill="${NIGHT}" style="font-family:'Instrument Serif';font-style:italic;font-size:250px">Liberty</text>`
     + wide(1300, 430, "TITLE OF", BONE)
     + wide(1990, 720, "LIBERTY", BONE)
