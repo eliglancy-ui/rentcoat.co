@@ -75,6 +75,33 @@ const LINE_PIECES = {
     name: "Lehi's Tent Co. Camp Mug", kind: "Mug", color: "Enamel, 12 oz", swatch: "#FFFFFF", price: { default: 2600 }, sizes: ONE, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
     blurb: "An enamel camp mug for the man who dwelt in a tent. Hand wash only." },
 };
+// The opening set: the pieces the store opens with on Black Friday 2026 (Bella+Canvas 3010 tees, Cotton Heritage
+// hoodies; Printful setup in scripts/printful/catalog.mjs). Photos are Printful mockups until real ones are shot.
+const opening = (n, back = "Back") => [{ src: `images/opening/${n}-back.jpg`, label: back }, { src: `images/opening/${n}-front.jpg`, label: "Front" }];
+Object.assign(LINE_PIECES, {
+  "cureloms-tee": { live: true, images: opening("cureloms"), name: "Cureloms & Cumoms Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+    ref: "Ether 9:19", verse: ["ether", 9, 19], blurb: "The Wildlife Society field guide: one elephant identified, two animals nobody can name." },
+  "title-of-liberty-tee": { live: true, images: opening("title-of-liberty"), name: "Title of Liberty Tee", kind: "Tee", color: "Dark Grey", swatch: "#2A2930", price: tee,
+    ref: "Alma 46:12", verse: ["alma", 46, 12], blurb: "Moroni's torn coat raised as a flag. The verse the brand is named for." },
+  "liahona-compass-tee": { live: true, images: opening("liahona"), name: "The Liahona Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+    ref: "1 Nephi 16:29", verse: ["1-ne", 16, 29], blurb: "An antique compass rose. By small means the Lord can bring about great things." },
+  "rejoice-tee": { live: true, images: opening("rejoice-in-christ"), name: "Rejoice in Christ Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+    ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme, under Carl Bloch's Christ and Child." },
+  "rejoice-hoodie": { live: true, images: opening("rejoice-in-christ-hoodie"), name: "Rejoice in Christ Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
+    ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme on a heavyweight hoodie, for camps, firesides and cold mornings." },
+  "great-joy-tee": { live: true, images: opening("great-joy"), name: "Great Joy Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+    ref: "Mosiah 3:3", verse: ["mosiah", 3, 3], blurb: "Glad tidings of great joy, under Bloch's shepherds and the angel. The Christmas shirt." },
+  "he-rent-his-coat-hoodie": { live: true, images: opening("he-rent-his-coat-hoodie"), name: "He Rent His Coat Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
+    ref: "Alma 46:12", verse: ["alma", 46, 12], blurb: "The brand's own story: the arched name, the red flag, and Alma 46:12 down the sleeve." },
+  "go-and-do-tee": { live: true, images: opening("go-and-do"), name: "Go and Do Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+    ref: "1 Nephi 3:7", verse: ["1-ne", 3, 7], blurb: "I will go and do. For missionaries and anyone with something hard to do." },
+  "service-club-tee": { live: true, images: opening("service-club"), name: "Service Club Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+    ref: "Mosiah 2:17", verse: ["mosiah", 2, 17], blurb: "King Benjamin's tower on a club crest. When ye are in the service of your fellow beings." },
+  "lehis-tent-tee": { live: true, images: opening("lehis-tent-co"), name: "Lehi's Tent Co. Tee", kind: "Tee", color: "Toast", swatch: "#CA8447", price: tee,
+    ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15], blurb: "The shortest verse in the book, on a camp supply tee. And my father dwelt in a tent." },
+});
+// The dad cap (already in Printful) opens with the set; moved to the end so it shows after the shirts.
+{ const cap = LINE_PIECES["flag-cap"]; delete LINE_PIECES["flag-cap"]; LINE_PIECES["flag-cap"] = { ...cap, live: true }; }
 // Big backs: one bold illustration and the verse set big, each as a hoodie and a tee.
 const BIG = [
   ["stripling", "Stripling 2000", ["Bone", "#F5E8CE"], ["Cream", "#F3EEE1"], "Alma 56:48", ["alma", 56, 48], "Two thousand young warriors marching under a big red 2000, and the words of their mothers."],
@@ -138,34 +165,8 @@ export const LINE = Object.fromEntries(Object.entries(LINE_PIECES).map(([id, o])
 export const liveLine = () => Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) =>
   ({ id, group: p.group, name: p.name, kind: p.kind, color: p.color, swatch: p.swatch, price: p.price, sizes: p.sizes, images: p.images, ref: p.ref, refUrl: p.refUrl, blurb: p.blurb }));
 
+// Everything for sale is in LINE (the old Drop 001 tees on the Shaka Wear blank were retired Nov 12, before any sold).
 export const PRODUCTS = {
-  liberty: {
-    name: "Title of Liberty Tee",
-    color: "Shadow",
-    image: "images/liberty-back-v3.jpg",
-    group: "liberty", swatch: "#4A4A47",
-    images: [{ src: "images/liberty-front.jpg", label: "Front" }, { src: "images/liberty-back-v3.jpg", label: "Back" }],
-    // Printful variant IDs for the "Rent Coat Co." API store (Shaka Wear SHGDD "(Boxy)" products). Strings are Printful's external
-    // variant IDs (shown as #6adb... on each product's page in Printful); numbers are sync variant IDs.
-    // /api/printful-variants?key=YOUR_ADMIN_KEY lists both.
-    variants: { S: "6adb8c541a39d5", M: "6adb8c541a39f3", L: "6adb8c541a3a06", XL: "6adb8c541a3a16", "2XL": "6adb8c541a3a31" },
-  },
-  stripling: {
-    name: "Stripling 2000 Tee",
-    color: "Black",
-    image: "images/stripling-back-v3.jpg",
-    group: "stripling", swatch: "#1B1B1B",
-    images: [{ src: "images/stripling-front-v3.jpg", label: "Front" }, { src: "images/stripling-back-v3.jpg", label: "Back" }],
-    variants: { S: "6adb8ce71d63e8", M: "6adb8ce71d6412", L: "6adb8ce71d6427", XL: "6adb8ce71d6446", "2XL": "6adb8ce71d6455" },
-  },
-  cureloms: {
-    name: "Cureloms & Cumoms Tee",
-    color: "Cream",
-    image: "images/cureloms-back-v2.jpg",
-    group: "cureloms", swatch: "#EFEAD8",
-    images: [{ src: "images/cureloms-front.jpg", label: "Front" }, { src: "images/cureloms-back-v2.jpg", label: "Back" }],
-    variants: { S: "6adb8dac24e0a4", M: "6adb8dac24e0e8", L: "6adb8dac24e0f7", XL: "6adb8dac24e113", "2XL": "6adb8dac24e135" },
-  },
   ...LINE,
 };
 // The Drop 001 tees and their colors, for the homepage's color picker (every color in a group shares one card).
@@ -188,12 +189,13 @@ export const shippingLabel = (phase, free) => (free ? "Free standard shipping" :
 export const SHIP_TO = ["US"];
 export const MAX_ITEMS = 10;
 
-// Drop 001 launch week: launch prices and preorders between these two times. After DROP.closes the shop
-// stays open at regular prices and orders print right away. The website reads this from /api/config.
+// The store opens at DROP.opens: Black Friday, Nov 27, 2026, 10 AM Eastern (Eli, Nov 12: no drop, no launch week,
+// regular $40 prices). opens == closes, so there is never a launch-price window; before opens the site shows when
+// the store opens, after it the shop is simply open. The website reads this from /api/config.
 // Netlify environment variables DROP_OPENS and DROP_CLOSES override it without a code change (redeploy after changing them).
 export const DROP = {
-  opens: process.env.DROP_OPENS || "2026-11-14T10:00:00-05:00",
-  closes: process.env.DROP_CLOSES || "2026-11-21T10:00:00-05:00",
+  opens: process.env.DROP_OPENS || "2026-11-27T10:00:00-05:00",
+  closes: process.env.DROP_CLOSES || "2026-11-27T10:00:00-05:00",
 };
 
 // Checkout pauses on Sundays (Eastern time). Set CLOSED_SUNDAYS=off in Netlify to sell every day.

@@ -43,6 +43,9 @@ const DESIGNS = {
   press:   ["PRESS FORWARD", ["PRESS FORWARD", "WITH A STEADFASTNESS", "IN CHRIST"], "2 NEPHI 31:20", LIGHT],
   mercy:   ["THOU SON OF GOD", ["O JESUS,", "THOU SON OF GOD,", "HAVE MERCY ON ME"], "ALMA 36:18", DARK],
   hosanna: ["HOSANNA", ["HOSANNA!", "BLESSED BE THE NAME", "OF THE MOST HIGH GOD!"], "3 NEPHI 11:17", LIGHT],
+  // 2027 youth theme. The Church cites it as "see Philippians 4:4", so the shirt does too. Words only: no Church logo.
+  rejoice: ["REJOICE IN CHRIST", ["REJOICE", "IN CHRIST"], "SEE PHILIPPIANS 4:4", LIGHT, false],
+  "rejoice-dark": ["REJOICE IN CHRIST", ["REJOICE", "IN CHRIST"], "SEE PHILIPPIANS 4:4", DARK, false],
   glory:   ["KING OF ALL THE EARTH", ["BEHOLD THE GLORY", "OF THE KING", "OF ALL THE EARTH"], "ALMA 5:50", DARK],
 };
 

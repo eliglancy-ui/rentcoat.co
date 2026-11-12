@@ -17,15 +17,15 @@ const FOREST = "#1F3A2E", RED = INK.red, BONE = INK.bone, NIGHT = INK.night;
 const wide = (y, size, txt, fill, w = 1700, stretch = 62) =>
   `<text x="${900 - w / 2}" y="${y}" textLength="${w}" lengthAdjust="spacingAndGlyphs" fill="${fill}" style="font-family:'Archivo';font-weight:900;font-stretch:${stretch}%;font-size:${size}px">${txt.replace(/&/g, "&amp;")}</text>`;
 
-// Title of Liberty v4: the same idea as the live shirt, built to fill the back. Torn coat on a pole across the
+// Title of Liberty v4 (flag leveled and red stripe kept inside the cloth, Nov 11): the same idea as the live shirt, built to fill the back. Torn coat on a pole across the
 // shoulders, TITLE OF / LIBERTY stacked to the full 12 in width, a worn screen-print texture, and the verse line big
 // enough to read. Ink: bone, rent red, gold, night (the flag lettering). Blank: Shadow.
 function liberty() {
-  const cloth = "M190 300 C520 250 820 330 1150 280 C1350 250 1520 290 1660 270 L1590 380 L1690 450 L1580 520 L1670 600 L1560 660 L1640 740 C1400 800 1180 740 950 790 C700 840 450 760 190 820 Z";
+  const cloth = "M190 285 C520 255 820 315 1150 280 C1350 260 1520 295 1660 285 L1590 380 L1690 455 L1580 525 L1670 600 L1560 670 L1640 780 C1400 815 1180 765 950 795 C700 825 450 765 190 790 Z";
   return lock(900, 120, 62, BONE, RED) + worn(
     `<rect x="150" y="250" width="40" height="680" rx="8" fill="${BONE}"/><circle cx="170" cy="236" r="34" fill="${BONE}"/>`
     + `<path d="${cloth}" fill="${BONE}"/>`
-    + `<path d="M190 640 C460 600 700 680 950 640 C1180 600 1400 660 1600 620" stroke="${RED}" stroke-width="44" fill="none"/>`
+    + `<path d="M190 638 C460 615 700 662 950 638 C1180 615 1380 650 1520 638" stroke="${RED}" stroke-width="44" stroke-linecap="butt" fill="none"/>`
     + `<text x="900" y="545" text-anchor="middle" fill="${NIGHT}" style="font-family:'Instrument Serif';font-style:italic;font-size:250px">Liberty</text>`
     + wide(1300, 430, "TITLE OF", BONE)
     + wide(1990, 720, "LIBERTY", BONE)
@@ -94,6 +94,7 @@ export const COLOR_LINE = [
   ["mercy", "bloch-consolator-color.png", "dark", "Black"],
   ["come", "bloch-little-children-color.png", "light", "Oatmeal"],
   ["talk", "bloch-christ-and-child-color.png", "dark", "Black"],
+  ["rejoice", "bloch-christ-and-child-color.png", "light", "Natural"],
   ["foundation", "rembrandt-storm-color.png", "dark", "Shadow"],
   ["shelem", "bierstadt-mountain-color.png", "dark", "Black"],
   ["tree", "friedrich-tree-color.png", "light", "Cream"],
@@ -116,6 +117,8 @@ const PICTURES = [
   ["mercy", "bloch-consolator-halftone.png", { script: ["mine arm of", 90, 1640, 220], big: ["MERCY", 560], ref: "MINE ARM OF MERCY IS EXTENDED · 3 NEPHI 9:14" }],
   // Bloch, Christ and Child
   ["talk", "bloch-christ-and-child-halftone.png", { script: ["And we", 90, 1700, 230], big: ["TALK OF CHRIST", 330], ref: "WE REJOICE IN CHRIST · 2 NEPHI 25:26" }],
+  // Bloch, Christ and Child. The 2027 youth theme ("Rejoice in Christ", see Philippians 4:4), quoted from 2 Nephi 25:26.
+  ["rejoice", "bloch-christ-and-child-halftone.png", { script: ["we", 90, 1700, 260], big: ["REJOICE", 600], ref: "IN CHRIST · 2 NEPHI 25:26" }],
   // Bloch, Let the Little Children Come unto Jesus
   ["come", "bloch-little-children-halftone.png", { script: ["come unto", 90, 1680, 230], big: ["CHRIST", 540], ref: "AND BE PERFECTED IN HIM · MORONI 10:32" }],
   // Bloch, The Resurrection (1875)

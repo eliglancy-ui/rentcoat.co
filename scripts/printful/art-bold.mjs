@@ -27,7 +27,7 @@ const WEAR = `<filter id="wear" x="0" y="0" width="100%" height="100%" filterUni
   <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" result="n"/>
   <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.1" result="m"/>
   <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>`;
-export const worn = inner => `<defs>${WEAR}</defs><g filter="url(#wear)">${inner}</g>`;
+export const worn = inner => !process.env.WORN ? inner : `<defs>${WEAR}</defs><g filter="url(#wear)">${inner}</g>`;
 const rays = (cx, cy, r, n, fill, skip = 0) => {
   let d = "";
   for (let i = 0; i < n; i++) {

@@ -139,12 +139,13 @@ export const FILES = [
   { id: "stories-hoodie", place: "back", size: "DTG", svg: () => storiesBack(INK.night, INK.red) },
 
   // Added after the first batch
-  { id: "lehi-tee", place: "front", size: "DTG", svg: () => chest(tent(0, -40, .9, INK.bone, INK.gold) + t(0, 90, 50, "LEHI'S TENT CO.", { f: "m", ls: 6, w: 600 })) },
-  { id: "lehi-tee", place: "back", size: "DTG", svg: () => t(900, 300, 66, "EST. IN THE VALLEY OF LEMUEL", { f: "m", ls: 18, fill: INK.gold })
-      + tent(900, 900, 4.2, INK.bone, INK.gold)
-      + t(900, 1640, 260, "LEHI'S TENT CO.", { wd: 62, ls: 4 })
-      + t(900, 1860, 150, "And my father dwelt in a tent.", { f: "s", fill: INK.gold })
-      + t(900, 2030, 60, "1 NEPHI 2:15", { f: "m", ls: 18 }) },
+  // Lehi now prints on Toast (Bella+Canvas 3010), so the ink is dark night with a bone tent (Nov 12; was bone and gold on Mocha).
+  { id: "lehi-tee", place: "front", size: "DTG", svg: () => chest(tent(0, -40, .9, INK.night, INK.bone) + t(0, 90, 50, "LEHI'S TENT CO.", { f: "m", ls: 6, w: 600, fill: INK.night })) },
+  { id: "lehi-tee", place: "back", size: "DTG", svg: () => t(900, 300, 66, "EST. IN THE VALLEY OF LEMUEL", { f: "m", ls: 18, fill: INK.night })
+      + tent(900, 900, 4.2, INK.night, INK.bone)
+      + t(900, 1640, 260, "LEHI'S TENT CO.", { wd: 62, ls: 4, fill: INK.night })
+      + t(900, 1860, 150, "And my father dwelt in a tent.", { f: "s", fill: INK.night })
+      + t(900, 2030, 60, "1 NEPHI 2:15", { f: "m", ls: 18, fill: INK.night }) },
   { id: "barge-mug", place: "default", size: "MUG", svg: () => {
       const n = INK.night, s = `fill="none" stroke="${n}" stroke-width="7"`;
       return `<g transform="translate(330 262)"><path d="M-250 0 C-150 -130 150 -130 250 0 C150 130 -150 130 -250 0 Z" ${s}/><path d="M-210 0 L210 0" ${s} stroke-width="5" stroke-dasharray="14 16"/><circle cy="-60" r="16" ${s}/><circle cy="60" r="16" ${s}/><path d="M0 -76 L0 -170 L130 -170 M0 76 L0 170 L130 170" ${s} stroke-width="4"/></g>`
@@ -165,7 +166,7 @@ const MARK = {
   "barge-tee:back": () => lock(900, 96, 66, INK.night, INK.red),
   "irreantum-tee:back": () => lock(900, 96, 66, INK.night, INK.red),
   "samuel-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
-  "lehi-tee:back": () => lock(900, 96, 66, INK.bone, INK.gold),
+  "lehi-tee:back": () => lock(900, 96, 66, INK.night, INK.red),
   // Front-only prints: under the scripture line.
   // Joggers: further up the same leg.
   "strait-joggers:leg_front_left": () => `<g transform="translate(210 1490) rotate(-90)">${lock(0, 22, 48, INK.bone, INK.gold)}</g>`,

@@ -20,6 +20,7 @@ import { CATALOG } from "./catalog.mjs";
 import { FILES, SIZE, fileName } from "./art.mjs";
 import { BOLD_FILES, PREVIEWS, TAG_FILES } from "./art-bold.mjs";
 import { TYPE_FILES } from "./art-type.mjs";
+import { OPEN_FILES } from "./art-opening.mjs";
 
 const TOKEN = process.env.PRINTFUL_TOKEN;
 const FILE_BASE = process.env.FILE_BASE;
@@ -71,12 +72,25 @@ async function printfiles(id) {
   return printfileCache.get(id);
 }
 
+// Width and height of a PNG, read from its header.
+function pngSize(path) {
+  const b = readFileSync(path);
+  return [b.readUInt32BE(16), b.readUInt32BE(20)];
+}
+
 // Fits our file inside Printful's print area. Full-front prints and leg strips hang from the top; patches are centered.
 async function position(product, variantId, file) {
   const pfs = await printfiles(product);
   const pid = pfs.variant_printfiles.find(v => v.variant_id === variantId)?.placements?.[file.place];
   const area = pfs.printfiles.find(p => p.printfile_id === pid);
   if (!area) throw new Error(`no print area "${file.place}" for variant ${variantId}. Areas: ${Object.keys(pfs.available_placements || {}).join(", ")}`);
+  // Opening-set files carry a size in inches (art-opening.mjs) instead of filling the area.
+  if (file.pos) {
+    const dpi = area.dpi || 150, [pw, ph] = pngSize(`print/${file.file}`);
+    const width = Math.round(Math.min(file.pos.widthIn * dpi, area.width)), height = Math.round(width * ph / pw);
+    const left = file.pos.leftOfCenterIn == null ? Math.round((area.width - width) / 2) : Math.round(area.width / 2 + file.pos.leftOfCenterIn * dpi);
+    return { area_width: area.width, area_height: area.height, width, height, top: Math.round(file.pos.topIn * dpi), left, limit_to_print_area: true };
+  }
   const [w, h] = SIZE[file.size].map(n => n * 2);
   const scale = Math.min(area.width / w, area.height / h);
   const width = Math.round(w * scale), height = Math.round(h * scale);
@@ -235,7 +249,7 @@ for (const [id, cat] of Object.entries(CATALOG)) {
   const product = PRODUCTS[id];
   // Printful's API refuses printed inside tags ("Unsupported file type: label_inside"), so TAG_FILES are only
   // artwork for adding a tag by hand in Printful's dashboard.
-  const files = [...FILES, ...BOLD_FILES, ...TYPE_FILES].filter(f => f.id === (cat.art || id));
+  const files = [...FILES, ...BOLD_FILES, ...TYPE_FILES, ...OPEN_FILES].filter(f => f.id === (cat.art || id));
   // A file with forSize (a sized tag) only goes on that size.
   const filesFor = size => files.filter(f => !f.forSize || f.forSize === size);
   const sizes = Object.keys(product.variants);
