@@ -3147,7 +3147,7 @@
       }
     },
     "liahona-compass-tee": {
-      "sync_product_id": 487849217,
+      "sync_product_id": 492893262,
       "images": [
         "images/products/liahona-compass-tee-1.jpg",
         "images/products/liahona-compass-tee-2.jpg"
@@ -3156,28 +3156,28 @@
         {
           "placement": "front",
           "title": "front",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/e9afdfebb2a59377b19a30253bd2e1bc/unisex-oversized-boxy-tee-natural-front-6af5f04a824fa.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/f09fa25797e073d2371b576672e1e6d9/unisex-oversized-boxy-tee-natural-front-6af5f50def3aa.jpg",
           "path": "images/products/liahona-compass-tee-1.jpg"
         },
         {
           "placement": "front",
           "title": "Back",
-          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/76c83f833fdfaeb1093eb1dba14f14a7/unisex-oversized-boxy-tee-natural-back-6af5f04a828cf.jpg",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/2ae171a422aad668944036dbb7a8ae0a/unisex-oversized-boxy-tee-natural-back-6af5f50defdff.jpg",
           "path": "images/products/liahona-compass-tee-2.jpg"
         }
       ],
       "cost": {
         "currency": "USD",
-        "subtotal": 26.66,
+        "subtotal": 22.92,
         "discount": 0,
         "shipping": 5.3500000000000005,
         "digitization": 0,
         "additional_fee": 0,
         "fulfillment_fee": 0,
         "retail_delivery_fee": 0,
-        "tax": 2.32,
+        "tax": 2.05,
         "vat": 0,
-        "total": 34.33
+        "total": 30.32
       }
     },
     "rejoice-tee": {
@@ -3489,7 +3489,7 @@
       }
     }
   },
-  "generatedAt": "2026-11-12T16:59:57.660Z",
+  "generatedAt": "2026-11-12T17:19:17.234Z",
   "dump": {
     "6adb8c541a39f3": {
       "id": 5590946542,
