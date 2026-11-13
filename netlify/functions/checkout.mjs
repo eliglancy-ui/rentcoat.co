@@ -1,4 +1,5 @@
-// POST /api/checkout  { items: [{ id, size, qty }] }  ->  { url }  (a Stripe Checkout page)
+// POST /api/checkout  { items: [{ id, size, qty }], embedded? }  ->  { url } (Stripe-hosted page)
+//   or, with embedded: true,  { clientSecret }  (Stripe Checkout shown inside rentcoat.co)
 import { DROP, PRODUCTS, SHIP_TO, cleanCart, storePhase, shippingCents, shippingLabel, encodeItems, unitPrice, sizeLabel, stripe, json } from "../lib/store.mjs";
 
 const closeDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
@@ -12,12 +13,14 @@ export default async (req) => {
   if (phase === "sunday") return json({ error: "We're closed on Sundays. Your bag is saved, so check out on Monday." }, 409);
   const launch = phase === "launch";
 
-  let items;
+  let items, embedded = false;
   try {
     // A real bag is well under 2 KB; refuse anything far bigger before parsing it.
     const text = await req.text();
     if (text.length > 10000) return json({ error: "Bad request." }, 413);
-    items = cleanCart(JSON.parse(text)?.items);
+    const body = JSON.parse(text);
+    items = cleanCart(body?.items);
+    embedded = body?.embedded === true;
   } catch (e) {
     return json({ error: e instanceof SyntaxError ? "Bad request." : e.message }, 400);
   }
@@ -32,8 +35,9 @@ export default async (req) => {
   const tax = process.env.STRIPE_TAX === "on";
   const params = {
     mode: "payment",
-    success_url: `${site}/thanks.html?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${site}/#shop`,
+    ...(embedded
+      ? { ui_mode: "embedded", return_url: `${site}/thanks.html?session_id={CHECKOUT_SESSION_ID}` }
+      : { success_url: `${site}/thanks.html?session_id={CHECKOUT_SESSION_ID}`, cancel_url: `${site}/#shop` }),
     // Stripe's shortest allowed lifetime, so a page opened just before the drop closes can't be paid hours later.
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     custom_text: {
@@ -87,7 +91,7 @@ export default async (req) => {
 
   try {
     const session = await stripe("checkout/sessions", { method: "POST", params });
-    return json({ url: session.url });
+    return json(embedded ? { clientSecret: session.client_secret } : { url: session.url });
   } catch (e) {
     console.error("checkout failed", e.message);
     return json({ error: "Checkout is having trouble right now. Try again in a minute." }, 502);
