@@ -26,6 +26,7 @@ def main():
     p.add_argument("--fade", type=float, default=0.18, help="edge fade as a share of each side")
     p.add_argument("--color", action="store_true", help="keep the painting's colors (a full-color DTG print) instead of a one-color halftone")
     p.add_argument("--knock", choices=["dark", "light", "none"], default="dark", help="with --color: let the shirt show through the darkest parts (dark tee) or the lightest (light tee)")
+    p.add_argument("--worn", action="store_true", help="with --color: add a worn speckle texture (off by default: the clean look)")
     p.add_argument("--saturation", type=float, default=1.15, help="with --color: color boost")
     p.add_argument("--invert", action="store_true", help="halftone the dark parts instead of the light ones (dark ink on a light tee)")
     p.add_argument("--oval", action="store_true", help="fade to an oval instead of the rectangle's edges, so a light background has no box")
@@ -92,11 +93,12 @@ def main():
             alpha *= np.clip((lum - 0.04) / 0.18, 0, 1) ** 0.8
         elif a.knock == "light":  # the palest paint becomes the shirt on a cream or oatmeal tee
             alpha *= np.clip((0.97 - lum) / 0.14, 0, 1) ** 0.8
-        # Worn texture: small specks where the ink thins out, 3 px blocks so they survive DTG.
-        rng = np.random.default_rng(11)
-        bh, bw = (h + 2) // 3, (a.width + 2) // 3
-        speck = (rng.random((bh, bw)) < 0.10).repeat(3, 0).repeat(3, 1)[:h, :a.width]
-        alpha *= np.where(speck, 0.35, 1.0)
+        # Worn texture (only with --worn): small specks where the ink thins out, 3 px blocks so they survive DTG.
+        if a.worn:
+            rng = np.random.default_rng(11)
+            bh, bw = (h + 2) // 3, (a.width + 2) // 3
+            speck = (rng.random((bh, bw)) < 0.10).repeat(3, 0).repeat(3, 1)[:h, :a.width]
+            alpha *= np.where(speck, 0.35, 1.0)
         rgba = np.dstack([col, (np.clip(alpha, 0, 1) * 255).astype(np.uint8)])
         Image.fromarray(rgba, "RGBA").save(a.out)
         print(a.out, a.width, "x", h, f"({a.width / 300:.1f} x {h / 300:.1f} in, color)")
