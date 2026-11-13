@@ -874,6 +874,12 @@ section { padding-block: clamp(64px, 8vw, 96px) }
 .shot img.alt { position: absolute; inset: 0; opacity: 0 }
 .shot.show-front img.alt { opacity: 1 }
 .card:hover .shot img { transform: scale(1.02) }
+.pay { position: fixed; z-index: 41; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: var(--surface); color: var(--ink); display: flex; flex-direction: column; animation: slide var(--slow) var(--ease);
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) 24px; box-shadow: -16px 0 48px rgba(23,35,29,.18) }
+.pay[hidden] { display: none }
+.pay-body { flex: 1; overflow-y: auto; padding: 16px 0 32px }
+.pay-skel { display: grid; gap: 14px; padding-top: 12px }
+.pay-skel.gone { display: none }
 /* Loading outlines: gray shapes in the exact spot of what's coming, with a soft sheen, instead of a spinner. */
 .sk { position: relative; overflow: hidden; background: var(--soft); border-radius: var(--r) }
 .sk::after, .shot.loading::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.45) 50%, transparent 80%); transform: translateX(-100%); animation: sheen 1.4s ease-in-out infinite }
@@ -1265,6 +1271,10 @@ footer .wrap { padding-block: 48px 40px }
     <p class="fine"><span id="bag-timing">Secure checkout by Stripe. Printed after you order and usually delivered in 1 to 2 weeks.</span> Made to order, so no fit returns. By checking out, you agree to our <a href="terms.html">terms of sale</a>.</p>
   </div>
 </aside>
+<aside class="pay" id="pay" role="dialog" aria-modal="true" aria-labelledby="pay-title" hidden>
+  <div class="bag-head"><h2 id="pay-title">Checkout</h2><button type="button" class="x" id="pay-close" aria-label="Back to bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="pay-body"><div class="pay-skel" id="pay-skel" aria-hidden="true"><div class="sk" style="height:44px"></div><div class="sk" style="height:18px;width:40%"></div><div class="sk" style="height:120px"></div><div class="sk" style="height:18px;width:55%"></div><div class="sk" style="height:160px"></div><div class="sk" style="height:48px"></div></div><div id="pay-mount"></div></div>
+</aside>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <footer><div class="wrap">
@@ -1557,6 +1567,7 @@ fetch("/api/config", { cache: "no-store" }).then(r => r.ok ? r.json() : null).th
   if (Number.isFinite(c.freeShipOver)) FREE_SHIP_OVER = c.freeShipOver;
   if (typeof c.closedSundays === "boolean") closedSundays = c.closedSundays;
   if (Number.isFinite(c.now)) skew = c.now - Date.now();
+  if (typeof c.stripeKey === "string") STRIPE_KEY = c.stripeKey;
   showColors(c.tees);
   showLine(c.line);
   // Colors and line pieces are known now, so a bag saved with them comes back in full.
@@ -1650,14 +1661,40 @@ function closeBag() {
   $("bag").hidden = true; $("scrim").hidden = true; document.body.style.overflow = "";
   lastFocus?.focus?.();
 }
-$("bag-open").onclick = openBag; $("bag-close").onclick = closeBag; $("scrim").onclick = closeBag;
+$("bag-open").onclick = openBag; $("bag-close").onclick = closeBag; $("scrim").onclick = () => $("pay").hidden ? closeBag() : closePay();
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("bag").hidden) closeBag(); });
 $("toast").onclick = () => { $("toast").hidden = true; openBag(); };
+
+
+/* ----- embedded checkout ----- */
+let STRIPE_KEY = null, stripeJs = null, payForm = null;
+const loadStripe = () => stripeJs || (stripeJs = new Promise((ok, no) => {
+  const tag = document.createElement("script"); tag.src = "https://js.stripe.com/v3/"; tag.async = true;
+  tag.onload = () => ok(window.Stripe(STRIPE_KEY)); tag.onerror = () => { stripeJs = null; no(new Error("Checkout couldn't load. Check your connection and try again.")); };
+  document.head.append(tag);
+}));
+async function openPay() {
+  const res = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: bag, embedded: true }) });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.clientSecret) throw new Error(data.error || "Checkout isn't connected yet. Try again soon.");
+  $("pay-skel").classList.remove("gone"); $("pay").hidden = false; $("bag").hidden = true; $("scrim").hidden = false;
+  const stripe = await loadStripe();
+  if (payForm) { payForm.destroy(); payForm = null; }
+  payForm = await stripe.initEmbeddedCheckout({ fetchClientSecret: async () => data.clientSecret });
+  payForm.mount("#pay-mount");
+  $("pay-skel").classList.add("gone");
+  $("pay-close").focus();
+}
+function closePay() { if (payForm) { payForm.destroy(); payForm = null; } $("pay").hidden = true; openBag(); }
+$("pay-close").onclick = closePay;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("pay").hidden) closePay(); });
 
 $("checkout").onclick = async () => {
   const note = $("bag-note");
   if (!bag.length) { note.textContent = "Your bag is empty."; return; }
   const btn = $("checkout"); btn.disabled = true; btn.setAttribute("aria-busy", "true"); btn.textContent = "Opening checkout…"; note.textContent = "";
+  // Stripe's form shown right here on rentcoat.co when the publishable key is set; otherwise Stripe's own page.
+  if (STRIPE_KEY) { try { await openPay(); } catch (e) { note.textContent = e.message || "Checkout isn't connected yet. Try again soon."; } btn.disabled = !canBuy(phase()); btn.removeAttribute("aria-busy"); btn.textContent = "Checkout"; return; }
   try {
     const res = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: bag }) });
     const data = await res.json().catch(() => ({}));

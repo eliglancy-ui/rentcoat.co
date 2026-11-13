@@ -3,7 +3,7 @@
 import { CLOSED_SUNDAYS, DROP, LAUNCH_PRICE, PRICE, SHIPPING, dropTees, liveLine, json } from "../lib/store.mjs";
 
 export default async () => {
-  const res = json({ drop: DROP, price: PRICE, launchPrice: LAUNCH_PRICE, shipping: SHIPPING.amount, freeShipOver: SHIPPING.freeOver, closedSundays: CLOSED_SUNDAYS, tees: dropTees(), line: liveLine(), now: Date.now() });
+  const res = json({ drop: DROP, price: PRICE, launchPrice: LAUNCH_PRICE, shipping: SHIPPING.amount, freeShipOver: SHIPPING.freeOver, closedSundays: CLOSED_SUNDAYS, tees: dropTees(), line: liveLine(), now: Date.now(), stripeKey: /^pk_(live|test)_/.test(process.env.STRIPE_PUBLISHABLE_KEY || "") ? process.env.STRIPE_PUBLISHABLE_KEY : null });
   res.headers.set("Cache-Control", "no-store");
   return res;
 };
