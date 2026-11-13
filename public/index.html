@@ -874,6 +874,14 @@ section { padding-block: clamp(64px, 8vw, 96px) }
 .shot img.alt { position: absolute; inset: 0; opacity: 0 }
 .shot.show-front img.alt { opacity: 1 }
 .card:hover .shot img { transform: scale(1.02) }
+/* Loading outlines: gray shapes in the exact spot of what's coming, with a soft sheen, instead of a spinner. */
+.sk { position: relative; overflow: hidden; background: var(--soft); border-radius: var(--r) }
+.sk::after, .shot.loading::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.45) 50%, transparent 80%); transform: translateX(-100%); animation: sheen 1.4s ease-in-out infinite }
+@keyframes sheen { to { transform: translateX(100%) } }
+.skel .shot { aspect-ratio: 8/9 }
+.skel .sk-line { height: 14px; margin-top: 14px } .skel .sk-line.w60 { width: 60% } .skel .sk-line.w35 { width: 35% } .skel .sk-btn { height: 44px; margin-top: 20px }
+.shot img.view { opacity: 0 } .shot img.view.ready { opacity: 1 }
+@media (prefers-reduced-motion: reduce) { .sk::after, .shot.loading::after { animation: none } }
 .tag { position: absolute; top: 12px; left: 12px; padding: 6px 10px; border-radius: var(--r-sm); background: var(--surface); color: var(--ink); font: 600 12px/1.2 var(--body) }
 .tag.hot { color: var(--rent) }
 .flip, .views { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; padding: 4px; background: var(--surface); border-radius: var(--r); box-shadow: 0 1px 2px rgba(23,35,29,.12) }
@@ -1151,7 +1159,7 @@ footer .wrap { padding-block: 48px 40px }
     <div><p class="eyebrow kicker">Tees · hoodies · a cap</p><h2 class="big" id="shop-title">The <em>shop</em></h2></div>
     <p>Eleven pieces to start, each built on a verse and printed after you order. New designs are added to the shop as they're ready.</p>
   </div>
-  <div class="grid" id="line-grid"></div>
+  <div class="grid" id="line-grid" aria-busy="true"><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article></div>
   <p class="eyebrow drop-fine" id="shop-fine">$40 tees · $43 for 2XL · hoodies $68 · $5.99 US shipping, free on $60+ · checkout by Stripe</p>
 </div></section>
 <div class="torn" aria-hidden="true" style="background:var(--bone)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
@@ -1352,7 +1360,7 @@ function wireCard(card) {
     addToBag(buy.dataset.id, size);
   });
 }
-document.querySelectorAll(".card").forEach(wireCard);
+document.querySelectorAll(".card:not(.skel)").forEach(wireCard);
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -1430,6 +1438,7 @@ function showLine(line) {
     groups.has(g) ? groups.get(g).push(p) : groups.set(g, [p]);
   }
   if (!groups.size) return;
+  grid.querySelectorAll(".skel").forEach(n => n.remove()); grid.removeAttribute("aria-busy");
   const sizesHtml = (name, sizes) => sizes.map(size => `<label><input type="radio" name="${esc(name)}" value="${esc(size)}"${size === "M" || sizes.length === 1 ? " checked" : ""}><span>${size === "OS" ? "One size" : esc(size)}</span></label>`).join("");
   for (const [g, pieces] of groups) {
     const p = pieces[0];
@@ -1452,7 +1461,10 @@ function showLine(line) {
       </div>`;
     grid.append(card);
     wireCard(card);
-    const view = card.querySelector("img.view"), viewsEl = card.querySelector(".views"), buy = card.querySelector(".buy"), fs = card.querySelector(".sizes");
+    const view = card.querySelector("img.view"), shot = card.querySelector(".shot");
+    const ready = () => { view.classList.add("ready"); shot.classList.remove("loading"); };
+    shot.classList.add("loading"); view.addEventListener("load", ready); view.addEventListener("error", ready); if (view.complete && view.naturalWidth) ready();
+    const viewsEl = card.querySelector(".views"), buy = card.querySelector(".buy"), fs = card.querySelector(".sizes");
     let cur = p;
     // Each photo is { src, label }: the buttons are its labels (Front, Back, Women's), and tapping the photo shows the next one.
     const buttons = () => [...viewsEl.querySelectorAll("button")];
