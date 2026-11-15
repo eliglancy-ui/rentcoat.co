@@ -19,7 +19,7 @@ function piece(id, o) {
     image: (o.images || []).map(i => i.src || i)[0] || "images/og-image-v3.jpg",
     ref: o.ref, refUrl: book ? `https://www.churchofjesuschrist.org/study/scriptures/bofm/${book}/${chapter}?lang=eng&id=p${verse}#p${verse}`
       : "https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",
-    blurb: o.blurb,
+    blurb: o.blurb, maker: o.maker || "printful",
     // Colors of the same design share a group; the site shows one card per group with a color picker.
     group: o.group || id,
     variants: Object.fromEntries((o.sizes || APPAREL).map(size => [size, `rc-${id}-${size}`])),
@@ -87,7 +87,7 @@ Object.assign(LINE_PIECES, {
     ref: "1 Nephi 16:29", verse: ["1-ne", 16, 29], blurb: "An antique compass rose. By small means the Lord can bring about great things." },
   "rejoice-tee": { live: true, images: opening("rejoice-in-christ"), name: "Rejoice in Christ Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
     ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme, under Carl Bloch's Christ and Child." },
-  "rejoice-hoodie": { live: true, images: opening("rejoice-in-christ-hoodie"), name: "Rejoice in Christ Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
+  "rejoice-hoodie": { live: false, images: opening("rejoice-in-christ-hoodie"), name: "Rejoice in Christ Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
     ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme on a heavyweight hoodie, for camps, firesides and cold mornings." },
   "great-joy-tee": { live: true, images: opening("great-joy"), name: "Great Joy Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
     ref: "Mosiah 3:3", verse: ["mosiah", 3, 3], blurb: "Glad tidings of great joy, under Bloch's shepherds and the angel. The Christmas shirt." },
@@ -99,6 +99,26 @@ Object.assign(LINE_PIECES, {
     ref: "Mosiah 2:17", verse: ["mosiah", 2, 17], blurb: "King Benjamin's tower on a club crest. When ye are in the service of your fellow beings." },
   "lehis-tent-tee": { live: true, images: opening("lehis-tent-co"), name: "Lehi's Tent Co. Tee", kind: "Tee", color: "Toast", swatch: "#CA8447", price: tee,
     ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15], blurb: "The shortest verse in the book, on a camp supply tee. And my father dwelt in a tent." },
+});
+
+// Word-only hoodies, the sweats and the sweatsuit (Eli, Nov 14: no pictures on hoodies). Made by Tapstitch
+// (R00286 hoodie, sweatpants), which has no API: paid orders for these are flagged in the webhook log and Stripe
+// email so Eli places them by hand. Photos are mockups on a similar blank until the samples are shot.
+const tap = (n, views) => views.map(([v, label]) => ({ src: `images/opening/${n}-${v}.jpg`, label }));
+const set = { default: 10000, "2XL": 10600 }, sweats = { default: 5500, "2XL": 5800 };
+Object.assign(LINE_PIECES, {
+  "steadfast-hoodie": { live: true, maker: "tapstitch", images: tap("steadfast-hoodie", [["back", "Back"], ["front", "Front"], ["left", "Sleeve"]]),
+    name: "Steadfast Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
+    blurb: "STEADFAST across the shoulders, PRESS FORWARD down the sleeve. Oversized fleece, no drawstrings. Ships in 10 to 17 days." },
+  "forgiven-hoodie": { live: true, maker: "tapstitch", images: tap("forgiven-hoodie", [["back", "Back"], ["front", "Front"], ["left", "Sleeve"]]),
+    name: "Forgiven Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "Enos 1:5", verse: ["enos", 1, 5],
+    blurb: "\u201cThy sins are forgiven thee.\u201d FORGIVEN across the shoulders, Enos down the sleeves. Oversized, no drawstrings. Ships in 10 to 17 days." },
+  "press-forward-sweats": { live: true, maker: "tapstitch", images: tap("press-forward-sweats", [["front", "Front"], ["left", "Side"], ["back", "Back"]]),
+    name: "Press Forward Sweats", kind: "Sweats", color: "Black", swatch: "#080808", price: sweats, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
+    blurb: "Heavy black sweats with PRESS FORWARD down the left leg. Pairs with the Steadfast Hoodie. Ships in 10 to 17 days." },
+  "steadfast-set": { live: true, maker: "tapstitch", images: [{ src: "images/opening/steadfast-hoodie-back.jpg", label: "Hoodie" }, { src: "images/opening/press-forward-sweats-front.jpg", label: "Sweats" }, { src: "images/opening/steadfast-hoodie-front.jpg", label: "Front" }],
+    name: "The Steadfast Sweatsuit", kind: "Set", color: "Black", swatch: "#080808", price: set, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
+    blurb: "The Steadfast Hoodie and the Press Forward Sweats, one verse split across both. $100 for the set ($123 apart). Same size for both pieces. Ships in 10 to 17 days." },
 });
 // The dad cap (already in Printful) opens with the set; moved to the end so it shows after the shirts.
 { const cap = LINE_PIECES["flag-cap"]; delete LINE_PIECES["flag-cap"]; LINE_PIECES["flag-cap"] = { ...cap, live: true }; }
