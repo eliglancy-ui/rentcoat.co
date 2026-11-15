@@ -27,7 +27,8 @@ export function buildPrintfulOrder(session) {
   const ship = session.shipping_details;
   if (!ship?.address) throw new Error("Session has no shipping address");
   const a = ship.address;
-  const items = decodeItems(session.metadata?.items).map(i => {
+  // Tapstitch pieces have no API: they are left out here and placed by hand (see tapstitchItems).
+  const items = decodeItems(session.metadata?.items).filter(i => PRODUCTS[i.id]?.maker !== "tapstitch").map(i => {
     const variant = PRODUCTS[i.id]?.variants?.[i.size];
     if (!variant) throw new Error(`No Printful variant set for ${i.id} size ${i.size}`);
     // String IDs are Printful external variant IDs; numbers are sync variant IDs.
@@ -35,7 +36,7 @@ export function buildPrintfulOrder(session) {
       ? { external_variant_id: variant, quantity: i.qty }
       : { sync_variant_id: variant, quantity: i.qty };
   });
-  if (items.length === 0) throw new Error("Session has no items in metadata");
+  if (items.length === 0) return null; // nothing for Printful (an all-Tapstitch order)
   return {
     external_id: externalId(session.id),
     shipping: "STANDARD",
@@ -53,6 +54,10 @@ export function buildPrintfulOrder(session) {
     items,
   };
 }
+
+// The pieces in this order that Eli places by hand on Tapstitch.
+export const tapstitchItems = session => decodeItems(session.metadata?.items).filter(i => PRODUCTS[i.id]?.maker === "tapstitch")
+  .map(i => `${i.qty} x ${PRODUCTS[i.id].name} (${i.size})`);
 
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
@@ -79,9 +84,16 @@ export default async (req) => {
   const foundUs = session.custom_fields?.find(f => f.key === "found_us")?.dropdown?.value;
   if (foundUs) console.log(`Found us: ${foundUs} (${session.id})`);
 
+  const tap = tapstitchItems(session);
+  if (tap.length) {
+    const a = session.shipping_details?.address || {};
+    console.error(`TAPSTITCH ORDER TO PLACE ${session.id}: ${tap.join("; ")} -> ${session.shipping_details?.name}, ${a.line1}${a.line2 ? " " + a.line2 : ""}, ${a.city}, ${a.state} ${a.postal_code}`);
+  }
+
   let order;
   try {
     order = buildPrintfulOrder(session);
+    if (!order) return json({ received: true, tapstitch: tap });
   } catch (e) {
     // The payment is safe in Stripe. Log it so the order can be placed by hand.
     console.error(`ORDER NEEDS MANUAL ENTRY ${session.id}: ${e.message}`);
