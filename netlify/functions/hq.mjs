@@ -60,12 +60,19 @@ function orderView(s, placed) {
   };
 }
 
+// Claude adds new posts by committing them to public/hq/seed.json (no HQ password needed). Each visit pulls in any
+// post whose id HQ hasn't seen yet; posts Eli removed stay removed.
 async function queue(req) {
-  let q = await store().get("queue", { type: "json" });
-  if (!q) {
-    // First visit: start from the posts Claude already made (public/hq/seed.json).
-    try { q = await (await fetch(new URL("/hq/seed.json", req.url))).json(); } catch { q = []; }
+  const q = (await store().get("queue", { type: "json" })) || [];
+  const seen = new Set((await store().get("seen", { type: "json" })) || q.map(p => p.id));
+  let feed = [];
+  try { feed = await (await fetch(new URL("/hq/seed.json", req.url), { cache: "no-store" })).json(); } catch {}
+  const fresh = feed.filter(p => p?.id && !seen.has(p.id));
+  if (fresh.length || !(await store().get("seen"))) {
+    fresh.forEach(p => seen.add(p.id));
+    q.unshift(...fresh);
     await store().setJSON("queue", q);
+    await store().setJSON("seen", [...seen]);
   }
   return q;
 }
