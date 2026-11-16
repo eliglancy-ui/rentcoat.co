@@ -95,6 +95,13 @@ h2{font:700 18px/1.2 var(--display);margin:0 0 14px}
 .acctbar button{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:transparent;color:inherit;font:600 14px/1.2 inherit;cursor:pointer}
 .acctbar button[aria-pressed="true"]{background:rgba(255,255,255,.1);border-color:currentColor}
 .acctbar small{display:block;font-weight:400;opacity:.65;margin-top:3px}
+.field{width:100%;box-sizing:border-box;background:var(--panel-2);border:1px solid var(--line-2);border-radius:12px;padding:11px 13px;color:var(--ink);line-height:1.45}
+.field::placeholder{color:var(--mute)}
+.field:focus{outline:none;border-color:var(--gold)}
+select.field{appearance:none}
+select.field option{background:var(--panel);color:var(--ink)}
+#composer summary{list-style:none}
+#composer .lbl{font:600 11px/1 var(--mono);letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
 .views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 /* chat */
 .chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:420px}
@@ -278,14 +285,17 @@ function composer() {
   const imgOn = state.overview?.connected?.images;
   return `<details class="card" style="margin-bottom:16px" ${d.img || d.open ? "open" : ""} id="composer"><summary style="font-weight:750;cursor:pointer">+ New post for ${mission ? "@whatisanldsmission" : "@rentcoat.co"}</summary>
     <div style="display:grid;gap:10px;margin-top:12px">
+      <span class="lbl">Idea</span><textarea class="field" id="d-idea" rows="2" placeholder="What's this post about? e.g. 10 days until Black Friday, the Steadfast hoodie">${esc(d.idea || "")}</textarea>
+      <button class="btn primary" id="d-claude" ${d.busy ? "disabled" : ""}>${d.busy ? "Working…" : "✦ Make it with Claude"}</button>
+      <p class="sub" style="margin:0">Claude writes the image, headline, caption and hashtags. You can edit anything before it goes to review.</p>
       ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${!ai}">Product post</button></div>`}
-      ${ai ? `<textarea id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
+      ${ai ? `<span class="lbl">Image</span><textarea class="field" id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
         <button class="btn primary" id="d-gen" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : "Make image"}</button>${imgOn ? "" : `<p class="sub">Image maker isn't connected yet: see Setup.</p>`}`
-      : `<select id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
-        <input id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
+      : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+        <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
         <button class="btn primary" id="d-render">Make post image</button>`}
       ${d.img ? `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">` : ""}
-      <textarea id="d-cap" rows="4" placeholder="Caption">${esc(d.caption)}</textarea>
+      <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
       <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
 }
@@ -352,7 +362,7 @@ function viewSetup() {
   return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">One-time steps that need your logins. Keys go into Netlify, never into chat.</p></div></div>
   <div class="card">
     ${item(true, "Store, checkout and orders", `<p class="sub">Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.</p>`)}
-    ${item(o.connected.chat, "Assistant (Chat)", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
+    ${item(o.connected.chat, "Claude (Chat and post writing)", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
     ${item(o.connected.instagram.rentcoat && o.connected.instagram.mission, "Instagram posting (both accounts)", `<ol><li>Switch both accounts to <b>Professional</b> (Settings → Account type).</li><li>Link each to a Facebook Page.</li><li>Create a free app at <b>developers.facebook.com</b>, add Instagram, and generate a long-lived token for each account.</li><li>Add <code>IG_RENTCOAT_USER_ID</code>, <code>IG_RENTCOAT_TOKEN</code>, <code>IG_MISSION_USER_ID</code>, <code>IG_MISSION_TOKEN</code> in Netlify.</li></ol><p class="sub">Until then, approve a post here, then use Download + Copy caption and post it yourself.</p>`)}
     ${item(o.connected.images, "Image maker (free)", `<ol><li>Make a free account at <b>dash.cloudflare.com</b>.</li><li>Copy your <b>Account ID</b> (right side of the dashboard).</li><li>My Profile → API Tokens → Create token → template <b>Workers AI</b> → create.</li><li>In Netlify add <code>CF_ACCOUNT_ID</code> and <code>CF_AI_TOKEN</code> (secret), then redeploy.</li></ol><p class="sub">Free: 10,000 Neurons a day, enough for a lot of images. Product posts don't need it.</p>`)}
     ${item(false, "Order emails", `<p class="sub">Stripe → Settings → Communication preferences → turn on <b>Successful payments</b>, so every order reaches your inbox too.</p>`)}
@@ -377,7 +387,16 @@ function wire() {
   document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
   const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); };
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
-  const keep = () => { const d = state.draft; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  const keep = () => { const d = state.draft; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  if ($("#d-claude")) $("#d-claude").onclick = async () => { keep(); const d = state.draft, ai = d.mode === "ai" || state.acct === "mission"; d.busy = true; render();
+    try {
+      if (!ai && !state.products) state.products = await api("products");
+      const prod = ai ? null : (state.products.products.find(x => x.id === d.prod) || state.products.products[0]);
+      const plan = await post("draft", { account: state.acct, idea: d.idea, product: prod?.id });
+      d.prompt = plan.imagePrompt || d.prompt; d.head = plan.headline || d.head; d.caption = plan.caption || d.caption; if (prod) d.prod = prod.id;
+      d.img = ai ? (await post("image", { prompt: d.prompt })).url : (await post("upload", { image: await productImage(prod, d.head) })).url;
+    } catch (e) { toast(e.message); }
+    d.busy = false; render(); };
   if ($("#d-gen")) $("#d-gen").onclick = async () => { keep(); state.draft.busy = true; render();
     try { state.draft.img = (await post("image", { prompt: state.draft.prompt })).url; } catch (e) { toast(e.message); } state.draft.busy = false; render(); };
   if ($("#d-render")) $("#d-render").onclick = async () => { keep(); const prod = (state.products?.products || []).find(x => x.id === state.draft.prod) || state.products?.products?.[0]; if (!prod) return toast("Products still loading.");
