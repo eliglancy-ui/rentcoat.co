@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0E1411">
+<title>HQ · Rent Coat Co.</title>
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Archivo";font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url("/fonts/archivo-variable-latin.woff2") format("woff2")}
+@font-face{font-family:"Mono";font-weight:500;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2")}
+:root{
+  --bg:#0E1411;--panel:#151D19;--panel-2:#1B2520;--line:#26322C;--line-2:#34433B;
+  --ink:#F1EEE6;--text:#B9C2BC;--mute:#7E8A83;--gold:#C9A45C;--gold-2:#E3C27E;--red:#C24A39;--green:#5DB287;--blue:#7FA7D9;
+  --r:14px;--r-lg:20px;--ease:cubic-bezier(.2,.7,.2,1);
+  --display:"Archivo",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--gold-2)}
+.hide{display:none!important}
+/* layout */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100dvh}
+.side{position:sticky;top:0;height:100dvh;padding:28px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,#121A16,#0E1411)}
+.brand{display:flex;align-items:center;gap:10px;font:800 17px/1 var(--display);letter-spacing:.02em;margin:0 8px 26px}
+.brand svg{width:22px;height:22px}
+.brand small{display:block;font:500 10px/1 var(--mono);letter-spacing:.18em;color:var(--gold);margin-top:5px}
+.nav{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;border:0;background:transparent;color:var(--text);cursor:pointer;text-align:left;font-weight:600;transition:background .2s var(--ease),color .2s}
+.nav svg{width:19px;height:19px;flex:none;opacity:.85}
+.nav:hover{background:var(--panel);color:var(--ink)}
+.nav[aria-current="page"]{background:var(--panel-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.nav .badge{margin-left:auto}
+.side .foot{margin-top:auto;font:500 11px/1.4 var(--mono);color:var(--mute);padding:0 10px}
+main{padding:34px 40px 120px;max-width:1180px;width:100%}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+h1{font:800 34px/1.05 var(--display);letter-spacing:-.02em;margin:0}
+h1 em{font-style:normal;color:var(--gold)}
+h2{font:700 18px/1.2 var(--display);margin:0 0 14px}
+.sub{color:var(--text);margin:6px 0 0}
+.eyebrow{font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 7px;border-radius:99px;background:var(--red);color:#fff;font:700 11px/1 var(--body)}
+.badge.gold{background:var(--gold);color:#1a1408}
+/* cards */
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px}
+.stat .k{display:flex;justify-content:space-between;align-items:center}
+.stat .v{font:800 34px/1 var(--display);letter-spacing:-.02em;margin:14px 0 6px}
+.stat .s{color:var(--text);font-size:13.5px}
+.stat .s b{color:var(--green);font-weight:700}
+.alert{display:flex;gap:16px;align-items:center;justify-content:space-between;border-color:#5a3a2a;background:linear-gradient(135deg,#2a1c16,#1a1512)}
+.alert.ok{border-color:#28503d;background:linear-gradient(135deg,#14261d,#121c17)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel-2);cursor:pointer;font-weight:650;transition:transform .15s var(--ease),background .2s,border-color .2s;white-space:nowrap}
+.btn:hover{border-color:#4a5c52}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#17120a}
+.btn.primary:hover{background:var(--gold-2)}
+.btn.green{background:#1f4a35;border-color:#2c6a4b;color:#d9f5e6}
+.btn.ghost{background:transparent}
+.btn.sm{min-height:34px;padding:0 12px;font-size:13.5px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:5px}
+.tabs button{border:0;background:transparent;color:var(--text);padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:650}
+.tabs button[aria-pressed="true"]{background:var(--panel-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.countdown{font:500 12px/1 var(--mono);letter-spacing:.08em;color:var(--gold);background:#1e1a10;border:1px solid #4a3d1f;padding:9px 12px;border-radius:99px}
+/* orders */
+.order{display:grid;grid-template-columns:1fr auto;gap:12px 20px}
+.order .who{font-weight:750;font-size:16px}
+.order .meta{color:var(--mute);font:500 12px/1.4 var(--mono)}
+.items{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.item{display:flex;align-items:center;gap:12px}
+.item img{width:46px;height:46px;border-radius:10px;object-fit:cover;background:var(--panel-2)}
+.pill{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.06em;padding:5px 8px;border-radius:99px;border:1px solid var(--line-2);color:var(--text)}
+.pill.tap{color:var(--gold-2);border-color:#5a4a26;background:#201b10}
+.pill.auto{color:#a7d9bf;border-color:#2c5a43;background:#12241b}
+.pill.done{color:#a7d9bf;border-color:#2c5a43}
+.addr{font:500 13px/1.5 var(--mono);color:var(--text);background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:12px;white-space:pre-line}
+.money{text-align:right}
+.money .t{font:800 22px/1 var(--display)}
+.money .k{color:var(--green);font-size:13px;margin-top:6px}
+/* posts */
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.post{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.post video{width:100%;aspect-ratio:9/16;max-height:420px;object-fit:cover;background:#000;display:block}
+.post .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.post textarea{width:100%;min-height:96px;resize:vertical;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);line-height:1.45}
+.post .title{font-weight:750}
+.acct{font:600 11px/1 var(--mono);color:var(--gold)}
+.views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+/* chat */
+.chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:420px}
+.log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:4px 2px 16px}
+.msg{max-width:82%;padding:12px 15px;border-radius:18px;white-space:pre-wrap;line-height:1.5}
+.msg.me{align-self:flex-end;background:var(--gold);color:#17120a;border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:6px}
+.compose{display:flex;gap:10px;background:var(--panel);border:1px solid var(--line-2);border-radius:18px;padding:8px}
+.compose textarea{flex:1;border:0;background:transparent;resize:none;outline:none;padding:8px 10px;min-height:44px;max-height:160px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line-2);background:transparent;color:var(--text);border-radius:99px;padding:7px 12px;cursor:pointer;font-size:13.5px}
+.chip:hover{color:var(--ink);border-color:#4a5c52}
+/* products */
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.prod{padding:0;overflow:hidden}
+.prod img{width:100%;aspect-ratio:1;object-fit:cover;background:#f2efe8;display:block}
+.prod .b{padding:12px 14px}
+/* setup */
+.check{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--line)}
+.check:last-child{border-bottom:0}
+.dot{width:22px;height:22px;border-radius:99px;flex:none;display:grid;place-items:center;border:1.5px solid var(--line-2);margin-top:2px}
+.dot.on{background:var(--green);border-color:var(--green)}
+.dot.on::after{content:"";width:9px;height:5px;border:2px solid #0e1411;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.check ol{margin:8px 0 0;padding-left:18px;color:var(--text)}
+code{font:500 12.5px var(--mono);background:var(--panel-2);border:1px solid var(--line);padding:2px 6px;border-radius:6px;color:var(--gold-2)}
+/* skeletons */
+.sk{position:relative;overflow:hidden;background:var(--panel-2);border-radius:10px}
+.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.06) 50%,transparent 80%);transform:translateX(-100%);animation:sheen 1.3s ease-in-out infinite}
+@keyframes sheen{to{transform:translateX(100%)}}
+@media (prefers-reduced-motion:reduce){.sk::after{animation:none}}
+.empty{color:var(--mute);text-align:center;padding:40px 10px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#22302a;border:1px solid var(--line-2);color:var(--ink);padding:11px 16px;border-radius:12px;font-weight:600;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+/* login */
+.login{min-height:100dvh;display:grid;place-items:center;padding:24px}
+.login form{width:min(380px,100%);display:flex;flex-direction:column;gap:14px}
+.login input{background:var(--panel);border:1px solid var(--line-2);border-radius:12px;padding:13px 14px}
+/* phone */
+.tabbar{display:none}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  main{padding:22px 16px calc(110px + env(safe-area-inset-bottom))}
+  h1{font-size:28px}
+  .g3,.g2{grid-template-columns:1fr}
+  .stat .v{font-size:30px}
+  .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;background:rgba(21,29,25,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line-2);border-radius:20px;padding:6px;justify-content:space-between}
+  .tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;color:var(--mute);font:600 10.5px/1 var(--body);padding:8px 0;border-radius:14px;position:relative}
+  .tabbar svg{width:21px;height:21px}
+  .tabbar button[aria-current="page"]{color:var(--ink);background:var(--panel-2)}
+  .tabbar .badge{position:absolute;top:2px;right:calc(50% - 22px);min-width:16px;height:16px;font-size:9.5px;padding:0 4px}
+  .order{grid-template-columns:1fr}
+  .money{text-align:left}
+  .chat{height:calc(100dvh - 230px)}
+  .msg{max-width:90%}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-today" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+  <symbol id="i-orders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></symbol>
+  <symbol id="i-posts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-products" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l4 2 4-2 4 3-2 4h-2v9H8v-9H6L4 7z"/></symbol>
+  <symbol id="i-setup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><rect x="4" y="2" width="2.2" height="20" rx="1" fill="#C9A45C"/><path d="M6.5 3.5H20l-2.5 3.4L20 10.5H6.5z" fill="#C24A39"/></symbol>
+</svg>
+
+<div class="login" id="login">
+  <form id="login-form">
+    <div class="brand" style="margin:0 0 8px"><svg><use href="#i-flag"/></svg><div>RENT COAT HQ<small>BACK OFFICE</small></div></div>
+    <h1 style="font-size:28px">Welcome back.</h1>
+    <p class="sub" style="margin-top:-4px">Enter your admin key. It stays on this device.</p>
+    <input id="key" type="password" autocomplete="current-password" placeholder="Admin key" required>
+    <button class="btn primary" type="submit">Open HQ</button>
+    <p class="sub" id="login-note" style="font-size:13px"></p>
+  </form>
+</div>
+
+<div class="app hide" id="app">
+  <aside class="side">
+    <div class="brand"><svg><use href="#i-flag"/></svg><div>RENT COAT HQ<small>BACK OFFICE</small></div></div>
+    <nav id="nav"></nav>
+    <div class="foot">rentcoat.co<br><a href="/" target="_blank" rel="noopener">Open the store ↗</a></div>
+  </aside>
+  <main id="main"></main>
+</div>
+<nav class="tabbar hide" id="tabbar"></nav>
+<div class="toast hide" id="toast" role="status"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} }, del(k) { try { localStorage.removeItem(k); } catch {} } };
+let KEY = store.get("hq-key");
+const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Chat", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
+let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", orderFilter: "place", chat: JSON.parse(store.get("hq-chat") || "[]") };
+
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hide"), 2200); }
+async function api(path, opts = {}) {
+  const res = await fetch("/api/hq/" + path, { ...opts, headers: { "x-hq-key": KEY, ...(opts.body ? { "Content-Type": "application/json" } : {}) }, cache: "no-store" });
+  if (res.status === 404 && path === "overview") throw Object.assign(new Error("bad key"), { auth: true });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Something went wrong.");
+  return data;
+}
+const local = u => String(u || "").replace(/^https:\/\/rentcoat\.co/, ""); // play from whichever site HQ is open on
+const post = (path, body) => api(path, { method: "POST", body: JSON.stringify(body || {}) });
+
+function navHtml(mobile) {
+  const badges = { orders: state.overview?.toPlace || 0, posts: state.overview?.queue?.review || 0 };
+  return TABS.filter(([id]) => !mobile || id !== "products").map(([id, label, icon]) =>
+    `<button class="${mobile ? "" : "nav"}" data-tab="${id}" ${state.tab === id ? 'aria-current="page"' : ""}><svg><use href="#${icon}"/></svg>${label}${badges[id] ? `<span class="badge${id === "posts" ? " gold" : ""}">${badges[id]}</span>` : ""}</button>`).join("");
+}
+function paintNav() {
+  $("#nav").innerHTML = navHtml(false); $("#tabbar").innerHTML = navHtml(true);
+  document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => go(b.dataset.tab));
+}
+function go(tab) { state.tab = tab; location.hash = tab; paintNav(); render(); window.scrollTo({ top: 0 }); }
+
+const sk = (h, w = "100%") => `<div class="sk" style="height:${h}px;width:${w}"></div>`;
+function countdown() {
+  const ms = new Date(state.overview?.opens || "2026-11-27T10:00:00-05:00") - Date.now();
+  if (ms <= 0) return "STORE IS OPEN";
+  const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24;
+  return `OPENS IN ${d}D ${h}H`;
+}
+
+// ---------- views ----------
+function viewToday() {
+  const o = state.overview;
+  const hour = new Date().getHours(), hi = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">${money(x.sales)}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · you keep about <b>${money(Math.max(0, x.keep))}</b></div></div>`
+    : `<div class="card">${sk(12, "40%")}<div style="height:16px"></div>${sk(34, "60%")}<div style="height:10px"></div>${sk(12, "70%")}</div>`;
+  return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><span class="countdown">${countdown()}</span></div>
+  <div class="grid g3">${o ? [stat("Today", o.today), stat("Last 7 days", o.week), stat("Last 30 days", o.month)].join("") : stat().repeat(3)}</div>
+  <div class="grid g2" style="margin-top:16px">
+    ${o ? `<div class="card ${o.toPlace ? "alert" : "alert ok"}"><div><span class="eyebrow">Tapstitch</span><h2 style="margin:8px 0 4px">${o.toPlace ? `${o.toPlace} order${o.toPlace === 1 ? "" : "s"} to place` : "Nothing to place"}</h2><p class="sub" style="margin:0">${o.toPlace ? "Hoodies, sweats and sets you place by hand." : "Every hand-placed order is done."}</p></div>${o.toPlace ? `<button class="btn primary" data-go="orders">Place now</button>` : ""}</div>
+    <div class="card alert ok" style="background:linear-gradient(135deg,#1d1a10,#14130f);border-color:#4a3d1f"><div><span class="eyebrow">Posts</span><h2 style="margin:8px 0 4px">${o.queue.review} waiting for you</h2><p class="sub" style="margin:0">${o.queue.approved} approved · ${o.queue.posted} posted</p></div><button class="btn primary" data-go="posts">Review</button></div>`
+    : `<div class="card">${sk(70)}</div><div class="card">${sk(70)}</div>`}
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    ${o ? `<div class="card stat"><span class="eyebrow">Site visits today</span><div class="v">${o.visitsToday}</div><div class="s">Page views on rentcoat.co</div></div>
+    <div class="card stat"><span class="eyebrow">Instagram</span><div class="v" style="font-size:22px;margin-top:18px">${Object.values(o.connected.instagram).filter(Boolean).length} of 2 connected</div><div class="s">${Object.entries(o.connected.instagram).map(([a, on]) => `${ACCT[a]} ${on ? "✓" : "·"}`).join("  ")}</div></div>
+    <div class="card stat"><span class="eyebrow">Assistant</span><div class="v" style="font-size:22px;margin-top:18px">${o.connected.chat ? "Ready" : "Not connected"}</div><div class="s">${o.connected.chat ? "Ask it anything in Chat." : "Add the API key in Setup."}</div></div>`
+    : `<div class="card">${sk(80)}</div>`.repeat(3)}
+  </div>`;
+}
+
+function viewOrders() {
+  const list = state.orders?.orders;
+  const shown = list ? list.filter(o => state.orderFilter === "all" || (o.tapstitch.length && !o.placed)) : null;
+  const card = o => {
+    const addr = [o.name, ...o.address].join("\n");
+    return `<div class="card order">
+      <div>
+        <div class="row" style="justify-content:space-between"><span class="who">${esc(o.name || "Customer")}</span></div>
+        <div class="meta">${new Date(o.created).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} · ${esc(o.email)}${o.foundUs ? ` · found us: ${esc(o.foundUs)}` : ""}</div>
+        <div class="items">${o.items.map(i => `<div class="item"><img src="/${esc(i.image)}" alt="" loading="lazy"><div><div>${i.qty} × ${esc(i.name)} · <b>${esc(i.size)}</b></div><span class="pill ${i.maker === "tapstitch" ? "tap" : "auto"}">${i.maker === "tapstitch" ? "PLACE ON TAPSTITCH" : "PRINTFUL · AUTOMATIC"}</span></div></div>`).join("")}</div>
+        ${o.tapstitch.length ? `<div class="addr">${esc(addr)}</div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn sm" data-copy="${esc(addr)}">Copy address</button>
+          <button class="btn sm" data-copy="${esc(o.tapstitch.map(i => `${i.qty} x ${i.name} (${i.size})`).join("\n"))}">Copy items</button>
+          <a class="btn sm ghost" href="https://www.tapstitch.com" target="_blank" rel="noopener">Open Tapstitch ↗</a>
+          <button class="btn sm ${o.placed ? "" : "green"}" data-placed="${o.id}" data-on="${o.placed ? 0 : 1}">${o.placed ? "Placed ✓ · undo" : "Mark placed"}</button>
+        </div>` : ""}
+      </div>
+      <div class="money"><div class="t">${money(o.total)}</div><div class="k">keep ≈ ${money(Math.max(0, o.keep))}</div></div>
+    </div>`;
+  };
+  return `<div class="head"><div><span class="eyebrow">Orders</span><h1>Orders</h1><p class="sub">Printful pieces ship on their own. Tapstitch pieces wait here for you.</p></div>
+    <div class="tabs"><button data-of="place" aria-pressed="${state.orderFilter === "place"}">To place</button><button data-of="all" aria-pressed="${state.orderFilter === "all"}">All (30 days)</button></div></div>
+  <div class="grid">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty">${state.orderFilter === "place" ? "Nothing to place. You're caught up." : "No orders yet. The store opens Nov 27."}</div>`) : `<div class="card">${sk(110)}</div>`.repeat(3)}</div>`;
+}
+
+function viewPosts() {
+  const q = state.queue?.queue;
+  const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
+  const ig = state.overview?.connected?.instagram || {};
+  const card = p => `<div class="card post">
+    <video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>
+    <div class="body">
+      <span class="acct">${ACCT[p.account] || p.account}</span>
+      <span class="title">${esc(p.title)}</span>
+      <textarea data-caption="${p.id}">${esc(p.caption)}</textarea>
+      <div class="row">
+        ${p.status === "review" ? `<button class="btn sm primary" data-status="${p.id}" data-to="approved">Approve</button>` : ""}
+        ${p.status === "approved" || p.status === "publishing" ? (ig[p.account] ? `<button class="btn sm primary" data-publish="${p.id}">${p.status === "publishing" ? "Finish posting" : "Post to Instagram"}</button>` : `<button class="btn sm" data-status="${p.id}" data-to="posted">I posted it</button>`) : ""}
+        <button class="btn sm" data-copycap="${p.id}">Copy caption</button>
+        <a class="btn sm ghost" href="${esc(local(p.media?.[0]) || "#")}" download>Download</a>
+        ${p.status === "posted" ? `<input class="views" type="number" min="0" placeholder="Views" value="${p.views ?? ""}" data-views="${p.id}">` : ""}
+        ${p.status !== "posted" ? `<button class="btn sm ghost" data-del="${p.id}" title="Remove">✕</button>` : ""}
+      </div>
+    </div></div>`;
+  const n = s => q ? q.filter(p => p.status === s || (s === "approved" && p.status === "publishing")).length : "";
+  return `<div class="head"><div><span class="eyebrow">Posts</span><h1>Posts</h1><p class="sub">Nothing goes out until you approve it.</p></div>
+    <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
+  <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">Nothing here.</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
+}
+
+function viewChat() {
+  const chips = ["What should I post today?", "Write a Black Friday caption for the Steadfast Sweatsuit", "How many orders do I need for $10k a month?", "Draft a reply to a customer asking about sizing"];
+  return `<div class="head"><div><span class="eyebrow">Chat</span><h1>Ask <em>HQ</em></h1><p class="sub">It knows your products, prices and this week's orders.</p></div>${state.chat.length ? `<button class="btn sm ghost" id="clear">New chat</button>` : ""}</div>
+  <div class="chat">
+    <div class="log" id="log">${state.chat.length ? state.chat.map(m => `<div class="msg ${m.role === "user" ? "me" : "ai"}">${esc(m.content)}</div>`).join("") : `<div class="chips">${chips.map(c => `<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>`}</div>
+    <form class="compose" id="compose"><textarea id="say" rows="1" placeholder="Tell HQ what you need…"></textarea><button class="btn primary" type="submit">Send</button></form>
+  </div>`;
+}
+
+function viewProducts() {
+  const p = state.products?.products;
+  return `<div class="head"><div><span class="eyebrow">Products</span><h1>Live on the site</h1><p class="sub">To add or change a product, ask in Chat or tell Claude. Changes go through a preview you approve.</p></div><a class="btn" href="/#shop" target="_blank" rel="noopener">View shop ↗</a></div>
+  <div class="prods">${p ? p.map(x => `<div class="card prod"><img src="/${esc(x.images?.[0]?.src)}" alt="" loading="lazy"><div class="b"><div style="font-weight:750">${esc(x.name)}</div><div class="row" style="justify-content:space-between;margin-top:6px"><span>${money(x.price.default)}</span><span class="pill ${x.maker === "tapstitch" ? "tap" : "auto"}">${x.maker === "tapstitch" ? "TAPSTITCH" : "PRINTFUL"}</span></div></div></div>`).join("")
+    : `<div class="card">${sk(220)}</div>`.repeat(4)}</div>`;
+}
+
+function viewSetup() {
+  const o = state.overview || { connected: { instagram: {}, chat: false } };
+  const item = (on, title, body) => `<div class="check"><span class="dot ${on ? "on" : ""}"></span><div><b>${title}</b>${body}</div></div>`;
+  return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">One-time steps that need your logins. Keys go into Netlify, never into chat.</p></div></div>
+  <div class="card">
+    ${item(true, "Store, checkout and orders", `<p class="sub">Stripe, Printful and the order list are connected.</p>`)}
+    ${item(o.connected.chat, "Assistant (Chat)", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
+    ${item(o.connected.instagram.rentcoat && o.connected.instagram.mission, "Instagram posting (both accounts)", `<ol><li>Switch both accounts to <b>Professional</b> (Settings → Account type).</li><li>Link each to a Facebook Page.</li><li>Create a free app at <b>developers.facebook.com</b>, add Instagram, and generate a long-lived token for each account.</li><li>Add <code>IG_RENTCOAT_USER_ID</code>, <code>IG_RENTCOAT_TOKEN</code>, <code>IG_MISSION_USER_ID</code>, <code>IG_MISSION_TOKEN</code> in Netlify.</li></ol><p class="sub">Until then, approve a post here, then use Download + Copy caption and post it yourself.</p>`)}
+    ${item(false, "Order emails", `<p class="sub">Stripe → Settings → Communication preferences → turn on <b>Successful payments</b>, so every order reaches your inbox too.</p>`)}
+  </div>
+  <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
+}
+
+const VIEWS = { today: viewToday, orders: viewOrders, posts: viewPosts, chat: viewChat, products: viewProducts, setup: viewSetup };
+function render() {
+  $("#main").innerHTML = VIEWS[state.tab]();
+  wire();
+  if (state.tab === "orders" && !state.orders) load("orders", "orders?days=30");
+  if (state.tab === "posts" && !state.queue) load("queue", "queue");
+  if (state.tab === "products" && !state.products) load("products", "products");
+  if (state.tab === "chat") { const l = $("#log"); l.scrollTop = l.scrollHeight; }
+}
+async function load(slot, path) { try { state[slot] = await api(path); render(); } catch (e) { toast(e.message); } }
+
+function wire() {
+  document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
+  document.querySelectorAll("[data-pf]").forEach(b => b.onclick = () => { state.postFilter = b.dataset.pf; render(); });
+  document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast("Copied")));
+  document.querySelectorAll("[data-placed]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await post(`orders/${b.dataset.placed}/placed`, { placed: b.dataset.on === "1" }); state.orders = null; state.overview = await api("overview"); paintNav(); render(); toast(b.dataset.on === "1" ? "Marked placed" : "Undone"); }
+    catch (e) { toast(e.message); b.disabled = false; }
+  });
+  const findPost = id => state.queue.queue.find(p => p.id === id);
+  const updated = p => { const q = state.queue.queue; q[q.findIndex(x => x.id === p.id)] = p; };
+  document.querySelectorAll("[data-caption]").forEach(t => t.onchange = async () => { try { updated((await post(`queue/${t.dataset.caption}`, { caption: t.value })).post); toast("Caption saved"); } catch (e) { toast(e.message); } });
+  document.querySelectorAll("[data-copycap]").forEach(b => b.onclick = () => navigator.clipboard.writeText(findPost(b.dataset.copycap).caption).then(() => toast("Caption copied")));
+  document.querySelectorAll("[data-status]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { updated((await post(`queue/${b.dataset.status}`, { status: b.dataset.to })).post); state.overview = await api("overview"); paintNav(); render(); toast(b.dataset.to === "approved" ? "Approved" : "Marked posted"); }
+    catch (e) { toast(e.message); b.disabled = false; }
+  });
+  document.querySelectorAll("[data-publish]").forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = "Posting…";
+    try {
+      let p = (await post(`queue/${b.dataset.publish}/publish`)).post;
+      for (let i = 0; i < 20 && p.status === "publishing"; i++) { await new Promise(r => setTimeout(r, 4000)); p = (await post(`queue/${p.id}/publish`)).post; }
+      updated(p); render(); toast(p.status === "posted" ? "Posted to Instagram" : "Instagram is still processing. Tap Finish posting in a minute.");
+    } catch (e) { toast(e.message); render(); }
+  });
+  document.querySelectorAll("[data-views]").forEach(i => i.onchange = async () => { try { updated((await post(`queue/${i.dataset.views}`, { views: Number(i.value) })).post); toast("Saved"); } catch (e) { toast(e.message); } });
+  document.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    if (!confirm("Remove this post from the queue?")) return;
+    try { await post(`queue/${b.dataset.del}`, { delete: true }); state.queue.queue = state.queue.queue.filter(p => p.id !== b.dataset.del); render(); } catch (e) { toast(e.message); }
+  });
+  const say = $("#say");
+  if (say) {
+    say.oninput = () => { say.style.height = "auto"; say.style.height = Math.min(160, say.scrollHeight) + "px"; };
+    say.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#compose").requestSubmit(); } };
+    document.querySelectorAll("[data-chip]").forEach(c => c.onclick = () => { say.value = c.dataset.chip; $("#compose").requestSubmit(); });
+    $("#compose").onsubmit = async e => {
+      e.preventDefault(); const text = say.value.trim(); if (!text) return;
+      state.chat.push({ role: "user", content: text }); store.set("hq-chat", JSON.stringify(state.chat)); render();
+      const log = $("#log"); log.insertAdjacentHTML("beforeend", `<div class="msg ai" id="thinking"><div class="sk" style="height:12px;width:160px"></div></div>`); log.scrollTop = log.scrollHeight;
+      try { const r = await post("chat", { messages: state.chat }); state.chat.push({ role: "assistant", content: r.reply }); }
+      catch (err) { state.chat.push({ role: "assistant", content: "That didn't go through: " + err.message }); }
+      store.set("hq-chat", JSON.stringify(state.chat.slice(-40))); render(); $("#say")?.focus();
+    };
+  }
+  const clear = $("#clear"); if (clear) clear.onclick = () => { state.chat = []; store.del("hq-chat"); render(); };
+  const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
+}
+
+async function start() {
+  $("#login").classList.add("hide"); $("#app").classList.remove("hide"); $("#tabbar").classList.remove("hide");
+  const fromHash = location.hash.slice(1); if (VIEWS[fromHash]) state.tab = fromHash;
+  paintNav(); render();
+  try { state.overview = await api("overview"); paintNav(); render(); }
+  catch (e) {
+    if (e.auth) { store.del("hq-key"); KEY = null; $("#app").classList.add("hide"); $("#tabbar").classList.add("hide"); $("#login").classList.remove("hide"); $("#login-note").textContent = "That key didn't work."; return; }
+    toast(e.message);
+  }
+}
+$("#login-form").onsubmit = e => { e.preventDefault(); KEY = $("#key").value.trim(); store.set("hq-key", KEY); start(); };
+window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (VIEWS[t] && t !== state.tab) { state.tab = t; paintNav(); render(); } });
+setInterval(() => { if (state.tab === "today" && state.overview) render(); }, 60000);
+if (KEY) start();
+</script>
+</body>
+</html>

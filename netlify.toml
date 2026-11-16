@@ -50,6 +50,14 @@
     # because every page keeps its small scripts inline. Stripe's embedded checkout needs js.stripe.com (script and frame), checkout.stripe.com and api.stripe.com.
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://js.stripe.com; connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net; img-src 'self' data: https://*.stripe.com https://*.googletagmanager.com https://*.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; manifest-src 'self'; frame-src https://js.stripe.com https://checkout.stripe.com https://hooks.stripe.com; worker-src 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
 
+# HQ, the private back office: never indexed, never cached.
+[[headers]]
+  for = "/hq/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+
 # The order-confirmed page has a Stripe session ID in its address: keep it out of search and referrers.
 [[headers]]
   for = "/thanks.html"
