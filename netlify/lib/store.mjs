@@ -75,29 +75,29 @@ const LINE_PIECES = {
     name: "Lehi's Tent Co. Camp Mug", kind: "Mug", color: "Enamel, 12 oz", swatch: "#FFFFFF", price: { default: 2600 }, sizes: ONE, ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15],
     blurb: "An enamel camp mug for the man who dwelt in a tent. Hand wash only." },
 };
-// The opening set: the pieces the store opens with on Black Friday 2026 (Bella+Canvas 3010 tees, Cotton Heritage
-// hoodies; Printful setup in scripts/printful/catalog.mjs). Photos are Printful mockups until real ones are shot.
+// The opening set: the pieces the store opens with on Black Friday 2026. Tees are made by Tapstitch (RU0014; Eli,
+// Nov 16), placed by hand like the hoodies; print files in print/tapstitch/tees. Old Printful setup in scripts/printful/catalog.mjs. Photos are Printful mockups until real ones are shot.
 const opening = (n, back = "Back") => [{ src: `images/opening/${n}-back.jpg`, label: back }, { src: `images/opening/${n}-front.jpg`, label: "Front" }];
 Object.assign(LINE_PIECES, {
-  "cureloms-tee": { live: true, images: opening("cureloms"), name: "Cureloms & Cumoms Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+  "cureloms-tee": { live: true, maker: "tapstitch", images: opening("cureloms"), name: "Cureloms & Cumoms Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
     ref: "Ether 9:19", verse: ["ether", 9, 19], blurb: "The Wildlife Society field guide: one elephant identified, two animals nobody can name." },
-  "title-of-liberty-tee": { live: true, images: opening("title-of-liberty"), name: "Title of Liberty Tee", kind: "Tee", color: "Dark Grey", swatch: "#2A2930", price: tee,
+  "title-of-liberty-tee": { live: true, maker: "tapstitch", images: opening("title-of-liberty"), name: "Title of Liberty Tee", kind: "Tee", color: "Dark Grey", swatch: "#2A2930", price: tee,
     ref: "Alma 46:12", verse: ["alma", 46, 12], blurb: "Moroni's torn coat raised as a flag. The verse the brand is named for." },
-  "liahona-compass-tee": { live: true, images: opening("liahona"), name: "The Liahona Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+  "liahona-compass-tee": { live: true, maker: "tapstitch", images: opening("liahona"), name: "The Liahona Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
     ref: "1 Nephi 16:29", verse: ["1-ne", 16, 29], blurb: "An antique compass rose. By small means the Lord can bring about great things." },
-  "rejoice-tee": { live: true, images: opening("rejoice-in-christ"), name: "Rejoice in Christ Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+  "rejoice-tee": { live: true, maker: "tapstitch", images: opening("rejoice-in-christ"), name: "Rejoice in Christ Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
     ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme, under Carl Bloch's Christ and Child." },
   "rejoice-hoodie": { live: false, images: opening("rejoice-in-christ-hoodie"), name: "Rejoice in Christ Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
     ref: "2 Nephi 25:26", verse: ["2-ne", 25, 26], blurb: "The 2027 youth theme on a heavyweight hoodie, for camps, firesides and cold mornings." },
-  "great-joy-tee": { live: true, images: opening("great-joy"), name: "Great Joy Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+  "great-joy-tee": { live: true, maker: "tapstitch", images: opening("great-joy"), name: "Great Joy Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
     ref: "Mosiah 3:3", verse: ["mosiah", 3, 3], blurb: "Glad tidings of great joy, under Bloch's shepherds and the angel. The Christmas shirt." },
   "he-rent-his-coat-hoodie": { live: true, images: opening("he-rent-his-coat-hoodie"), name: "He Rent His Coat Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie,
     ref: "Alma 46:12", verse: ["alma", 46, 12], blurb: "The brand's own story: the arched name, the red flag, and Alma 46:12 down the sleeve." },
-  "go-and-do-tee": { live: true, images: opening("go-and-do"), name: "Go and Do Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
+  "go-and-do-tee": { live: true, maker: "tapstitch", images: opening("go-and-do"), name: "Go and Do Tee", kind: "Tee", color: "Black", swatch: "#000000", price: tee,
     ref: "1 Nephi 3:7", verse: ["1-ne", 3, 7], blurb: "I will go and do. For missionaries and anyone with something hard to do." },
-  "service-club-tee": { live: true, images: opening("service-club"), name: "Service Club Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
+  "service-club-tee": { live: true, maker: "tapstitch", images: opening("service-club"), name: "Service Club Tee", kind: "Tee", color: "Natural", swatch: "#FFF8EA", price: tee,
     ref: "Mosiah 2:17", verse: ["mosiah", 2, 17], blurb: "King Benjamin's tower on a club crest. When ye are in the service of your fellow beings." },
-  "lehis-tent-tee": { live: true, images: opening("lehis-tent-co"), name: "Lehi's Tent Co. Tee", kind: "Tee", color: "Toast", swatch: "#CA8447", price: tee,
+  "lehis-tent-tee": { live: true, maker: "tapstitch", images: opening("lehis-tent-co"), name: "Lehi's Tent Co. Tee", kind: "Tee", color: "Toast", swatch: "#CA8447", price: tee,
     ref: "1 Nephi 2:15", verse: ["1-ne", 2, 15], blurb: "The shortest verse in the book, on a camp supply tee. And my father dwelt in a tent." },
 });
 

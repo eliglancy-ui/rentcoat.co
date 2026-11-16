@@ -23,7 +23,7 @@ const GRAPH = `https://graph.facebook.com/${process.env.IG_GRAPH_VERSION || "v21
 const store = () => getStore("hq");
 
 // What a sale costs, so HQ shows what Eli keeps. Card fee 2.9% + 30c, Stripe Tax 0.5%, made-to-order cost per piece.
-const COST = { tee: 2292, hoodie: 2888, sweats: 2198, set: 5086, cap: 1500 }; // cents: Printful tee (Bella 3010), Tapstitch hoodie and sweats (Nov 14 invoices)
+const COST = { tee: 1397, hoodie: 2888, sweats: 2198, set: 5086, cap: 1500 }; // cents: Tapstitch tee (RU0014), hoodie and sweats (Nov 14 invoices)
 const SHIP_COST = 900; // rough cost to ship one order to the customer
 const pieceCost = id => {
   const p = PRODUCTS[id]; if (!p) return 0;
@@ -100,7 +100,7 @@ async function igPublishCheck(post) {
 }
 
 const SYSTEM = `You are the operator inside Rent Coat HQ, the back office of Rent Coat Co. (rentcoat.co), faith streetwear for young Latter-day Saints, run by Eli, a high school senior in Holly Springs, NC.
-Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Tees $40 ($43 2XL), hoodies $68, Press Forward Sweats $55, the Steadfast Sweatsuit $100. US shipping $5.99, free over $60. Tees and the cap print through Printful automatically; hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
+Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Tees $40 ($43 2XL), hoodies $68, Press Forward Sweats $55, the Steadfast Sweatsuit $100. US shipping $5.99, free over $60. The cap prints through Printful automatically; tees, hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
 How to answer: lead with the answer, short and direct, plain language. Show the math for money questions. Quote scripture and Church leaders only word for word with the reference. You can't post, send email, spend money or change the site from chat: say what to tap in HQ instead, and write captions, replies and plans ready to paste. If you don't know, say so.`;
 
 export default async (req) => {
