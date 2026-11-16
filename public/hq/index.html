@@ -193,7 +193,7 @@ const store = { get(k) { try { return localStorage.getItem(k); } catch { return 
 let KEY = store.get("hq-key");
 const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Chat", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
-let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", chat: JSON.parse(store.get("hq-chat") || "[]") };
+let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]") };
 
 function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hide"), 2200); }
 async function api(path, opts = {}) {
@@ -267,17 +267,48 @@ function viewOrders() {
       <div class="money"><div class="t">${money(o.total)}</div><div class="k">keep ≈ ${money(Math.max(0, o.keep))}</div></div>
     </div>`;
   };
-  return `<div class="head"><div><span class="eyebrow">Orders</span><h1>Orders</h1><p class="sub">Printful pieces ship on their own. Tapstitch pieces wait here for you.</p></div>
+  return `<div class="head"><div><span class="eyebrow">Orders</span><h1>Orders</h1><p class="sub">Tapstitch pieces (tees, hoodies, sweats) wait here for you to place. Only the dad cap ships from Printful on its own.</p></div>
     <div class="tabs"><button data-of="place" aria-pressed="${state.orderFilter === "place"}">To place</button><button data-of="all" aria-pressed="${state.orderFilter === "all"}">All (30 days)</button></div></div>
   <div class="grid">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty">${state.orderFilter === "place" ? "Nothing to place. You're caught up." : "No orders yet. The store opens Nov 27."}</div>`) : `<div class="card">${sk(110)}</div>`.repeat(3)}</div>`;
 }
 
+function composer() {
+  const d = state.draft, mission = state.acct === "mission", prods = state.products?.products || [];
+  const ai = d.mode === "ai" || mission;
+  const imgOn = state.overview?.connected?.images;
+  return `<details class="card" style="margin-bottom:16px" ${d.img || d.open ? "open" : ""} id="composer"><summary style="font-weight:750;cursor:pointer">+ New post for ${mission ? "@whatisanldsmission" : "@rentcoat.co"}</summary>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${!ai}">Product post</button></div>`}
+      ${ai ? `<textarea id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
+        <button class="btn primary" id="d-gen" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : "Make image"}</button>${imgOn ? "" : `<p class="sub">Image maker isn't connected yet: see Setup.</p>`}`
+      : `<select id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+        <input id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
+        <button class="btn primary" id="d-render">Make post image</button>`}
+      ${d.img ? `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">` : ""}
+      <textarea id="d-cap" rows="4" placeholder="Caption">${esc(d.caption)}</textarea>
+      <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
+    </div></details>`;
+}
+async function productImage(prod, head) {
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const g = c.getContext("2d");
+  g.fillStyle = "#13201a"; g.fillRect(0, 0, 1080, 1350);
+  const im = new Image(); im.src = "/" + prod.images[0].src; await im.decode();
+  const s = Math.max(1080 / im.width, 1080 / im.height), w = im.width * s, h = im.height * s;
+  g.drawImage(im, (1080 - w) / 2, (1080 - h) / 2, w, h);
+  await document.fonts.load('800 72px "Archivo"');
+  g.fillStyle = "#f3eee1"; g.font = '800 72px "Archivo", system-ui, sans-serif'; g.textBaseline = "top";
+  const words = (head || prod.name).toUpperCase().split(" "); let line = "", y = 1110, lines = [];
+  for (const w2 of words) { const t = line ? line + " " + w2 : w2; if (g.measureText(t).width > 980 && line) { lines.push(line); line = w2; } else line = t; }
+  lines.push(line); lines.slice(0, 2).forEach((l, i) => g.fillText(l, 50, y + i * 80));
+  g.fillStyle = "#c9a45c"; g.font = '500 30px "Mono", monospace'; g.fillText("RENTCOAT.CO", 50, 1290);
+  return c.toDataURL("image/jpeg", 0.9);
+}
 function viewPosts() {
   const q = state.queue?.queue?.filter(p => p.account === state.acct);
   const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
   const ig = state.overview?.connected?.instagram || {};
   const card = p => `<div class="card post">
-    <video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>
+    ${/\.jpe?g($|\?)/i.test(p.media?.[0] || "") ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}
     <div class="body">
       <span class="acct ${p.account}">${ACCT[p.account] || p.account}</span>
       <span class="title">${esc(p.title)}</span>
@@ -295,6 +326,7 @@ function viewPosts() {
   return `<div class="head"><div><span class="eyebrow">Posts</span><h1>Posts</h1><p class="sub">Nothing goes out until you approve it.</p></div>
     <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
   <div class="acctbar"><button data-acct="mission" aria-pressed="${state.acct === "mission"}">@whatisanldsmission<small>Church content only</small></button><button data-acct="rentcoat" aria-pressed="${state.acct === "rentcoat"}">@rentcoat.co<small>The brand</small></button></div>
+  ${composer()}
   <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">${state.acct === "rentcoat" ? "No @rentcoat.co posts yet." : "Nothing here."}</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
 }
 
@@ -319,9 +351,10 @@ function viewSetup() {
   const item = (on, title, body) => `<div class="check"><span class="dot ${on ? "on" : ""}"></span><div><b>${title}</b>${body}</div></div>`;
   return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">One-time steps that need your logins. Keys go into Netlify, never into chat.</p></div></div>
   <div class="card">
-    ${item(true, "Store, checkout and orders", `<p class="sub">Stripe, Printful and the order list are connected.</p>`)}
+    ${item(true, "Store, checkout and orders", `<p class="sub">Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.</p>`)}
     ${item(o.connected.chat, "Assistant (Chat)", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
     ${item(o.connected.instagram.rentcoat && o.connected.instagram.mission, "Instagram posting (both accounts)", `<ol><li>Switch both accounts to <b>Professional</b> (Settings → Account type).</li><li>Link each to a Facebook Page.</li><li>Create a free app at <b>developers.facebook.com</b>, add Instagram, and generate a long-lived token for each account.</li><li>Add <code>IG_RENTCOAT_USER_ID</code>, <code>IG_RENTCOAT_TOKEN</code>, <code>IG_MISSION_USER_ID</code>, <code>IG_MISSION_TOKEN</code> in Netlify.</li></ol><p class="sub">Until then, approve a post here, then use Download + Copy caption and post it yourself.</p>`)}
+    ${item(o.connected.images, "Image maker (free)", `<ol><li>Make a free account at <b>dash.cloudflare.com</b>.</li><li>Copy your <b>Account ID</b> (right side of the dashboard).</li><li>My Profile → API Tokens → Create token → template <b>Workers AI</b> → create.</li><li>In Netlify add <code>CF_ACCOUNT_ID</code> and <code>CF_AI_TOKEN</code> (secret), then redeploy.</li></ol><p class="sub">Free: 10,000 Neurons a day, enough for a lot of images. Product posts don't need it.</p>`)}
     ${item(false, "Order emails", `<p class="sub">Stripe → Settings → Communication preferences → turn on <b>Successful payments</b>, so every order reaches your inbox too.</p>`)}
   </div>
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
@@ -342,6 +375,16 @@ function wire() {
   document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
   document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
+  const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); };
+  document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
+  const keep = () => { const d = state.draft; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  if ($("#d-gen")) $("#d-gen").onclick = async () => { keep(); state.draft.busy = true; render();
+    try { state.draft.img = (await post("image", { prompt: state.draft.prompt })).url; } catch (e) { toast(e.message); } state.draft.busy = false; render(); };
+  if ($("#d-render")) $("#d-render").onclick = async () => { keep(); const prod = (state.products?.products || []).find(x => x.id === state.draft.prod) || state.products?.products?.[0]; if (!prod) return toast("Products still loading.");
+    try { state.draft.img = (await post("upload", { image: await productImage(prod, state.draft.head) })).url; render(); } catch (e) { toast(e.message); } };
+  if ($("#d-add")) $("#d-add").onclick = async () => { keep(); const d = state.draft;
+    try { const r = await post("queue", { account: state.acct, title: (d.head || d.prompt || "New post").slice(0, 80), caption: d.caption, media: [d.img] });
+      state.queue.queue.unshift(r.post); state.draft = { mode: d.mode, img: "", caption: "", busy: false }; state.postFilter = "review"; state.overview = await api("overview"); paintNav(); render(); toast("Added to review"); } catch (e) { toast(e.message); } };
   document.querySelectorAll("[data-pf]").forEach(b => b.onclick = () => { state.postFilter = b.dataset.pf; render(); });
   document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast("Copied")));
   document.querySelectorAll("[data-placed]").forEach(b => b.onclick = async () => {
