@@ -8,6 +8,9 @@
 //   POST /api/hq/queue/:id/publish     post an approved reel to Instagram (needs IG_*_USER_ID and IG_*_TOKEN)
 //   GET  /api/hq/products              what's live on the site
 //   POST /api/hq/chat                  { messages }  ask Rent Coat's assistant (needs ANTHROPIC_API_KEY)
+//   POST /api/hq/image                 { prompt }    make an image with Cloudflare Workers AI (needs CF_ACCOUNT_ID, CF_AI_TOKEN)
+//   POST /api/hq/upload                { image }     save a JPEG data URL from HQ's post maker
+//   Images are served publicly at /api/media/<id>.jpg (netlify/functions/media.mjs) so Instagram can fetch them.
 // Nothing is posted, sent or changed outside this site without an explicit tap in HQ.
 import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
@@ -77,12 +80,22 @@ async function queue(req) {
   return q;
 }
 
+// Saves a JPEG in Blobs and returns its public URL.
+async function saveImage(bytes, origin) {
+  const id = `${crypto.randomUUID()}.jpg`;
+  await getStore("hq-media").set(id, bytes);
+  return `${origin}/api/media/${id}`;
+}
+
 async function igPublishStart(post) {
   const user = process.env[`IG_${post.account.toUpperCase()}_USER_ID`], token = process.env[`IG_${post.account.toUpperCase()}_TOKEN`];
   if (!user || !token) throw new Error(`Instagram isn't connected for ${ACCOUNTS[post.account]} yet. See Setup.`);
   const video = (post.media || []).find(m => /\.mp4($|\?)/i.test(m));
-  if (!video) throw new Error("This post has no video file to publish.");
-  const body = new URLSearchParams({ media_type: "REELS", video_url: video, caption: post.caption || "", share_to_feed: "true", access_token: token });
+  const image = (post.media || []).find(m => /\.jpe?g($|\?)/i.test(m));
+  if (!video && !image) throw new Error("This post has no video or image to publish.");
+  const body = video
+    ? new URLSearchParams({ media_type: "REELS", video_url: video, caption: post.caption || "", share_to_feed: "true", access_token: token })
+    : new URLSearchParams({ image_url: image, caption: post.caption || "", access_token: token });
   const r = await fetch(`${GRAPH}/${user}/media`, { method: "POST", body });
   const d = await r.json();
   if (!r.ok || !d.id) throw new Error(`Instagram: ${d.error?.message || r.status}`);
@@ -123,7 +136,7 @@ export default async (req) => {
         toPlace: all.filter(o => o.tapstitch.length && !o.placed).length,
         queue: { review: q.filter(p => p.status === "review").length, approved: q.filter(p => p.status === "approved").length, posted: q.filter(p => p.status === "posted").length },
         visitsToday: stats?.views || 0, opens: "2026-11-27T10:00:00-05:00",
-        connected: { instagram: Object.fromEntries(Object.keys(ACCOUNTS).map(a => [a, Boolean(process.env[`IG_${a.toUpperCase()}_TOKEN`])])), chat: Boolean(process.env.ANTHROPIC_API_KEY) },
+        connected: { instagram: Object.fromEntries(Object.keys(ACCOUNTS).map(a => [a, Boolean(process.env[`IG_${a.toUpperCase()}_TOKEN`])])), chat: Boolean(process.env.ANTHROPIC_API_KEY), images: Boolean(process.env.CF_ACCOUNT_ID && process.env.CF_AI_TOKEN) },
       });
     }
     if (path[0] === "orders" && !path[1]) {
@@ -161,6 +174,25 @@ export default async (req) => {
       if ("when" in body) post.when = body.when || null;
       if (typeof body.views === "number") post.views = body.views;
       await store().setJSON("queue", q); return json({ post });
+    }
+    if (path[0] === "image" && req.method === "POST") {
+      if (!process.env.CF_ACCOUNT_ID || !process.env.CF_AI_TOKEN) return json({ error: "Image maker isn't connected yet. See Setup." }, 400);
+      const prompt = String(body.prompt || "").trim().slice(0, 2000);
+      if (!prompt) return json({ error: "Describe the image first." }, 400);
+      const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ACCOUNT_ID}/ai/run/@cf/black-forest-labs/flux-1-schnell`, {
+        method: "POST", headers: { authorization: `Bearer ${process.env.CF_AI_TOKEN}`, "content-type": "application/json" },
+        body: JSON.stringify({ prompt, steps: 8 }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.result?.image) return json({ error: `Image maker: ${d.errors?.[0]?.message || r.status}` }, 502);
+      return json({ url: await saveImage(Buffer.from(d.result.image, "base64"), url.origin) });
+    }
+    if (path[0] === "upload" && req.method === "POST") {
+      const m = /^data:image\/jpeg;base64,(.+)$/.exec(String(body.image || ""));
+      if (!m) return json({ error: "Send a JPEG." }, 400);
+      const bytes = Buffer.from(m[1], "base64");
+      if (bytes.length > 8e6) return json({ error: "Image too big." }, 413);
+      return json({ url: await saveImage(bytes, url.origin) });
     }
     if (path[0] === "chat" && req.method === "POST") {
       if (!process.env.ANTHROPIC_API_KEY) return json({ reply: "Chat isn't connected yet. Add ANTHROPIC_API_KEY in Netlify (Setup tab shows how), then ask again." });
