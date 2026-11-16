@@ -805,7 +805,7 @@
           "name": "When does the Rent Coat Co. store open?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Friday, November 27, 2026 (Black Friday) at 10 AM Eastern. After that it stays open, and new designs are added as they're ready. Every piece is printed after you order and usually arrives in 1 to 2 weeks."
+            "text": "Friday, November 27, 2026 (Black Friday) at 10 AM Eastern. After that it stays open, and new designs are added as they're ready. Every piece is printed after you order and usually arrives in 10 to 17 days."
           }
         },
         {
@@ -1317,7 +1317,7 @@ footer .wrap { padding-block: 48px 40px }
   <ol class="steps">
     <li><span class="n" aria-hidden="true">01</span><h3>Pick your shirt</h3><p>Choose a design and size. Tees are $40 and hoodies $68.</p><p class="eyebrow when"><span id="step-window">Opens Nov 27</span></p></li>
     <li><span class="n" aria-hidden="true">02</span><h3>We print yours</h3><p>Every shirt is printed after you order, so nothing gets wasted and nothing sits in a warehouse.</p><p class="eyebrow when">Printed to order</p></li>
-    <li><span class="n" aria-hidden="true">03</span><h3>It ships to your door</h3><p>Orders usually arrive in 1 to 2 weeks. You'll get tracking by email.</p><p class="eyebrow when">US addresses only</p></li>
+    <li><span class="n" aria-hidden="true">03</span><h3>It ships to your door</h3><p>Orders usually arrive in 10 to 17 days. You'll get tracking by email.</p><p class="eyebrow when">US addresses only</p></li>
   </ol>
   <div class="rest">
     <svg viewBox="0 0 24 24" fill="none" stroke="#C9A45C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
@@ -1367,7 +1367,7 @@ footer .wrap { padding-block: 48px 40px }
   <div class="faq">
     <details><summary>What is Rent Coat Co.?</summary><p>An independent clothing brand that makes heavyweight graphic tees for young Latter-day Saints. Every design starts with a scripture reference, printed on the shirt so anyone who asks can look it up.</p></details>
     <details><summary>Is this an LDS clothing brand?</summary><p>It's made by a member for members of The Church of Jesus Christ of Latter-day Saints. It's independent and is not affiliated with, sponsored by, or endorsed by the Church.</p></details>
-    <details open><summary>When does the store open?</summary><p>Friday, Nov 27 (Black Friday) at 10 AM Eastern. After that it stays open, and new designs are added as they're ready. Every piece is printed after you order and usually arrives in 1 to 2 weeks.</p></details>
+    <details open><summary>When does the store open?</summary><p>Friday, Nov 27 (Black Friday) at 10 AM Eastern. After that it stays open, and new designs are added as they're ready. Every piece is printed after you order and usually arrives in 10 to 17 days.</p></details>
     <details><summary>Why can't I order on Sunday?</summary><p>Checkout pauses on Sundays (Eastern time), because we keep Sunday as a day of rest. Your bag stays saved, so you can check out on Monday.</p></details>
     <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $40 ($43 for 2XL) and hoodies $68 ($71 for 2XL), and shipping in the US is $5.99, or free on orders of $60 or more.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
@@ -1409,7 +1409,7 @@ footer .wrap { padding-block: 48px 40px }
     <div class="row grand"><span>Total</span><span id="t-total">$0</span></div>
     <button type="button" class="btn rent" id="checkout">Checkout</button>
     <p class="note" id="bag-note" aria-live="polite"></p>
-    <p class="fine"><span id="bag-timing">Secure checkout by Stripe. Printed after you order and usually delivered in 1 to 2 weeks.</span> Made to order, so no fit returns. By checking out, you agree to our <a href="terms.html">terms of sale</a>.</p>
+    <p class="fine"><span id="bag-timing">Secure checkout by Stripe. Printed after you order and usually delivered in 10 to 17 days.</span> Made to order, so no fit returns. By checking out, you agree to our <a href="terms.html">terms of sale</a>.</p>
   </div>
 </aside>
 <aside class="pay" id="pay" role="dialog" aria-modal="true" aria-labelledby="pay-title" hidden>
@@ -1684,7 +1684,7 @@ function tick() {
   const m = Math.floor(left / 6e4); left -= m * 6e4;
   const s = Math.floor(left / 1e3);
   $("cd-d").textContent = pad(d); $("cd-h").textContent = pad(h); $("cd-m").textContent = pad(m); $("cd-s").textContent = pad(s);
-  $("clock-label").textContent = ph === "before" ? "The store opens in" : "Printed to order · arrives in 1 to 2 weeks";
+  $("clock-label").textContent = ph === "before" ? "The store opens in" : "Printed to order · arrives in 10 to 17 days";
   $("clock-state").textContent = ph === "before" ? "Upcoming" : ph === "sunday" ? "Closed Sunday" : "● Shop open";
   const pct = ph === "before" ? 0 : 100;
   $("cd-bar").style.width = pct.toFixed(2) + "%";
@@ -1694,7 +1694,7 @@ function tick() {
 function setTiming() {
   const open = now() >= opens;
   $("bag-timing").textContent = open
-    ? "Secure checkout by Stripe. Printed after you order and usually delivered in 1 to 2 weeks."
+    ? "Secure checkout by Stripe. Printed after you order and usually delivered in 10 to 17 days."
     : "Secure checkout by Stripe. The store opens Black Friday, Nov 27 at 10 AM Eastern.";
 }
 
