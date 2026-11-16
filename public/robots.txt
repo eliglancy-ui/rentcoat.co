@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /thanks.html
+Disallow: /hq/
 
 # AI search and assistant crawlers are welcome
 User-agent: GPTBot
@@ -20,5 +21,6 @@ User-agent: DuckAssistBot
 Allow: /
 Disallow: /api/
 Disallow: /thanks.html
+Disallow: /hq/
 
 Sitemap: https://rentcoat.co/sitemap.xml
