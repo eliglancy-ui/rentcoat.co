@@ -90,6 +90,11 @@ h2{font:700 18px/1.2 var(--display);margin:0 0 14px}
 .post textarea{width:100%;min-height:96px;resize:vertical;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);line-height:1.45}
 .post .title{font-weight:750}
 .acct{font:600 11px/1 var(--mono);color:var(--gold)}
+.acct.mission{color:#9ec5ff}
+.acctbar{display:flex;gap:8px;margin:0 0 16px}
+.acctbar button{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:transparent;color:inherit;font:600 14px/1.2 inherit;cursor:pointer}
+.acctbar button[aria-pressed="true"]{background:rgba(255,255,255,.1);border-color:currentColor}
+.acctbar small{display:block;font-weight:400;opacity:.65;margin-top:3px}
 .views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 /* chat */
 .chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:420px}
@@ -188,7 +193,7 @@ const store = { get(k) { try { return localStorage.getItem(k); } catch { return 
 let KEY = store.get("hq-key");
 const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Chat", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
-let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", orderFilter: "place", chat: JSON.parse(store.get("hq-chat") || "[]") };
+let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", chat: JSON.parse(store.get("hq-chat") || "[]") };
 
 function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hide"), 2200); }
 async function api(path, opts = {}) {
@@ -268,13 +273,13 @@ function viewOrders() {
 }
 
 function viewPosts() {
-  const q = state.queue?.queue;
+  const q = state.queue?.queue?.filter(p => p.account === state.acct);
   const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
   const ig = state.overview?.connected?.instagram || {};
   const card = p => `<div class="card post">
     <video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>
     <div class="body">
-      <span class="acct">${ACCT[p.account] || p.account}</span>
+      <span class="acct ${p.account}">${ACCT[p.account] || p.account}</span>
       <span class="title">${esc(p.title)}</span>
       <textarea data-caption="${p.id}">${esc(p.caption)}</textarea>
       <div class="row">
@@ -289,7 +294,8 @@ function viewPosts() {
   const n = s => q ? q.filter(p => p.status === s || (s === "approved" && p.status === "publishing")).length : "";
   return `<div class="head"><div><span class="eyebrow">Posts</span><h1>Posts</h1><p class="sub">Nothing goes out until you approve it.</p></div>
     <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
-  <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">Nothing here.</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
+  <div class="acctbar"><button data-acct="mission" aria-pressed="${state.acct === "mission"}">@whatisanldsmission<small>Church content only</small></button><button data-acct="rentcoat" aria-pressed="${state.acct === "rentcoat"}">@rentcoat.co<small>The brand</small></button></div>
+  <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">${state.acct === "rentcoat" ? "No @rentcoat.co posts yet." : "Nothing here."}</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
 }
 
 function viewChat() {
@@ -335,6 +341,7 @@ async function load(slot, path) { try { state[slot] = await api(path); render();
 function wire() {
   document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
+  document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
   document.querySelectorAll("[data-pf]").forEach(b => b.onclick = () => { state.postFilter = b.dataset.pf; render(); });
   document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast("Copied")));
   document.querySelectorAll("[data-placed]").forEach(b => b.onclick = async () => {
