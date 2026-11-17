@@ -519,7 +519,8 @@ export default async (req) => {
         model: "claude-opus-5-5", max_tokens: 1500, betas: ["server-side-fallback-2026-07-01"], fallbacks: "default",
         output_config: { effort: "low" },
         system: `You are the social media lead for Eli's Instagram accounts. Write like a sharp human editor: natural, warm, confident, no AI cliches, no emojis unless they truly fit (max 2). ${brief}
-Return ONLY a JSON object: {"imagePrompt": string (a detailed prompt for a photoreal or editorial image, vertical 4:5, no text or logos in the image, premium lighting, cohesive dark-green/cream/gold palette when it fits), "headline": string (max 6 words, for a product post graphic), "caption": string (hook in the first line, 2-4 short lines, a clear call to action, then a blank line and 5-8 relevant hashtags, mixing niche and broad)}.`,
+${acct === "rentcoat" ? `CATALOG (ids and facts; never invent others):\n${liveLine().map(p => `- ${p.id}: ${p.name}, ${p.color}, $${(p.price.default / 100).toFixed(0)}${p.ref ? `, ${p.ref}` : ""}. ${p.blurb || ""}`).join("\n")}
+If the idea is about a Rent Coat product, set "product_id" to its id and leave "imagePrompt" empty: HQ uses the real product photo (an AI picture can't show the design). Only scene or mood posts with no Rent Coat clothing get an imagePrompt.\n` : ""}Return ONLY a JSON object: {"product_id": string or null, "imagePrompt": string (a detailed prompt for a photoreal or editorial image, vertical 4:5, no text or logos in the image, premium lighting, cohesive dark-green/cream/gold palette when it fits), "headline": string (max 6 words, for a product post graphic), "caption": string (hook in the first line, 2-4 short lines, a clear call to action, then a blank line and 5-8 relevant hashtags, mixing niche and broad)}.`,
         messages: [{ role: "user", content: `Post idea: ${String(body.idea || "a strong post for today").slice(0, 1500)}` }],
       });
       const text = r.content.filter(b => b.type === "text").map(b => b.text).join("");
@@ -556,6 +557,8 @@ Return ONLY a JSON object: {"imagePrompt": string (a detailed prompt for a photo
             if (a.product_id && !prod) throw new Error(`No live product with id ${a.product_id}. Use an id from the catalog.`);
             if (prod && account === "mission") throw new Error("@whatisanldsmission never shows Rent Coat products.");
             if (!prod && !a.image_prompt) throw new Error("Give a product_id (product post) or an image_prompt (scene post).");
+            const named = !prod && account === "rentcoat" && liveLine().find(x => `${a.title} ${a.caption} ${a.image_prompt}`.toLowerCase().includes(x.name.toLowerCase().replace(/^the /, "")));
+            if (named) throw new Error(`This post is about ${named.name}: pass product_id "${named.id}" so the real photo is used, and drop image_prompt.`);
             const p2 = { id: crypto.randomUUID(), account, title: String(a.title || "Mo's draft").slice(0, 120), caption: String(a.caption || "").slice(0, 2200),
               prompt: prod ? "" : String(a.image_prompt).slice(0, 2000), product: prod?.id, media: [], status: "review", by: "mo", created: Date.now() };
             if (prod) p2.media = [`${url.origin}/${prod.images[0].src}`];

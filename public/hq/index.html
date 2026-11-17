@@ -513,8 +513,12 @@ function wire() {
       if (!ai && !state.products) state.products = await api("products");
       const prod = ai ? null : (state.products.products.find(x => x.id === d.prod) || state.products.products[0]);
       const plan = await post("draft", { account: state.acct, idea: d.idea, product: prod?.id });
-      d.prompt = plan.imagePrompt || d.prompt; d.head = plan.headline || d.head; d.caption = plan.caption || d.caption; if (prod) d.prod = prod.id;
-      d.img = ai ? (await post("image", { prompt: d.prompt })).url : (await post("upload", { image: d.mode === "video" ? await productVideo(prod, d.head, d.fmt) : await productImage(prod, d.head, d.fmt) })).url;
+      d.head = plan.headline || d.head; d.caption = plan.caption || d.caption;
+      // A post about a product always uses its real photo in the brand frame, whatever mode was selected.
+      let pick = prod;
+      if (state.acct === "rentcoat" && plan.product_id) { if (!state.products) state.products = await api("products"); pick = state.products.products.find(x => x.id === plan.product_id) || prod; }
+      if (pick) { d.prod = pick.id; if (d.mode === "ai") d.mode = "product"; d.img = (await post("upload", { image: d.mode === "video" ? await productVideo(pick, d.head, d.fmt) : await productImage(pick, d.head, d.fmt) })).url; }
+      else { d.prompt = plan.imagePrompt || d.prompt; d.img = (await post("image", { prompt: d.prompt })).url; }
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
   if ($("#d-gen")) $("#d-gen").onclick = async () => { keep(); state.draft.busy = true; render();
