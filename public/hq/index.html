@@ -101,6 +101,10 @@ h2{font:700 18px/1.2 var(--display);margin:0 0 14px}
 select.field{appearance:none}
 select.field option{background:var(--panel);color:var(--ink)}
 #composer summary{list-style:none}
+.mo-av{width:34px;height:34px;border-radius:12px;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#1a1408;font:800 15px/1 var(--body)}
+.mo-row{display:flex;gap:10px;align-items:flex-end}
+.mo-did{align-self:flex-start;font:600 12px/1.3 var(--mono);color:var(--green);background:rgba(93,178,135,.08);border:1px solid rgba(93,178,135,.25);border-radius:10px;padding:7px 10px}
+.plat{font:600 11px/1 var(--mono);color:var(--green);margin-left:6px}
 #composer .lbl{font:600 11px/1 var(--mono);letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
 .views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 /* chat */
@@ -198,9 +202,9 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} }, del(k) { try { localStorage.removeItem(k); } catch {} } };
 let KEY = store.get("hq-key");
-const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Chat", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
-let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]") };
+let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", fmt: "feed", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]"), mo: JSON.parse(store.get("hq-mo") || "[]") };
 
 function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hide"), 2200); }
 async function api(path, opts = {}) {
@@ -239,16 +243,21 @@ function viewToday() {
   const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">${money(x.sales)}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · you keep about <b>${money(Math.max(0, x.keep))}</b></div></div>`
     : `<div class="card">${sk(12, "40%")}<div style="height:16px"></div>${sk(34, "60%")}<div style="height:10px"></div>${sk(12, "70%")}</div>`;
   return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><span class="countdown">${countdown()}</span></div>
+  ${o ? (() => { const goal = 1000000, got = o.month.sales, aov = o.month.orders ? got / o.month.orders : 5500, left = Math.max(0, goal - got), per = Math.ceil(left / aov / 30);
+    return `<div class="card" style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="eyebrow">Goal · $10k a month</span><span class="sub" style="margin:0">${money(got)} in the last 30 days</span></div>
+    <div style="height:10px;background:var(--panel-2);border-radius:99px;margin:12px 0;overflow:hidden"><div style="height:100%;width:${Math.min(100, got / goal * 100).toFixed(1)}%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div>
+    <p class="sub" style="margin:0">${left ? `About <b>${per} order${per === 1 ? "" : "s"} a day</b> at a ${money(Math.round(aov))} average order gets you there. Ask Mo for today's plan.` : "Goal hit. Keep going."}</p></div>`; })() : ""}
   <div class="grid g3">${o ? [stat("Today", o.today), stat("Last 7 days", o.week), stat("Last 30 days", o.month)].join("") : stat().repeat(3)}</div>
   <div class="grid g2" style="margin-top:16px">
     ${o ? `<div class="card ${o.toPlace ? "alert" : "alert ok"}"><div><span class="eyebrow">Tapstitch</span><h2 style="margin:8px 0 4px">${o.toPlace ? `${o.toPlace} order${o.toPlace === 1 ? "" : "s"} to place` : "Nothing to place"}</h2><p class="sub" style="margin:0">${o.toPlace ? "Hoodies, sweats and sets you place by hand." : "Every hand-placed order is done."}</p></div>${o.toPlace ? `<button class="btn primary" data-go="orders">Place now</button>` : ""}</div>
     <div class="card alert ok" style="background:linear-gradient(135deg,#1d1a10,#14130f);border-color:#4a3d1f"><div><span class="eyebrow">Posts</span><h2 style="margin:8px 0 4px">${o.queue.review} waiting for you</h2><p class="sub" style="margin:0">${o.queue.approved} approved · ${o.queue.posted} posted</p></div><button class="btn primary" data-go="posts">Review</button></div>`
     : `<div class="card">${sk(70)}</div><div class="card">${sk(70)}</div>`}
   </div>
+  ${o?.ads ? `<div class="card" style="margin-top:16px"><span class="eyebrow">Meta ads · last 7 days</span>${o.ads.error ? `<p class="sub">${esc(o.ads.error)}</p>` : `<div class="grid g3" style="margin-top:10px"><div><div class="v" style="font-size:26px">$${Number(o.ads.spend || 0).toFixed(2)}</div><div class="s">spent</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.impressions || 0).toLocaleString()}</div><div class="s">impressions</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.clicks || 0).toLocaleString()}</div><div class="s">clicks${o.ads.cpc ? ` · $${Number(o.ads.cpc).toFixed(2)} each` : ""}</div></div></div>`}</div>` : ""}
   <div class="grid g3" style="margin-top:16px">
     ${o ? `<div class="card stat"><span class="eyebrow">Site visits today</span><div class="v">${o.visitsToday}</div><div class="s">Page views on rentcoat.co</div></div>
     <div class="card stat"><span class="eyebrow">Instagram</span><div class="v" style="font-size:22px;margin-top:18px">${Object.values(o.connected.instagram).filter(Boolean).length} of 2 connected</div><div class="s">${Object.entries(o.connected.instagram).map(([a, on]) => `${ACCT[a]} ${on ? "✓" : "·"}`).join("  ")}</div></div>
-    <div class="card stat"><span class="eyebrow">Assistant</span><div class="v" style="font-size:22px;margin-top:18px">${o.connected.chat ? "Ready" : "Not connected"}</div><div class="s">${o.connected.chat ? "Ask it anything in Chat." : "Add the API key in Setup."}</div></div>`
+    <div class="card stat"><span class="eyebrow">Mo</span><div class="v" style="font-size:22px;margin-top:18px">${o.connected.chat ? "Ready" : "Not connected"}</div><div class="s">${o.connected.chat ? "Your sidekick is ready in the Mo tab." : "Add the API key in Setup."}</div></div>`
     : `<div class="card">${sk(80)}</div>`.repeat(3)}
   </div>`;
 }
@@ -288,44 +297,74 @@ function composer() {
       <span class="lbl">Idea</span><textarea class="field" id="d-idea" rows="2" placeholder="What's this post about? e.g. 10 days until Black Friday, the Steadfast hoodie">${esc(d.idea || "")}</textarea>
       <button class="btn primary" id="d-claude" ${d.busy ? "disabled" : ""}>${d.busy ? "Working…" : "✦ Make it with Claude"}</button>
       <p class="sub" style="margin:0">Claude writes the image, headline, caption and hashtags. You can edit anything before it goes to review.</p>
-      ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${!ai}">Product post</button></div>`}
+      ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${d.mode === "product"}">Product image</button><button data-mode="video" aria-pressed="${d.mode === "video"}">Video ad</button></div>
+      <div class="tabs"><button data-fmt="feed" aria-pressed="${d.fmt === "feed"}">Feed 4:5</button><button data-fmt="story" aria-pressed="${d.fmt === "story"}">Reel / Story 9:16</button><button data-fmt="square" aria-pressed="${d.fmt === "square"}">Square</button></div>`}
       ${ai ? `<span class="lbl">Image</span><textarea class="field" id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
         <button class="btn primary" id="d-gen" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : "Make image"}</button>${imgOn ? "" : `<p class="sub">Image maker isn't connected yet: see Setup.</p>`}`
       : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
-        <button class="btn primary" id="d-render">Make post image</button>`}
-      ${d.img ? `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">` : ""}
+        <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
+      ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
       <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
       <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
 }
-async function productImage(prod, head) {
-  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const g = c.getContext("2d");
-  g.fillStyle = "#13201a"; g.fillRect(0, 0, 1080, 1350);
-  const im = new Image(); im.src = "/" + prod.images[0].src; await im.decode();
-  const s = Math.max(1080 / im.width, 1080 / im.height), w = im.width * s, h = im.height * s;
-  g.drawImage(im, (1080 - w) / 2, (1080 - h) / 2, w, h);
+const FMT = { feed: [1080, 1350], story: [1080, 1920], square: [1080, 1080] };
+async function loadImg(src) { const im = new Image(); im.src = src; await im.decode(); return im; }
+function drawFrame(g, W, H, im, head, zoom = 1, alpha = 1) {
+  const band = H - W > 300 ? 300 : 240, box = H - band;
+  g.globalAlpha = 1; g.fillStyle = "#13201a"; g.fillRect(0, 0, W, H);
+  g.globalAlpha = alpha;
+  const s0 = Math.max(W / im.width, box / im.height) * zoom, w = im.width * s0, h = im.height * s0;
+  g.save(); g.beginPath(); g.rect(0, 0, W, box); g.clip(); g.drawImage(im, (W - w) / 2, (box - h) / 2, w, h); g.restore();
+  g.globalAlpha = 1; g.fillStyle = "#f3eee1"; g.font = '800 72px "Archivo", system-ui, sans-serif'; g.textBaseline = "top";
+  const words = String(head || "").toUpperCase().split(" "); let line = "", lines = [];
+  for (const w2 of words) { const t = line ? line + " " + w2 : w2; if (g.measureText(t).width > W - 100 && line) { lines.push(line); line = w2; } else line = t; }
+  lines.push(line); lines.slice(0, 2).forEach((l, i) => g.fillText(l, 50, box + 30 + i * 80));
+  g.fillStyle = "#c9a45c"; g.font = '500 30px "Mono", monospace'; g.fillText("RENTCOAT.CO", 50, H - 60);
+}
+async function productImage(prod, head, fmt = "feed") {
+  const [W, H] = FMT[fmt]; const c = document.createElement("canvas"); c.width = W; c.height = H;
   await document.fonts.load('800 72px "Archivo"');
-  g.fillStyle = "#f3eee1"; g.font = '800 72px "Archivo", system-ui, sans-serif'; g.textBaseline = "top";
-  const words = (head || prod.name).toUpperCase().split(" "); let line = "", y = 1110, lines = [];
-  for (const w2 of words) { const t = line ? line + " " + w2 : w2; if (g.measureText(t).width > 980 && line) { lines.push(line); line = w2; } else line = t; }
-  lines.push(line); lines.slice(0, 2).forEach((l, i) => g.fillText(l, 50, y + i * 80));
-  g.fillStyle = "#c9a45c"; g.font = '500 30px "Mono", monospace'; g.fillText("RENTCOAT.CO", 50, 1290);
+  drawFrame(c.getContext("2d"), W, H, await loadImg("/" + prod.images[0].src), head || prod.name);
   return c.toDataURL("image/jpeg", 0.9);
+}
+// An 8-second ad recorded in the browser: slow zoom on each product photo with a crossfade, headline and site.
+async function productVideo(prod, head, fmt = "story") {
+  const [W, H] = FMT[fmt]; const c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+  await document.fonts.load('800 72px "Archivo"');
+  const ims = await Promise.all(prod.images.slice(0, 3).map(i => loadImg("/" + i.src)));
+  const type = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+  if (!type) throw new Error("This browser can't record video. Try Chrome or Safari.");
+  const rec = new MediaRecorder(c.captureStream(30), { mimeType: type, videoBitsPerSecond: 2500000 }), parts = [];
+  rec.ondataavailable = e => e.data.size && parts.push(e.data);
+  const done = new Promise(r => rec.onstop = r);
+  const T = 8000, per = T / ims.length, t0 = performance.now();
+  drawFrame(g, W, H, ims[0], head || prod.name); rec.start(250);
+  await new Promise(res => { const tick = () => { const t = performance.now() - t0; if (t >= T) return res();
+    const i = Math.min(ims.length - 1, Math.floor(t / per)), k = (t - i * per) / per;
+    drawFrame(g, W, H, ims[i], head || prod.name, 1 + 0.08 * k);
+    if (i + 1 < ims.length && k > 0.85) drawFrame(g, W, H, ims[i + 1], head || prod.name, 1, (k - 0.85) / 0.15);
+    requestAnimationFrame(tick); }; tick(); });
+  rec.stop(); await done;
+  const blob = new Blob(parts, { type: type.split(";")[0] });
+  return await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
 }
 function viewPosts() {
   const q = state.queue?.queue?.filter(p => p.account === state.acct);
   const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
   const ig = state.overview?.connected?.instagram || {};
   const card = p => `<div class="card post">
-    ${/\.jpe?g($|\?)/i.test(p.media?.[0] || "") ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}
+    ${p.needsImage && !p.media?.length ? `<div style="aspect-ratio:4/5;display:grid;place-items:center;background:var(--panel-2)"><button class="btn sm primary" data-mkimg="${p.id}">Make image</button></div>` : /\.jpe?g($|\?)/i.test(p.media?.[0] || "") ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}
     <div class="body">
       <span class="acct ${p.account}">${ACCT[p.account] || p.account}</span>
-      <span class="title">${esc(p.title)}</span>
+      <span class="title">${esc(p.title)}${p.by === "mo" ? ` <span class="pill">by Mo</span>` : ""}${p.fb ? `<span class="plat">✓ Facebook</span>` : ""}${p.tt ? `<span class="plat">✓ TikTok drafts</span>` : ""}</span>
       <textarea data-caption="${p.id}">${esc(p.caption)}</textarea>
       <div class="row">
         ${p.status === "review" ? `<button class="btn sm primary" data-status="${p.id}" data-to="approved">Approve</button>` : ""}
         ${p.status === "approved" || p.status === "publishing" ? (ig[p.account] ? `<button class="btn sm primary" data-publish="${p.id}">${p.status === "publishing" ? "Finish posting" : "Post to Instagram"}</button>` : `<button class="btn sm" data-status="${p.id}" data-to="posted">I posted it</button>`) : ""}
+        ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.facebook && !p.fb ? `<button class="btn sm" data-plat="facebook" data-id="${p.id}">Facebook</button>` : ""}
+        ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.tiktok && !p.tt ? `<button class="btn sm" data-plat="tiktok" data-id="${p.id}">TikTok drafts</button>` : ""}
         <button class="btn sm" data-copycap="${p.id}">Copy caption</button>
         <a class="btn sm ghost" href="${esc(local(p.media?.[0]) || "#")}" download>Download</a>
         ${p.status === "posted" ? `<input class="views" type="number" min="0" placeholder="Views" value="${p.views ?? ""}" data-views="${p.id}">` : ""}
@@ -340,12 +379,25 @@ function viewPosts() {
   <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">${state.acct === "rentcoat" ? "No @rentcoat.co posts yet." : "Nothing here."}</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
 }
 
+function moHtml() {
+  const out = [];
+  for (const m of state.mo) {
+    if (m.role === "user" && typeof m.content === "string") out.push(`<div class="msg me">${esc(m.content)}</div>`);
+    if (m.role === "assistant") {
+      const blocks = typeof m.content === "string" ? [{ type: "text", text: m.content }] : m.content;
+      const text = blocks.filter(b => b.type === "text").map(b => b.text).join("\n").trim();
+      if (text) out.push(`<div class="mo-row"><div class="mo-av">Mo</div><div class="msg ai">${esc(text)}</div></div>`);
+      blocks.filter(b => b.type === "tool_use" && b.name === "draft_post").forEach(b => out.push(`<div class="mo-did">✓ Drafted “${esc(b.input?.title || "post")}” → Posts, To review</div>`));
+    }
+  }
+  return out.join("");
+}
 function viewChat() {
-  const chips = ["What should I post today?", "Write a Black Friday caption for the Steadfast Sweatsuit", "How many orders do I need for $10k a month?", "Draft a reply to a customer asking about sizing"];
-  return `<div class="head"><div><span class="eyebrow">Chat</span><h1>Ask <em>HQ</em></h1><p class="sub">It knows your products, prices and this week's orders.</p></div>${state.chat.length ? `<button class="btn sm ghost" id="clear">New chat</button>` : ""}</div>
+  const chips = ["Make 3 posts for this week", "How are sales doing?", "Plan my Black Friday week", "Write a Facebook ad for the Steadfast Sweatsuit", "Make a mission post about missionaries at Christmas"];
+  return `<div class="head"><div><span class="eyebrow">Mo</span><h1>Hi, I'm <em>Mo</em>.</h1><p class="sub">Your Rent Coat sidekick. I can check sales, plan, write captions and ads, and draft posts with images. Anything I make waits in Posts for your OK.</p></div>${state.mo.length ? `<button class="btn sm ghost" id="clear">New chat</button>` : ""}</div>
   <div class="chat">
-    <div class="log" id="log">${state.chat.length ? state.chat.map(m => `<div class="msg ${m.role === "user" ? "me" : "ai"}">${esc(m.content)}</div>`).join("") : `<div class="chips">${chips.map(c => `<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>`}</div>
-    <form class="compose" id="compose"><textarea id="say" rows="1" placeholder="Tell HQ what you need…"></textarea><button class="btn primary" type="submit">Send</button></form>
+    <div class="log" id="log">${state.mo.length ? moHtml() + (state.moBusy ? `<div class="mo-row"><div class="mo-av">Mo</div><div class="msg ai">…</div></div>` : "") : `<div class="mo-row" style="margin-bottom:14px"><div class="mo-av">Mo</div><div class="msg ai">What are we working on today?</div></div><div class="chips">${chips.map(c => `<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>`}</div>
+    <form class="compose" id="compose"><textarea id="say" rows="1" placeholder="Ask Mo…"></textarea><button class="btn primary" type="submit" ${state.moBusy ? "disabled" : ""}>Send</button></form>
   </div>`;
 }
 
@@ -357,16 +409,26 @@ function viewProducts() {
 }
 
 function viewSetup() {
-  const o = state.overview || { connected: { instagram: {}, chat: false } };
-  const item = (on, title, body) => `<div class="check"><span class="dot ${on ? "on" : ""}"></span><div><b>${title}</b>${body}</div></div>`;
-  return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">One-time steps that need your logins. Keys go into Netlify, never into chat.</p></div></div>
-  <div class="card">
-    ${item(true, "Store, checkout and orders", `<p class="sub">Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.</p>`)}
-    ${item(o.connected.chat, "Claude (Chat and post writing)", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
-    ${item(o.connected.instagram.rentcoat && o.connected.instagram.mission, "Instagram posting (both accounts)", `<ol><li>Switch both accounts to <b>Professional</b> (Settings → Account type).</li><li>Link each to a Facebook Page.</li><li>Create a free app at <b>developers.facebook.com</b>, add Instagram, and generate a long-lived token for each account.</li><li>Add <code>IG_RENTCOAT_USER_ID</code>, <code>IG_RENTCOAT_TOKEN</code>, <code>IG_MISSION_USER_ID</code>, <code>IG_MISSION_TOKEN</code> in Netlify.</li></ol><p class="sub">Until then, approve a post here, then use Download + Copy caption and post it yourself.</p>`)}
-    ${item(o.connected.images, "Image maker (free)", `<ol><li>Make a free account at <b>dash.cloudflare.com</b>.</li><li>Copy your <b>Account ID</b> (right side of the dashboard).</li><li>My Profile → API Tokens → Create token → template <b>Workers AI</b> → create.</li><li>In Netlify add <code>CF_ACCOUNT_ID</code> and <code>CF_AI_TOKEN</code> (secret), then redeploy.</li></ol><p class="sub">Free: 10,000 Neurons a day, enough for a lot of images. Product posts don't need it.</p>`)}
-    ${item(false, "Order emails", `<p class="sub">Stripe → Settings → Communication preferences → turn on <b>Successful payments</b>, so every order reaches your inbox too.</p>`)}
-  </div>
+  const o = state.overview || { connected: { instagram: {} } }, v = state.vault, set = v?.set || {}, acc = v?.accounts || {};
+  if (!v) { load("vault", "vault"); return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1></div></div><div class="card">${sk(200)}</div>`; }
+  const dot = on => `<span class="dot ${on ? "on" : ""}"></span>`;
+  const keyRow = (k, label, ph) => `<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><input class="field" type="password" autocomplete="off" data-key="${k}" placeholder="${set[k] ? "Saved ✓ (paste to replace)" : ph}"><button class="btn sm" data-savekey="${k}">Save</button></div><span class="sub" style="font-size:12px">${label}</span>`;
+  const open = (href, text) => `<a class="btn sm" href="${href}" target="_blank" rel="noopener">${text} ↗</a>`;
+  const svc = (on, name, what, body) => `<div class="card" style="margin-bottom:12px"><div style="display:flex;gap:12px;align-items:flex-start">${dot(on)}<div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:17px">${name}</b><span class="pill">${on ? "CONNECTED" : "NOT CONNECTED"}</span></div><p class="sub" style="margin:4px 0 10px">${what}</p>${body}</div></div></div>`;
+  const metaOn = Boolean(acc.meta), ttOn = Boolean(acc.tiktok);
+  return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">Tap a button, log in, come back. Keys you paste here are saved privately in HQ, never shown again.</p></div></div>
+  ${svc(set.ANTHROPIC_API_KEY, "Mo (Claude)", "Mo, captions, hashtags and post planning. About $3–15 a month at your volume (estimate).",
+    `${open("https://console.anthropic.com/settings/keys", "Get a key")}${keyRow("ANTHROPIC_API_KEY", "Create key → copy → paste here → Save.", "sk-ant-…")}`)}
+  ${svc(set.CF_AI_TOKEN && set.CF_ACCOUNT_ID, "Image maker (Cloudflare)", "AI images. Free daily allowance.",
+    `${open("https://dash.cloudflare.com/profile/api-tokens", "Get a token")}${keyRow("CF_AI_TOKEN", "Create token → template “Workers AI” → copy → paste.", "API token")}${keyRow("CF_ACCOUNT_ID", "Account ID: right side of the Cloudflare home page.", "Account ID")}`)}
+  ${svc(metaOn, "Instagram + Facebook + Meta ads", metaOn ? `Linked: ${esc([...(acc.meta.instagram || []), acc.meta.page && "Page: " + acc.meta.page, acc.meta.adAccount && "Ads: " + acc.meta.adAccount].filter(Boolean).join(" · ") || "no Instagram business accounts found")}` : "One login connects both Instagram accounts, the Rent Coat Facebook Page and ad stats.",
+    `${set.META_APP_ID && set.META_APP_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.facebook.com/apps/creation/", "Create a Meta app")} type “Business”. Add <b>Facebook Login for Business</b>, and under its settings paste this as a Valid OAuth Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.meta)}"><button class="btn sm" data-copy="${esc(v.redirects.meta)}">Copy</button></div><p class="sub" style="margin:8px 0 0">Then App settings → Basic: copy the App ID and App Secret here.</p>${keyRow("META_APP_ID", "App ID", "App ID")}${keyRow("META_APP_SECRET", "App Secret", "App Secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
+     <div class="row"><button class="btn primary" data-connect="meta">${metaOn ? "Reconnect" : "Connect Instagram & Facebook"}</button>${metaOn ? `<button class="btn sm ghost" data-disconnect="meta">Disconnect</button>` : ""}</div>
+     <p class="sub" style="font-size:12px;margin-top:8px">Both Instagram accounts must be Professional and linked to a Facebook Page. Ads stats need reconnecting every ~60 days.</p>`)}
+  ${svc(ttOn, "TikTok", "Sends Rent Coat posts to your TikTok drafts; you add a sound and post in the app.",
+    `${set.TIKTOK_CLIENT_KEY && set.TIKTOK_CLIENT_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.tiktok.com/apps/", "Create a TikTok app")} add <b>Login Kit</b> and <b>Content Posting API</b>, set this as the Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.tiktok)}"><button class="btn sm" data-copy="${esc(v.redirects.tiktok)}">Copy</button></div>${keyRow("TIKTOK_CLIENT_KEY", "Client key", "Client key")}${keyRow("TIKTOK_CLIENT_SECRET", "Client secret", "Client secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
+     <div class="row"><button class="btn primary" data-connect="tiktok">${ttOn ? "Reconnect" : "Connect TikTok"}</button>${ttOn ? `<button class="btn sm ghost" data-disconnect="tiktok">Disconnect</button>` : ""}</div>`)}
+  ${svc(true, "Store, checkout and orders", "Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.", `${open("https://dashboard.stripe.com/settings/communication-preferences", "Turn on order emails")}<p class="sub" style="font-size:12px;margin-top:6px">Turn on “Successful payments” so every order reaches your inbox too.</p>`)}
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
 }
 
@@ -386,7 +448,8 @@ function wire() {
   document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
   document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
   const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); };
-  document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
+  document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
+  document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
   const keep = () => { const d = state.draft; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
   if ($("#d-claude")) $("#d-claude").onclick = async () => { keep(); const d = state.draft, ai = d.mode === "ai" || state.acct === "mission"; d.busy = true; render();
     try {
@@ -394,13 +457,15 @@ function wire() {
       const prod = ai ? null : (state.products.products.find(x => x.id === d.prod) || state.products.products[0]);
       const plan = await post("draft", { account: state.acct, idea: d.idea, product: prod?.id });
       d.prompt = plan.imagePrompt || d.prompt; d.head = plan.headline || d.head; d.caption = plan.caption || d.caption; if (prod) d.prod = prod.id;
-      d.img = ai ? (await post("image", { prompt: d.prompt })).url : (await post("upload", { image: await productImage(prod, d.head) })).url;
+      d.img = ai ? (await post("image", { prompt: d.prompt })).url : (await post("upload", { image: d.mode === "video" ? await productVideo(prod, d.head, d.fmt) : await productImage(prod, d.head, d.fmt) })).url;
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
   if ($("#d-gen")) $("#d-gen").onclick = async () => { keep(); state.draft.busy = true; render();
     try { state.draft.img = (await post("image", { prompt: state.draft.prompt })).url; } catch (e) { toast(e.message); } state.draft.busy = false; render(); };
   if ($("#d-render")) $("#d-render").onclick = async () => { keep(); const prod = (state.products?.products || []).find(x => x.id === state.draft.prod) || state.products?.products?.[0]; if (!prod) return toast("Products still loading.");
-    try { state.draft.img = (await post("upload", { image: await productImage(prod, state.draft.head) })).url; render(); } catch (e) { toast(e.message); } };
+    state.draft.busy = true; render();
+    try { const d = state.draft; d.img = (await post("upload", { image: d.mode === "video" ? await productVideo(prod, d.head, d.fmt) : await productImage(prod, d.head, d.fmt) })).url; } catch (e) { toast(e.message); }
+    state.draft.busy = false; render(); };
   if ($("#d-add")) $("#d-add").onclick = async () => { keep(); const d = state.draft;
     try { const r = await post("queue", { account: state.acct, title: (d.head || d.prompt || "New post").slice(0, 80), caption: d.caption, media: [d.img] });
       state.queue.queue.unshift(r.post); state.draft = { mode: d.mode, img: "", caption: "", busy: false }; state.postFilter = "review"; state.overview = await api("overview"); paintNav(); render(); toast("Added to review"); } catch (e) { toast(e.message); } };
@@ -428,6 +493,16 @@ function wire() {
       updated(p); render(); toast(p.status === "posted" ? "Posted to Instagram" : "Instagram is still processing. Tap Finish posting in a minute.");
     } catch (e) { toast(e.message); render(); }
   });
+  document.querySelectorAll("[data-plat]").forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = "Sending…";
+    try { updated((await post(`queue/${b.dataset.id}/${b.dataset.plat}`)).post); render(); toast(b.dataset.plat === "facebook" ? "Posted to Facebook" : "Sent to your TikTok drafts: finish it in the app"); }
+    catch (e) { toast(e.message); render(); }
+  });
+  document.querySelectorAll("[data-mkimg]").forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = "Making…"; const p = findPost(b.dataset.mkimg);
+    try { const u = (await post("image", { prompt: p.prompt || p.title })).url; updated((await post(`queue/${p.id}`, { media: [u] })).post); render(); }
+    catch (e) { toast(e.message); render(); }
+  });
   document.querySelectorAll("[data-views]").forEach(i => i.onchange = async () => { try { updated((await post(`queue/${i.dataset.views}`, { views: Number(i.value) })).post); toast("Saved"); } catch (e) { toast(e.message); } });
   document.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
     if (!confirm("Remove this post from the queue?")) return;
@@ -439,19 +514,28 @@ function wire() {
     say.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#compose").requestSubmit(); } };
     document.querySelectorAll("[data-chip]").forEach(c => c.onclick = () => { say.value = c.dataset.chip; $("#compose").requestSubmit(); });
     $("#compose").onsubmit = async e => {
-      e.preventDefault(); const text = say.value.trim(); if (!text) return;
-      state.chat.push({ role: "user", content: text }); store.set("hq-chat", JSON.stringify(state.chat)); render();
-      const log = $("#log"); log.insertAdjacentHTML("beforeend", `<div class="msg ai" id="thinking"><div class="sk" style="height:12px;width:160px"></div></div>`); log.scrollTop = log.scrollHeight;
-      try { const r = await post("chat", { messages: state.chat }); state.chat.push({ role: "assistant", content: r.reply }); }
-      catch (err) { state.chat.push({ role: "assistant", content: "That didn't go through: " + err.message }); }
-      store.set("hq-chat", JSON.stringify(state.chat.slice(-40))); render(); $("#say")?.focus();
+      e.preventDefault(); const text = say.value.trim(); if (!text || state.moBusy) return;
+      state.mo.push({ role: "user", content: text }); state.moBusy = true; render();
+      try {
+        for (let i = 0; i < 5; i++) { const r = await post("mo", { messages: state.mo }); state.mo = r.messages; render(); if (r.done) break; }
+        if (state.mo.some(m => m.role === "assistant" && Array.isArray(m.content) && m.content.some(b => b.name === "draft_post"))) { state.queue = null; state.overview = await api("overview"); paintNav(); }
+      } catch (e2) { state.mo.push({ role: "assistant", content: e2.message }); }
+      state.moBusy = false; store.set("hq-mo", JSON.stringify(state.mo.slice(-60))); render(); $("#say")?.focus();
     };
   }
-  const clear = $("#clear"); if (clear) clear.onclick = () => { state.chat = []; store.del("hq-chat"); render(); };
+  const clear = $("#clear"); if (clear) clear.onclick = () => { state.mo = []; store.del("hq-mo"); render(); };
+  document.querySelectorAll("[data-savekey]").forEach(b => b.onclick = async () => {
+    const k = b.dataset.savekey, val = document.querySelector(`[data-key="${k}"]`).value.trim(); if (!val) return toast("Paste it first.");
+    b.disabled = true; try { state.vault = await post("vault", { [k]: val }); state.overview = await api("overview"); render(); toast("Saved"); } catch (e) { toast(e.message); b.disabled = false; }
+  });
+  document.querySelectorAll("[data-connect]").forEach(b => b.onclick = async () => { b.disabled = true; try { location.href = (await post(`connect/${b.dataset.connect}`)).url; } catch (e) { toast(e.message); b.disabled = false; } });
+  document.querySelectorAll("[data-disconnect]").forEach(b => b.onclick = async () => { if (!confirm("Disconnect?")) return; try { await post(`disconnect/${b.dataset.disconnect}`); state.vault = null; state.overview = await api("overview"); render(); toast("Disconnected"); } catch (e) { toast(e.message); } });
   const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
 }
 
 async function start() {
+  const qp = new URLSearchParams(location.search);
+  if (qp.get("connected") || qp.get("error")) { setTimeout(() => toast(qp.get("error") || `${qp.get("connected") === "meta" ? "Instagram & Facebook" : "TikTok"} connected`), 600); history.replaceState(null, "", location.pathname + location.hash); }
   $("#login").classList.add("hide"); $("#app").classList.remove("hide"); $("#tabbar").classList.remove("hide");
   const fromHash = location.hash.slice(1); if (VIEWS[fromHash]) state.tab = fromHash;
   paintNav(); render();
