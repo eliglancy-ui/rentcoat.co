@@ -141,15 +141,28 @@ async function adsInsights() {
 }
 
 // ---- Email (Resend). Marketing emails need a postal address in the footer (CAN-SPAM): MAIL_ADDRESS in Setup.
+// Resend only sends from the verified domain, so "From" is always something@rentcoat.co. Whatever was typed in Setup
+// ("hello", "hello@rentcoat.co", "Rent Coat <hello@rentcoat.co>", or a Gmail address by mistake) becomes a valid sender.
+const SEND_DOMAIN = () => process.env.EMAIL_DOMAIN || "rentcoat.co";
+const isEmail = e => /^[^@\s<>"]+@[^@\s<>"]+\.[^@\s<>"]+$/.test(e);
+function fromAddress() {
+  const raw = String(process.env.EMAIL_FROM || "").trim();
+  const addr = (raw.match(/<([^>]+)>/)?.[1] || raw).trim().toLowerCase();
+  let local = "hello";
+  if (isEmail(addr) && addr.endsWith(`@${SEND_DOMAIN()}`)) local = addr.split("@")[0];
+  else if (/^[a-z0-9._+-]+$/.test(addr)) local = addr;
+  return `Rent Coat Co. <${local}@${SEND_DOMAIN()}>`;
+}
+const replyTo = () => { const r = String(process.env.EMAIL_REPLY_TO || "").trim(); return isEmail(r) ? r : "rentcoat.co@gmail.com"; };
 const suppressed = async () => new Set((await store().get("suppress", { type: "json" })) || []);
 async function sendEmail(list, subject, text, marketing) {
   if (!process.env.RESEND_API_KEY) throw new Error("Email isn't connected yet. See Setup.");
   if (marketing) { const stop = await suppressed(); list = list.filter(e => !stop.has(String(e).toLowerCase())); }
   if (!list.length) return 0;
   if (marketing && !process.env.MAIL_ADDRESS) throw new Error("Add a mailing address (a PO box is fine) in Setup first. The law requires it on marketing emails.");
-  const from = process.env.EMAIL_FROM || "Rent Coat Co. <hello@rentcoat.co>";
+  const from = fromAddress();
   const foot = `\n\n--\nRent Coat Co. · rentcoat.co${process.env.MAIL_ADDRESS ? ` · ${process.env.MAIL_ADDRESS}` : ""}${marketing ? "\nReply STOP and we'll take you off the list." : ""}`;
-  const items = list.map(to => ({ from, to: [to], subject, text: text + foot, reply_to: "rentcoat.co@gmail.com" }));
+  const items = list.map(to => ({ from, to: [to], subject, text: text + foot, reply_to: replyTo() }));
   let sent = 0;
   for (let i = 0; i < items.length; i += 100) {
     const r = await fetch("https://api.resend.com/emails/batch", { method: "POST", headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" }, body: JSON.stringify(items.slice(i, i + 100)) });
@@ -318,7 +331,7 @@ export default async (req) => {
       const subject = String(body.subject || "").trim().slice(0, 150), text = String(body.text || "").trim().slice(0, 8000);
       if (path[1] === "launch") {
         if (!subject || !text) return json({ error: "Add a subject and message." }, 400);
-        if (body.test) return json({ sent: await sendEmail(["rentcoat.co@gmail.com"], `[TEST] ${subject}`, text, true) });
+        if (body.test) return json({ sent: await sendEmail([replyTo()], `[TEST] ${subject}`, text, true), to: replyTo(), from: fromAddress() });
         const list = await reminderList(); if (list.error) return json({ error: list.error }, 400);
         const key = `launchSent-${subject.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40)}`; // same subject = same campaign
         const done = new Set((await store().get(key, { type: "json" })) || []);
