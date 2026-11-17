@@ -9,7 +9,8 @@ const OPENS = Netlify.env.get("DROP_OPENS") || "2026-11-27T10:00:00-05:00";
 
 export default async (_req: Request, context: Context) => {
   const res = await context.next();
-  if (Date.now() < Date.parse(OPENS)) return res;
+  const opens = Date.parse(OPENS);
+  if (!Number.isFinite(opens) || Date.now() < opens) return res; // a malformed date never opens early
   if (!(res.headers.get("content-type") || "").includes("text/html")) return res;
   const html = await res.text();
   const out = html
@@ -21,5 +22,6 @@ export default async (_req: Request, context: Context) => {
 };
 
 export const config: Config = {
+  onError: "bypass", // if this ever fails, serve the page untouched rather than an error
   path: ["/", "/index.html", "/title-of-liberty-shirt", "/title-of-liberty-shirt/", "/curelom-shirt", "/curelom-shirt/"],
 };

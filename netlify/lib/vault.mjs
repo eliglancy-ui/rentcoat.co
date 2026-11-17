@@ -30,7 +30,8 @@ export function checkState(state, provider) {
   const parts = String(state || "").split(".");
   if (parts.length !== 4 || parts[0] !== provider || !process.env.ADMIN_KEY) return false;
   const exp = sign(parts.slice(0, 3).join("."));
-  return parts[3].length === exp.length && crypto.timingSafeEqual(Buffer.from(parts[3]), Buffer.from(exp)) && Date.now() - Number(parts[1]) < 15 * 60e3;
+  const got = Buffer.from(parts[3]), want = Buffer.from(exp);
+  return got.length === want.length && crypto.timingSafeEqual(got, want) && Date.now() - Number(parts[1]) < 15 * 60e3;
 }
 
 // Per-order token for review links (not guessable without ADMIN_KEY).
