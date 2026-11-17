@@ -106,6 +106,18 @@ select.field option{background:var(--panel);color:var(--ink)}
 .mo-did{align-self:flex-start;font:600 12px/1.3 var(--mono);color:var(--green);background:rgba(93,178,135,.08);border:1px solid rgba(93,178,135,.25);border-radius:10px;padding:7px 10px}
 .plat{font:600 11px/1 var(--mono);color:var(--green);margin-left:6px}
 #composer .lbl{font:600 11px/1 var(--mono);letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
+.mini{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px}
+.mini .card{padding:14px}
+.mini .stat .v{font-size:22px!important;margin-top:6px!important}
+.mini .stat .s{font-size:12px;line-height:1.35}
+.segrow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.segrow .tabs{flex:1 1 auto}
+.segrow .tabs button{flex:1;white-space:nowrap}
+h2.sec{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-family:var(--mono);margin:28px 0 10px;font-weight:600}
+details.card>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
+details.card>summary::after{content:"▾";color:var(--mute);transition:transform .2s}
+details.card[open]>summary::after{transform:rotate(180deg)}
+details.card>summary .pill{margin-left:auto}
 .views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 /* chat */
 .chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:420px}
@@ -203,7 +215,8 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} }, del(k) { try { localStorage.removeItem(k); } catch {} } };
 let KEY = store.get("hq-key");
-const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["grow", "Grow", "i-grow"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["grow", "Grow", "i-grow"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const FOUND = { instagramad: "Instagram ad", instagrampost: "Instagram post", tiktok: "TikTok", search: "Search", friend: "A friend", other: "Other" };
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
 let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", fmt: "feed", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]"), mo: JSON.parse(store.get("hq-mo") || "[]") };
 
@@ -219,15 +232,15 @@ const local = u => String(u || "").replace(/^https:\/\/rentcoat\.co/, ""); // pl
 const post = (path, body) => api(path, { method: "POST", body: JSON.stringify(body || {}) });
 
 function navHtml(mobile) {
-  const badges = { orders: state.overview?.toPlace || 0, posts: state.overview?.queue?.review || 0 };
+  const badges = { orders: state.overview?.toPlace || 0, grow: state.overview?.queue?.review || 0 };
   return TABS.filter(([id]) => !mobile || id !== "products").map(([id, label, icon]) =>
-    `<button class="${mobile ? "" : "nav"}" data-tab="${id}" ${state.tab === id ? 'aria-current="page"' : ""}><svg><use href="#${icon}"/></svg>${label}${badges[id] ? `<span class="badge${id === "posts" ? " gold" : ""}">${badges[id]}</span>` : ""}</button>`).join("");
+    `<button class="${mobile ? "" : "nav"}" data-tab="${id}" ${state.tab === id ? 'aria-current="page"' : ""}><svg><use href="#${icon}"/></svg>${label}${badges[id] ? `<span class="badge${id === "grow" ? " gold" : ""}">${badges[id]}</span>` : ""}</button>`).join("");
 }
 function paintNav() {
   $("#nav").innerHTML = navHtml(false); $("#tabbar").innerHTML = navHtml(true);
   document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => go(b.dataset.tab));
 }
-function go(tab) { state.tab = tab; location.hash = tab; paintNav(); render(); window.scrollTo({ top: 0 }); }
+function go(tab) { if (tab === "posts") tab = "grow"; state.tab = tab; location.hash = tab; paintNav(); render(); window.scrollTo({ top: 0 }); }
 
 const sk = (h, w = "100%") => `<div class="sk" style="height:${h}px;width:${w}"></div>`;
 function countdown() {
@@ -241,48 +254,52 @@ function countdown() {
 function viewToday() {
   const o = state.overview;
   const hour = new Date().getHours(), hi = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">${money(x.sales)}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · you keep about <b>${money(Math.max(0, x.keep))}</b></div></div>`
+  const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">$${Math.round(x.sales / 100).toLocaleString()}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · keep <b>$${Math.round(Math.max(0, x.keep) / 100).toLocaleString()}</b></div></div>`
     : `<div class="card">${sk(12, "40%")}<div style="height:16px"></div>${sk(34, "60%")}<div style="height:10px"></div>${sk(12, "70%")}</div>`;
   return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><span class="countdown">${countdown()}</span></div>
   ${o ? (() => { const goal = 1000000, got = o.month.sales, aov = o.month.orders ? got / o.month.orders : 5500, left = Math.max(0, goal - got), per = Math.ceil(left / aov / 30);
     return `<div class="card" style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="eyebrow">Goal · $10k a month</span><span class="sub" style="margin:0">${money(got)} in the last 30 days</span></div>
     <div style="height:10px;background:var(--panel-2);border-radius:99px;margin:12px 0;overflow:hidden"><div style="height:100%;width:${Math.min(100, got / goal * 100).toFixed(1)}%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div>
     <p class="sub" style="margin:0">${left ? `About <b>${per} order${per === 1 ? "" : "s"} a day</b> at a ${money(Math.round(aov))} average order gets you there. Ask Mo for today's plan.` : "Goal hit. Keep going."}</p></div>`; })() : ""}
-  <div class="grid g3">${o ? [stat("Today", o.today), stat("Last 7 days", o.week), stat("Last 30 days", o.month)].join("") : stat().repeat(3)}</div>
   <div class="grid g2" style="margin-top:16px">
-    ${o ? `<div class="card ${o.toPlace ? "alert" : "alert ok"}"><div><span class="eyebrow">Tapstitch</span><h2 style="margin:8px 0 4px">${o.toPlace ? `${o.toPlace} order${o.toPlace === 1 ? "" : "s"} to place` : "Nothing to place"}</h2><p class="sub" style="margin:0">${o.toPlace ? "Hoodies, sweats and sets you place by hand." : "Every hand-placed order is done."}</p></div>${o.toPlace ? `<button class="btn primary" data-go="orders">Place now</button>` : ""}</div>
-    <div class="card alert ok" style="background:linear-gradient(135deg,#1d1a10,#14130f);border-color:#4a3d1f"><div><span class="eyebrow">Posts</span><h2 style="margin:8px 0 4px">${o.queue.review} waiting for you</h2><p class="sub" style="margin:0">${o.queue.approved} approved · ${o.queue.posted} posted</p></div><button class="btn primary" data-go="posts">Review</button></div>`
+    ${o ? `<div class="card ${o.toPlace ? "alert" : "alert ok"}"><div><span class="eyebrow">Tapstitch</span><h2 style="margin:8px 0 4px">${o.toPlace ? `${o.toPlace} order${o.toPlace === 1 ? "" : "s"} to place` : "Nothing to place"}</h2><p class="sub" style="margin:0">${o.toPlace ? "Tees, hoodies and sweats you place by hand." : "Every hand-placed order is done."}</p></div>${o.toPlace ? `<button class="btn primary" data-go="orders">Place now</button>` : ""}</div>
+    <div class="card alert ok" style="background:linear-gradient(135deg,#1d1a10,#14130f);border-color:#4a3d1f"><div><span class="eyebrow">Posts</span><h2 style="margin:8px 0 4px">${o.queue.review} waiting for you</h2><p class="sub" style="margin:0">${o.queue.approved} approved · ${o.queue.posted} posted</p></div><button class="btn primary" data-go="grow">Review</button></div>`
     : `<div class="card">${sk(70)}</div><div class="card">${sk(70)}</div>`}
   </div>
+  <div class="grid g3 mini" style="margin-top:16px">${o ? [stat("Today", o.today), stat("7 days", o.week), stat("30 days", o.month)].join("") : stat().repeat(3)}</div>
   ${o?.ads ? `<div class="card" style="margin-top:16px"><span class="eyebrow">Meta ads · last 7 days</span>${o.ads.error ? `<p class="sub">${esc(o.ads.error)}</p>` : `<div class="grid g3" style="margin-top:10px"><div><div class="v" style="font-size:26px">$${Number(o.ads.spend || 0).toFixed(2)}</div><div class="s">spent</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.impressions || 0).toLocaleString()}</div><div class="s">impressions</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.clicks || 0).toLocaleString()}</div><div class="s">clicks${o.ads.cpc ? ` · $${Number(o.ads.cpc).toFixed(2)} each` : ""}</div></div></div>`}</div>` : ""}
-  <div class="grid g3" style="margin-top:16px">
-    ${o ? `<div class="card stat"><span class="eyebrow">Site visits today</span><div class="v">${o.visitsToday}</div><div class="s">Page views on rentcoat.co</div></div>
-    <div class="card stat"><span class="eyebrow">Instagram</span><div class="v" style="font-size:22px;margin-top:18px">${Object.values(o.connected.instagram).filter(Boolean).length} of 2 connected</div><div class="s">${Object.entries(o.connected.instagram).map(([a, on]) => `${ACCT[a]} ${on ? "✓" : "·"}`).join("  ")}</div></div>
-    <div class="card stat"><span class="eyebrow">Mo</span><div class="v" style="font-size:22px;margin-top:18px">${o.connected.chat ? "Ready" : "Not connected"}</div><div class="s">${o.connected.chat ? "Your sidekick is ready in the Mo tab." : "Add the API key in Setup."}</div></div>`
+  <div class="grid g3 mini" style="margin-top:16px">
+    ${o ? `<div class="card stat"><span class="eyebrow">Visits today</span><div class="v">${o.visitsToday}</div><div class="s">rentcoat.co</div></div>
+    <div class="card stat"><span class="eyebrow">Instagram</span><div class="v">${Object.values(o.connected.instagram).filter(Boolean).length}/2</div><div class="s">${Object.values(o.connected.instagram).every(Boolean) ? "Both connected" : `<a href="#setup">Connect</a>`}</div></div>
+    <div class="card stat"><span class="eyebrow">Mo</span><div class="v">${o.connected.chat ? "Ready" : "Off"}</div><div class="s">${o.connected.chat ? `<a href="#chat">Ask Mo</a>` : `<a href="#setup">Connect</a>`}</div></div>`
     : `<div class="card">${sk(80)}</div>`.repeat(3)}
   </div>`;
 }
 
-function viewGrow() {
+function growSections() {
   const g = state.grow;
-  if (!g) { load("grow", "grow"); return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1></div></div><div class="card">${sk(240)}</div>`; }
+  if (!g) { load("grow", "grow"); return `<div class="card">${sk(120)}</div>`; }
   const d = state.mail || (state.mail = { subject: "Rent Coat is open", text: "Hi,\n\nYou asked us to tell you when Rent Coat opens. It's open now: rentcoat.co\n\nTees are $40, hoodies $68, and the Steadfast Sweatsuit is $100. Shipping is free over $60.\n\nThanks for being here from the start.\n\nEli" });
   const list = g.list?.count != null ? `${g.list.count} people` : esc(g.list?.error || "");
   const ab = Array.isArray(g.abandoned) ? g.abandoned : [];
-  return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1><p class="sub">Email, abandoned checkouts, reviews and referrals. Nothing sends until you tap.</p></div></div>
-  ${g.email.connected ? "" : `<div class="card alert" style="margin-bottom:12px"><div><b>Email isn't connected.</b> <span class="sub">Setup → Email (Resend, free up to 100 a day).</span></div></div>`}
-  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Launch email</span><h2 style="margin:6px 0">Reminder list: ${list}</h2>
+  return `  ${g.email.connected ? "" : `<div class="card alert" style="margin-bottom:12px"><div><b>Email isn't connected.</b> <span class="sub">Setup → Email (Resend, free up to 100 a day).</span></div></div>`}
+  <details class="card" style="margin-bottom:12px"><summary>Launch email <span class="pill">${g.list?.count != null ? `${g.list.count} on the list` : "list not connected"}</span></summary><p class="sub" style="margin:10px 0">Reminder list: ${list}</p>
     <div style="display:grid;gap:8px"><input class="field" id="m-sub" value="${esc(d.subject)}"><textarea class="field" id="m-text" rows="8">${esc(d.text)}</textarea>
     <div class="row"><button class="btn" id="m-test">Send me a test</button><button class="btn primary" id="m-send" ${g.list?.count ? "" : "disabled"}>Send to ${g.list?.count || 0}</button></div>
-    ${g.list?.count > 100 ? `<p class="sub" style="margin:0">Resend's free plan sends 100 a day. Tap Send again the next day and it continues where it stopped (nobody gets it twice).</p>` : ""}</div></div>
-  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Unsubscribes</span><p class="sub" style="margin:6px 0">Someone replied STOP? Add their email and HQ will never send them marketing email again. (${g.stopCount || 0} so far)</p><div class="row"><input class="field" id="stop-email" placeholder="their@email.com" style="flex:1"><button class="btn sm" id="stop-add">Unsubscribe</button></div></div>
-  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Left at checkout · last 7 days</span>
+    ${g.list?.count > 100 ? `<p class="sub" style="margin:0">Resend's free plan sends 100 a day. Tap Send again the next day and it continues where it stopped (nobody gets it twice).</p>` : ""}</div>
+    <p class="sub" style="margin:14px 0 6px">Someone replied STOP? Add them here and HQ never emails them marketing again (${g.stopCount || 0} so far).</p><div class="row"><input class="field" id="stop-email" placeholder="their@email.com" style="flex:1"><button class="btn sm" id="stop-add">Unsubscribe</button></div></details>
+  <details class="card" style="margin-bottom:12px" ${ab.length ? "open" : ""}><summary>Left at checkout <span class="pill">${ab.length} this week</span></summary>
     ${g.abandoned?.error ? `<p class="sub">${esc(g.abandoned.error)}</p>` : ab.length ? ab.map(a => `<div class="check"><div style="flex:1"><b>${esc(a.name || a.email)}</b> <span class="sub">${money(a.amount || 0)} · ${new Date(a.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><div class="sub">${esc(a.items.join(", "))}</div></div>
-      ${g.sent[`ab-${a.id}`] ? `<span class="pill">Sent ✓</span>` : a.optedIn ? `<button class="btn sm primary" data-abmail="${a.id}">Send reminder</button>` : `<span class="pill" title="Didn't agree to emails at checkout">No email consent</span>`}</div>`).join("") : `<p class="sub">Nobody yet. Expired checkouts with an email show here.</p>`}</div>
-  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Reviews</span>
-    ${g.reviews.length ? g.reviews.map(r => `<div class="check"><div style="flex:1"><b>${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</b> <span class="sub">${esc(r.name)}</span><div>${esc(r.text)}</div></div><div class="row"><button class="btn sm ${r.approved ? "" : "green"}" data-rvok="${r.id}" data-on="${r.approved ? 0 : 1}">${r.approved ? "Approved ✓" : "Approve"}</button></div></div>`).join("") : `<p class="sub">No reviews yet. In Orders, tap “Ask for a review” on orders older than 12 days.</p>`}</div>
-  <div class="card"><span class="eyebrow">Referrals</span><p class="sub" style="margin:6px 0 0">In Orders, “Send referral code” makes a 10%-off code just for that buyer's friends (25 uses) and emails it. Codes work at checkout.</p></div>`;
+      ${g.sent[`ab-${a.id}`] ? `<span class="pill">Sent ✓</span>` : a.optedIn ? `<button class="btn sm primary" data-abmail="${a.id}">Send reminder</button>` : `<span class="pill" title="Didn't agree to emails at checkout">No email consent</span>`}</div>`).join("") : `<p class="sub">Nobody yet. Expired checkouts with an email show here.</p>`}</details>
+  <details class="card" style="margin-bottom:12px" ${g.reviews.some(r => !r.approved) ? "open" : ""}><summary>Reviews <span class="pill">${g.reviews.filter(r => !r.approved).length} new</span></summary>
+    ${g.reviews.length ? g.reviews.map(r => `<div class="check"><div style="flex:1"><b>${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</b> <span class="sub">${esc(r.name)}</span><div>${esc(r.text)}</div></div><div class="row"><button class="btn sm ${r.approved ? "" : "green"}" data-rvok="${r.id}" data-on="${r.approved ? 0 : 1}">${r.approved ? "Approved ✓" : "Approve"}</button></div></div>`).join("") : `<p class="sub">No reviews yet. In Orders, tap “Ask for a review” on orders older than 12 days.</p>`}</details>`;
+}function viewGrow() {
+  return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1><p class="sub">Posts, ads and email in one place. Nothing goes out until you tap.</p></div></div>
+  ${postsSection()}
+  <h2 class="sec">Email &amp; customers</h2>
+  ${growSections()}`;
 }
+
 function viewOrders() {
   if (!state.grow && !state.growLoading) { state.growLoading = true; api("grow").then(g => { state.grow = g; render(); }).catch(() => {}); }
   const list = state.orders?.orders;
@@ -292,7 +309,7 @@ function viewOrders() {
     return `<div class="card order">
       <div>
         <div class="row" style="justify-content:space-between"><span class="who">${esc(o.name || "Customer")}</span></div>
-        <div class="meta">${new Date(o.created).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} · ${esc(o.email)}${o.foundUs ? ` · found us: ${esc(o.foundUs)}` : ""}</div>
+        <div class="meta">${new Date(o.created).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} · ${esc(o.email)}${o.foundUs ? ` · found us: ${esc(FOUND[o.foundUs] || o.foundUs)}` : ""}</div>
         <div class="items">${o.items.map(i => `<div class="item"><img src="/${esc(i.image)}" alt="" loading="lazy"><div><div>${i.qty} × ${esc(i.name)} · <b>${esc(i.size)}</b></div><span class="pill ${i.maker === "tapstitch" ? "tap" : "auto"}">${i.maker === "tapstitch" ? "PLACE ON TAPSTITCH" : "PRINTFUL · AUTOMATIC"}</span></div></div>`).join("")}</div>
         ${o.tapstitch.length ? `<div class="addr">${esc(addr)}</div>
         <div class="row" style="margin-top:12px">
@@ -318,11 +335,12 @@ function composer() {
   const d = state.draft, mission = state.acct === "mission", prods = state.products?.products || [];
   const ai = d.mode === "ai" || mission;
   const imgOn = state.overview?.connected?.images;
-  return `<details class="card" style="margin-bottom:16px" ${d.img || d.open ? "open" : ""} id="composer"><summary style="font-weight:750;cursor:pointer">+ New post for ${mission ? "@whatisanldsmission" : "@rentcoat.co"}</summary>
+  return `<details class="card" style="margin-bottom:16px" ${d.img || d.open ? "open" : ""} id="composer"><summary style="font-weight:750;cursor:pointer;list-style:none">＋ New post for ${mission ? "@whatisanldsmission" : "@rentcoat.co"}</summary>
     <div style="display:grid;gap:10px;margin-top:12px">
       <span class="lbl">Idea</span><textarea class="field" id="d-idea" rows="2" placeholder="What's this post about? e.g. 10 days until Black Friday, the Steadfast hoodie">${esc(d.idea || "")}</textarea>
       <button class="btn primary" id="d-claude" ${d.busy ? "disabled" : ""}>${d.busy ? "Working…" : "✦ Make it with Claude"}</button>
-      <p class="sub" style="margin:0">Claude writes the image, headline, caption and hashtags. You can edit anything before it goes to review.</p>
+      <p class="sub" style="margin:0">Mo writes it and uses your real product photos. Edit anything before it goes to review.</p>
+      <details id="manual" ${d.manual ? "open" : ""}><summary class="sub" style="cursor:pointer">Or make it yourself</summary><div style="display:grid;gap:10px;margin-top:10px">
       ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${d.mode === "product"}">Product image</button><button data-mode="video" aria-pressed="${d.mode === "video"}">Video ad</button></div>
       <div class="tabs"><button data-fmt="feed" aria-pressed="${d.fmt === "feed"}">Feed 4:5</button><button data-fmt="story" aria-pressed="${d.fmt === "story"}">Reel / Story 9:16</button><button data-fmt="square" aria-pressed="${d.fmt === "square"}">Square</button></div>`}
       ${ai ? `<span class="lbl">Image</span><textarea class="field" id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
@@ -330,6 +348,7 @@ function composer() {
       : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
+      </div></details>
       ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
       ${d.img && !/\.(mp4|webm)$/.test(d.img) ? `<details><summary class="sub" style="cursor:pointer">✦ Turn this image into an AI video (paid, about $0.35)</summary><div style="display:grid;gap:8px;margin-top:8px"><input class="field" id="d-motion" placeholder="Motion, e.g. slow push in, fabric moving in the wind" value="${esc(d.motion || "")}"><button class="btn" id="d-vid" ${d.busy ? "disabled" : ""}>${d.busy ? "Rendering… (1–3 min)" : "Make AI video"}</button></div></details>` : ""}
       ${(state.videos || []).length ? `<details><summary class="sub" style="cursor:pointer">Your recent AI videos (${state.videos.length})</summary>${state.videos.map(v => `<div class="row" style="margin-top:6px"><span class="sub" style="flex:1">${esc(v.prompt || "video")} · ${new Date(v.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><button class="btn sm" data-usevid="${esc(v.id)}">${v.url ? "Use" : "Check"}</button></div>`).join("")}</details>` : ""}
@@ -378,7 +397,7 @@ async function productVideo(prod, head, fmt = "story") {
   const blob = new Blob(parts, { type: type.split(";")[0] });
   return await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
 }
-function viewPosts() {
+function postsSection() {
   const q = state.queue?.queue?.filter(p => p.account === state.acct);
   const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
   const ig = state.overview?.connected?.instagram || {};
@@ -401,9 +420,8 @@ function viewPosts() {
       </div>
     </div></div>`;
   const n = s => q ? q.filter(p => p.status === s || (s === "approved" && p.status === "publishing")).length : "";
-  return `<div class="head"><div><span class="eyebrow">Posts</span><h1>Posts</h1><p class="sub">Nothing goes out until you approve it.</p></div>
+  return `<div class="segrow"><div class="tabs"><button data-acct="rentcoat" aria-pressed="${state.acct === "rentcoat"}">@rentcoat.co</button><button data-acct="mission" aria-pressed="${state.acct === "mission"}">@whatisanldsmission</button></div>
     <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
-  <div class="acctbar"><button data-acct="mission" aria-pressed="${state.acct === "mission"}">@whatisanldsmission<small>Church content only</small></button><button data-acct="rentcoat" aria-pressed="${state.acct === "rentcoat"}">@rentcoat.co<small>The brand</small></button></div>
   ${composer()}
   <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">${state.acct === "rentcoat" ? "No @rentcoat.co posts yet." : "Nothing here."}</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
 }
@@ -469,12 +487,12 @@ function viewSetup() {
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
 }
 
-const VIEWS = { grow: viewGrow, today: viewToday, orders: viewOrders, posts: viewPosts, chat: viewChat, products: viewProducts, setup: viewSetup };
+const VIEWS = { grow: viewGrow, posts: viewGrow, today: viewToday, orders: viewOrders, chat: viewChat, products: viewProducts, setup: viewSetup };
 function render() {
   $("#main").innerHTML = VIEWS[state.tab]();
   wire();
   if (state.tab === "orders" && !state.orders) load("orders", "orders?days=30");
-  if (state.tab === "posts" && !state.queue) load("queue", "queue");
+  if ((state.tab === "posts" || state.tab === "grow") && !state.queue) load("queue", "queue");
   if (state.tab === "products" && !state.products) load("products", "products");
   if (state.tab === "chat") { const l = $("#log"); l.scrollTop = l.scrollHeight; }
 }
@@ -484,7 +502,8 @@ function wire() {
   document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
   document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
-  const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); if (cmp.open && !state.videos) api("video").then(r => { state.videos = r.jobs; render(); }).catch(() => { state.videos = []; }); };
+  const cmp = $("#composer"); const man = $("#manual"); if (man) man.ontoggle = () => { state.draft.manual = man.open; };
+  if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); if (cmp.open && !state.videos) api("video").then(r => { state.videos = r.jobs; render(); }).catch(() => { state.videos = []; }); };
   document.querySelectorAll("[data-usevid]").forEach(b => b.onclick = async () => { b.disabled = true; try { const st = await post("video/check", { id: b.dataset.usevid }); if (st.url) { state.draft.img = st.url; state.videos = null; render(); } else { toast("Still rendering. Check again in a minute."); b.disabled = false; } } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
@@ -599,7 +618,7 @@ async function start() {
   const qp = new URLSearchParams(location.search);
   if (qp.get("connected") || qp.get("error")) { setTimeout(() => toast(qp.get("error") || `${qp.get("connected") === "meta" ? "Instagram & Facebook" : "TikTok"} connected`), 600); history.replaceState(null, "", location.pathname + location.hash); }
   $("#login").classList.add("hide"); $("#app").classList.remove("hide"); $("#tabbar").classList.remove("hide");
-  const fromHash = location.hash.slice(1); if (VIEWS[fromHash]) state.tab = fromHash;
+  const fromHash = location.hash.slice(1) === "posts" ? "grow" : location.hash.slice(1); if (VIEWS[fromHash]) state.tab = fromHash;
   paintNav(); render();
   try { state.overview = await api("overview"); paintNav(); render(); }
   catch (e) {
@@ -608,7 +627,7 @@ async function start() {
   }
 }
 $("#login-form").onsubmit = e => { e.preventDefault(); KEY = $("#key").value.trim(); store.set("hq-key", KEY); start(); };
-window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (VIEWS[t] && t !== state.tab) { state.tab = t; paintNav(); render(); } });
+window.addEventListener("hashchange", () => { const t = location.hash.slice(1) === "posts" ? "grow" : location.hash.slice(1); if (VIEWS[t] && t !== state.tab) { state.tab = t; paintNav(); render(); } });
 setInterval(() => { if (state.tab === "today" && state.overview) render(); }, 60000);
 if (KEY) start();
 </script>
