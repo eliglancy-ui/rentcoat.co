@@ -61,8 +61,8 @@ export default async (req) => {
     }],
     allow_promotion_codes: true,
     // Abandoned-cart recovery: Stripe keeps a link to restart an expired checkout, and asks for permission to email
-    // (HQ only emails people who said yes). Hosted checkout only.
-    ...(embedded ? {} : { after_expiration: { recovery: { enabled: true, allow_promotion_codes: true } }, consent_collection: { promotions: "auto" } }),
+    // (HQ only emails people who said yes). If Stripe ever rejects these, checkout retries without them.
+    after_expiration: { recovery: { enabled: true, allow_promotion_codes: true } }, consent_collection: { promotions: "auto" },
     billing_address_collection: "auto",
     shipping_address_collection: { allowed_countries: SHIP_TO },
     shipping_options: [{
@@ -93,7 +93,14 @@ export default async (req) => {
   };
 
   try {
-    const session = await stripe("checkout/sessions", { method: "POST", params });
+    let session;
+    try { session = await stripe("checkout/sessions", { method: "POST", params }); }
+    catch (e) {
+      if (!/after_expiration|consent_collection|recovery|promotions/i.test(e.message)) throw e;
+      console.error("checkout: recovery not accepted, retrying without it:", e.message);
+      delete params.after_expiration; delete params.consent_collection;
+      session = await stripe("checkout/sessions", { method: "POST", params });
+    }
     return json(embedded ? { clientSecret: session.client_secret } : { url: session.url });
   } catch (e) {
     console.error("checkout failed", e.message);

@@ -141,8 +141,11 @@ async function adsInsights() {
 }
 
 // ---- Email (Resend). Marketing emails need a postal address in the footer (CAN-SPAM): MAIL_ADDRESS in Setup.
+const suppressed = async () => new Set((await store().get("suppress", { type: "json" })) || []);
 async function sendEmail(list, subject, text, marketing) {
   if (!process.env.RESEND_API_KEY) throw new Error("Email isn't connected yet. See Setup.");
+  if (marketing) { const stop = await suppressed(); list = list.filter(e => !stop.has(String(e).toLowerCase())); }
+  if (!list.length) return 0;
   if (marketing && !process.env.MAIL_ADDRESS) throw new Error("Add a mailing address (a PO box is fine) in Setup first. The law requires it on marketing emails.");
   const from = process.env.EMAIL_FROM || "Rent Coat Co. <hello@rentcoat.co>";
   const foot = `\n\n--\nRent Coat Co. · rentcoat.co${process.env.MAIL_ADDRESS ? ` · ${process.env.MAIL_ADDRESS}` : ""}${marketing ? "\nReply STOP and we'll take you off the list." : ""}`;
@@ -179,8 +182,9 @@ async function reminderList() {
 // Checkouts that expired with an email (last 7 days). Only those who opted in to promotions can be emailed.
 async function abandoned() {
   const since = Math.floor(Date.now() / 1000) - 7 * 86400;
-  const d = await stripe(`checkout/sessions?status=expired&limit=50&created[gte]=${since}`);
-  return (d.data || []).filter(x => x.customer_details?.email).map(x => ({
+  const d = await stripe(`checkout/sessions?status=expired&limit=100&created[gte]=${since}`);
+  const bought = new Set((await sessions(7).catch(() => [])).map(x => String(x.customer_details?.email || "").toLowerCase()).filter(Boolean));
+  return (d.data || []).filter(x => x.customer_details?.email && !bought.has(x.customer_details.email.toLowerCase())).map(x => ({
     id: x.id, email: x.customer_details.email, name: x.customer_details.name || "", created: x.created * 1000, amount: x.amount_total,
     items: decodeItems(x.metadata?.items).map(i => `${i.qty || 1} × ${PRODUCTS[i.id]?.name || i.id} (${i.size})`),
     recovery: x.after_expiration?.recovery?.url || null, optedIn: x.consent?.promotions === "opt_in",
@@ -189,17 +193,22 @@ async function abandoned() {
 
 // Referral codes: one shared 10%-off-once coupon, a promotion code per buyer.
 async function referralCode(name) {
-  let coupon = await store().get("refCoupon");
-  if (!coupon) { coupon = (await stripe("coupons", { method: "POST", params: { percent_off: 10, duration: "once", name: "Friend of a Rent Coat customer" } })).id; await store().set("refCoupon", coupon); }
+  const ck = `refCoupon-${String(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_live") ? "live" : "test"}`;
+  let coupon = await store().get(ck);
+  if (!coupon) { coupon = (await stripe("coupons", { method: "POST", params: { percent_off: 10, duration: "once", name: "Friend of a Rent Coat customer" } })).id; await store().set(ck, coupon); }
   const base = (String(name || "FRIEND").split(" ")[0].toUpperCase().replace(/[^A-Z]/g, "") || "FRIEND").slice(0, 10);
-  const code = `${base}${Math.floor(10 + Math.random() * 90)}`;
-  await stripe("promotion_codes", { method: "POST", params: { coupon, code, max_redemptions: 25 } });
-  return code;
+  for (let i = 0; i < 4; i++) {
+    const code = `${base}${Math.floor(i < 2 ? 10 + Math.random() * 90 : 100 + Math.random() * 900)}`;
+    try { await stripe("promotion_codes", { method: "POST", params: { coupon, code, max_redemptions: 25, restrictions: { first_time_transaction: true } } }); return code; }
+    catch (e) { if (!/already|exists|in use/i.test(e.message)) throw e; }
+  }
+  throw new Error("Couldn't make a unique code. Try again.");
 }
 
 // AI video (fal.ai). Each clip costs real money, so there's a monthly cap (FAL_MONTHLY_CAP, default $10).
 const VIDEO_MODEL = () => process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.5-turbo/pro/image-to-video";
-const VIDEO_COST = 0.35; // about $0.07/s for a 5-second Kling 2.5 Turbo Pro clip (estimate; check fal.ai/pricing)
+const VIDEO_COST = 0.35;
+const videoCap = () => { const c = parseFloat(String(process.env.FAL_MONTHLY_CAP || "").replace(/[^0-9.]/g, "")); return Number.isFinite(c) && c >= 0 ? c : 10; }; // about $0.07/s for a 5-second Kling 2.5 Turbo Pro clip (estimate; check fal.ai/pricing)
 async function videoSpend(add = 0) {
   const k = `falspend-${new Date().toISOString().slice(0, 7)}`;
   const v = Number(await store().get(k)) || 0;
@@ -292,9 +301,10 @@ export default async (req) => {
     if (path[0] === "grow" && req.method === "GET") {
       const [list, ab, sent] = await Promise.all([reminderList().catch(e => ({ error: e.message })), abandoned().catch(e => ({ error: e.message })), sentStore()]);
       const reviews = (await getStore("reviews").get("all", { type: "json" })) || [];
-      return json({ list: list.emails ? { count: list.emails.length } : list, abandoned: ab, reviews, sent,
+      const stopCount = (await suppressed()).size;
+      return json({ stopCount, list: list.emails ? { count: list.emails.length } : list, abandoned: ab, reviews, sent,
         email: { connected: Boolean(process.env.RESEND_API_KEY), address: Boolean(process.env.MAIL_ADDRESS) },
-        video: { connected: Boolean(process.env.FAL_KEY), spent: await videoSpend(), cap: Number(process.env.FAL_MONTHLY_CAP || 10), cost: VIDEO_COST } });
+        video: { connected: Boolean(process.env.FAL_KEY), spent: await videoSpend(), cap: videoCap(), cost: VIDEO_COST } });
     }
     if (path[0] === "email" && req.method === "POST") {
       const subject = String(body.subject || "").trim().slice(0, 150), text = String(body.text || "").trim().slice(0, 8000);
@@ -302,7 +312,18 @@ export default async (req) => {
         if (!subject || !text) return json({ error: "Add a subject and message." }, 400);
         if (body.test) return json({ sent: await sendEmail(["rentcoat.co@gmail.com"], `[TEST] ${subject}`, text, true) });
         const list = await reminderList(); if (list.error) return json({ error: list.error }, 400);
-        const n = await sendEmail(list.emails, subject, text, true); await markSent(`launch-${Date.now()}`); return json({ sent: n });
+        const key = `launchSent-${subject.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40)}`; // same subject = same campaign
+        const done = new Set((await store().get(key, { type: "json" })) || []);
+        const todo = list.emails.filter(e => !done.has(e));
+        let sent = 0;
+        try {
+          for (let i = 0; i < todo.length; i += 100) {
+            const chunk = todo.slice(i, i + 100);
+            sent += await sendEmail(chunk, subject, text, true);
+            chunk.forEach(e => done.add(e)); await store().setJSON(key, [...done]);
+          }
+        } catch (e) { return json({ error: `${e.message} Sent ${sent} this time; ${todo.length - sent} still to go. Tap Send again tomorrow and it picks up where it stopped.` }, 502); }
+        return json({ sent, skipped: list.emails.length - todo.length });
       }
       if (path[1] === "abandoned") {
         const a = (await abandoned()).find(x => x.id === path[2]);
@@ -324,8 +345,13 @@ export default async (req) => {
         await markSent(`rv-${s0.id}`); return json({ ok: true });
       }
       const code = await referralCode(s0.customer_details?.name);
-      if (body.send) await sendEmail([email], "10% off for your friends", `${first ? `Hi ${first},` : "Hi,"}\n\nThanks for being one of the first Rent Coat customers. Here's a code for your friends: ${code} takes 10% off their first order at rentcoat.co.\n\nEli, Rent Coat Co.`, false);
+      if (body.send) await sendEmail([email], "10% off for your friends", `${first ? `Hi ${first},` : "Hi,"}\n\nThanks for being one of the first Rent Coat customers. Here's a code for your friends: ${code} takes 10% off their first order at rentcoat.co.\n\nEli, Rent Coat Co.`, true);
       await markSent(`ref-${s0.id}`); return json({ code });
+    }
+    if (path[0] === "suppress" && req.method === "POST") {
+      const e = String(body.email || "").trim().toLowerCase();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return json({ error: "That's not an email address." }, 400);
+      const set0 = await suppressed(); set0.add(e); await store().setJSON("suppress", [...set0]); return json({ count: set0.size });
     }
     if (path[0] === "reviews" && req.method === "POST") {
       const all = (await getStore("reviews").get("all", { type: "json" })) || [];
@@ -337,22 +363,32 @@ export default async (req) => {
       if (!process.env.FAL_KEY) return json({ error: "AI video isn't connected yet. See Setup." }, 400);
       const h = { authorization: `Key ${process.env.FAL_KEY}`, "content-type": "application/json" };
       if (req.method === "POST" && !path[1]) {
-        const cap = Number(process.env.FAL_MONTHLY_CAP || 10), spent = await videoSpend();
+        const cap = videoCap(), spent = await videoSpend();
         if (spent + VIDEO_COST > cap) return json({ error: `This month's AI video budget ($${cap}) is used up. Raise it in Setup.` }, 402);
         if (!body.image_url || !body.prompt) return json({ error: "Make or pick an image first, and describe the motion." }, 400);
         const r = await fetch(`https://queue.fal.run/${VIDEO_MODEL()}`, { method: "POST", headers: h, body: JSON.stringify({ prompt: String(body.prompt).slice(0, 2000), image_url: body.image_url, duration: "5" }) });
         const d = await r.json().catch(() => ({}));
         if (!r.ok || !d.request_id) return json({ error: `AI video: ${d.detail || d.message || r.status}` }, 502);
         await videoSpend(VIDEO_COST);
-        return json({ id: d.request_id, status_url: d.status_url, response_url: d.response_url });
+        const ok = u => { try { const x = new URL(u); return x.protocol === "https:" && x.hostname === "queue.fal.run"; } catch { return false; } };
+        if (!ok(d.status_url) || !ok(d.response_url)) return json({ error: "AI video: unexpected response from fal." }, 502);
+        const jobs = (await store().get("videoJobs", { type: "json" })) || [];
+        jobs.unshift({ id: d.request_id, status_url: d.status_url, response_url: d.response_url, prompt: String(body.prompt).slice(0, 200), created: Date.now() });
+        await store().setJSON("videoJobs", jobs.slice(0, 20));
+        return json({ id: d.request_id });
       }
+      if (req.method === "GET") return json({ jobs: ((await store().get("videoJobs", { type: "json" })) || []).map(j => ({ id: j.id, prompt: j.prompt, created: j.created, url: j.url || null })) });
       if (req.method === "POST" && path[1] === "check") {
-        const st = await (await fetch(body.status_url, { headers: h })).json().catch(() => ({}));
+        const jobs = (await store().get("videoJobs", { type: "json" })) || [], job = jobs.find(j => j.id === body.id);
+        if (!job) return json({ error: "That video job isn't on file." }, 404);
+        if (job.url) return json({ status: "COMPLETED", url: job.url });
+        const st = await (await fetch(job.status_url, { headers: h })).json().catch(() => ({}));
         if (st.status !== "COMPLETED") return json({ status: st.status || "IN_QUEUE" });
-        const out = await (await fetch(body.response_url, { headers: h })).json();
+        const out = await (await fetch(job.response_url, { headers: h })).json();
         const src = out.video?.url; if (!src) return json({ error: "AI video finished without a file." }, 502);
         const bytes = Buffer.from(await (await fetch(src)).arrayBuffer());
-        return json({ status: "COMPLETED", url: await saveImage(bytes, url.origin, "mp4") });
+        job.url = await saveImage(bytes, url.origin, "mp4"); await store().setJSON("videoJobs", jobs);
+        return json({ status: "COMPLETED", url: job.url });
       }
     }
     if (path[0] === "vault") {
@@ -426,7 +462,12 @@ export default async (req) => {
       if (path[2] === "publish") {
         if (post.status !== "approved" && post.status !== "publishing") return json({ error: "Approve it first." }, 409);
         if (!post.container) { post.container = await igPublishStart(post); post.status = "publishing"; }
-        else { const id = await igPublishCheck(post); if (id) { post.status = "posted"; post.postedAt = Date.now(); post.igId = id; } }
+        else {
+          let id;
+          try { id = await igPublishCheck(post); }
+          catch (e) { delete post.container; post.status = "approved"; await store().setJSON("queue", q); throw e; } // tap Post again to retry from scratch
+          if (id) { post.status = "posted"; post.postedAt = Date.now(); post.igId = id; }
+        }
         await store().setJSON("queue", q); return json({ post });
       }
       if (path[2] === "facebook" || path[2] === "tiktok") {

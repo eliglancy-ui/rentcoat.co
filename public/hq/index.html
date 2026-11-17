@@ -274,7 +274,8 @@ function viewGrow() {
   <div class="card" style="margin-bottom:12px"><span class="eyebrow">Launch email</span><h2 style="margin:6px 0">Reminder list: ${list}</h2>
     <div style="display:grid;gap:8px"><input class="field" id="m-sub" value="${esc(d.subject)}"><textarea class="field" id="m-text" rows="8">${esc(d.text)}</textarea>
     <div class="row"><button class="btn" id="m-test">Send me a test</button><button class="btn primary" id="m-send" ${g.list?.count ? "" : "disabled"}>Send to ${g.list?.count || 0}</button></div>
-    ${g.list?.count > 100 ? `<p class="sub" style="margin:0">Resend's free plan sends 100 a day. Over that, pick a paid plan ($20/mo) or send over two days.</p>` : ""}</div></div>
+    ${g.list?.count > 100 ? `<p class="sub" style="margin:0">Resend's free plan sends 100 a day. Tap Send again the next day and it continues where it stopped (nobody gets it twice).</p>` : ""}</div></div>
+  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Unsubscribes</span><p class="sub" style="margin:6px 0">Someone replied STOP? Add their email and HQ will never send them marketing email again. (${g.stopCount || 0} so far)</p><div class="row"><input class="field" id="stop-email" placeholder="their@email.com" style="flex:1"><button class="btn sm" id="stop-add">Unsubscribe</button></div></div>
   <div class="card" style="margin-bottom:12px"><span class="eyebrow">Left at checkout · last 7 days</span>
     ${g.abandoned?.error ? `<p class="sub">${esc(g.abandoned.error)}</p>` : ab.length ? ab.map(a => `<div class="check"><div style="flex:1"><b>${esc(a.name || a.email)}</b> <span class="sub">${money(a.amount || 0)} · ${new Date(a.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><div class="sub">${esc(a.items.join(", "))}</div></div>
       ${g.sent[`ab-${a.id}`] ? `<span class="pill">Sent ✓</span>` : a.optedIn ? `<button class="btn sm primary" data-abmail="${a.id}">Send reminder</button>` : `<span class="pill" title="Didn't agree to emails at checkout">No email consent</span>`}</div>`).join("") : `<p class="sub">Nobody yet. Expired checkouts with an email show here.</p>`}</div>
@@ -331,6 +332,7 @@ function composer() {
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
       ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
       ${d.img && !/\.(mp4|webm)$/.test(d.img) ? `<details><summary class="sub" style="cursor:pointer">✦ Turn this image into an AI video (paid, about $0.35)</summary><div style="display:grid;gap:8px;margin-top:8px"><input class="field" id="d-motion" placeholder="Motion, e.g. slow push in, fabric moving in the wind" value="${esc(d.motion || "")}"><button class="btn" id="d-vid" ${d.busy ? "disabled" : ""}>${d.busy ? "Rendering… (1–3 min)" : "Make AI video"}</button></div></details>` : ""}
+      ${(state.videos || []).length ? `<details><summary class="sub" style="cursor:pointer">Your recent AI videos (${state.videos.length})</summary>${state.videos.map(v => `<div class="row" style="margin-top:6px"><span class="sub" style="flex:1">${esc(v.prompt || "video")} · ${new Date(v.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><button class="btn sm" data-usevid="${esc(v.id)}">${v.url ? "Use" : "Check"}</button></div>`).join("")}</details>` : ""}
       <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
       <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
@@ -479,7 +481,8 @@ function wire() {
   document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
   document.querySelectorAll("[data-of]").forEach(b => b.onclick = () => { state.orderFilter = b.dataset.of; render(); });
   document.querySelectorAll("[data-acct]").forEach(b => b.onclick = () => { state.acct = b.dataset.acct; store.set("hq-acct", b.dataset.acct); render(); });
-  const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); };
+  const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); if (cmp.open && !state.videos) api("video").then(r => { state.videos = r.jobs; render(); }).catch(() => { state.videos = []; }); };
+  document.querySelectorAll("[data-usevid]").forEach(b => b.onclick = async () => { b.disabled = true; try { const st = await post("video/check", { id: b.dataset.usevid }); if (st.url) { state.draft.img = st.url; state.videos = null; render(); } else { toast("Still rendering. Check again in a minute."); b.disabled = false; } } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
   const keep = () => { const d = state.draft; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
@@ -565,7 +568,8 @@ function wire() {
   const keepMail = () => { if ($("#m-sub")) state.mail = { subject: $("#m-sub").value, text: $("#m-text").value }; };
   if ($("#m-test")) $("#m-test").onclick = async () => { keepMail(); try { await post("email/launch", { ...state.mail, test: true }); toast("Test sent to rentcoat.co@gmail.com"); } catch (e) { toast(e.message); } };
   if ($("#m-send")) $("#m-send").onclick = async () => { keepMail(); if (!confirm(`Send "${state.mail.subject}" to ${state.grow.list.count} people?`)) return; $("#m-send").disabled = true;
-    try { const r = await post("email/launch", state.mail); toast(`Sent to ${r.sent}`); state.grow = null; render(); } catch (e) { toast(e.message); $("#m-send").disabled = false; } };
+    try { const r = await post("email/launch", state.mail); toast(`Sent to ${r.sent}${r.skipped ? ` (${r.skipped} already had it)` : ""}`); state.grow = null; render(); } catch (e) { toast(e.message); $("#m-send").disabled = false; } };
+  if ($("#stop-add")) $("#stop-add").onclick = async () => { try { const r = await post("suppress", { email: $("#stop-email").value }); state.grow.stopCount = r.count; render(); toast("Unsubscribed"); } catch (e) { toast(e.message); } };
   document.querySelectorAll("[data-abmail]").forEach(b => b.onclick = async () => { b.disabled = true; try { await post(`email/abandoned/${b.dataset.abmail}`); state.grow.sent[`ab-${b.dataset.abmail}`] = Date.now(); render(); toast("Reminder sent"); } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-rvok]").forEach(b => b.onclick = async () => { try { state.grow.reviews = (await post(`reviews/${b.dataset.rvok}`, { approved: b.dataset.on === "1" })).reviews; render(); } catch (e) { toast(e.message); } });
   document.querySelectorAll("[data-rvreq]").forEach(b => b.onclick = async () => { b.disabled = true; try { await post(`orders/${b.dataset.rvreq}/review-request`); (state.grow ||= { sent: {} }).sent[`rv-${b.dataset.rvreq}`] = Date.now(); render(); toast("Review request sent"); } catch (e) { toast(e.message); b.disabled = false; } });
@@ -574,8 +578,9 @@ function wire() {
     if (!confirm(`Make a 5-second AI video from this image? About $${(state.grow?.video?.cost || 0.35).toFixed(2)}.`)) return;
     d.busy = true; render();
     try { const job = await post("video", { prompt: d.motion || "slow cinematic camera push in, subtle natural motion", image_url: new URL(d.img, location.origin).href });
-      for (let i = 0; i < 60; i++) { await new Promise(r => setTimeout(r, 5000)); const st = await post("video/check", job); if (st.url) { d.img = st.url; break; } }
-      if (!/\.mp4$/.test(d.img)) toast("Still rendering. Try again in a minute.");
+      for (let i = 0; i < 60; i++) { await new Promise(r => setTimeout(r, 5000)); const st = await post("video/check", { id: job.id }); if (st.url) { d.img = st.url; break; } }
+      if (!/\.mp4$/.test(d.img)) toast("Still rendering. It's saved: reopen New post later to pick it up.");
+      state.videos = null;
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
   const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
