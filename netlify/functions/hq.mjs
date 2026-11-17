@@ -244,7 +244,10 @@ async function makeImage(prompt, origin) {
 
 const MO = `You are Mo, the little helper who lives in Rent Coat HQ. Your name comes from Captain Moroni, who rent his coat and made the title of liberty. You're warm, upbeat and a bit playful, but you get real work done fast and keep replies short.
 What you can do with tools: check the business (business_snapshot), see the post queue (list_posts) and make post drafts (draft_post) that land in Posts → To review. Nothing posts, sends or spends money until Eli taps it in HQ; say so when you draft. Make at most 3 drafts per request.
-Captions: a hook in the first line, 2-4 short lines, a clear call to action, then a blank line and 5-8 hashtags. Image prompts: detailed, vertical-friendly, no text or logos in the image.
+Captions: a hook in the first line, 2-4 short lines, a clear call to action, then a blank line and 5-8 hashtags.
+PICTURES, THE MOST IMPORTANT RULE: any post about a Rent Coat product MUST pass that product's product_id so the real product photo is used. Never ask the image maker to draw Rent Coat clothing: it can't reproduce the designs, so the picture would be wrong (a blank hoodie is not the Forgiven Hoodie). Use image_prompt (AI) only for scene or mood posts with no Rent Coat garment in frame: landscapes, light, a scripture page, a countdown mood shot. AI prompts: detailed, vertical, no text or logos.
+WHAT MAKES A GOOD ROAD-TO-LAUNCH AD for @rentcoat.co: one product per post, shown with its real photo; a first line that stops the scroll (the verse story behind the design, or a feeling a young Latter-day Saint knows); the design detail and the verse reference from the catalog; price; "Opens Black Friday, Nov 27, 10 AM Eastern" until launch; "Link in bio" as the call to action. Audience: LDS teens and young adults, missionaries and their families, parents shopping Christmas gifts. Voice: confident, warm, a little witty, never preachy, no "elevate your wardrobe" filler. When asked for several posts, vary them: product spotlight, verse story, gift angle, countdown, the sweatsuit deal.
+HONESTY ABOUT WHAT YOU DID: after drafting, say exactly how many drafts were saved and for which account, using only what the tool results confirm. If a draft failed, say so.
 @rentcoat.co: faith streetwear; never invent product details, discounts, reviews or claims. @whatisanldsmission: church content only, Instagram only, never mention Rent Coat or products; never invent or paraphrase scripture or Church leaders' words; no images of Jesus Christ, prophets, apostles or real people.
 Ads: you can plan ads and write ad copy, and the post maker makes the creatives, but Eli launches and pays for ads himself in Meta Ads Manager.`;
 
@@ -256,8 +259,9 @@ const MO_TOOLS = [
       account: { type: "string", enum: ["rentcoat", "mission"] },
       title: { type: "string", description: "Short internal title" },
       caption: { type: "string", description: "Final caption with hook, call to action and 5-8 hashtags" },
-      image_prompt: { type: "string", description: "Detailed image prompt, no text in the image" },
-    }, required: ["account", "title", "caption", "image_prompt"] } },
+      product_id: { type: "string", description: "Id of the Rent Coat product this post shows (from the catalog). Required for any post about a product: HQ uses its real photo." },
+      image_prompt: { type: "string", description: "Only for scene/mood posts with no Rent Coat clothing: a detailed AI image prompt, no text in the image" },
+    }, required: ["account", "title", "caption"] } },
 ];
 
 async function igPublishStart(post) {
@@ -481,6 +485,7 @@ export default async (req) => {
       if ("when" in body) post.when = body.when || null;
       if (typeof body.views === "number") post.views = body.views;
       if (Array.isArray(body.media)) { post.media = body.media.map(String).slice(0, 10); delete post.needsImage; }
+      if (body.branded) post.branded = true;
       await store().setJSON("queue", q); return json({ post });
     }
     if (path[0] === "image" && req.method === "POST") {
@@ -530,7 +535,7 @@ Return ONLY a JSON object: {"imagePrompt": string (a detailed prompt for a photo
       const r = await client.beta.messages.create({
         model: "claude-sonnet-5-5", max_tokens: 3000, betas: ["server-side-fallback-2026-07-01"], fallbacks: "default",
         output_config: { effort: "low" },
-        system: [{ type: "text", text: `${SYSTEM}\n\n${MO}`, cache_control: { type: "ephemeral" } }],
+        system: [{ type: "text", text: `${SYSTEM}\n\n${MO}\n\nCATALOG (live products; use these ids and facts only):\n${liveLine().map(p => `- ${p.id}: ${p.name}, ${p.kind}, ${p.color}, $${(p.price.default / 100).toFixed(0)}${p.ref ? `, ${p.ref}` : ""}. ${p.blurb || ""}`).join("\n")}`, cache_control: { type: "ephemeral" } }],
         tools: MO_TOOLS, messages,
       });
       if (r.stop_reason === "refusal") return json({ messages: [...messages, { role: "assistant", content: "I can't help with that one." }], done: true });
@@ -547,13 +552,18 @@ Return ONLY a JSON object: {"imagePrompt": string (a detailed prompt for a photo
           else if (u.name === "draft_post") {
             if (++drafts > 3) throw new Error("Max 3 drafts per request.");
             const a = u.input || {}, account = a.account === "mission" ? "mission" : "rentcoat";
+            const prod = a.product_id ? liveLine().find(x => x.id === a.product_id) : null;
+            if (a.product_id && !prod) throw new Error(`No live product with id ${a.product_id}. Use an id from the catalog.`);
+            if (prod && account === "mission") throw new Error("@whatisanldsmission never shows Rent Coat products.");
+            if (!prod && !a.image_prompt) throw new Error("Give a product_id (product post) or an image_prompt (scene post).");
             const p2 = { id: crypto.randomUUID(), account, title: String(a.title || "Mo's draft").slice(0, 120), caption: String(a.caption || "").slice(0, 2200),
-              prompt: String(a.image_prompt || "").slice(0, 2000), media: [], status: "review", by: "mo", created: Date.now() };
-            try { p2.media = [await makeImage(p2.prompt, url.origin)]; } catch { p2.needsImage = true; }
+              prompt: prod ? "" : String(a.image_prompt).slice(0, 2000), product: prod?.id, media: [], status: "review", by: "mo", created: Date.now() };
+            if (prod) p2.media = [`${url.origin}/${prod.images[0].src}`];
+            else { try { p2.media = [await makeImage(p2.prompt, url.origin)]; } catch { p2.needsImage = true; } }
             const q = await queue(req); q.unshift(p2); await store().setJSON("queue", q);
-            out = { drafted: p2.title, account, image: p2.media.length ? "made" : "not made (image maker not connected or failed); Eli can tap Make image" };
+            out = { saved: true, title: p2.title, account: account === "mission" ? "@whatisanldsmission" : "@rentcoat.co", image: prod ? `real photo of ${prod.name}` : p2.media.length ? "AI scene made" : "no image yet (Eli can tap Make image)" };
           } else out = { error: "Unknown tool" };
-        } catch (e) { out = { error: e.message }; }
+        } catch (e) { out = { saved: false, error: e.message }; }
         results.push({ type: "tool_result", tool_use_id: u.id, content: JSON.stringify(out) });
       }
       return json({ messages: [...messages, { role: "user", content: results }], done: false });

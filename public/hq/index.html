@@ -393,6 +393,7 @@ function viewPosts() {
         ${p.status === "approved" || p.status === "publishing" ? (ig[p.account] ? `<button class="btn sm primary" data-publish="${p.id}">${p.status === "publishing" ? "Finish posting" : "Post to Instagram"}</button>` : `<button class="btn sm" data-status="${p.id}" data-to="posted">I posted it</button>`) : ""}
         ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.facebook && !p.fb ? `<button class="btn sm" data-plat="facebook" data-id="${p.id}">Facebook</button>` : ""}
         ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.tiktok && !p.tt ? `<button class="btn sm" data-plat="tiktok" data-id="${p.id}">TikTok drafts</button>` : ""}
+        ${p.product && !p.branded ? `<button class="btn sm primary" data-brand="${p.id}">Make branded ad</button>` : ""}
         <button class="btn sm" data-copycap="${p.id}">Copy caption</button>
         <a class="btn sm ghost" href="${esc(local(p.media?.[0]) || "#")}" download>Download</a>
         ${p.status === "posted" ? `<input class="views" type="number" min="0" placeholder="Views" value="${p.views ?? ""}" data-views="${p.id}">` : ""}
@@ -408,14 +409,16 @@ function viewPosts() {
 }
 
 function moHtml() {
-  const out = [];
+  const out = [], res = {};
+  for (const m of state.mo) if (m.role === "user" && Array.isArray(m.content)) m.content.forEach(b => { if (b.type === "tool_result") { try { res[b.tool_use_id] = JSON.parse(b.content); } catch {} } });
   for (const m of state.mo) {
     if (m.role === "user" && typeof m.content === "string") out.push(`<div class="msg me">${esc(m.content)}</div>`);
     if (m.role === "assistant") {
       const blocks = typeof m.content === "string" ? [{ type: "text", text: m.content }] : m.content;
       const text = blocks.filter(b => b.type === "text").map(b => b.text).join("\n").trim();
       if (text) out.push(`<div class="mo-row"><div class="mo-av">Mo</div><div class="msg ai">${esc(text)}</div></div>`);
-      blocks.filter(b => b.type === "tool_use" && b.name === "draft_post").forEach(b => out.push(`<div class="mo-did">✓ Drafted “${esc(b.input?.title || "post")}” → Posts, To review</div>`));
+      blocks.filter(b => b.type === "tool_use" && b.name === "draft_post").forEach(b => { const r = res[b.id];
+        out.push(r?.saved ? `<div class="mo-did">✓ Drafted “${esc(r.title)}” for ${esc(r.account)} → Posts, To review</div>` : r ? `<div class="mo-did" style="color:var(--red);border-color:rgba(194,74,57,.35);background:rgba(194,74,57,.08)">✕ Didn't save “${esc(b.input?.title || "post")}”: ${esc(r.error || "")}</div>` : ""); });
     }
   }
   return out.join("");
@@ -531,6 +534,12 @@ function wire() {
   document.querySelectorAll("[data-plat]").forEach(b => b.onclick = async () => {
     b.disabled = true; b.textContent = "Sending…";
     try { updated((await post(`queue/${b.dataset.id}/${b.dataset.plat}`)).post); render(); toast(b.dataset.plat === "facebook" ? "Posted to Facebook" : "Sent to your TikTok drafts: finish it in the app"); }
+    catch (e) { toast(e.message); render(); }
+  });
+  document.querySelectorAll("[data-brand]").forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = "Making…"; const p = findPost(b.dataset.brand);
+    try { if (!state.products) state.products = await api("products"); const prod = state.products.products.find(x => x.id === p.product); if (!prod) throw new Error("That product isn't live anymore.");
+      const u = (await post("upload", { image: await productImage(prod, p.title, "feed") })).url; updated((await post(`queue/${p.id}`, { media: [u], branded: true })).post); render(); toast("Branded ad made"); }
     catch (e) { toast(e.message); render(); }
   });
   document.querySelectorAll("[data-mkimg]").forEach(b => b.onclick = async () => {
