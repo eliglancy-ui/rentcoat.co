@@ -346,9 +346,10 @@ function composer() {
       ${ai ? `<span class="lbl">Image</span><textarea class="field" id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
         <button class="btn primary" id="d-gen" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : "Make image"}</button>${imgOn ? "" : `<p class="sub">Image maker isn't connected yet: see Setup.</p>`}`
       : d.mode === "model" ? `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+        <div class="tabs"><button data-view="back" aria-pressed="${d.view !== "front"}">Show the back print</button><button data-view="front" aria-pressed="${d.view === "front"}">Show the front</button></div>
         <span class="lbl">Who and where</span><textarea class="field" id="d-scene" rows="2" placeholder="e.g. a 19-year-old guy on a snowy college campus at golden hour, looking over his shoulder so the back print shows">${esc(d.scene || "")}</textarea>
         <button class="btn primary" id="d-model" ${d.busy ? "disabled" : ""}>${d.busy ? "Making… (about 30 s)" : "Make photo on a model (~$0.08)"}</button>
-        <p class="sub" style="margin:0">Uses your real product photos. AI can still smudge small text: check the print before you post. Then use “Turn this image into an AI video” below.</p>`
+        <p class="sub" style="margin:0">Makes a person in your scene, then dresses them in your real product photo. Small text can still smudge: check the print before you post. Needs the image maker and fal.ai connected. Then use “Turn this image into an AI video” below.</p>`
       : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
@@ -525,8 +526,9 @@ function wire() {
       else { d.prompt = plan.imagePrompt || d.prompt; d.img = (await post("image", { prompt: d.prompt })).url; }
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
+  document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => { keep(); state.draft.view = b.dataset.view; render(); });
   if ($("#d-model")) $("#d-model").onclick = async () => { keep(); const d = state.draft; d.busy = true; render();
-    try { const job = await post("tryon", { product: d.prod || state.products?.products?.[0]?.id, scene: d.scene });
+    try { const job = await post("tryon", { product: d.prod || state.products?.products?.[0]?.id, scene: d.scene, view: d.view || "back" });
       for (let i = 0; i < 40; i++) { await new Promise(r => setTimeout(r, 4000)); const st = await post("video/check", { id: job.id }); if (st.url) { d.img = st.url; break; } }
       if (!/\.jpe?g$/.test(d.img || "")) toast("Still working. It's saved: reopen New post in a minute to pick it up.");
       state.videos = null;

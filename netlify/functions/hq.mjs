@@ -208,9 +208,10 @@ async function referralCode(name) {
 // AI video (fal.ai). Each clip costs real money, so there's a monthly cap (FAL_MONTHLY_CAP, default $10).
 const VIDEO_MODEL = () => process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.5-turbo/pro/image-to-video";
 const VIDEO_COST = 0.35;
-// "On a model" photos: an AI image editor puts the real product photos on a person (fal, Nano Banana edit). Estimate.
-const TRYON_MODEL = () => process.env.FAL_TRYON_MODEL || "fal-ai/nano-banana/edit";
-const TRYON_COST = 0.08;
+// "On a model" photos, two steps: the free image maker draws a person in a plain garment in Eli's scene, then FASHN
+// virtual try-on (fal) dresses that person in the real product photo, keeping the print. About $0.075 each (estimate).
+const TRYON_MODEL = () => process.env.FAL_TRYON_MODEL || "fal-ai/fashn/tryon/v1.6";
+const TRYON_COST = 0.075;
 const videoCap = () => { const c = parseFloat(String(process.env.FAL_MONTHLY_CAP || "").replace(/[^0-9.]/g, "")); return Number.isFinite(c) && c >= 0 ? c : 10; }; // about $0.07/s for a 5-second Kling 2.5 Turbo Pro clip (estimate; check fal.ai/pricing)
 async function videoSpend(add = 0) {
   const k = `falspend-${new Date().toISOString().slice(0, 7)}`;
@@ -372,9 +373,15 @@ export default async (req) => {
       if (!prod) return json({ error: "Pick a product." }, 400);
       if (await videoSpend() + TRYON_COST > videoCap()) return json({ error: `This month's AI budget ($${videoCap()}) is used up. Raise it in Setup.` }, 402);
       const scene = String(body.scene || "a young adult outdoors in soft golden-hour light").slice(0, 600);
-      const prompt = `Photorealistic lifestyle photo for a clothing brand: ${scene}, wearing exactly the ${prod.kind.toLowerCase()} shown in the reference photos (${prod.name}, ${prod.color}). Keep the garment identical: same color, same print, same text and placement; do not add, remove or change any text or graphics. Natural skin and hands, real fabric texture, editorial lighting, vertical 4:5 framing, no other logos or watermarks.`;
+      const back = body.view !== "front";
+      const pick = prod.images.find(i => (back ? /back/i : /front/i).test(i.label || i.src)) || prod.images[0];
+      const bottoms = prod.kind === "Sweats";
+      const piece = bottoms ? `plain ${prod.color.toLowerCase()} sweatpants` : `a plain ${prod.color.toLowerCase()} ${prod.kind === "Tee" ? "t-shirt" : "hoodie"} with no print or logo`;
+      // Step 1: the person (free Cloudflare image maker).
+      const person = await makeImage(`Photorealistic vertical 4:5 photo of ${scene}, wearing ${piece}, ${back ? "seen from behind, back fully visible, facing away from the camera" : "facing the camera, chest fully visible"}, whole upper body in frame, arms relaxed, natural light, sharp focus, realistic skin and fabric, no text, no logos.`, url.origin);
+      // Step 2: FASHN try-on puts the real garment on that person.
       const r = await fetch(`https://queue.fal.run/${TRYON_MODEL()}`, { method: "POST", headers: { authorization: `Key ${process.env.FAL_KEY}`, "content-type": "application/json" },
-        body: JSON.stringify({ prompt, image_urls: prod.images.slice(0, 2).map(i => `${url.origin}/${i.src}`), num_images: 1, output_format: "jpeg" }) });
+        body: JSON.stringify({ model_image: person, garment_image: `${url.origin}/${pick.src}`, category: bottoms ? "bottoms" : "tops", mode: "quality", garment_photo_type: "auto", num_samples: 1, output_format: "jpeg" }) });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || !d.request_id) return json({ error: `AI photo: ${d.detail || d.message || r.status}` }, 502);
       const ok = u => { try { const x = new URL(u); return x.protocol === "https:" && x.hostname === "queue.fal.run"; } catch { return false; } };
