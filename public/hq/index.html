@@ -243,6 +243,10 @@ function viewToday() {
   const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">${money(x.sales)}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · you keep about <b>${money(Math.max(0, x.keep))}</b></div></div>`
     : `<div class="card">${sk(12, "40%")}<div style="height:16px"></div>${sk(34, "60%")}<div style="height:10px"></div>${sk(12, "70%")}</div>`;
   return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><span class="countdown">${countdown()}</span></div>
+  ${o ? (() => { const goal = 1000000, got = o.month.sales, aov = o.month.orders ? got / o.month.orders : 5500, left = Math.max(0, goal - got), per = Math.ceil(left / aov / 30);
+    return `<div class="card" style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="eyebrow">Goal · $10k a month</span><span class="sub" style="margin:0">${money(got)} in the last 30 days</span></div>
+    <div style="height:10px;background:var(--panel-2);border-radius:99px;margin:12px 0;overflow:hidden"><div style="height:100%;width:${Math.min(100, got / goal * 100).toFixed(1)}%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div>
+    <p class="sub" style="margin:0">${left ? `About <b>${per} order${per === 1 ? "" : "s"} a day</b> at a ${money(Math.round(aov))} average order gets you there. Ask Mo for today's plan.` : "Goal hit. Keep going."}</p></div>`; })() : ""}
   <div class="grid g3">${o ? [stat("Today", o.today), stat("Last 7 days", o.week), stat("Last 30 days", o.month)].join("") : stat().repeat(3)}</div>
   <div class="grid g2" style="margin-top:16px">
     ${o ? `<div class="card ${o.toPlace ? "alert" : "alert ok"}"><div><span class="eyebrow">Tapstitch</span><h2 style="margin:8px 0 4px">${o.toPlace ? `${o.toPlace} order${o.toPlace === 1 ? "" : "s"} to place` : "Nothing to place"}</h2><p class="sub" style="margin:0">${o.toPlace ? "Hoodies, sweats and sets you place by hand." : "Every hand-placed order is done."}</p></div>${o.toPlace ? `<button class="btn primary" data-go="orders">Place now</button>` : ""}</div>
@@ -405,19 +409,26 @@ function viewProducts() {
 }
 
 function viewSetup() {
-  const o = state.overview || { connected: { instagram: {}, chat: false } };
-  const item = (on, title, body) => `<div class="check"><span class="dot ${on ? "on" : ""}"></span><div><b>${title}</b>${body}</div></div>`;
-  return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">One-time steps that need your logins. Keys go into Netlify, never into chat.</p></div></div>
-  <div class="card">
-    ${item(true, "Store, checkout and orders", `<p class="sub">Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.</p>`)}
-    ${item(o.connected.chat, "Mo and Claude post writing", `<ol><li>Go to <b>console.anthropic.com</b> → API keys → Create key.</li><li>In Netlify → rentcoatco → Environment variables, add <code>ANTHROPIC_API_KEY</code> (Production, secret).</li><li>Redeploy. Cost: pay as you go, roughly $5–30 a month.</li></ol>`)}
-    ${item(o.connected.instagram.rentcoat && o.connected.instagram.mission, "Instagram posting (both accounts)", `<ol><li>Switch both accounts to <b>Professional</b> (Settings → Account type).</li><li>Link each to a Facebook Page.</li><li>Create a free app at <b>developers.facebook.com</b>, add Instagram, and generate a long-lived token for each account.</li><li>Add <code>IG_RENTCOAT_USER_ID</code>, <code>IG_RENTCOAT_TOKEN</code>, <code>IG_MISSION_USER_ID</code>, <code>IG_MISSION_TOKEN</code> in Netlify.</li></ol><p class="sub">Until then, approve a post here, then use Download + Copy caption and post it yourself.</p>`)}
-    ${item(o.connected.images, "Image maker (free)", `<ol><li>Make a free account at <b>dash.cloudflare.com</b>.</li><li>Copy your <b>Account ID</b> (right side of the dashboard).</li><li>My Profile → API Tokens → Create token → template <b>Workers AI</b> → create.</li><li>In Netlify add <code>CF_ACCOUNT_ID</code> and <code>CF_AI_TOKEN</code> (secret), then redeploy.</li></ol><p class="sub">Free: 10,000 Neurons a day, enough for a lot of images. Product posts don't need it.</p>`)}
-    ${item(o.connected.facebook, "Facebook Page (Rent Coat)", `<ol><li>At <b>developers.facebook.com</b> use the same Meta app as Instagram; add permissions <code>pages_manage_posts</code> and <code>pages_read_engagement</code>.</li><li>In Graph API Explorer pick your Rent Coat Page, generate a <b>Page</b> access token, then extend it to long-lived.</li><li>In Netlify add <code>META_PAGE_ID</code> and <code>META_PAGE_TOKEN</code> (secret), redeploy.</li></ol><p class="sub">Then approved Rent Coat posts get a Facebook button.</p>`)}
-    ${item(o.connected.tiktok, "TikTok (sends to your drafts)", `<ol><li>At <b>developers.tiktok.com</b> create an app, add <b>Login Kit</b> and <b>Content Posting API</b> (scope <code>video.upload</code>), and verify <code>rentcoat.co</code> as a URL prefix.</li><li>Log in once with your TikTok to get a refresh token (I'll write the one-time login page when you're here).</li><li>In Netlify add <code>TIKTOK_CLIENT_KEY</code>, <code>TIKTOK_CLIENT_SECRET</code>, <code>TIKTOK_REFRESH_TOKEN</code> (secret), redeploy.</li></ol><p class="sub">Posts land in your TikTok inbox as drafts; you add a sound and post in the app.</p>`)}
-    ${item(o.connected.ads, "Meta ads stats (read only)", `<ol><li>In Meta Business Settings copy your <b>Ad account ID</b> (numbers only).</li><li>Give your Meta app the <code>ads_read</code> permission and make a token (or reuse the Page token if it has it).</li><li>In Netlify add <code>META_AD_ACCOUNT_ID</code> and, if separate, <code>META_ADS_TOKEN</code> (secret), redeploy.</li></ol><p class="sub">Today shows spend, impressions and clicks. You launch and pay for ads yourself in Ads Manager; HQ makes the creatives (Posts → New post → Video ad or Product image).</p>`)}
-    ${item(false, "Order emails", `<p class="sub">Stripe → Settings → Communication preferences → turn on <b>Successful payments</b>, so every order reaches your inbox too.</p>`)}
-  </div>
+  const o = state.overview || { connected: { instagram: {} } }, v = state.vault, set = v?.set || {}, acc = v?.accounts || {};
+  if (!v) { load("vault", "vault"); return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1></div></div><div class="card">${sk(200)}</div>`; }
+  const dot = on => `<span class="dot ${on ? "on" : ""}"></span>`;
+  const keyRow = (k, label, ph) => `<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><input class="field" type="password" autocomplete="off" data-key="${k}" placeholder="${set[k] ? "Saved ✓ (paste to replace)" : ph}"><button class="btn sm" data-savekey="${k}">Save</button></div><span class="sub" style="font-size:12px">${label}</span>`;
+  const open = (href, text) => `<a class="btn sm" href="${href}" target="_blank" rel="noopener">${text} ↗</a>`;
+  const svc = (on, name, what, body) => `<div class="card" style="margin-bottom:12px"><div style="display:flex;gap:12px;align-items:flex-start">${dot(on)}<div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:17px">${name}</b><span class="pill">${on ? "CONNECTED" : "NOT CONNECTED"}</span></div><p class="sub" style="margin:4px 0 10px">${what}</p>${body}</div></div></div>`;
+  const metaOn = Boolean(acc.meta), ttOn = Boolean(acc.tiktok);
+  return `<div class="head"><div><span class="eyebrow">Setup</span><h1>Connections</h1><p class="sub">Tap a button, log in, come back. Keys you paste here are saved privately in HQ, never shown again.</p></div></div>
+  ${svc(set.ANTHROPIC_API_KEY, "Mo (Claude)", "Mo, captions, hashtags and post planning. About $3–15 a month at your volume (estimate).",
+    `${open("https://console.anthropic.com/settings/keys", "Get a key")}${keyRow("ANTHROPIC_API_KEY", "Create key → copy → paste here → Save.", "sk-ant-…")}`)}
+  ${svc(set.CF_AI_TOKEN && set.CF_ACCOUNT_ID, "Image maker (Cloudflare)", "AI images. Free daily allowance.",
+    `${open("https://dash.cloudflare.com/profile/api-tokens", "Get a token")}${keyRow("CF_AI_TOKEN", "Create token → template “Workers AI” → copy → paste.", "API token")}${keyRow("CF_ACCOUNT_ID", "Account ID: right side of the Cloudflare home page.", "Account ID")}`)}
+  ${svc(metaOn, "Instagram + Facebook + Meta ads", metaOn ? `Linked: ${esc([...(acc.meta.instagram || []), acc.meta.page && "Page: " + acc.meta.page, acc.meta.adAccount && "Ads: " + acc.meta.adAccount].filter(Boolean).join(" · ") || "no Instagram business accounts found")}` : "One login connects both Instagram accounts, the Rent Coat Facebook Page and ad stats.",
+    `${set.META_APP_ID && set.META_APP_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.facebook.com/apps/creation/", "Create a Meta app")} type “Business”. Add <b>Facebook Login for Business</b>, and under its settings paste this as a Valid OAuth Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.meta)}"><button class="btn sm" data-copy="${esc(v.redirects.meta)}">Copy</button></div><p class="sub" style="margin:8px 0 0">Then App settings → Basic: copy the App ID and App Secret here.</p>${keyRow("META_APP_ID", "App ID", "App ID")}${keyRow("META_APP_SECRET", "App Secret", "App Secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
+     <div class="row"><button class="btn primary" data-connect="meta">${metaOn ? "Reconnect" : "Connect Instagram & Facebook"}</button>${metaOn ? `<button class="btn sm ghost" data-disconnect="meta">Disconnect</button>` : ""}</div>
+     <p class="sub" style="font-size:12px;margin-top:8px">Both Instagram accounts must be Professional and linked to a Facebook Page. Ads stats need reconnecting every ~60 days.</p>`)}
+  ${svc(ttOn, "TikTok", "Sends Rent Coat posts to your TikTok drafts; you add a sound and post in the app.",
+    `${set.TIKTOK_CLIENT_KEY && set.TIKTOK_CLIENT_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.tiktok.com/apps/", "Create a TikTok app")} add <b>Login Kit</b> and <b>Content Posting API</b>, set this as the Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.tiktok)}"><button class="btn sm" data-copy="${esc(v.redirects.tiktok)}">Copy</button></div>${keyRow("TIKTOK_CLIENT_KEY", "Client key", "Client key")}${keyRow("TIKTOK_CLIENT_SECRET", "Client secret", "Client secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
+     <div class="row"><button class="btn primary" data-connect="tiktok">${ttOn ? "Reconnect" : "Connect TikTok"}</button>${ttOn ? `<button class="btn sm ghost" data-disconnect="tiktok">Disconnect</button>` : ""}</div>`)}
+  ${svc(true, "Store, checkout and orders", "Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.", `${open("https://dashboard.stripe.com/settings/communication-preferences", "Turn on order emails")}<p class="sub" style="font-size:12px;margin-top:6px">Turn on “Successful payments” so every order reaches your inbox too.</p>`)}
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
 }
 
@@ -513,10 +524,18 @@ function wire() {
     };
   }
   const clear = $("#clear"); if (clear) clear.onclick = () => { state.mo = []; store.del("hq-mo"); render(); };
+  document.querySelectorAll("[data-savekey]").forEach(b => b.onclick = async () => {
+    const k = b.dataset.savekey, val = document.querySelector(`[data-key="${k}"]`).value.trim(); if (!val) return toast("Paste it first.");
+    b.disabled = true; try { state.vault = await post("vault", { [k]: val }); state.overview = await api("overview"); render(); toast("Saved"); } catch (e) { toast(e.message); b.disabled = false; }
+  });
+  document.querySelectorAll("[data-connect]").forEach(b => b.onclick = async () => { b.disabled = true; try { location.href = (await post(`connect/${b.dataset.connect}`)).url; } catch (e) { toast(e.message); b.disabled = false; } });
+  document.querySelectorAll("[data-disconnect]").forEach(b => b.onclick = async () => { if (!confirm("Disconnect?")) return; try { await post(`disconnect/${b.dataset.disconnect}`); state.vault = null; state.overview = await api("overview"); render(); toast("Disconnected"); } catch (e) { toast(e.message); } });
   const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
 }
 
 async function start() {
+  const qp = new URLSearchParams(location.search);
+  if (qp.get("connected") || qp.get("error")) { setTimeout(() => toast(qp.get("error") || `${qp.get("connected") === "meta" ? "Instagram & Facebook" : "TikTok"} connected`), 600); history.replaceState(null, "", location.pathname + location.hash); }
   $("#login").classList.add("hide"); $("#app").classList.remove("hide"); $("#tabbar").classList.remove("hide");
   const fromHash = location.hash.slice(1); if (VIEWS[fromHash]) state.tab = fromHash;
   paintNav(); render();

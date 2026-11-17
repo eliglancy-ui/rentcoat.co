@@ -20,6 +20,7 @@ import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 import Anthropic from "@anthropic-ai/sdk";
 import { PRODUCTS, liveLine, decodeItems, stripe, json } from "../lib/store.mjs";
+import { hydrate, setVault, getAccounts, setAccounts, makeState, PASTE_KEYS } from "../lib/vault.mjs";
 
 const sameKey = (a, b) => crypto.timingSafeEqual(
   crypto.createHash("sha256").update(String(a)).digest(),
@@ -117,6 +118,7 @@ async function tiktokPublish(post) {
   const t = await (await fetch("https://open.tiktokapis.com/v2/oauth/token/", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ client_key: key, client_secret: secret, grant_type: "refresh_token", refresh_token: refresh }) })).json();
   if (!t.access_token) throw new Error(`TikTok login: ${t.error_description || t.error || "failed"}`);
+  if (t.refresh_token && t.refresh_token !== refresh) await setVault({ TIKTOK_REFRESH_TOKEN: t.refresh_token });
   const video = mediaOf(post, "video"), image = mediaOf(post, "image");
   const [path, body] = video
     ? ["post/publish/inbox/video/init/", { source_info: { source: "PULL_FROM_URL", video_url: video } }]
@@ -217,8 +219,37 @@ export default async (req) => {
   if (!process.env.ADMIN_KEY || !key || !sameKey(key, process.env.ADMIN_KEY)) return json({ error: "Not found" }, 404);
   const path = url.pathname.replace(/^\/api\/hq\/?/, "").split("/").filter(Boolean);
   const body = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+  await hydrate().catch(e => console.error("vault", e.message));
 
   try {
+    if (path[0] === "vault") {
+      if (req.method === "POST") {
+        const patch = {};
+        for (const k of PASTE_KEYS) if (k in body) patch[k] = typeof body[k] === "string" ? body[k].trim() : null;
+        await setVault(patch);
+      }
+      return json({ set: Object.fromEntries(PASTE_KEYS.map(k => [k, Boolean(process.env[k])])), accounts: await getAccounts(),
+        redirects: { meta: `${url.origin}/api/connect/meta/callback`, tiktok: `${url.origin}/api/connect/tiktok/callback` } });
+    }
+    if (path[0] === "connect" && req.method === "POST") {
+      const cb = `${url.origin}/api/connect/${path[1]}/callback`;
+      if (path[1] === "meta") {
+        if (!process.env.META_APP_ID || !process.env.META_APP_SECRET) return json({ error: "Save your Meta App ID and App Secret first (step 1)." }, 400);
+        const scope = "instagram_basic,instagram_content_publish,pages_show_list,pages_manage_posts,pages_read_engagement,business_management,ads_read";
+        return json({ url: `https://www.facebook.com/${process.env.IG_GRAPH_VERSION || "v21.0"}/dialog/oauth?${new URLSearchParams({ client_id: process.env.META_APP_ID, redirect_uri: cb, state: makeState("meta"), scope, response_type: "code" })}` });
+      }
+      if (path[1] === "tiktok") {
+        if (!process.env.TIKTOK_CLIENT_KEY || !process.env.TIKTOK_CLIENT_SECRET) return json({ error: "Save your TikTok Client key and secret first (step 1)." }, 400);
+        return json({ url: `https://www.tiktok.com/v2/auth/authorize/?${new URLSearchParams({ client_key: process.env.TIKTOK_CLIENT_KEY, scope: "user.info.basic,video.upload", response_type: "code", redirect_uri: cb, state: makeState("tiktok") })}` });
+      }
+      return json({ error: "Unknown service." }, 404);
+    }
+    if (path[0] === "disconnect" && req.method === "POST") {
+      const keys = { meta: ["META_USER_TOKEN", "IG_RENTCOAT_USER_ID", "IG_RENTCOAT_TOKEN", "IG_MISSION_USER_ID", "IG_MISSION_TOKEN", "META_PAGE_ID", "META_PAGE_TOKEN", "META_AD_ACCOUNT_ID", "META_ADS_TOKEN"], tiktok: ["TIKTOK_REFRESH_TOKEN"] }[path[1]];
+      if (!keys) return json({ error: "Unknown service." }, 404);
+      await setVault(Object.fromEntries(keys.map(k => [k, null]))); await setAccounts({ [path[1]]: null });
+      return json({ ok: true });
+    }
     if (path[0] === "overview") {
       const placed = (await store().get("placed", { type: "json" })) || {};
       const all = (await sessions(30)).map(s => orderView(s, placed));
