@@ -208,6 +208,9 @@ async function referralCode(name) {
 // AI video (fal.ai). Each clip costs real money, so there's a monthly cap (FAL_MONTHLY_CAP, default $10).
 const VIDEO_MODEL = () => process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.5-turbo/pro/image-to-video";
 const VIDEO_COST = 0.35;
+// "On a model" photos: an AI image editor puts the real product photos on a person (fal, Nano Banana edit). Estimate.
+const TRYON_MODEL = () => process.env.FAL_TRYON_MODEL || "fal-ai/nano-banana/edit";
+const TRYON_COST = 0.08;
 const videoCap = () => { const c = parseFloat(String(process.env.FAL_MONTHLY_CAP || "").replace(/[^0-9.]/g, "")); return Number.isFinite(c) && c >= 0 ? c : 10; }; // about $0.07/s for a 5-second Kling 2.5 Turbo Pro clip (estimate; check fal.ai/pricing)
 async function videoSpend(add = 0) {
   const k = `falspend-${new Date().toISOString().slice(0, 7)}`;
@@ -363,6 +366,25 @@ export default async (req) => {
       if (body.delete) all.splice(all.indexOf(r), 1); else r.approved = Boolean(body.approved);
       await getStore("reviews").setJSON("all", all); return json({ reviews: all });
     }
+    if (path[0] === "tryon" && req.method === "POST") {
+      if (!process.env.FAL_KEY) return json({ error: "AI photos and video need fal.ai connected. See Setup." }, 400);
+      const prod = liveLine().find(x => x.id === body.product);
+      if (!prod) return json({ error: "Pick a product." }, 400);
+      if (await videoSpend() + TRYON_COST > videoCap()) return json({ error: `This month's AI budget ($${videoCap()}) is used up. Raise it in Setup.` }, 402);
+      const scene = String(body.scene || "a young adult outdoors in soft golden-hour light").slice(0, 600);
+      const prompt = `Photorealistic lifestyle photo for a clothing brand: ${scene}, wearing exactly the ${prod.kind.toLowerCase()} shown in the reference photos (${prod.name}, ${prod.color}). Keep the garment identical: same color, same print, same text and placement; do not add, remove or change any text or graphics. Natural skin and hands, real fabric texture, editorial lighting, vertical 4:5 framing, no other logos or watermarks.`;
+      const r = await fetch(`https://queue.fal.run/${TRYON_MODEL()}`, { method: "POST", headers: { authorization: `Key ${process.env.FAL_KEY}`, "content-type": "application/json" },
+        body: JSON.stringify({ prompt, image_urls: prod.images.slice(0, 2).map(i => `${url.origin}/${i.src}`), num_images: 1, output_format: "jpeg" }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.request_id) return json({ error: `AI photo: ${d.detail || d.message || r.status}` }, 502);
+      const ok = u => { try { const x = new URL(u); return x.protocol === "https:" && x.hostname === "queue.fal.run"; } catch { return false; } };
+      if (!ok(d.status_url) || !ok(d.response_url)) return json({ error: "AI photo: unexpected response from fal." }, 502);
+      await videoSpend(TRYON_COST);
+      const jobs = (await store().get("videoJobs", { type: "json" })) || [];
+      jobs.unshift({ id: d.request_id, kind: "image", status_url: d.status_url, response_url: d.response_url, prompt: `${prod.name}: ${scene}`.slice(0, 200), created: Date.now() });
+      await store().setJSON("videoJobs", jobs.slice(0, 30));
+      return json({ id: d.request_id });
+    }
     if (path[0] === "video") {
       if (!process.env.FAL_KEY) return json({ error: "AI video isn't connected yet. See Setup." }, 400);
       const h = { authorization: `Key ${process.env.FAL_KEY}`, "content-type": "application/json" };
@@ -381,7 +403,7 @@ export default async (req) => {
         await store().setJSON("videoJobs", jobs.slice(0, 20));
         return json({ id: d.request_id });
       }
-      if (req.method === "GET") return json({ jobs: ((await store().get("videoJobs", { type: "json" })) || []).map(j => ({ id: j.id, prompt: j.prompt, created: j.created, url: j.url || null })) });
+      if (req.method === "GET") return json({ jobs: ((await store().get("videoJobs", { type: "json" })) || []).map(j => ({ id: j.id, kind: j.kind || "video", prompt: j.prompt, created: j.created, url: j.url || null })) });
       if (req.method === "POST" && path[1] === "check") {
         const jobs = (await store().get("videoJobs", { type: "json" })) || [], job = jobs.find(j => j.id === body.id);
         if (!job) return json({ error: "That video job isn't on file." }, 404);
@@ -389,9 +411,9 @@ export default async (req) => {
         const st = await (await fetch(job.status_url, { headers: h })).json().catch(() => ({}));
         if (st.status !== "COMPLETED") return json({ status: st.status || "IN_QUEUE" });
         const out = await (await fetch(job.response_url, { headers: h })).json();
-        const src = out.video?.url; if (!src) return json({ error: "AI video finished without a file." }, 502);
+        const src = job.kind === "image" ? out.images?.[0]?.url : out.video?.url; if (!src) return json({ error: "AI job finished without a file." }, 502);
         const bytes = Buffer.from(await (await fetch(src)).arrayBuffer());
-        job.url = await saveImage(bytes, url.origin, "mp4"); await store().setJSON("videoJobs", jobs);
+        job.url = await saveImage(bytes, url.origin, job.kind === "image" ? "jpg" : "mp4"); await store().setJSON("videoJobs", jobs);
         return json({ status: "COMPLETED", url: job.url });
       }
     }

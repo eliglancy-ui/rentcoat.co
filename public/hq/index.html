@@ -341,17 +341,21 @@ function composer() {
       <button class="btn primary" id="d-claude" ${d.busy ? "disabled" : ""}>${d.busy ? "Working…" : "✦ Make it with Claude"}</button>
       <p class="sub" style="margin:0">Mo writes it and uses your real product photos. Edit anything before it goes to review.</p>
       <details id="manual" ${d.manual ? "open" : ""}><summary class="sub" style="cursor:pointer">Or make it yourself</summary><div style="display:grid;gap:10px;margin-top:10px">
-      ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${d.mode === "product"}">Product image</button><button data-mode="video" aria-pressed="${d.mode === "video"}">Video ad</button></div>
+      ${mission ? "" : `<div class="tabs"><button data-mode="ai" aria-pressed="${ai}">AI image</button><button data-mode="product" aria-pressed="${d.mode === "product"}">Product image</button><button data-mode="model" aria-pressed="${d.mode === "model"}">On a model</button><button data-mode="video" aria-pressed="${d.mode === "video"}">Video ad</button></div>
       <div class="tabs"><button data-fmt="feed" aria-pressed="${d.fmt === "feed"}">Feed 4:5</button><button data-fmt="story" aria-pressed="${d.fmt === "story"}">Reel / Story 9:16</button><button data-fmt="square" aria-pressed="${d.fmt === "square"}">Square</button></div>`}
       ${ai ? `<span class="lbl">Image</span><textarea class="field" id="d-prompt" rows="3" placeholder="Describe the image, e.g. golden hour over a mountain lake, cinematic, no text">${esc(d.prompt || "")}</textarea>
         <button class="btn primary" id="d-gen" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : "Make image"}</button>${imgOn ? "" : `<p class="sub">Image maker isn't connected yet: see Setup.</p>`}`
+      : d.mode === "model" ? `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+        <span class="lbl">Who and where</span><textarea class="field" id="d-scene" rows="2" placeholder="e.g. a 19-year-old guy on a snowy college campus at golden hour, looking over his shoulder so the back print shows">${esc(d.scene || "")}</textarea>
+        <button class="btn primary" id="d-model" ${d.busy ? "disabled" : ""}>${d.busy ? "Making… (about 30 s)" : "Make photo on a model (~$0.08)"}</button>
+        <p class="sub" style="margin:0">Uses your real product photos. AI can still smudge small text: check the print before you post. Then use “Turn this image into an AI video” below.</p>`
       : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
       </div></details>
       ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
       ${d.img && !/\.(mp4|webm)$/.test(d.img) ? `<details><summary class="sub" style="cursor:pointer">✦ Turn this image into an AI video (paid, about $0.35)</summary><div style="display:grid;gap:8px;margin-top:8px"><input class="field" id="d-motion" placeholder="Motion, e.g. slow push in, fabric moving in the wind" value="${esc(d.motion || "")}"><button class="btn" id="d-vid" ${d.busy ? "disabled" : ""}>${d.busy ? "Rendering… (1–3 min)" : "Make AI video"}</button></div></details>` : ""}
-      ${(state.videos || []).length ? `<details><summary class="sub" style="cursor:pointer">Your recent AI videos (${state.videos.length})</summary>${state.videos.map(v => `<div class="row" style="margin-top:6px"><span class="sub" style="flex:1">${esc(v.prompt || "video")} · ${new Date(v.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><button class="btn sm" data-usevid="${esc(v.id)}">${v.url ? "Use" : "Check"}</button></div>`).join("")}</details>` : ""}
+      ${(state.videos || []).length ? `<details><summary class="sub" style="cursor:pointer">Your recent AI photos and videos (${state.videos.length})</summary>${state.videos.map(v => `<div class="row" style="margin-top:6px"><span class="sub" style="flex:1">${v.kind === "image" ? "Photo" : "Video"}: ${esc(v.prompt || "")} · ${new Date(v.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><button class="btn sm" data-usevid="${esc(v.id)}">${v.url ? "Use" : "Check"}</button></div>`).join("")}</details>` : ""}
       <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
       <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
@@ -481,7 +485,7 @@ function viewSetup() {
     `${open("https://resend.com/domains", "Add rentcoat.co in Resend")}<p class="sub" style="font-size:12px;margin:6px 0">Add the domain, then add the DNS records Resend shows wherever rentcoat.co's DNS lives. Then API Keys → Create → paste.</p>${keyRow("RESEND_API_KEY", "Resend API key", "re_…")}${keyRow("EMAIL_FROM", "From, e.g. Rent Coat Co. &lt;hello@rentcoat.co&gt;", "Rent Coat Co. <hello@rentcoat.co>")}${keyRow("MAIL_ADDRESS", "Mailing address for marketing emails (required by law; a PO box works).", "PO Box …, Holly Springs, NC")}`)}
   ${svc(set.NETLIFY_TOKEN, "Reminder list (Netlify)", "Lets HQ read the emails people left for the launch reminder.",
     `${open("https://app.netlify.com/user/applications#personal-access-tokens", "Make a token")}${keyRow("NETLIFY_TOKEN", "New access token → copy → paste.", "Netlify token")}`)}
-  ${svc(set.FAL_KEY, "AI video (fal.ai)", "Turns any image into a 5-second AI video ad (Kling 2.5). About $0.35 a clip; HQ stops at your monthly cap.",
+  ${svc(set.FAL_KEY, "AI photos & video (fal.ai)", "Puts your real clothes on a model (about $0.08 a photo) and turns any image into a 5-second video (about $0.35). HQ stops at your monthly cap.",
     `${open("https://fal.ai/dashboard/keys", "Get a key")}<p class="sub" style="font-size:12px;margin:6px 0">Add a few dollars of credit at fal.ai first; it's pay as you go.</p>${keyRow("FAL_KEY", "fal API key", "key")}${keyRow("FAL_MONTHLY_CAP", "Monthly cap in dollars (default 10)", "10")}`)}
   ${svc(true, "Store, checkout and orders", "Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.", `${open("https://dashboard.stripe.com/settings/communication-preferences", "Turn on order emails")}<p class="sub" style="font-size:12px;margin-top:6px">Turn on “Successful payments” so every order reaches your inbox too.</p>`)}
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
@@ -507,7 +511,7 @@ function wire() {
   document.querySelectorAll("[data-usevid]").forEach(b => b.onclick = async () => { b.disabled = true; try { const st = await post("video/check", { id: b.dataset.usevid }); if (st.url) { state.draft.img = st.url; state.videos = null; render(); } else { toast("Still rendering. Check again in a minute."); b.disabled = false; } } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
-  const keep = () => { const d = state.draft; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  const keep = () => { const d = state.draft; d.scene = $("#d-scene")?.value ?? d.scene; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
   if ($("#d-claude")) $("#d-claude").onclick = async () => { keep(); const d = state.draft, ai = d.mode === "ai" || state.acct === "mission"; d.busy = true; render();
     try {
       if (!ai && !state.products) state.products = await api("products");
@@ -519,6 +523,13 @@ function wire() {
       if (state.acct === "rentcoat" && plan.product_id) { if (!state.products) state.products = await api("products"); pick = state.products.products.find(x => x.id === plan.product_id) || prod; }
       if (pick) { d.prod = pick.id; if (d.mode === "ai") d.mode = "product"; d.img = (await post("upload", { image: d.mode === "video" ? await productVideo(pick, d.head, d.fmt) : await productImage(pick, d.head, d.fmt) })).url; }
       else { d.prompt = plan.imagePrompt || d.prompt; d.img = (await post("image", { prompt: d.prompt })).url; }
+    } catch (e) { toast(e.message); }
+    d.busy = false; render(); };
+  if ($("#d-model")) $("#d-model").onclick = async () => { keep(); const d = state.draft; d.busy = true; render();
+    try { const job = await post("tryon", { product: d.prod || state.products?.products?.[0]?.id, scene: d.scene });
+      for (let i = 0; i < 40; i++) { await new Promise(r => setTimeout(r, 4000)); const st = await post("video/check", { id: job.id }); if (st.url) { d.img = st.url; break; } }
+      if (!/\.jpe?g$/.test(d.img || "")) toast("Still working. It's saved: reopen New post in a minute to pick it up.");
+      state.videos = null;
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
   if ($("#d-gen")) $("#d-gen").onclick = async () => { keep(); state.draft.busy = true; render();
