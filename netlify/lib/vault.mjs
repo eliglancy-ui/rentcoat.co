@@ -4,7 +4,7 @@
 import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 
-export const PASTE_KEYS = ["ANTHROPIC_API_KEY", "CF_ACCOUNT_ID", "CF_AI_TOKEN", "META_APP_ID", "META_APP_SECRET", "META_CONFIG_ID", "TIKTOK_CLIENT_KEY", "TIKTOK_CLIENT_SECRET", "RESEND_API_KEY", "EMAIL_FROM", "MAIL_ADDRESS", "NETLIFY_TOKEN", "FAL_KEY", "FAL_MONTHLY_CAP"];
+export const PASTE_KEYS = ["ANTHROPIC_API_KEY", "CF_ACCOUNT_ID", "CF_AI_TOKEN", "META_APP_ID", "META_APP_SECRET", "META_CONFIG_ID", "TIKTOK_CLIENT_KEY", "TIKTOK_CLIENT_SECRET", "RESEND_API_KEY", "EMAIL_FROM", "EMAIL_REPLY_TO", "MAIL_ADDRESS", "NETLIFY_TOKEN", "FAL_KEY", "FAL_MONTHLY_CAP"];
 const vault = () => getStore("hq-vault");
 
 export async function hydrate() {
