@@ -438,7 +438,7 @@ export default async (req) => {
       if (path[1] === "meta") {
         if (!process.env.META_APP_ID || !process.env.META_APP_SECRET) return json({ error: "Save your Meta App ID and App Secret first (step 1)." }, 400);
         const scope = "instagram_basic,instagram_content_publish,pages_show_list,pages_manage_posts,pages_read_engagement,business_management,ads_read";
-        return json({ url: `https://www.facebook.com/${process.env.IG_GRAPH_VERSION || "v21.0"}/dialog/oauth?${new URLSearchParams({ client_id: process.env.META_APP_ID, redirect_uri: cb, state: makeState("meta"), scope, response_type: "code" })}` });
+        return json({ url: `https://www.facebook.com/${process.env.IG_GRAPH_VERSION || "v21.0"}/dialog/oauth?${new URLSearchParams({ client_id: process.env.META_APP_ID, redirect_uri: cb, state: makeState("meta"), response_type: "code", ...(process.env.META_CONFIG_ID ? { config_id: process.env.META_CONFIG_ID } : { scope }) })}` });
       }
       if (path[1] === "tiktok") {
         if (!process.env.TIKTOK_CLIENT_KEY || !process.env.TIKTOK_CLIENT_SECRET) return json({ error: "Save your TikTok Client key and secret first (step 1)." }, 400);
