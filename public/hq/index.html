@@ -170,6 +170,7 @@ code{font:500 12.5px var(--mono);background:var(--panel-2);border:1px solid var(
   <symbol id="i-posts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
   <symbol id="i-products" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l4 2 4-2 4 3-2 4h-2v9H8v-9H6L4 7z"/></symbol>
+  <symbol id="i-grow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
   <symbol id="i-setup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
   <symbol id="i-flag" viewBox="0 0 24 24"><rect x="4" y="2" width="2.2" height="20" rx="1" fill="#C9A45C"/><path d="M6.5 3.5H20l-2.5 3.4L20 10.5H6.5z" fill="#C24A39"/></symbol>
 </svg>
@@ -202,7 +203,7 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} }, del(k) { try { localStorage.removeItem(k); } catch {} } };
 let KEY = store.get("hq-key");
-const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["posts", "Posts", "i-posts"], ["grow", "Grow", "i-grow"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
 let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", fmt: "feed", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]"), mo: JSON.parse(store.get("hq-mo") || "[]") };
 
@@ -262,7 +263,27 @@ function viewToday() {
   </div>`;
 }
 
+function viewGrow() {
+  const g = state.grow;
+  if (!g) { load("grow", "grow"); return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1></div></div><div class="card">${sk(240)}</div>`; }
+  const d = state.mail || (state.mail = { subject: "Rent Coat is open", text: "Hi,\n\nYou asked us to tell you when Rent Coat opens. It's open now: rentcoat.co\n\nTees are $40, hoodies $68, and the Steadfast Sweatsuit is $100. Shipping is free over $60.\n\nThanks for being here from the start.\n\nEli" });
+  const list = g.list?.count != null ? `${g.list.count} people` : esc(g.list?.error || "");
+  const ab = Array.isArray(g.abandoned) ? g.abandoned : [];
+  return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1><p class="sub">Email, abandoned checkouts, reviews and referrals. Nothing sends until you tap.</p></div></div>
+  ${g.email.connected ? "" : `<div class="card alert" style="margin-bottom:12px"><div><b>Email isn't connected.</b> <span class="sub">Setup → Email (Resend, free up to 100 a day).</span></div></div>`}
+  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Launch email</span><h2 style="margin:6px 0">Reminder list: ${list}</h2>
+    <div style="display:grid;gap:8px"><input class="field" id="m-sub" value="${esc(d.subject)}"><textarea class="field" id="m-text" rows="8">${esc(d.text)}</textarea>
+    <div class="row"><button class="btn" id="m-test">Send me a test</button><button class="btn primary" id="m-send" ${g.list?.count ? "" : "disabled"}>Send to ${g.list?.count || 0}</button></div>
+    ${g.list?.count > 100 ? `<p class="sub" style="margin:0">Resend's free plan sends 100 a day. Over that, pick a paid plan ($20/mo) or send over two days.</p>` : ""}</div></div>
+  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Left at checkout · last 7 days</span>
+    ${g.abandoned?.error ? `<p class="sub">${esc(g.abandoned.error)}</p>` : ab.length ? ab.map(a => `<div class="check"><div style="flex:1"><b>${esc(a.name || a.email)}</b> <span class="sub">${money(a.amount || 0)} · ${new Date(a.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><div class="sub">${esc(a.items.join(", "))}</div></div>
+      ${g.sent[`ab-${a.id}`] ? `<span class="pill">Sent ✓</span>` : a.optedIn ? `<button class="btn sm primary" data-abmail="${a.id}">Send reminder</button>` : `<span class="pill" title="Didn't agree to emails at checkout">No email consent</span>`}</div>`).join("") : `<p class="sub">Nobody yet. Expired checkouts with an email show here.</p>`}</div>
+  <div class="card" style="margin-bottom:12px"><span class="eyebrow">Reviews</span>
+    ${g.reviews.length ? g.reviews.map(r => `<div class="check"><div style="flex:1"><b>${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</b> <span class="sub">${esc(r.name)}</span><div>${esc(r.text)}</div></div><div class="row"><button class="btn sm ${r.approved ? "" : "green"}" data-rvok="${r.id}" data-on="${r.approved ? 0 : 1}">${r.approved ? "Approved ✓" : "Approve"}</button></div></div>`).join("") : `<p class="sub">No reviews yet. In Orders, tap “Ask for a review” on orders older than 12 days.</p>`}</div>
+  <div class="card"><span class="eyebrow">Referrals</span><p class="sub" style="margin:6px 0 0">In Orders, “Send referral code” makes a 10%-off code just for that buyer's friends (25 uses) and emails it. Codes work at checkout.</p></div>`;
+}
 function viewOrders() {
+  if (!state.grow && !state.growLoading) { state.growLoading = true; api("grow").then(g => { state.grow = g; render(); }).catch(() => {}); }
   const list = state.orders?.orders;
   const shown = list ? list.filter(o => state.orderFilter === "all" || (o.tapstitch.length && !o.placed)) : null;
   const card = o => {
@@ -279,6 +300,10 @@ function viewOrders() {
           <a class="btn sm ghost" href="https://www.tapstitch.com" target="_blank" rel="noopener">Open Tapstitch ↗</a>
           <button class="btn sm ${o.placed ? "" : "green"}" data-placed="${o.id}" data-on="${o.placed ? 0 : 1}">${o.placed ? "Placed ✓ · undo" : "Mark placed"}</button>
         </div>` : ""}
+      <div class="row" style="margin-top:10px">
+          ${Date.now() - o.created > 12 * 864e5 ? (state.grow?.sent?.[`rv-${o.id}`] ? `<span class="pill">Review asked ✓</span>` : `<button class="btn sm" data-rvreq="${o.id}">Ask for a review</button>`) : ""}
+          ${state.grow?.sent?.[`ref-${o.id}`] ? `<span class="pill">Referral code sent ✓</span>` : `<button class="btn sm" data-ref="${o.id}">Send referral code</button>`}
+        </div>
       </div>
       <div class="money"><div class="t">${money(o.total)}</div><div class="k">keep ≈ ${money(Math.max(0, o.keep))}</div></div>
     </div>`;
@@ -305,6 +330,7 @@ function composer() {
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
       ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
+      ${d.img && !/\.(mp4|webm)$/.test(d.img) ? `<details><summary class="sub" style="cursor:pointer">✦ Turn this image into an AI video (paid, about $0.35)</summary><div style="display:grid;gap:8px;margin-top:8px"><input class="field" id="d-motion" placeholder="Motion, e.g. slow push in, fabric moving in the wind" value="${esc(d.motion || "")}"><button class="btn" id="d-vid" ${d.busy ? "disabled" : ""}>${d.busy ? "Rendering… (1–3 min)" : "Make AI video"}</button></div></details>` : ""}
       <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
       <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
@@ -428,11 +454,17 @@ function viewSetup() {
   ${svc(ttOn, "TikTok", "Sends Rent Coat posts to your TikTok drafts; you add a sound and post in the app.",
     `${set.TIKTOK_CLIENT_KEY && set.TIKTOK_CLIENT_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.tiktok.com/apps/", "Create a TikTok app")} add <b>Login Kit</b> and <b>Content Posting API</b>, set this as the Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.tiktok)}"><button class="btn sm" data-copy="${esc(v.redirects.tiktok)}">Copy</button></div>${keyRow("TIKTOK_CLIENT_KEY", "Client key", "Client key")}${keyRow("TIKTOK_CLIENT_SECRET", "Client secret", "Client secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
      <div class="row"><button class="btn primary" data-connect="tiktok">${ttOn ? "Reconnect" : "Connect TikTok"}</button>${ttOn ? `<button class="btn sm ghost" data-disconnect="tiktok">Disconnect</button>` : ""}</div>`)}
+  ${svc(set.RESEND_API_KEY, "Email (Resend)", "Launch emails, abandoned-checkout reminders, review requests, referral codes. Free up to 100 emails a day, 3,000 a month.",
+    `${open("https://resend.com/domains", "Add rentcoat.co in Resend")}<p class="sub" style="font-size:12px;margin:6px 0">Add the domain, then add the DNS records Resend shows wherever rentcoat.co's DNS lives. Then API Keys → Create → paste.</p>${keyRow("RESEND_API_KEY", "Resend API key", "re_…")}${keyRow("EMAIL_FROM", "From, e.g. Rent Coat Co. &lt;hello@rentcoat.co&gt;", "Rent Coat Co. <hello@rentcoat.co>")}${keyRow("MAIL_ADDRESS", "Mailing address for marketing emails (required by law; a PO box works).", "PO Box …, Holly Springs, NC")}`)}
+  ${svc(set.NETLIFY_TOKEN, "Reminder list (Netlify)", "Lets HQ read the emails people left for the launch reminder.",
+    `${open("https://app.netlify.com/user/applications#personal-access-tokens", "Make a token")}${keyRow("NETLIFY_TOKEN", "New access token → copy → paste.", "Netlify token")}`)}
+  ${svc(set.FAL_KEY, "AI video (fal.ai)", "Turns any image into a 5-second AI video ad (Kling 2.5). About $0.35 a clip; HQ stops at your monthly cap.",
+    `${open("https://fal.ai/dashboard/keys", "Get a key")}<p class="sub" style="font-size:12px;margin:6px 0">Add a few dollars of credit at fal.ai first; it's pay as you go.</p>${keyRow("FAL_KEY", "fal API key", "key")}${keyRow("FAL_MONTHLY_CAP", "Monthly cap in dollars (default 10)", "10")}`)}
   ${svc(true, "Store, checkout and orders", "Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.", `${open("https://dashboard.stripe.com/settings/communication-preferences", "Turn on order emails")}<p class="sub" style="font-size:12px;margin-top:6px">Turn on “Successful payments” so every order reaches your inbox too.</p>`)}
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
 }
 
-const VIEWS = { today: viewToday, orders: viewOrders, posts: viewPosts, chat: viewChat, products: viewProducts, setup: viewSetup };
+const VIEWS = { grow: viewGrow, today: viewToday, orders: viewOrders, posts: viewPosts, chat: viewChat, products: viewProducts, setup: viewSetup };
 function render() {
   $("#main").innerHTML = VIEWS[state.tab]();
   wire();
@@ -450,7 +482,7 @@ function wire() {
   const cmp = $("#composer"); if (cmp) cmp.ontoggle = () => { state.draft.open = cmp.open; if (cmp.open && !state.products) load("products", "products"); };
   document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
-  const keep = () => { const d = state.draft; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  const keep = () => { const d = state.draft; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
   if ($("#d-claude")) $("#d-claude").onclick = async () => { keep(); const d = state.draft, ai = d.mode === "ai" || state.acct === "mission"; d.busy = true; render();
     try {
       if (!ai && !state.products) state.products = await api("products");
@@ -530,6 +562,22 @@ function wire() {
   });
   document.querySelectorAll("[data-connect]").forEach(b => b.onclick = async () => { b.disabled = true; try { location.href = (await post(`connect/${b.dataset.connect}`)).url; } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-disconnect]").forEach(b => b.onclick = async () => { if (!confirm("Disconnect?")) return; try { await post(`disconnect/${b.dataset.disconnect}`); state.vault = null; state.overview = await api("overview"); render(); toast("Disconnected"); } catch (e) { toast(e.message); } });
+  const keepMail = () => { if ($("#m-sub")) state.mail = { subject: $("#m-sub").value, text: $("#m-text").value }; };
+  if ($("#m-test")) $("#m-test").onclick = async () => { keepMail(); try { await post("email/launch", { ...state.mail, test: true }); toast("Test sent to rentcoat.co@gmail.com"); } catch (e) { toast(e.message); } };
+  if ($("#m-send")) $("#m-send").onclick = async () => { keepMail(); if (!confirm(`Send "${state.mail.subject}" to ${state.grow.list.count} people?`)) return; $("#m-send").disabled = true;
+    try { const r = await post("email/launch", state.mail); toast(`Sent to ${r.sent}`); state.grow = null; render(); } catch (e) { toast(e.message); $("#m-send").disabled = false; } };
+  document.querySelectorAll("[data-abmail]").forEach(b => b.onclick = async () => { b.disabled = true; try { await post(`email/abandoned/${b.dataset.abmail}`); state.grow.sent[`ab-${b.dataset.abmail}`] = Date.now(); render(); toast("Reminder sent"); } catch (e) { toast(e.message); b.disabled = false; } });
+  document.querySelectorAll("[data-rvok]").forEach(b => b.onclick = async () => { try { state.grow.reviews = (await post(`reviews/${b.dataset.rvok}`, { approved: b.dataset.on === "1" })).reviews; render(); } catch (e) { toast(e.message); } });
+  document.querySelectorAll("[data-rvreq]").forEach(b => b.onclick = async () => { b.disabled = true; try { await post(`orders/${b.dataset.rvreq}/review-request`); (state.grow ||= { sent: {} }).sent[`rv-${b.dataset.rvreq}`] = Date.now(); render(); toast("Review request sent"); } catch (e) { toast(e.message); b.disabled = false; } });
+  document.querySelectorAll("[data-ref]").forEach(b => b.onclick = async () => { if (!confirm("Make a 10%-off code for this buyer's friends and email it to them?")) return; b.disabled = true; try { const r = await post(`orders/${b.dataset.ref}/referral`, { send: true }); (state.grow ||= { sent: {} }).sent[`ref-${b.dataset.ref}`] = Date.now(); render(); toast(`Sent code ${r.code}`); } catch (e) { toast(e.message); b.disabled = false; } });
+  if ($("#d-vid")) $("#d-vid").onclick = async () => { keep(); const d = state.draft; if (!d.img || /\.(mp4|webm)$/.test(d.img)) return toast("Make an image first, then animate it.");
+    if (!confirm(`Make a 5-second AI video from this image? About $${(state.grow?.video?.cost || 0.35).toFixed(2)}.`)) return;
+    d.busy = true; render();
+    try { const job = await post("video", { prompt: d.motion || "slow cinematic camera push in, subtle natural motion", image_url: new URL(d.img, location.origin).href });
+      for (let i = 0; i < 60; i++) { await new Promise(r => setTimeout(r, 5000)); const st = await post("video/check", job); if (st.url) { d.img = st.url; break; } }
+      if (!/\.mp4$/.test(d.img)) toast("Still rendering. Try again in a minute.");
+    } catch (e) { toast(e.message); }
+    d.busy = false; render(); };
   const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
 }
 

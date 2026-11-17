@@ -43,7 +43,7 @@ export default async (req) => {
     custom_text: {
       submit: { message: launch
         ? `Launch week preorder: your shirt is printed after launch week ends on ${closeDay.format(Date.parse(DROP.closes))} and arrives about 2 to 3 weeks after that. Made to order, so no fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms.`
-        : "Made to order: your shirt is printed after you order and usually arrives in 1 to 2 weeks. No fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms." },
+        : "Made to order: your shirt is printed after you order and usually arrives in 10 to 17 days. No fit returns. By paying, you agree to our terms of sale at rentcoat.co/terms." },
     },
     // "How did you find us?" so ad spend can be measured without a tracking pixel. Answers show on each payment in Stripe.
     custom_fields: [{
@@ -60,6 +60,9 @@ export default async (req) => {
       ] },
     }],
     allow_promotion_codes: true,
+    // Abandoned-cart recovery: Stripe keeps a link to restart an expired checkout, and asks for permission to email
+    // (HQ only emails people who said yes). Hosted checkout only.
+    ...(embedded ? {} : { after_expiration: { recovery: { enabled: true, allow_promotion_codes: true } }, consent_collection: { promotions: "auto" } }),
     billing_address_collection: "auto",
     shipping_address_collection: { allowed_countries: SHIP_TO },
     shipping_options: [{

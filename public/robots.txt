@@ -3,6 +3,7 @@ Allow: /
 Disallow: /api/
 Disallow: /thanks.html
 Disallow: /hq/
+Disallow: /review/
 
 # AI search and assistant crawlers are welcome
 User-agent: GPTBot
@@ -22,5 +23,6 @@ Allow: /
 Disallow: /api/
 Disallow: /thanks.html
 Disallow: /hq/
+Disallow: /review/
 
 Sitemap: https://rentcoat.co/sitemap.xml

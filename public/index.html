@@ -1239,6 +1239,7 @@ footer .wrap { padding-block: 48px 40px }
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important }
   .card:hover .shot img, .btn:active, .btn:hover svg { transform: none }
 }
+.bag-up{margin:10px 0 12px;font-size:14px}.bag-up p{margin:6px 0}.bag-up .bar{height:6px;border-radius:99px;background:rgba(127,127,127,.2);overflow:hidden}.bag-up .bar i{display:block;height:100%;background:#B8913F}.bag-up .link{background:none;border:0;padding:0;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;color:inherit}
 </style>
 </head>
 <body>
@@ -1409,6 +1410,7 @@ footer .wrap { padding-block: 48px 40px }
     <div class="row"><span>Subtotal</span><span id="t-sub">$0</span></div>
     <div class="row"><span>Shipping (US)</span><span id="t-ship">$5.99</span></div>
     <div class="row grand"><span>Total</span><span id="t-total">$0</span></div>
+    <div id="bag-up" class="bag-up" hidden></div>
     <button type="button" class="btn rent" id="checkout">Checkout</button>
     <p class="note" id="bag-note" aria-live="polite"></p>
     <p class="fine"><span id="bag-timing">Secure checkout by Stripe. Printed after you order and usually delivered in 10 to 17 days.</span> Made to order, so no fit returns. By checking out, you agree to our <a href="terms.html">terms of sale</a>.</p>
@@ -1795,6 +1797,13 @@ function renderBag() {
   const ship = !bag.length || sub >= FREE_SHIP_OVER ? 0 : SHIPPING_CENTS;
   $("t-ship").textContent = bag.length && !ship ? "Free" : money(ship);
   $("t-total").textContent = money(sub + ship);
+  // Free-shipping nudge: how far to go, and one tap back to the tees.
+  const up = $("bag-up"), gap = FREE_SHIP_OVER - sub;
+  up.hidden = !bag.length || gap <= 0;
+  if (!up.hidden) {
+    up.innerHTML = `<div class="bar"><i style="width:${Math.min(100, sub / FREE_SHIP_OVER * 100).toFixed(0)}%"></i></div><p>You're <b>${money(gap)}</b> from free shipping.</p><button type="button" class="link">Add a tee →</button>`;
+    up.querySelector("button").onclick = () => { closeBag(); document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" }); };
+  }
 }
 function openBag() {
   lastFocus = document.activeElement; $("bag").hidden = false; $("scrim").hidden = false;
