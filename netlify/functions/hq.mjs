@@ -20,7 +20,7 @@ import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 import Anthropic from "@anthropic-ai/sdk";
 import { PRODUCTS, liveLine, decodeItems, stripe, json } from "../lib/store.mjs";
-import { hydrate, setVault, getAccounts, setAccounts, makeState, PASTE_KEYS } from "../lib/vault.mjs";
+import { hydrate, setVault, getAccounts, setAccounts, makeState, PASTE_KEYS, tokenFor } from "../lib/vault.mjs";
 
 const sameKey = (a, b) => crypto.timingSafeEqual(
   crypto.createHash("sha256").update(String(a)).digest(),
@@ -140,6 +140,73 @@ async function adsInsights() {
   return d.data?.[0] || { spend: "0", impressions: "0", clicks: "0" };
 }
 
+// ---- Email (Resend). Marketing emails need a postal address in the footer (CAN-SPAM): MAIL_ADDRESS in Setup.
+async function sendEmail(list, subject, text, marketing) {
+  if (!process.env.RESEND_API_KEY) throw new Error("Email isn't connected yet. See Setup.");
+  if (marketing && !process.env.MAIL_ADDRESS) throw new Error("Add a mailing address (a PO box is fine) in Setup first. The law requires it on marketing emails.");
+  const from = process.env.EMAIL_FROM || "Rent Coat Co. <hello@rentcoat.co>";
+  const foot = `\n\n--\nRent Coat Co. · rentcoat.co${process.env.MAIL_ADDRESS ? ` · ${process.env.MAIL_ADDRESS}` : ""}${marketing ? "\nReply STOP and we'll take you off the list." : ""}`;
+  const items = list.map(to => ({ from, to: [to], subject, text: text + foot, reply_to: "rentcoat.co@gmail.com" }));
+  let sent = 0;
+  for (let i = 0; i < items.length; i += 100) {
+    const r = await fetch("https://api.resend.com/emails/batch", { method: "POST", headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" }, body: JSON.stringify(items.slice(i, i + 100)) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(`Email: ${d.message || r.status}${sent ? ` (after ${sent} sent)` : ""}`);
+    sent += Math.min(100, items.length - i);
+  }
+  return sent;
+}
+const sentStore = async () => (await store().get("sent", { type: "json" })) || {};
+const markSent = async (k) => { const m = await sentStore(); m[k] = Date.now(); await store().setJSON("sent", m); };
+
+// Reminder signups from the Netlify "reminders" form (needs NETLIFY_TOKEN).
+async function reminderList() {
+  if (!process.env.NETLIFY_TOKEN) return { error: "Add a Netlify access token in Setup to read your reminder list." };
+  const site = process.env.SITE_ID || "fa3fb2fb-3241-459b-8274-271f944a136a", h = { authorization: `Bearer ${process.env.NETLIFY_TOKEN}` };
+  const forms = await (await fetch(`https://api.netlify.com/api/v1/sites/${site}/forms`, { headers: h })).json();
+  const f = Array.isArray(forms) && forms.find(x => x.name === "reminders");
+  if (!f) return { error: "No “reminders” form found on the site." };
+  const emails = new Set();
+  for (let page = 1; page < 20; page++) {
+    const subs = await (await fetch(`https://api.netlify.com/api/v1/forms/${f.id}/submissions?per_page=100&page=${page}`, { headers: h })).json();
+    if (!Array.isArray(subs) || !subs.length) break;
+    subs.forEach(x => { const e = String(x.data?.email || x.email || "").trim().toLowerCase(); if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) emails.add(e); });
+    if (subs.length < 100) break;
+  }
+  return { emails: [...emails] };
+}
+
+// Checkouts that expired with an email (last 7 days). Only those who opted in to promotions can be emailed.
+async function abandoned() {
+  const since = Math.floor(Date.now() / 1000) - 7 * 86400;
+  const d = await stripe(`checkout/sessions?status=expired&limit=50&created[gte]=${since}`);
+  return (d.data || []).filter(x => x.customer_details?.email).map(x => ({
+    id: x.id, email: x.customer_details.email, name: x.customer_details.name || "", created: x.created * 1000, amount: x.amount_total,
+    items: decodeItems(x.metadata?.items).map(i => `${i.qty || 1} × ${PRODUCTS[i.id]?.name || i.id} (${i.size})`),
+    recovery: x.after_expiration?.recovery?.url || null, optedIn: x.consent?.promotions === "opt_in",
+  }));
+}
+
+// Referral codes: one shared 10%-off-once coupon, a promotion code per buyer.
+async function referralCode(name) {
+  let coupon = await store().get("refCoupon");
+  if (!coupon) { coupon = (await stripe("coupons", { method: "POST", params: { percent_off: 10, duration: "once", name: "Friend of a Rent Coat customer" } })).id; await store().set("refCoupon", coupon); }
+  const base = (String(name || "FRIEND").split(" ")[0].toUpperCase().replace(/[^A-Z]/g, "") || "FRIEND").slice(0, 10);
+  const code = `${base}${Math.floor(10 + Math.random() * 90)}`;
+  await stripe("promotion_codes", { method: "POST", params: { coupon, code, max_redemptions: 25 } });
+  return code;
+}
+
+// AI video (fal.ai). Each clip costs real money, so there's a monthly cap (FAL_MONTHLY_CAP, default $10).
+const VIDEO_MODEL = () => process.env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.5-turbo/pro/image-to-video";
+const VIDEO_COST = 0.35; // about $0.07/s for a 5-second Kling 2.5 Turbo Pro clip (estimate; check fal.ai/pricing)
+async function videoSpend(add = 0) {
+  const k = `falspend-${new Date().toISOString().slice(0, 7)}`;
+  const v = Number(await store().get(k)) || 0;
+  if (add) await store().set(k, String(v + add));
+  return v + add;
+}
+
 async function snapshot(req) {
   const placed = (await store().get("placed", { type: "json" })) || {};
   const all = (await sessions(30).catch(() => [])).map(s => orderView(s, placed));
@@ -222,6 +289,72 @@ export default async (req) => {
   await hydrate().catch(e => console.error("vault", e.message));
 
   try {
+    if (path[0] === "grow" && req.method === "GET") {
+      const [list, ab, sent] = await Promise.all([reminderList().catch(e => ({ error: e.message })), abandoned().catch(e => ({ error: e.message })), sentStore()]);
+      const reviews = (await getStore("reviews").get("all", { type: "json" })) || [];
+      return json({ list: list.emails ? { count: list.emails.length } : list, abandoned: ab, reviews, sent,
+        email: { connected: Boolean(process.env.RESEND_API_KEY), address: Boolean(process.env.MAIL_ADDRESS) },
+        video: { connected: Boolean(process.env.FAL_KEY), spent: await videoSpend(), cap: Number(process.env.FAL_MONTHLY_CAP || 10), cost: VIDEO_COST } });
+    }
+    if (path[0] === "email" && req.method === "POST") {
+      const subject = String(body.subject || "").trim().slice(0, 150), text = String(body.text || "").trim().slice(0, 8000);
+      if (path[1] === "launch") {
+        if (!subject || !text) return json({ error: "Add a subject and message." }, 400);
+        if (body.test) return json({ sent: await sendEmail(["rentcoat.co@gmail.com"], `[TEST] ${subject}`, text, true) });
+        const list = await reminderList(); if (list.error) return json({ error: list.error }, 400);
+        const n = await sendEmail(list.emails, subject, text, true); await markSent(`launch-${Date.now()}`); return json({ sent: n });
+      }
+      if (path[1] === "abandoned") {
+        const a = (await abandoned()).find(x => x.id === path[2]);
+        if (!a) return json({ error: "That checkout isn't in the last 7 days." }, 404);
+        if (!a.optedIn) return json({ error: "They didn't agree to emails at checkout, so HQ won't email them." }, 403);
+        const first = (a.name || "").split(" ")[0];
+        await sendEmail([a.email], "You left something in your bag", `${first ? `Hi ${first},` : "Hi,"}\n\nYou were checking out at Rent Coat Co. and didn't finish:\n${a.items.join("\n")}\n\nPick up where you left off: ${a.recovery || "https://rentcoat.co/#shop"}\n\nQuestions about fit or shipping? Just reply.\n\nEli, Rent Coat Co.`, true);
+        await markSent(`ab-${a.id}`); return json({ ok: true });
+      }
+      return json({ error: "Not found" }, 404);
+    }
+    if (path[0] === "orders" && (path[2] === "review-request" || path[2] === "referral") && req.method === "POST") {
+      const s0 = await stripe(`checkout/sessions/${path[1]}`);
+      const email = s0.customer_details?.email, first = (s0.customer_details?.name || "").split(" ")[0];
+      if (!email) return json({ error: "No email on that order." }, 400);
+      if (path[2] === "review-request") {
+        const link = `${url.origin}/review/?s=${encodeURIComponent(s0.id)}&t=${tokenFor(s0.id)}`;
+        await sendEmail([email], "How's your Rent Coat?", `${first ? `Hi ${first},` : "Hi,"}\n\nThanks again for your order. Now that it's been a little while, how is it? An honest review takes a minute and helps a small brand a lot:\n${link}\n\nIf anything's wrong with your order, reply and I'll make it right.\n\nEli, Rent Coat Co.`, false);
+        await markSent(`rv-${s0.id}`); return json({ ok: true });
+      }
+      const code = await referralCode(s0.customer_details?.name);
+      if (body.send) await sendEmail([email], "10% off for your friends", `${first ? `Hi ${first},` : "Hi,"}\n\nThanks for being one of the first Rent Coat customers. Here's a code for your friends: ${code} takes 10% off their first order at rentcoat.co.\n\nEli, Rent Coat Co.`, false);
+      await markSent(`ref-${s0.id}`); return json({ code });
+    }
+    if (path[0] === "reviews" && req.method === "POST") {
+      const all = (await getStore("reviews").get("all", { type: "json" })) || [];
+      const r = all.find(x => x.id === path[1]); if (!r) return json({ error: "Not found" }, 404);
+      if (body.delete) all.splice(all.indexOf(r), 1); else r.approved = Boolean(body.approved);
+      await getStore("reviews").setJSON("all", all); return json({ reviews: all });
+    }
+    if (path[0] === "video") {
+      if (!process.env.FAL_KEY) return json({ error: "AI video isn't connected yet. See Setup." }, 400);
+      const h = { authorization: `Key ${process.env.FAL_KEY}`, "content-type": "application/json" };
+      if (req.method === "POST" && !path[1]) {
+        const cap = Number(process.env.FAL_MONTHLY_CAP || 10), spent = await videoSpend();
+        if (spent + VIDEO_COST > cap) return json({ error: `This month's AI video budget ($${cap}) is used up. Raise it in Setup.` }, 402);
+        if (!body.image_url || !body.prompt) return json({ error: "Make or pick an image first, and describe the motion." }, 400);
+        const r = await fetch(`https://queue.fal.run/${VIDEO_MODEL()}`, { method: "POST", headers: h, body: JSON.stringify({ prompt: String(body.prompt).slice(0, 2000), image_url: body.image_url, duration: "5" }) });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok || !d.request_id) return json({ error: `AI video: ${d.detail || d.message || r.status}` }, 502);
+        await videoSpend(VIDEO_COST);
+        return json({ id: d.request_id, status_url: d.status_url, response_url: d.response_url });
+      }
+      if (req.method === "POST" && path[1] === "check") {
+        const st = await (await fetch(body.status_url, { headers: h })).json().catch(() => ({}));
+        if (st.status !== "COMPLETED") return json({ status: st.status || "IN_QUEUE" });
+        const out = await (await fetch(body.response_url, { headers: h })).json();
+        const src = out.video?.url; if (!src) return json({ error: "AI video finished without a file." }, 502);
+        const bytes = Buffer.from(await (await fetch(src)).arrayBuffer());
+        return json({ status: "COMPLETED", url: await saveImage(bytes, url.origin, "mp4") });
+      }
+    }
     if (path[0] === "vault") {
       if (req.method === "POST") {
         const patch = {};

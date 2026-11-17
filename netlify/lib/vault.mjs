@@ -4,7 +4,7 @@
 import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 
-export const PASTE_KEYS = ["ANTHROPIC_API_KEY", "CF_ACCOUNT_ID", "CF_AI_TOKEN", "META_APP_ID", "META_APP_SECRET", "TIKTOK_CLIENT_KEY", "TIKTOK_CLIENT_SECRET"];
+export const PASTE_KEYS = ["ANTHROPIC_API_KEY", "CF_ACCOUNT_ID", "CF_AI_TOKEN", "META_APP_ID", "META_APP_SECRET", "TIKTOK_CLIENT_KEY", "TIKTOK_CLIENT_SECRET", "RESEND_API_KEY", "EMAIL_FROM", "MAIL_ADDRESS", "NETLIFY_TOKEN", "FAL_KEY", "FAL_MONTHLY_CAP"];
 const vault = () => getStore("hq-vault");
 
 export async function hydrate() {
@@ -32,3 +32,6 @@ export function checkState(state, provider) {
   const exp = sign(parts.slice(0, 3).join("."));
   return parts[3].length === exp.length && crypto.timingSafeEqual(Buffer.from(parts[3]), Buffer.from(exp)) && Date.now() - Number(parts[1]) < 15 * 60e3;
 }
+
+// Per-order token for review links (not guessable without ADMIN_KEY).
+export const tokenFor = id => crypto.createHmac("sha256", process.env.ADMIN_KEY || "").update(`review.${id}`).digest("base64url").slice(0, 24);

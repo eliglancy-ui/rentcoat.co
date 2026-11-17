@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leave a review | Rent Coat Co.</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{--bg:#F6F2E8;--ink:#14231C;--mute:#5d6b63;--gold:#B8913F;--line:#ddd5c4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1411;--ink:#F1EEE6;--mute:#9aa49e;--gold:#C9A45C;--line:#26322C}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Archivo",system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:48px 16px}
+h1{font-size:34px;line-height:1.1;margin:0 0 8px}
+p{color:var(--mute)}
+.stars{display:flex;gap:6px;margin:20px 0}
+.stars button{font-size:36px;background:none;border:0;cursor:pointer;color:var(--line);padding:0}
+.stars button[aria-pressed="true"]{color:var(--gold)}
+textarea,input{width:100%;box-sizing:border-box;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:12px;margin:6px 0 14px}
+button.go{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:14px 20px;font:700 16px "Archivo",sans-serif;cursor:pointer;width:100%}
+#msg{font-weight:600;color:var(--ink)}
+</style>
+</head>
+<body>
+<main>
+  <h1>How's your Rent Coat?</h1>
+  <p>Thanks for buying from a one-person, high-school brand. An honest review helps more than you'd think.</p>
+  <form id="f">
+    <div class="stars" role="group" aria-label="Rating">
+      <button type="button" data-r="1" aria-label="1 star">★</button><button type="button" data-r="2" aria-label="2 stars">★</button><button type="button" data-r="3" aria-label="3 stars">★</button><button type="button" data-r="4" aria-label="4 stars">★</button><button type="button" data-r="5" aria-label="5 stars">★</button>
+    </div>
+    <label>What did you think? <textarea id="text" rows="5" maxlength="1500" placeholder="Fit, feel, print, how people reacted…"></textarea></label>
+    <label>Name to show (first name is fine) <input id="name" maxlength="60" autocomplete="given-name"></label>
+    <button class="go" type="submit">Send review</button>
+    <p id="msg" aria-live="polite"></p>
+  </form>
+</main>
+<script>
+const q = new URLSearchParams(location.search); let rating = 0;
+document.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { rating = +b.dataset.r; document.querySelectorAll("[data-r]").forEach(x => x.setAttribute("aria-pressed", +x.dataset.r <= rating)); });
+document.getElementById("f").onsubmit = async e => {
+  e.preventDefault(); const msg = document.getElementById("msg");
+  if (!rating) { msg.textContent = "Tap a star rating first."; return; }
+  const r = await fetch("/api/review", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ s: q.get("s"), t: q.get("t"), rating, text: document.getElementById("text").value, name: document.getElementById("name").value }) });
+  const d = await r.json().catch(() => ({}));
+  msg.textContent = r.ok ? "Thank you! Your review was sent." : (d.error || "Something went wrong.");
+  if (r.ok) e.target.querySelector("button.go").disabled = true;
+};
+</script>
+</body>
+</html>
