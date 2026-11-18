@@ -2,6 +2,9 @@
 // /vendor/motion-14.14.0.js) for scroll reveals, scroll-linked effects and springs. Loaded with defer on the home page,
 // /shop/, every product page and the size guide. Content is never hidden if a script fails, and nothing moves for
 // visitors who ask for reduced motion.
+// The header tightens after you scroll a little (works with reduced motion too: it is a state, not an animation).
+(() => { const set = () => document.documentElement.classList.toggle("scrolled", scrollY > 40); addEventListener("scroll", set, { passive: true }); set(); })();
+
 (() => {
   const M = window.Motion, A = window.anime;
   if (!M || !A || matchMedia("(prefers-reduced-motion: reduce)").matches) return;

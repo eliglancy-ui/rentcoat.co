@@ -9,7 +9,14 @@ import { LINE, SALE, DROP } from "../netlify/lib/store.mjs";
 import { FIT, SIZES, inches } from "../netlify/lib/fit.mjs";
 
 const SITE = "https://rentcoat.co";
+// Typographic quotes and apostrophes in copy (attributes and code are untouched: only text we print).
+const smart = s => String(s ?? "").replace(/(^|[\s(\[{])"/g, "$1\u201C").replace(/"/g, "\u201D").replace(/(\w)'(\w)/g, "$1\u2019$2").replace(/(^|[\s(])'/g, "$1\u2018").replace(/'/g, "\u2019").replace(/ -- /g, " \u2014 ");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// <img> with WebP srcset (made by scripts/webp.py) when the variants exist; the JPEG stays the fallback src.
+const webp = src => existsSync(`public/${src.replace(/\.jpg$/, "-800.webp")}`);
+const img = (src, alt, attrs = "", sizes = "(max-width: 900px) 100vw, 50vw") => webp(src)
+  ? `<img src="/${src}" srcset="/${src.replace(/\.jpg$/, "-800.webp")} 800w, /${src.replace(/\.jpg$/, "-1600.webp")} 1600w" sizes="${sizes}" alt="${esc(alt)}" ${attrs} width="800" height="1000">`
+  : `<img src="/${src}" alt="${esc(alt)}" ${attrs} width="800" height="1000">`;
 const $ = c => `$${(c / 100).toFixed(c % 100 ? 2 : 0)}`;
 const live = Object.entries(LINE).filter(([, p]) => p.live).map(([id, p]) => ({ id, ...p }));
 const groups = new Map();
@@ -37,7 +44,7 @@ const HOOK = {
 const KIND_TAB = { Tee: "tees", Hoodie: "hoodies", Sweats: "sets", Set: "sets", Cap: "extras", Sticker: "extras" };
 const flagSvg = `<svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5" fill="currentColor"/><rect x="8" y="8" width="6" height="92" rx="2" fill="currentColor"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z" fill="#A83A2C"/></svg>`;
 
-function head({ title, desc, path, image, jsonld }) {
+function head({ title, desc, path, image, jsonld, nav = "" }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -52,6 +59,7 @@ function head({ title, desc, path, image, jsonld }) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F3EFE7">
 <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <link rel="preload" href="/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/shop/shop.css">
 <script defer src="/vendor/motion-14.14.0.js"></script>
@@ -64,7 +72,7 @@ ${jsonld ? `<script type="application/ld+json">\n${JSON.stringify(jsonld, null, 
 <div class="ann">${saleOn ? `<b>Black Friday</b> · every tee $30 through Cyber Monday · free US shipping on $60+` : `Free US shipping on $60+ · printed to order in the US`}</div>
 <header class="hdr"><div class="in">
   <button class="menu-btn" aria-label="Menu" aria-expanded="false" onclick="const n=document.querySelector('.hdr nav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
-  <nav aria-label="Shop"><a href="/shop/">Shop all</a><a href="/shop/?f=tees">Tees</a><a href="/shop/?f=hoodies">Hoodies</a><a href="/shop/?f=sets">Sets</a><a href="/about.html">Our story</a></nav>
+  <nav aria-label="Shop">${[["/shop/", "Shop all", "all"], ["/shop/?f=tees", "Tees", "tees"], ["/shop/?f=hoodies", "Hoodies", "hoodies"], ["/shop/?f=sets", "Sets", "sets"], ["/about.html", "Our story", "story"]].map(([h, t, k]) => `<a href="${h}"${k === nav ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
   <a class="logo" href="/" aria-label="Rent Coat Co. home">${flagSvg}RENT COAT CO.</a>
   <div class="right"><a class="hide-sm" href="/size-guide/">Size guide</a><a href="/?bag=1" aria-label="Bag">Bag<span class="bagc" id="bagc" hidden>0</span></a></div>
 </div></header>
@@ -90,7 +98,7 @@ function priceHtml(p, size = "M") {
 function card(g, pieces) {
   const p = pieces[0], ph = photos(p);
   return `<a class="card" href="/shop/${g}/" data-tab="${KIND_TAB[p.kind] || "extras"}">
-  <div class="ph">${onSale(p) ? `<span class="badge sale">Black Friday</span>` : p.kind === "Set" ? `<span class="badge">Best value</span>` : ""}<img class="a" src="/${ph[0].src}" alt="${esc(ph[0].alt)}" loading="lazy" width="800" height="1000">${ph[1] ? `<img class="b" src="/${ph[1].src}" alt="" loading="lazy" width="800" height="1000">` : ""}</div>
+  <div class="ph">${onSale(p) ? `<span class="badge sale">Black Friday</span>` : p.kind === "Set" ? `<span class="badge">Best value</span>` : ""}${img(ph[0].src, ph[0].alt, 'class="a" loading="lazy"', "(max-width: 760px) 50vw, 25vw")}${ph[1] ? `${img(ph[1].src, "", 'class="b" loading="lazy"', "(max-width: 760px) 50vw, 25vw")}` : ""}</div>
   <h3>${esc(p.kind === "Sticker" ? "Die-Cut Stickers" : p.name)}</h3>
   <div class="meta"><span>${pieces.length > 1 ? `${pieces.length} designs` : esc(p.color)}</span>${priceHtml(p)}</div>
 </a>`;
@@ -114,42 +122,44 @@ function productPage(g, pieces) {
   const offers = pieces.flatMap(q => q.sizes.map(size => ({ "@type": "Offer", sku: q.variants[size], name: `${q.name} (${q.color}, ${size})`, price: ((onSale(q) ? saleOf(q, size) : priceOf(q, size)) / 100).toFixed(2), ...(onSale(q) ? { priceValidUntil: "2026-11-30" } : {}),
     priceCurrency: "USD", availability: "https://schema.org/OutOfStock", availabilityStarts: DROP.opens, itemCondition: "https://schema.org/NewCondition", url: `${SITE}/shop/${g}/` })));
   const jsonld = { "@context": "https://schema.org", "@type": "Product", name: title, description: p.blurb, brand: { "@type": "Brand", name: "Rent Coat Co." }, image: ph.slice(0, 4).map(x => `${SITE}/${x.src}`), sku: p.id, offers };
-  const data = pieces.map(q => ({ id: q.id, name: q.name, color: q.color, kind: q.kind, sizes: q.sizes, price: q.price, photos: photos(q) }));
-  return head({ title: `${title} | Rent Coat Co.`, desc, path: `/shop/${g}/`, image: ph[0].src, jsonld }) + `
+  const data = pieces.map(q => ({ id: q.id, name: q.name, color: q.color, kind: q.kind, sizes: q.sizes, price: q.price, photos: photos(q), html: photos(q).map((x, i) => `<figure>${img(x.src, x.alt, i ? 'loading="lazy"' : '')}</figure>`).join("") }));
+  return head({ title: `${title} | Rent Coat Co.`, desc, path: `/shop/${g}/`, image: ph[0].src, jsonld, nav: KIND_TAB[p.kind] === "tees" ? "tees" : KIND_TAB[p.kind] === "hoodies" ? "hoodies" : KIND_TAB[p.kind] === "sets" ? "sets" : "" }) + `
 <div class="pdp">
   <div>
-    <div class="gallery" id="gal">${ph.map((x, i) => `<figure><img src="/${x.src}" alt="${esc(x.alt)}" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} width="800" height="1000"></figure>`).join("")}</div>
+    <div class="gallery" id="gal">${ph.map((x, i) => `<figure>${img(x.src, x.alt, i ? 'loading="lazy"' : 'fetchpriority="high"', i ? "(max-width: 900px) 100vw, 30vw" : "(max-width: 900px) 100vw, 60vw")}</figure>`).join("")}</div>
     <div class="dots" id="dots">${ph.map((_, i) => `<i${i ? "" : ' class="on"'}></i>`).join("")}</div>
   </div>
   <div class="info">
     <p class="crumbs mono"><a href="/shop/">Shop</a> / <a href="/shop/?f=${KIND_TAB[p.kind] || "extras"}">${esc(p.kind === "Set" || p.kind === "Sweats" ? "Sets" : p.kind === "Cap" || p.kind === "Sticker" ? "Extras" : p.kind + "s")}</a></p>
     <span class="mono">${esc(p.ref || "")}</span>
     <h1>${esc(title)}</h1>
-    <p class="hook">${esc(HOOK[g] || "")}</p>
+    <p class="hook">${esc(smart(HOOK[g] || ""))}</p>
     <p id="price">${priceHtml(p, p.sizes[0] === "OS" ? "OS" : "M")}</p>
     ${onSale(p) ? `<p class="salenote">Black Friday price through Cyber Monday, Nov 30. Tees are $45 after that.</p>` : `<p class="salenote" style="color:var(--mute)">${p.kind === "Set" ? "Hoodie and sweats bought separately: $103." : "Free US shipping on orders of $60 or more."}</p>`}
     ${pieces.length > 1 ? `<div class="opt"><div class="lab"><span>Design</span><span class="small" id="cname">${esc(p.color)}</span></div><div class="sw">${pieces.map((q, i) => `<a href="#${q.id}" data-id="${q.id}" title="${esc(q.color)}" style="background:${esc(q.swatch)}"${i ? "" : ' aria-current="true"'}></a>`).join("")}</div></div>`
       : `<div class="opt"><div class="lab"><span>Color</span><span class="small">${esc(p.color)}</span></div><div class="sw"><a style="background:${esc(p.swatch)}" aria-current="true" title="${esc(p.color)}"></a></div></div>`}
     ${p.sizes[0] === "OS" ? "" : `<div class="opt"><div class="lab"><span>Size</span>${f.chart ? `<button type="button" class="linkbtn" id="open-chart">Size chart</button>` : `<a class="linkbtn" href="/size-guide/">Size guide</a>`}</div>
       <div class="sizes" role="group" aria-label="Size">${p.sizes.map(s => `<button type="button" data-size="${s}" aria-pressed="false">${s}</button>`).join("")}</div>
-      <p class="fitline"><b>${esc(f.fit)} fit.</b> ${esc(f.advice)}</p></div>`}
+      <p class="fitline"><b>${esc(f.fit)} fit.</b> ${esc(smart(f.advice))}</p></div>`}
     <button class="add" id="add" ${p.sizes[0] === "OS" ? "" : "disabled"}>${p.sizes[0] === "OS" ? "Add to bag" : "Pick a size"}</button>
     <p class="small" id="opens" hidden style="margin:10px 0 0">The store opens Black Friday, Nov 27 at 10 AM Eastern. Add it to your bag now; checkout opens then.</p>
     <div class="added" id="added" role="status"><span>Added to your bag.</span><a href="/?bag=1">Checkout →</a></div>
     <div class="trust">
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Ships in 10 to 17 days, printed to order in the US</div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12l5 5L20 6"/></svg>Free US shipping on $60+</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure checkout by Stripe</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg><span>Questions? <a href="mailto:rentcoat.co@gmail.com">Email Eli</a></span></div>
     </div>
     <div class="acc">
-      <details open><summary>The story</summary><div class="body"><p style="margin-top:0">${esc(p.blurb)}</p>${p.refUrl && p.verse ? `<p style="margin-bottom:0"><a href="${esc(p.refUrl)}" target="_blank" rel="noopener">Read ${esc(p.ref)} ↗</a></p>` : ""}</div></details>
-      <details><summary>Fit &amp; fabric</summary><div class="body"><p style="margin-top:0">${esc(f.line)}</p><ul>${f.details.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div></details>
+      <details open><summary>The story</summary><div class="body"><p style="margin-top:0">${esc(smart(p.blurb))}</p>${p.refUrl && p.verse ? `<p style="margin-bottom:0"><a href="${esc(p.refUrl)}" target="_blank" rel="noopener">Read ${esc(p.ref)} ↗</a></p>` : ""}</div></details>
+      <details><summary>Fit &amp; fabric</summary><div class="body"><p style="margin-top:0">${esc(smart(f.line))}</p><ul>${f.details.map(d => `<li>${esc(smart(d))}</li>`).join("")}</ul></div></details>
       ${f.chart ? `<details><summary>Size chart</summary><div class="body">${chartTable(p.kind)}</div></details>` : ""}
-      <details><summary>Shipping &amp; returns</summary><div class="body"><p style="margin-top:0">Every piece is printed after you order, then ships in 10 to 17 days. Shipping is $5.99 in the US, free on orders of $60 or more.</p><p style="margin-bottom:0">Because it's made for you, we can't take back fit returns. If anything arrives damaged or wrong, email <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days and we'll make it right. <a href="/policies.html">Full policy</a></p></div></details>
+      <details><summary>Shipping &amp; returns</summary><div class="body"><p style="margin-top:0">Every piece is printed after you order, then ships in 10 to 17 days. Shipping is $5.99 in the US, free on orders of $60 or more.</p><p style="margin-bottom:0">Because it’s made for you, we can’t take back fit returns. If anything arrives damaged or wrong, email <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days and we’ll make it right. <a href="/policies.html">Full policy</a></p></div></details>
       <details><summary>Care</summary><div class="body">${esc(f.care)}</div></details>
     </div>
   </div>
 </div>
-${p.ref ? `<section class="band"><span class="mono">${esc(p.ref)}</span><q>${esc(HOOK[g] || p.name)}</q>${p.refUrl && p.verse ? `<p style="margin:22px 0 0"><a href="${esc(p.refUrl)}" target="_blank" rel="noopener">Read the verse ↗</a></p>` : ""}</section>` : ""}
+${p.ref ? `<section class="band"><span class="mono">${esc(p.ref)}</span><q>${esc(smart(HOOK[g] || p.name))}</q>${p.refUrl && p.verse ? `<p style="margin:22px 0 0"><a href="${esc(p.refUrl)}" target="_blank" rel="noopener">Read the verse ↗</a></p>` : ""}</section>` : ""}
 ${recs.length ? `<section class="recs"><h2>Complete the fit</h2><div class="grid">${recs.map(k => card(k, groups.get(k))).join("")}</div></section>` : ""}
 ${f.chart ? `<dialog class="sheet" id="chart" aria-labelledby="chart-h"><div class="in"><button class="x" aria-label="Close" onclick="this.closest('dialog').close()">×</button>
   <span class="mono">${esc(title)}</span><h2 id="chart-h">Size chart</h2><p class="small" style="margin:6px 0 16px"><b>${esc(f.fit)} fit.</b> ${esc(f.advice)}</p>${chartTable(p.kind)}${howTo(p.kind)}
@@ -164,7 +174,7 @@ ${f.chart ? `<dialog class="sheet" id="chart" aria-labelledby="chart-h"><div cla
     $("#price").innerHTML = on() ? '<span class="price on"><span class="now">' + money(pick(SALE.price, s)) + '</span><s>' + money(reg) + '</s></span>' : '<span class="price"><span class="now">' + money(reg) + '</span></span>'; };
   document.querySelectorAll("[data-size]").forEach(b => b.onclick = () => { size = b.dataset.size; document.querySelectorAll("[data-size]").forEach(x => x.setAttribute("aria-pressed", x === b)); const a = $("#add"); a.disabled = false; a.textContent = "Add to bag · " + size; paint(); });
   document.querySelectorAll(".sw [data-id]").forEach(a => a.onclick = e => { e.preventDefault(); cur = P.find(q => q.id === a.dataset.id); document.querySelectorAll(".sw a").forEach(x => x.toggleAttribute("aria-current", x === a));
-    const n = $("#cname"); if (n) n.textContent = cur.color; $("#gal").innerHTML = cur.photos.map(x => '<figure><img src="/' + x.src + '" alt="' + x.alt.replace(/"/g, "&quot;") + '"></figure>').join(""); paint(); });
+    const n = $("#cname"); if (n) n.textContent = cur.color; $("#gal").innerHTML = cur.html; paint(); });
   $("#add").onclick = () => { if (!size) return; let bag = []; try { bag = JSON.parse(localStorage.getItem("rc-bag") || "[]"); } catch (e) {}
     if (!Array.isArray(bag)) bag = []; const n = bag.reduce((a, l) => a + (l.qty || 0), 0); if (n >= 10) { alert("Max 10 items per order."); return; }
     const l = bag.find(x => x.id === cur.id && x.size === size); if (l) l.qty++; else bag.push({ id: cur.id, size, qty: 1 });
@@ -183,12 +193,13 @@ ${f.chart ? `<dialog class="sheet" id="chart" aria-labelledby="chart-h"><div cla
 
 function shopPage() {
   const list = [...groups.entries()];
-  return head({ title: "Shop all | Rent Coat Co.", desc: "Shop Rent Coat Co.: boxy heavyweight tees, oversized hoodies, the Steadfast Sweatsuit, the dad cap and stickers. Every design starts with a Book of Mormon verse.", path: "/shop/", image: "images/studio/steadfast-hoodie-studio.jpg" }) + `
+  return head({ title: "Shop all | Rent Coat Co.", desc: "Shop Rent Coat Co.: boxy heavyweight tees, oversized hoodies, the Steadfast Sweatsuit, the dad cap and stickers. Every design starts with a Book of Mormon verse.", path: "/shop/", image: "images/studio/steadfast-hoodie-studio.jpg", nav: "all" }) + `
 <div class="col-head"><div><span class="mono">The collection</span><h1>Carry<br>the verse.</h1><p>Heavyweight tees and oversized hoodies, each built on a Book of Mormon reference. Printed to order in the US.</p></div><a class="mono" href="/size-guide/">Size guide →</a></div>
 <div class="filters" role="group" aria-label="Filter"><button data-f="all" aria-pressed="true">All</button><button data-f="tees" aria-pressed="false">Tees</button><button data-f="hoodies" aria-pressed="false">Hoodies</button><button data-f="sets" aria-pressed="false">Sweats &amp; sets</button><button data-f="extras" aria-pressed="false">Cap &amp; stickers</button></div>
 <div class="grid" id="grid">${list.map(([g, ps]) => card(g, ps)).join("\n")}</div>
 <script>
-(() => { const set = f => { document.querySelectorAll("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f)); document.querySelectorAll("#grid .card").forEach(c => c.hidden = f !== "all" && c.dataset.tab !== f); };
+(() => { const set = f => { document.querySelectorAll("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f)); document.querySelectorAll("#grid .card").forEach(c => c.hidden = f !== "all" && c.dataset.tab !== f);
+    document.querySelectorAll(".hdr nav a").forEach(a => { const k = (a.getAttribute("href").match(/f=(\w+)/) || [, a.getAttribute("href") === "/shop/" ? "all" : ""])[1]; a.toggleAttribute("aria-current", k === f); if (k === f) a.setAttribute("aria-current", "page"); }); };
   document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { set(b.dataset.f); history.replaceState(null, "", b.dataset.f === "all" ? "/shop/" : "/shop/?f=" + b.dataset.f); });
   const f = new URLSearchParams(location.search).get("f"); if (f) set(f); })();
 </script>` + foot;
@@ -203,6 +214,7 @@ ${sec("Tee", "Tees", "Heavyweight 300 gsm cotton · boxy")}
 ${sec("Hoodie", "Hoodies", "350 gsm fleece · oversized")}
 <section><span class="mono">Sweats &amp; the Steadfast Sweatsuit</span><h2>Sweats</h2><p>${esc(FIT.Sweats.line)} ${esc(FIT.Sweats.advice)} Waist and length measurements go up here once our samples are measured. Questions before then? Email <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a>.</p></section>
 <section><span class="mono">Dad cap &amp; stickers</span><h2>Extras</h2><p>The dad cap is one size with an adjustable strap. Stickers are 4 x 4 inches.</p></section>
+<p style="margin:8px 0 0"><a class="add" href="/shop/" style="display:grid;place-items:center;text-decoration:none;max-width:360px">Shop the collection</a></p>
 </div>
 <script>document.querySelectorAll(".guide section").forEach(s => s.querySelectorAll(".unit button").forEach(b => b.onclick = () => { s.querySelectorAll(".unit button").forEach(x => x.setAttribute("aria-pressed", x === b)); s.querySelectorAll("table.chart").forEach(t => t.hidden = t.dataset.unit !== b.dataset.u); }));</script>` + foot;
 }
