@@ -1,5 +1,29 @@
 [
  {
+  "id": "seed-fits-1",
+  "account": "rentcoat",
+  "title": "Carousel: 5 fits (outfit grids)",
+  "caption": "Getting dressed for youth night like this.\n\nFive fits, every one built on a verse: Steadfast, Title of Liberty, Forgiven, the Liahona and He Rent His Coat. Boxy, oversized, and made to wear to school, not just to church.\n\nStore opens Black Friday, Nov 27 at 10 AM Eastern. Every tee is $30 through Cyber Monday. Link in bio.\n\n#ldsyouth #lds #latterdaysaints #christianstreetwear #faithapparel #bookofmormon #outfitideas #streetwear",
+  "media": [
+   "https://rentcoat.co/media/carousels/fits-1/slide-1.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-2.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-3.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-4.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-5.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-6.jpg",
+   "https://rentcoat.co/media/carousels/fits-1/slide-7.jpg"
+  ],
+  "targets": {
+   "ig": true,
+   "story": false,
+   "fb": true,
+   "tt": true
+  },
+  "when": null,
+  "status": "review",
+  "created": 1794900000000
+ },
+ {
   "id": "seed-1",
   "account": "mission",
   "title": "President Oaks montage (on beat)",
