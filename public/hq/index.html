@@ -7,6 +7,11 @@
 <meta name="theme-color" content="#0E1411">
 <title>HQ · Rent Coat Co.</title>
 <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/hq/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/hq/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rent Coat HQ">
 <style>
 @font-face{font-family:"Archivo";font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url("/fonts/archivo-variable-latin.woff2") format("woff2")}
 @font-face{font-family:"Mono";font-weight:500;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2")}
@@ -119,6 +124,24 @@ details.card>summary::after{content:"▾";color:var(--mute);transition:transform
 details.card[open]>summary::after{transform:rotate(180deg)}
 details.card>summary .pill{margin-left:auto}
 .views{width:92px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+/* targets, schedule, inbox */
+.tg{display:flex;gap:6px;flex-wrap:wrap}
+.tg button{border:1px solid var(--line-2);background:transparent;color:var(--mute);border-radius:99px;padding:6px 10px;font:600 12px/1 var(--body);cursor:pointer}
+.tg button[aria-pressed="true"]{color:#17120a;background:var(--gold);border-color:var(--gold)}
+.when{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.when input{background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:7px 10px;color:var(--ink);color-scheme:dark}
+.st{font:600 12px/1.4 var(--mono);display:flex;flex-direction:column;gap:3px}
+.st .ok{color:var(--green)} .st .bad{color:#ff9b8a} .st .wait{color:var(--gold-2)}
+.cnt{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font:700 11px/1 var(--mono);padding:5px 7px;border-radius:99px}
+.shot{position:relative}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.stats div{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}
+.stats b{display:block;font:800 17px/1 var(--display)} .stats span{font:500 10px/1 var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.cmt{display:grid;grid-template-columns:56px 1fr;gap:12px}
+.cmt img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--panel-2)}
+.next{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.next:last-child{border-bottom:0}
+.next img{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--panel-2)}
 /* chat */
 .chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:420px}
 .log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:4px 2px 16px}
@@ -181,6 +204,7 @@ code{font:500 12.5px var(--mono);background:var(--panel-2);border:1px solid var(
   <symbol id="i-orders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></symbol>
   <symbol id="i-posts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/></symbol>
   <symbol id="i-products" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l4 2 4-2 4 3-2 4h-2v9H8v-9H6L4 7z"/></symbol>
   <symbol id="i-grow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
   <symbol id="i-setup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
@@ -215,10 +239,14 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} }, del(k) { try { localStorage.removeItem(k); } catch {} } };
 let KEY = store.get("hq-key");
-const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["grow", "Grow", "i-grow"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const TABS = [["today", "Today", "i-today"], ["orders", "Orders", "i-orders"], ["grow", "Posts", "i-grow"], ["inbox", "Inbox", "i-inbox"], ["chat", "Mo", "i-chat"], ["products", "Products", "i-products"], ["setup", "Setup", "i-setup"]];
+const TGT = { ig: "Instagram", story: "Story", fb: "Facebook", tt: "TikTok" };
+const tgtFor = acct => acct === "mission" ? ["ig", "story"] : ["ig", "story", "fb", "tt"];
+const whenText = t => new Date(t).toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+const toLocalInput = t => { if (!t) return ""; const d = new Date(t); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16); };
 const FOUND = { instagramad: "Instagram ad", instagrampost: "Instagram post", tiktok: "TikTok", search: "Search", friend: "A friend", other: "Other" };
 const ACCT = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
-let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", fmt: "feed", img: "", caption: "", busy: false }, chat: JSON.parse(store.get("hq-chat") || "[]"), mo: JSON.parse(store.get("hq-mo") || "[]") };
+let state = { tab: "today", overview: null, orders: null, queue: null, products: null, postFilter: "review", acct: store.get("hq-acct") || "mission", orderFilter: "place", draft: { mode: "ai", fmt: "feed", img: "", caption: "", busy: false, targets: { ig: true } }, inbox: null, chat: JSON.parse(store.get("hq-chat") || "[]"), mo: JSON.parse(store.get("hq-mo") || "[]") };
 
 function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.remove("hide"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hide"), 2200); }
 async function api(path, opts = {}) {
@@ -233,7 +261,7 @@ const post = (path, body) => api(path, { method: "POST", body: JSON.stringify(bo
 
 function navHtml(mobile) {
   const badges = { orders: state.overview?.toPlace || 0, grow: state.overview?.queue?.review || 0 };
-  return TABS.filter(([id]) => !mobile || id !== "products").map(([id, label, icon]) =>
+  return TABS.filter(([id]) => !mobile || (id !== "products" && id !== "setup")).map(([id, label, icon]) =>
     `<button class="${mobile ? "" : "nav"}" data-tab="${id}" ${state.tab === id ? 'aria-current="page"' : ""}><svg><use href="#${icon}"/></svg>${label}${badges[id] ? `<span class="badge${id === "grow" ? " gold" : ""}">${badges[id]}</span>` : ""}</button>`).join("");
 }
 function paintNav() {
@@ -256,7 +284,7 @@ function viewToday() {
   const hour = new Date().getHours(), hi = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const stat = (label, x) => o ? `<div class="card stat"><div class="k"><span class="eyebrow">${label}</span></div><div class="v">$${Math.round(x.sales / 100).toLocaleString()}</div><div class="s">${x.orders} order${x.orders === 1 ? "" : "s"} · keep <b>$${Math.round(Math.max(0, x.keep) / 100).toLocaleString()}</b></div></div>`
     : `<div class="card">${sk(12, "40%")}<div style="height:16px"></div>${sk(34, "60%")}<div style="height:10px"></div>${sk(12, "70%")}</div>`;
-  return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><span class="countdown">${countdown()}</span></div>
+  return `<div class="head"><div><span class="eyebrow">Today</span><h1>${hi}, <em>Eli</em>.</h1><p class="sub">Here's the business at a glance.</p></div><div class="row"><span class="countdown">${countdown()}</span><a class="btn sm ghost" href="#setup" title="Setup">⚙ Setup</a></div></div>
   ${o ? (() => { const goal = 1000000, got = o.month.sales, aov = o.month.orders ? got / o.month.orders : 5500, left = Math.max(0, goal - got), per = Math.ceil(left / aov / 30);
     return `<div class="card" style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="eyebrow">Goal · $10k a month</span><span class="sub" style="margin:0">${money(got)} in the last 30 days</span></div>
     <div style="height:10px;background:var(--panel-2);border-radius:99px;margin:12px 0;overflow:hidden"><div style="height:100%;width:${Math.min(100, got / goal * 100).toFixed(1)}%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div>
@@ -266,6 +294,8 @@ function viewToday() {
     <div class="card alert ok" style="background:linear-gradient(135deg,#1d1a10,#14130f);border-color:#4a3d1f"><div><span class="eyebrow">Posts</span><h2 style="margin:8px 0 4px">${o.queue.review} waiting for you</h2><p class="sub" style="margin:0">${o.queue.approved} approved · ${o.queue.posted} posted</p></div><button class="btn primary" data-go="grow">Review</button></div>`
     : `<div class="card">${sk(70)}</div><div class="card">${sk(70)}</div>`}
   </div>
+  ${o ? `<div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between"><span class="eyebrow">Up next · scheduled posts</span><button class="btn sm primary" id="plan-week">✦ Plan my week with Mo</button></div>
+    ${o.upNext?.length ? o.upNext.map(n => `<div class="next">${/\.jpe?g/i.test(n.media) ? `<img src="${esc(local(n.media))}" alt="">` : `<div class="next-v" style="width:44px;height:44px;border-radius:10px;background:var(--panel-2)"></div>`}<div style="flex:1;min-width:0"><b>${esc(n.title)}</b><div class="sub" style="font-size:13px">${whenText(n.when)} · ${ACCT[n.account]} · ${n.targets.map(k => TGT[k]).join(", ")}${Object.keys(n.errors).length ? ` · <span style="color:#ff9b8a">needs a look</span>` : ""}</div></div></div>`).join("") : `<p class="sub" style="margin:10px 0 0">Nothing scheduled. Approve a post with a time and it goes out on its own.</p>`}</div>` : ""}
   <div class="grid g3 mini" style="margin-top:16px">${o ? [stat("Today", o.today), stat("7 days", o.week), stat("30 days", o.month)].join("") : stat().repeat(3)}</div>
   ${o?.ads ? `<div class="card" style="margin-top:16px"><span class="eyebrow">Meta ads · last 7 days</span>${o.ads.error ? `<p class="sub">${esc(o.ads.error)}</p>` : `<div class="grid g3" style="margin-top:10px"><div><div class="v" style="font-size:26px">$${Number(o.ads.spend || 0).toFixed(2)}</div><div class="s">spent</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.impressions || 0).toLocaleString()}</div><div class="s">impressions</div></div><div><div class="v" style="font-size:26px">${Number(o.ads.clicks || 0).toLocaleString()}</div><div class="s">clicks${o.ads.cpc ? ` · $${Number(o.ads.cpc).toFixed(2)} each` : ""}</div></div></div>`}</div>` : ""}
   <div class="grid g3 mini" style="margin-top:16px">
@@ -279,7 +309,7 @@ function viewToday() {
 function growSections() {
   const g = state.grow;
   if (!g) { load("grow", "grow"); return `<div class="card">${sk(120)}</div>`; }
-  const d = state.mail || (state.mail = { subject: "Rent Coat is open", text: "Hi,\n\nYou asked us to tell you when Rent Coat opens. It's open now: rentcoat.co\n\nTees are $40, hoodies $68, and the Steadfast Sweatsuit is $100. Shipping is free over $60.\n\nThanks for being here from the start.\n\nEli" });
+  const d = state.mail || (state.mail = { subject: "Rent Coat is open", text: "Hi,\n\nYou asked us to tell you when Rent Coat opens. It's open now: rentcoat.co\n\nEvery tee is $30 through Cyber Monday, hoodies are $48, and the Steadfast Sweatsuit is $78. Shipping is free over $60.\n\nThanks for being here from the start.\n\nEli" });
   const list = g.list?.count != null ? `${g.list.count} people` : esc(g.list?.error || "");
   const ab = Array.isArray(g.abandoned) ? g.abandoned : [];
   return `  ${g.email.connected ? "" : `<div class="card alert" style="margin-bottom:12px"><div><b>Email isn't connected.</b> <span class="sub">Setup → Email (Resend, free up to 100 a day).</span></div></div>`}
@@ -294,7 +324,7 @@ function growSections() {
   <details class="card" style="margin-bottom:12px" ${g.reviews.some(r => !r.approved) ? "open" : ""}><summary>Reviews <span class="pill">${g.reviews.filter(r => !r.approved).length} new</span></summary>
     ${g.reviews.length ? g.reviews.map(r => `<div class="check"><div style="flex:1"><b>${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</b> <span class="sub">${esc(r.name)}</span><div>${esc(r.text)}</div></div><div class="row"><button class="btn sm ${r.approved ? "" : "green"}" data-rvok="${r.id}" data-on="${r.approved ? 0 : 1}">${r.approved ? "Approved ✓" : "Approve"}</button></div></div>`).join("") : `<p class="sub">No reviews yet. In Orders, tap “Ask for a review” on orders older than 12 days.</p>`}</details>`;
 }function viewGrow() {
-  return `<div class="head"><div><span class="eyebrow">Grow</span><h1>Grow</h1><p class="sub">Posts, ads and email in one place. Nothing goes out until you tap.</p></div></div>
+  return `<div class="head"><div><span class="eyebrow">Posts</span><h1>Posts</h1><p class="sub">Make, schedule and post to Instagram, Facebook and TikTok. Nothing goes out until you approve it.</p></div></div>
   ${postsSection()}
   <h2 class="sec">Email &amp; customers</h2>
   ${growSections()}`;
@@ -352,13 +382,18 @@ function composer() {
         <p class="sub" style="margin:0">Makes a person in your scene, then dresses them in your real product photo. Small text can still smudge: check the print before you post. Needs the image maker and fal.ai connected. Then use “Turn this image into an AI video” below.</p>`
       : `<span class="lbl">Product</span><select class="field" id="d-prod">${prods.map(x => `<option value="${esc(x.id)}" ${x.id === d.prod ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
         <input class="field" id="d-head" placeholder="Headline, e.g. Opens Black Friday" value="${esc(d.head || "")}">
+        ${d.mode === "product" ? `<label class="sub" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="d-carousel" ${d.carousel ? "checked" : ""}> Carousel: add the product's other photos after it</label>` : ""}
         <button class="btn primary" id="d-render" ${d.busy ? "disabled" : ""}>${d.busy ? "Making…" : d.mode === "video" ? "Make video ad (8 s)" : "Make post image"}</button>`}
       </div></details>
+      <label class="btn sm" style="justify-self:start">⬆ Upload your own photo or video<input type="file" id="d-file" accept="image/*,video/mp4" hidden></label>
       ${d.img ? (/\.(mp4|webm)$/.test(d.img) ? `<video src="${esc(local(d.img))}" controls playsinline loop style="width:100%;max-width:360px;border-radius:12px"></video>` : `<img src="${esc(local(d.img))}" alt="" style="width:100%;max-width:360px;border-radius:12px">`) : ""}
       ${d.img && !/\.(mp4|webm)$/.test(d.img) ? `<details><summary class="sub" style="cursor:pointer">✦ Turn this image into an AI video (paid, about $0.35)</summary><div style="display:grid;gap:8px;margin-top:8px"><input class="field" id="d-motion" placeholder="Motion, e.g. slow push in, fabric moving in the wind" value="${esc(d.motion || "")}"><button class="btn" id="d-vid" ${d.busy ? "disabled" : ""}>${d.busy ? "Rendering… (1–3 min)" : "Make AI video"}</button></div></details>` : ""}
       ${(state.videos || []).length ? `<details><summary class="sub" style="cursor:pointer">Your recent AI photos and videos (${state.videos.length})</summary>${state.videos.map(v => `<div class="row" style="margin-top:6px"><span class="sub" style="flex:1">${v.kind === "image" ? "Photo" : "Video"}: ${esc(v.prompt || "")} · ${new Date(v.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><button class="btn sm" data-usevid="${esc(v.id)}">${v.url ? "Use" : "Check"}</button></div>`).join("")}</details>` : ""}
+      ${d.extra?.length ? `<p class="sub" style="margin:0">+ ${d.extra.length} more photo${d.extra.length === 1 ? "" : "s"} in the carousel</p>` : ""}
       <span class="lbl">Caption</span><textarea class="field" id="d-cap" rows="6" placeholder="Caption and hashtags">${esc(d.caption)}</textarea>
-      <button class="btn" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
+      <span class="lbl">Post to</span><div class="tg">${tgtFor(state.acct).map(k => `<button data-dtgt="${k}" aria-pressed="${Boolean((d.targets || { ig: true })[k])}">${TGT[k]}</button>`).join("")}</div>
+      <div class="when"><span class="lbl">When (optional)</span><input type="datetime-local" id="d-when" value="${toLocalInput(d.when)}"></div>
+      <button class="btn primary" id="d-add" ${d.img ? "" : "disabled"}>Add to review</button>
     </div></details>`;
 }
 const FMT = { feed: [1080, 1350], story: [1080, 1920], square: [1080, 1080] };
@@ -404,29 +439,45 @@ async function productVideo(prod, head, fmt = "story") {
 }
 function postsSection() {
   const q = state.queue?.queue?.filter(p => p.account === state.acct);
-  const shown = q ? q.filter(p => p.status === state.postFilter || (state.postFilter === "approved" && p.status === "publishing")) : null;
+  const shown = q ? (() => { const f = state.postFilter, inF = (p) => f === "scheduled" ? p.autopost && p.status !== "posted" : f === "approved" ? (p.status === "approved" && !p.autopost) || p.status === "publishing" : p.status === f; const list = q.filter(inF); return f === "scheduled" ? list.sort((a, b) => a.when - b.when) : list; })() : null;
   const ig = state.overview?.connected?.instagram || {};
-  const card = p => `<div class="card post">
-    ${p.needsImage && !p.media?.length ? `<div style="aspect-ratio:4/5;display:grid;place-items:center;background:var(--panel-2)"><button class="btn sm primary" data-mkimg="${p.id}">Make image</button></div>` : /\.jpe?g($|\?)/i.test(p.media?.[0] || "") ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}
+  const card = p => {
+    const t = p.targets || { ig: true }, img = /\.jpe?g($|\?)/i.test(p.media?.[0] || ""), many = (p.media || []).length;
+    const sched = p.status !== "posted" && p.when;
+    const st = [
+      ...Object.entries(p.done || {}).map(([k, v]) => `<span class="ok">✓ ${TGT[k] || k}${k === "tt" ? " (finish in the app)" : ""}</span>`),
+      ...Object.entries(p.errors || {}).map(([k, v]) => `<span class="bad">✕ ${TGT[k] || k}: ${esc(v)}</span>`),
+      ...(p.containers && Object.keys(p.containers).length ? [`<span class="wait">… Instagram is processing. Tap Finish posting.</span>`] : []),
+      ...(p.autopost && p.status !== "posted" ? [`<span class="wait">⏱ Goes out ${whenText(p.when)}</span>`] : []),
+      ...(p.missed ? [`<span class="bad">Missed its time (more than a day late). Pick a new time.</span>`] : []),
+    ].join("");
+    return `<div class="card post">
+    <div class="shot">${p.needsImage && !many ? `<div style="aspect-ratio:4/5;display:grid;place-items:center;background:var(--panel-2)"><button class="btn sm primary" data-mkimg="${p.id}">Make image</button></div>` : img ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}${many > 1 ? `<span class="cnt">1/${many} carousel</span>` : ""}</div>
     <div class="body">
       <span class="acct ${p.account}">${ACCT[p.account] || p.account}</span>
-      <span class="title">${esc(p.title)}${p.by === "mo" ? ` <span class="pill">by Mo</span>` : ""}${p.fb ? `<span class="plat">✓ Facebook</span>` : ""}${p.tt ? `<span class="plat">✓ TikTok drafts</span>` : ""}</span>
+      <span class="title">${esc(p.title)}${p.by === "mo" ? ` <span class="pill">by Mo</span>` : ""}</span>
       <textarea data-caption="${p.id}">${esc(p.caption)}</textarea>
+      ${p.status !== "posted" ? `<div class="tg" aria-label="Post to">${tgtFor(p.account).map(k => `<button data-tgt="${p.id}" data-k="${k}" aria-pressed="${Boolean(t[k])}">${TGT[k]}</button>`).join("")}</div>
+      <div class="when"><span class="sub" style="font-size:13px">When</span><input type="datetime-local" data-when="${p.id}" value="${toLocalInput(p.when)}">${p.when ? `<button class="btn sm ghost" data-clearwhen="${p.id}">Clear</button>` : ""}</div>` : ""}
+      ${st ? `<div class="st">${st}</div>` : ""}
+      ${p.stats ? `<div class="stats">${[["views", p.stats.views], ["reach", p.stats.reach], ["likes", p.stats.likes], ["comments", p.stats.comments], ["saves", p.stats.saved], ["shares", p.stats.shares]].filter(x => x[1] != null).map(([k, v]) => `<div><b>${Number(v).toLocaleString()}</b><span>${k}</span></div>`).join("")}</div>` : ""}
       <div class="row">
-        ${p.status === "review" ? `<button class="btn sm primary" data-status="${p.id}" data-to="approved">Approve</button>` : ""}
-        ${p.status === "approved" || p.status === "publishing" ? (ig[p.account] ? `<button class="btn sm primary" data-publish="${p.id}">${p.status === "publishing" ? "Finish posting" : "Post to Instagram"}</button>` : `<button class="btn sm" data-status="${p.id}" data-to="posted">I posted it</button>`) : ""}
-        ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.facebook && !p.fb ? `<button class="btn sm" data-plat="facebook" data-id="${p.id}">Facebook</button>` : ""}
-        ${(p.status === "approved" || p.status === "posted") && p.account === "rentcoat" && state.overview?.connected?.tiktok && !p.tt ? `<button class="btn sm" data-plat="tiktok" data-id="${p.id}">TikTok drafts</button>` : ""}
-        ${p.product && !p.branded ? `<button class="btn sm primary" data-brand="${p.id}">Make branded ad</button>` : ""}
+        ${p.status === "review" ? `${sched ? `<button class="btn sm primary" data-approve="${p.id}" data-auto="1">Approve &amp; schedule</button><button class="btn sm" data-approve="${p.id}">Approve only</button>` : `<button class="btn sm primary" data-approve="${p.id}">Approve</button>`}` : ""}
+        ${p.status === "approved" ? `${p.autopost ? `<button class="btn sm" data-unsched="${p.id}">Unschedule</button>` : sched ? `<button class="btn sm" data-approve="${p.id}" data-auto="1">Schedule</button>` : ""}<button class="btn sm primary" data-send="${p.id}">Post now</button>` : ""}
+        ${p.status === "publishing" ? `<button class="btn sm primary" data-send="${p.id}">Finish posting</button>` : ""}
+        ${p.status === "approved" && !p.done?.ig ? `<button class="btn sm ghost" data-status="${p.id}" data-to="posted">I posted it myself</button>` : ""}
+        ${p.status === "posted" && (p.igId || p.done?.ig) ? `<button class="btn sm" data-stats="${p.id}">${p.stats ? "Refresh stats" : "See stats"}</button>` : ""}
+        ${p.product && !p.branded && p.status !== "posted" ? `<button class="btn sm" data-brand="${p.id}">Make branded ad</button>` : ""}
         <button class="btn sm" data-copycap="${p.id}">Copy caption</button>
         <a class="btn sm ghost" href="${esc(local(p.media?.[0]) || "#")}" download>Download</a>
-        ${p.status === "posted" ? `<input class="views" type="number" min="0" placeholder="Views" value="${p.views ?? ""}" data-views="${p.id}">` : ""}
+        ${p.status === "posted" && !p.stats ? `<input class="views" type="number" min="0" placeholder="Views" value="${p.views ?? ""}" data-views="${p.id}">` : ""}
         ${p.status !== "posted" ? `<button class="btn sm ghost" data-del="${p.id}" title="Remove">✕</button>` : ""}
       </div>
-    </div></div>`;
-  const n = s => q ? q.filter(p => p.status === s || (s === "approved" && p.status === "publishing")).length : "";
+    </div></div>`; };
+  const inF = (p, f) => f === "scheduled" ? p.autopost && p.status !== "posted" : f === "approved" ? (p.status === "approved" && !p.autopost) || p.status === "publishing" : p.status === f;
+  const n = s => q ? q.filter(p => inF(p, s)).length : "";
   return `<div class="segrow"><div class="tabs"><button data-acct="rentcoat" aria-pressed="${state.acct === "rentcoat"}">@rentcoat.co</button><button data-acct="mission" aria-pressed="${state.acct === "mission"}">@whatisanldsmission</button></div>
-    <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
+    <div class="tabs"><button data-pf="review" aria-pressed="${state.postFilter === "review"}">To review ${n("review")}</button><button data-pf="scheduled" aria-pressed="${state.postFilter === "scheduled"}">Scheduled ${n("scheduled")}</button><button data-pf="approved" aria-pressed="${state.postFilter === "approved"}">Approved ${n("approved")}</button><button data-pf="posted" aria-pressed="${state.postFilter === "posted"}">Posted ${n("posted")}</button></div></div>
   ${composer()}
   <div class="posts">${shown ? (shown.length ? shown.map(card).join("") : `<div class="card empty" style="grid-column:1/-1">${state.acct === "rentcoat" ? "No @rentcoat.co posts yet." : "Nothing here."}</div>`) : `<div class="card">${sk(380)}</div>`.repeat(3)}</div>`;
 }
@@ -447,12 +498,28 @@ function moHtml() {
   return out.join("");
 }
 function viewChat() {
-  const chips = ["Make 3 posts for this week", "How are sales doing?", "Plan my Black Friday week", "Write a Facebook ad for the Steadfast Sweatsuit", "Make a mission post about missionaries at Christmas"];
+  const chips = ["Plan my week: 7 posts with times", "Make a carousel post for the Steadfast Sweatsuit", "How are sales doing?", "Plan my Black Friday week", "Write a Facebook ad for the Steadfast Sweatsuit", "Make a mission post about missionaries at Christmas"];
   return `<div class="head"><div><span class="eyebrow">Mo</span><h1>Hi, I'm <em>Mo</em>.</h1><p class="sub">Your Rent Coat sidekick. I can check sales, plan, write captions and ads, and draft posts with images. Anything I make waits in Posts for your OK.</p></div>${state.mo.length ? `<button class="btn sm ghost" id="clear">New chat</button>` : ""}</div>
   <div class="chat">
     <div class="log" id="log">${state.mo.length ? moHtml() + (state.moBusy ? `<div class="mo-row"><div class="mo-av">Mo</div><div class="msg ai">…</div></div>` : "") : `<div class="mo-row" style="margin-bottom:14px"><div class="mo-av">Mo</div><div class="msg ai">What are we working on today?</div></div><div class="chips">${chips.map(c => `<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>`}</div>
     <form class="compose" id="compose"><textarea id="say" rows="1" placeholder="Ask Mo…"></textarea><button class="btn primary" type="submit" ${state.moBusy ? "disabled" : ""}>Send</button></form>
   </div>`;
+}
+
+function viewInbox() {
+  const acct = state.inboxAcct || "rentcoat", box = state.inbox?.[acct], ins = state.insights?.accounts || {};
+  if (!state.inbox?.[acct] && !state.inboxLoading) { state.inboxLoading = true; api(`inbox?account=${acct}`).then(r => { (state.inbox ||= {})[acct] = r; }).catch(e => { (state.inbox ||= {})[acct] = { error: e.message }; }).finally(() => { state.inboxLoading = false; render(); }); }
+  if (!state.insights && !state.insLoading) { state.insLoading = true; api("insights").then(r => { state.insights = r; render(); }).catch(() => {}); }
+  const fol = a => ins[a]?.followers_count != null ? `${Number(ins[a].followers_count).toLocaleString()} followers` : "";
+  const list = box?.comments || [];
+  return `<div class="head"><div><span class="eyebrow">Inbox</span><h1>Comments</h1><p class="sub">Every comment on your last 12 Instagram posts. Mo can suggest a reply; nothing sends until you tap Send.</p></div><button class="btn sm" id="inbox-refresh">Refresh</button></div>
+  <div class="tabs" style="margin-bottom:14px"><button data-iacct="rentcoat" aria-pressed="${acct === "rentcoat"}">@rentcoat.co ${fol("rentcoat") ? `· ${fol("rentcoat")}` : ""}</button><button data-iacct="mission" aria-pressed="${acct === "mission"}">@whatisanldsmission ${fol("mission") ? `· ${fol("mission")}` : ""}</button></div>
+  ${!box ? `<div class="card">${sk(90)}</div>`.repeat(2) : box.error ? `<div class="card"><b>Can't read comments yet.</b><p class="sub">${esc(box.error)}</p><p class="sub">Connect Instagram in Setup. Comments need the instagram_manage_comments permission in your Meta configuration (Setup lists it), then tap Reconnect.</p></div>`
+  : list.length ? `<div class="grid">${list.map(c => `<div class="card cmt"><a href="${esc(c.post.link)}" target="_blank" rel="noopener" class="pill" style="height:56px;display:grid;place-items:center;text-decoration:none" title="${esc(c.post.caption)}">Post ↗</a><div style="min-width:0;display:grid;gap:8px">
+      <div><b>@${esc(c.user)}</b> <span class="sub" style="font-size:12px">${c.at ? whenText(c.at) : ""}${c.answered ? " · replied ✓" : ""}</span><div>${esc(c.text)}</div></div>
+      ${c.answered || c.sent ? (c.sent ? `<span class="pill done">Sent ✓</span>` : "") : `<textarea class="field" rows="2" data-rtext="${esc(c.id)}" placeholder="Write a reply">${esc(c.draft || "")}</textarea>
+      <div class="row"><button class="btn sm" data-suggest="${esc(c.id)}">✦ Suggest reply</button><button class="btn sm primary" data-reply="${esc(c.id)}">Send reply</button></div>`}
+    </div></div>`).join("")}</div>` : `<div class="card empty">No comments yet on your recent posts.</div>`}`;
 }
 
 function viewProducts() {
@@ -476,9 +543,9 @@ function viewSetup() {
   ${svc(set.CF_AI_TOKEN && set.CF_ACCOUNT_ID, "Image maker (Cloudflare)", "AI images. Free daily allowance.",
     `${open("https://dash.cloudflare.com/profile/api-tokens", "Get a token")}${keyRow("CF_AI_TOKEN", "Create token → template “Workers AI” → copy → paste.", "API token")}${keyRow("CF_ACCOUNT_ID", "Account ID: right side of the Cloudflare home page.", "Account ID")}`)}
   ${svc(metaOn, "Instagram + Facebook + Meta ads", metaOn ? `Linked: ${esc([...(acc.meta.instagram || []), acc.meta.page && "Page: " + acc.meta.page, acc.meta.adAccount && "Ads: " + acc.meta.adAccount].filter(Boolean).join(" · ") || "no Instagram business accounts found")}` : "One login connects both Instagram accounts, the Rent Coat Facebook Page and ad stats.",
-    `${set.META_APP_ID && set.META_APP_SECRET && set.META_CONFIG_ID ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.facebook.com/apps/creation/", "Create a Meta app")} type “Business”. Add <b>Facebook Login for Business</b>, and under its settings paste this as a Valid OAuth Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.meta)}"><button class="btn sm" data-copy="${esc(v.redirects.meta)}">Copy</button></div><p class="sub" style="margin:8px 0 0">Then App settings → Basic: copy the App ID and App Secret here.</p>${keyRow("META_APP_ID", "App ID", "App ID")}${keyRow("META_APP_SECRET", "App Secret", "App Secret")}<p class="sub" style="margin:10px 0 0">Then Facebook Login for Business → Configurations → Create: <b>User access token</b>, pick your Rent Coat Page, both Instagram accounts and your ad account, and these permissions: instagram_basic, instagram_content_publish, pages_show_list, pages_manage_posts, pages_read_engagement, business_management, ads_read. Paste the Configuration ID here:</p>${keyRow("META_CONFIG_ID", "Configuration ID", "Configuration ID")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
+    `${set.META_APP_ID && set.META_APP_SECRET && set.META_CONFIG_ID ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.facebook.com/apps/creation/", "Create a Meta app")} type “Business”. Add <b>Facebook Login for Business</b>, and under its settings paste this as a Valid OAuth Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.meta)}"><button class="btn sm" data-copy="${esc(v.redirects.meta)}">Copy</button></div><p class="sub" style="margin:8px 0 0">Then App settings → Basic: copy the App ID and App Secret here.</p>${keyRow("META_APP_ID", "App ID", "App ID")}${keyRow("META_APP_SECRET", "App Secret", "App Secret")}<p class="sub" style="margin:10px 0 0">Then Facebook Login for Business → Configurations → Create: <b>User access token</b>, pick your Rent Coat Page, both Instagram accounts and your ad account, and these permissions: instagram_basic, instagram_content_publish, instagram_manage_comments, instagram_manage_insights, pages_show_list, pages_manage_posts, pages_read_engagement, business_management, ads_read. Paste the Configuration ID here:</p>${keyRow("META_CONFIG_ID", "Configuration ID", "Configuration ID")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
      <div class="row"><button class="btn primary" data-connect="meta">${metaOn ? "Reconnect" : "Connect Instagram & Facebook"}</button>${metaOn ? `<button class="btn sm ghost" data-disconnect="meta">Disconnect</button>` : ""}</div>
-     <p class="sub" style="font-size:12px;margin-top:8px">Both Instagram accounts must be Professional and linked to a Facebook Page. Ads stats need reconnecting every ~60 days.</p>`)}
+     <p class="sub" style="font-size:12px;margin-top:8px">Both Instagram accounts must be Professional and linked to a Facebook Page. Ads stats need reconnecting every ~60 days. Already connected before the Inbox existed? Add instagram_manage_comments and instagram_manage_insights to your configuration, then tap Reconnect.</p>`)}
   ${svc(ttOn, "TikTok", "Sends Rent Coat posts to your TikTok drafts; you add a sound and post in the app.",
     `${set.TIKTOK_CLIENT_KEY && set.TIKTOK_CLIENT_SECRET ? "" : `<p class="sub" style="margin:0 0 6px"><b>Step 1, once:</b> ${open("https://developers.tiktok.com/apps/", "Create a TikTok app")} add <b>Login Kit</b> and <b>Content Posting API</b>, set this as the Redirect URI:</p><div style="display:flex;gap:8px"><input class="field" readonly value="${esc(v.redirects.tiktok)}"><button class="btn sm" data-copy="${esc(v.redirects.tiktok)}">Copy</button></div>${keyRow("TIKTOK_CLIENT_KEY", "Client key", "Client key")}${keyRow("TIKTOK_CLIENT_SECRET", "Client secret", "Client secret")}<p class="sub" style="margin:10px 0 6px"><b>Step 2:</b></p>`}
      <div class="row"><button class="btn primary" data-connect="tiktok">${ttOn ? "Reconnect" : "Connect TikTok"}</button>${ttOn ? `<button class="btn sm ghost" data-disconnect="tiktok">Disconnect</button>` : ""}</div>`)}
@@ -488,11 +555,18 @@ function viewSetup() {
     `${open("https://app.netlify.com/user/applications#personal-access-tokens", "Make a token")}${keyRow("NETLIFY_TOKEN", "New access token → copy → paste.", "Netlify token")}`)}
   ${svc(set.FAL_KEY, "AI photos & video (fal.ai)", "Puts your real clothes on a model (about $0.08 a photo) and turns any image into a 5-second video (about $0.35). HQ stops at your monthly cap.",
     `${open("https://fal.ai/dashboard/keys", "Get a key")}<p class="sub" style="font-size:12px;margin:6px 0">Add a few dollars of credit at fal.ai first; it's pay as you go.</p>${keyRow("FAL_KEY", "fal API key", "key")}${keyRow("FAL_MONTHLY_CAP", "Monthly cap in dollars (default 10)", "10")}`)}
+  ${svc(true, "Shopping feed (Facebook Shop, Instagram tags, Google)", "Your products, prices and the Black Friday sale price in one link that updates itself. Free: lets people tap a product on your Instagram posts, opens a Facebook Shop, and lists you in Google Shopping.",
+    `<div style="display:flex;gap:8px"><input class="field" readonly value="https://rentcoat.co/products.xml"><button class="btn sm" data-copy="https://rentcoat.co/products.xml">Copy</button></div>
+     <p class="sub" style="font-size:13px;margin:8px 0">Meta: ${open("https://business.facebook.com/commerce/", "Commerce Manager")} → Add catalog → E-commerce → Data feed → Scheduled feed → paste the link, daily. Then Instagram → Settings → Business → Set up Instagram Shopping.<br>Google: ${open("https://merchants.google.com/", "Merchant Center")} → Products → Add products → Add from a file → Scheduled fetch → paste the link.</p>`)}
+  ${svc(true, "Install HQ on your phone", "Opens like an app from your home screen, full screen.",
+    `<p class="sub" style="font-size:13px;margin:0">iPhone: Safari → Share → Add to Home Screen. Android or Chromebook: Chrome menu → Install app (or Add to Home screen).</p>`)}
+  ${svc(false, "Meta Muse (inside Meta's apps)", "Meta's own AI agent and image maker live inside Instagram, WhatsApp and Meta Business Suite. Meta doesn't offer a way for HQ to plug into it, so use it there for ad ideas and images, save what you like, and upload it here with “Upload your own photo” to schedule it.",
+    `${open("https://business.facebook.com/", "Open Meta Business Suite")}`)}
   ${svc(true, "Store, checkout and orders", "Stripe and the order list are connected. Tapstitch orders are placed by hand from Orders; Printful handles only the dad cap.", `${open("https://dashboard.stripe.com/settings/communication-preferences", "Turn on order emails")}<p class="sub" style="font-size:12px;margin-top:6px">Turn on “Successful payments” so every order reaches your inbox too.</p>`)}
   <div class="row" style="margin-top:16px"><button class="btn ghost" id="logout">Sign out of HQ on this device</button></div>`;
 }
 
-const VIEWS = { grow: viewGrow, posts: viewGrow, today: viewToday, orders: viewOrders, chat: viewChat, products: viewProducts, setup: viewSetup };
+const VIEWS = { inbox: viewInbox, grow: viewGrow, posts: viewGrow, today: viewToday, orders: viewOrders, chat: viewChat, products: viewProducts, setup: viewSetup };
 function render() {
   $("#main").innerHTML = VIEWS[state.tab]();
   wire();
@@ -512,7 +586,7 @@ function wire() {
   document.querySelectorAll("[data-usevid]").forEach(b => b.onclick = async () => { b.disabled = true; try { const st = await post("video/check", { id: b.dataset.usevid }); if (st.url) { state.draft.img = st.url; state.videos = null; render(); } else { toast("Still rendering. Check again in a minute."); b.disabled = false; } } catch (e) { toast(e.message); b.disabled = false; } });
   document.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { state.draft.fmt = b.dataset.fmt; state.draft.open = true; render(); });
   document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { state.draft.mode = b.dataset.mode; if (b.dataset.mode === "video" && state.draft.fmt === "feed") state.draft.fmt = "story"; state.draft.open = true; if (!state.products) load("products", "products"); render(); });
-  const keep = () => { const d = state.draft; d.scene = $("#d-scene")?.value ?? d.scene; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
+  const keep = () => { const d = state.draft; d.carousel = $("#d-carousel") ? $("#d-carousel").checked : d.carousel; d.when = $("#d-when") ? ($("#d-when").value ? new Date($("#d-when").value).getTime() : null) : d.when; d.scene = $("#d-scene")?.value ?? d.scene; d.motion = $("#d-motion")?.value ?? d.motion; d.idea = $("#d-idea")?.value ?? d.idea; d.prompt = $("#d-prompt")?.value ?? d.prompt; d.caption = $("#d-cap")?.value ?? d.caption; d.head = $("#d-head")?.value ?? d.head; d.prod = $("#d-prod")?.value ?? d.prod; d.open = true; };
   if ($("#d-claude")) $("#d-claude").onclick = async () => { keep(); const d = state.draft, ai = d.mode === "ai" || state.acct === "mission"; d.busy = true; render();
     try {
       if (!ai && !state.products) state.products = await api("products");
@@ -538,11 +612,12 @@ function wire() {
     try { state.draft.img = (await post("image", { prompt: state.draft.prompt })).url; } catch (e) { toast(e.message); } state.draft.busy = false; render(); };
   if ($("#d-render")) $("#d-render").onclick = async () => { keep(); const prod = (state.products?.products || []).find(x => x.id === state.draft.prod) || state.products?.products?.[0]; if (!prod) return toast("Products still loading.");
     state.draft.busy = true; render();
-    try { const d = state.draft; d.img = (await post("upload", { image: d.mode === "video" ? await productVideo(prod, d.head, d.fmt) : await productImage(prod, d.head, d.fmt) })).url; } catch (e) { toast(e.message); }
+    try { const d = state.draft; d.img = (await post("upload", { image: d.mode === "video" ? await productVideo(prod, d.head, d.fmt) : await productImage(prod, d.head, d.fmt) })).url;
+      d.extra = d.mode === "product" && d.carousel ? prod.images.slice(0, 9).map(i => new URL("/" + i.src, location.origin).href) : []; } catch (e) { toast(e.message); }
     state.draft.busy = false; render(); };
   if ($("#d-add")) $("#d-add").onclick = async () => { keep(); const d = state.draft;
-    try { const r = await post("queue", { account: state.acct, title: (d.head || d.prompt || "New post").slice(0, 80), caption: d.caption, media: [d.img] });
-      state.queue.queue.unshift(r.post); state.draft = { mode: d.mode, img: "", caption: "", busy: false }; state.postFilter = "review"; state.overview = await api("overview"); paintNav(); render(); toast("Added to review"); } catch (e) { toast(e.message); } };
+    try { const r = await post("queue", { account: state.acct, title: (d.head || d.prompt || d.idea || "New post").slice(0, 80), caption: d.caption, media: [new URL(d.img, location.origin).href, ...(d.extra || [])], targets: d.targets || { ig: true }, when: d.when || null });
+      if (!state.queue) state.queue = await api("queue"); else state.queue.queue.unshift(r.post); state.draft = { mode: d.mode, img: "", caption: "", busy: false, targets: d.targets }; state.postFilter = "review"; state.overview = await api("overview"); paintNav(); render(); toast("Added to review"); } catch (e) { toast(e.message); } };
   document.querySelectorAll("[data-pf]").forEach(b => b.onclick = () => { state.postFilter = b.dataset.pf; render(); });
   document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast("Copied")));
   document.querySelectorAll("[data-placed]").forEach(b => b.onclick = async () => {
@@ -628,6 +703,47 @@ function wire() {
       state.videos = null;
     } catch (e) { toast(e.message); }
     d.busy = false; render(); };
+  // Targets, times, schedule, send, stats
+  const savePost = async (id, body, msg) => { try { updated((await post(`queue/${id}`, body)).post); render(); if (msg) toast(msg); } catch (e) { toast(e.message); } };
+  document.querySelectorAll("[data-tgt]").forEach(b => b.onclick = () => { const p = findPost(b.dataset.tgt), t = { ...(p.targets || { ig: true }) }; t[b.dataset.k] = !t[b.dataset.k]; savePost(p.id, { targets: t }); });
+  document.querySelectorAll("[data-when]").forEach(i => i.onchange = () => savePost(i.dataset.when, { when: i.value ? new Date(i.value).getTime() : null }, i.value ? "Time saved" : ""));
+  document.querySelectorAll("[data-clearwhen]").forEach(b => b.onclick = () => savePost(b.dataset.clearwhen, { when: null, autopost: false }));
+  document.querySelectorAll("[data-approve]").forEach(b => b.onclick = async () => { b.disabled = true; const p = findPost(b.dataset.approve), auto = b.dataset.auto === "1";
+    if (auto && p.when < Date.now()) { b.disabled = false; return toast("That time has passed. Pick a new one."); }
+    await savePost(p.id, { status: "approved", autopost: auto }, auto ? `Scheduled for ${whenText(p.when)}` : "Approved"); state.overview = await api("overview").catch(() => state.overview); paintNav(); });
+  document.querySelectorAll("[data-unsched]").forEach(b => b.onclick = () => savePost(b.dataset.unsched, { autopost: false }, "Unscheduled"));
+  document.querySelectorAll("[data-send]").forEach(b => b.onclick = async () => {
+    const p0 = findPost(b.dataset.send), names = Object.keys(p0.targets || { ig: true }).filter(k => (p0.targets || { ig: true })[k]).map(k => TGT[k]);
+    if (p0.status === "approved" && !confirm(`Post now to ${names.join(", ")}?`)) return;
+    b.disabled = true; b.textContent = "Posting…";
+    try {
+      let p = (await post(`queue/${p0.id}/send`, { retry: true })).post;
+      for (let i = 0; i < 20 && p.status === "publishing"; i++) { await new Promise(r => setTimeout(r, 4000)); p = (await post(`queue/${p.id}/send`)).post; }
+      updated(p); render(); toast(p.status === "posted" ? "Posted" : Object.keys(p.errors || {}).length ? "Some didn't go: see the red lines" : "Still processing. Tap Finish posting in a minute.");
+    } catch (e) { toast(e.message); render(); }
+  });
+  document.querySelectorAll("[data-stats]").forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = "Loading…"; try { updated((await post(`queue/${b.dataset.stats}/stats`)).post); } catch (e) { toast(e.message); } render(); });
+  // Composer extras
+  document.querySelectorAll("[data-dtgt]").forEach(b => b.onclick = () => { keep(); const t = { ...(state.draft.targets || { ig: true }) }; t[b.dataset.dtgt] = !t[b.dataset.dtgt]; state.draft.targets = t; render(); });
+  if ($("#d-file")) $("#d-file").onchange = async e => { const f = e.target.files[0]; if (!f) return; keep(); const d = state.draft; d.busy = true; render();
+    try {
+      let data;
+      if (f.type.startsWith("image/")) { const im = await loadImg(URL.createObjectURL(f)); const k = Math.min(1, 1440 / Math.max(im.width, im.height)); const c = document.createElement("canvas"); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); data = c.toDataURL("image/jpeg", 0.88); }
+      else { if (f.size > 4.3e6) throw new Error("That video is over 4 MB. Post long videos from the Edits app instead."); data = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(f); }); }
+      d.img = (await post("upload", { image: data })).url; d.extra = [];
+    } catch (e2) { toast(e2.message); }
+    d.busy = false; render(); };
+  // Today
+  if ($("#plan-week")) $("#plan-week").onclick = () => { go("chat"); setTimeout(() => { const s2 = $("#say"); if (s2) { s2.value = "Plan my week: draft 7 posts for @rentcoat.co with the best times (Eastern) and where each one goes. Use real product photos."; $("#compose").requestSubmit(); } }, 50); };
+  // Inbox
+  document.querySelectorAll("[data-iacct]").forEach(b => b.onclick = () => { state.inboxAcct = b.dataset.iacct; render(); });
+  if ($("#inbox-refresh")) $("#inbox-refresh").onclick = () => { state.inbox = null; state.insights = null; render(); };
+  const cmt = id => (state.inbox?.[state.inboxAcct || "rentcoat"]?.comments || []).find(c => c.id === id);
+  document.querySelectorAll("[data-rtext]").forEach(t => t.oninput = () => { const c = cmt(t.dataset.rtext); if (c) c.draft = t.value; });
+  document.querySelectorAll("[data-suggest]").forEach(b => b.onclick = async () => { const c = cmt(b.dataset.suggest); b.disabled = true; b.textContent = "Thinking…";
+    try { c.draft = (await post("inbox/suggest", { account: state.inboxAcct || "rentcoat", text: c.text, user: c.user, post: c.post.caption })).reply; } catch (e) { toast(e.message); } render(); });
+  document.querySelectorAll("[data-reply]").forEach(b => b.onclick = async () => { const c = cmt(b.dataset.reply), text = (c.draft || "").trim(); if (!text) return toast("Write a reply first.");
+    b.disabled = true; try { await post("inbox/reply", { account: state.inboxAcct || "rentcoat", id: c.id, message: text }); c.sent = true; render(); toast("Reply sent"); } catch (e) { toast(e.message); b.disabled = false; } });
   const out = $("#logout"); if (out) out.onclick = () => { store.del("hq-key"); location.reload(); };
 }
 

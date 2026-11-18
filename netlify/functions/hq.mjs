@@ -5,7 +5,12 @@
 //   GET  /api/hq/queue                 posts waiting for approval, approved, posted
 //   POST /api/hq/queue                 { account, title, caption, media, when }   add a post
 //   POST /api/hq/queue/:id             { status | caption | when | delete }        approve, edit, mark posted, remove
-//   POST /api/hq/queue/:id/publish     post an approved reel to Instagram (needs IG_*_USER_ID and IG_*_TOKEN)
+//   POST /api/hq/queue/:id/send        { targets?, retry? }  post an approved post to its targets now (Instagram feed/carousel/reel,
+//                                       story, Facebook, TikTok drafts); call again until status is "posted" (videos take a minute)
+//   POST /api/hq/queue/:id/stats       refresh Instagram numbers for a posted post
+//   GET  /api/hq/inbox?account=        Instagram comments; POST inbox/suggest (Mo writes a reply), POST inbox/reply (send it)
+//   GET  /api/hq/insights              followers and post counts for both Instagram accounts
+//   Approved posts with a time and "autopost" go out on their own (netlify/functions/hq-scheduler.mjs).
 //   GET  /api/hq/products              what's live on the site
 //   POST /api/hq/mo                    { messages }  one turn of Mo, the HQ assistant (tools: snapshot, draft posts, list posts)
 //   POST /api/hq/queue/:id/facebook    post an approved Rent Coat post to the Facebook Page (META_PAGE_ID, META_PAGE_TOKEN)
@@ -21,12 +26,12 @@ import { getStore } from "@netlify/blobs";
 import Anthropic from "@anthropic-ai/sdk";
 import { PRODUCTS, liveLine, decodeItems, stripe, json } from "../lib/store.mjs";
 import { hydrate, setVault, getAccounts, setAccounts, makeState, PASTE_KEYS, tokenFor } from "../lib/vault.mjs";
+import { ACCOUNTS, TARGETS, step, igStats, igAccount, igInbox, igReply } from "../lib/social.mjs";
 
 const sameKey = (a, b) => crypto.timingSafeEqual(
   crypto.createHash("sha256").update(String(a)).digest(),
   crypto.createHash("sha256").update(String(b)).digest());
 const day = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" });
-const ACCOUNTS = { rentcoat: "@rentcoat.co", mission: "@whatisanldsmission" };
 const GRAPH = `https://graph.facebook.com/${process.env.IG_GRAPH_VERSION || "v21.0"}`;
 const store = () => getStore("hq");
 
@@ -90,44 +95,6 @@ async function saveImage(bytes, origin, ext = "jpg") {
   const id = `${crypto.randomUUID()}.${ext}`;
   await getStore("hq-media").set(id, bytes);
   return `${origin}/api/media/${id}`;
-}
-
-const mediaOf = (post, kind) => (post.media || []).find(m => kind === "video" ? /\.(mp4|webm)($|\?)/i.test(m) : /\.jpe?g($|\?)/i.test(m));
-
-// Facebook Page: one call, photo or video by URL.
-async function fbPublish(post) {
-  const id = process.env.META_PAGE_ID, token = process.env.META_PAGE_TOKEN;
-  if (!id || !token) throw new Error("Facebook isn't connected yet. See Setup.");
-  if (post.account !== "rentcoat") throw new Error("@whatisanldsmission stays Instagram only.");
-  const video = mediaOf(post, "video"), image = mediaOf(post, "image");
-  if (!video && !image) throw new Error("This post has no image or video.");
-  const r = await fetch(`${GRAPH}/${id}/${video ? "videos" : "photos"}`, { method: "POST", body: new URLSearchParams(video
-    ? { file_url: video, description: post.caption || "", access_token: token }
-    : { url: image, caption: post.caption || "", access_token: token }) });
-  const d = await r.json();
-  if (!r.ok || !(d.post_id || d.id)) throw new Error(`Facebook: ${d.error?.message || r.status}`);
-  return d.post_id || d.id;
-}
-
-// TikTok: sends the post to Eli's TikTok inbox as a draft; he finishes it in the app. Access tokens last a day, so
-// each call trades the long-lived refresh token for a fresh one.
-async function tiktokPublish(post) {
-  const key = process.env.TIKTOK_CLIENT_KEY, secret = process.env.TIKTOK_CLIENT_SECRET, refresh = process.env.TIKTOK_REFRESH_TOKEN;
-  if (!key || !secret || !refresh) throw new Error("TikTok isn't connected yet. See Setup.");
-  if (post.account !== "rentcoat") throw new Error("@whatisanldsmission stays Instagram only.");
-  const t = await (await fetch("https://open.tiktokapis.com/v2/oauth/token/", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ client_key: key, client_secret: secret, grant_type: "refresh_token", refresh_token: refresh }) })).json();
-  if (!t.access_token) throw new Error(`TikTok login: ${t.error_description || t.error || "failed"}`);
-  if (t.refresh_token && t.refresh_token !== refresh) await setVault({ TIKTOK_REFRESH_TOKEN: t.refresh_token });
-  const video = mediaOf(post, "video"), image = mediaOf(post, "image");
-  const [path, body] = video
-    ? ["post/publish/inbox/video/init/", { source_info: { source: "PULL_FROM_URL", video_url: video } }]
-    : ["post/publish/content/init/", { post_info: { title: (post.title || "").slice(0, 90), description: post.caption || "" }, source_info: { source: "PULL_FROM_URL", photo_cover_index: 0, photo_images: [image] }, post_mode: "MEDIA_UPLOAD", media_type: "PHOTO" }];
-  if (!video && !image) throw new Error("This post has no image or video.");
-  const r = await fetch(`https://open.tiktokapis.com/v2/${path}`, { method: "POST", headers: { authorization: `Bearer ${t.access_token}`, "content-type": "application/json; charset=UTF-8" }, body: JSON.stringify(body) });
-  const d = await r.json();
-  if (d.error?.code !== "ok") throw new Error(`TikTok: ${d.error?.message || d.error?.code || r.status}`);
-  return d.data?.publish_id;
 }
 
 // Meta ads, read only: last 7 days for the ad account.
@@ -260,7 +227,7 @@ async function makeImage(prompt, origin) {
 }
 
 const MO = `You are Mo, the little helper who lives in Rent Coat HQ. Your name comes from Captain Moroni, who rent his coat and made the title of liberty. You're warm, upbeat and a bit playful, but you get real work done fast and keep replies short.
-What you can do with tools: check the business (business_snapshot), see the post queue (list_posts) and make post drafts (draft_post) that land in Posts → To review. Nothing posts, sends or spends money until Eli taps it in HQ; say so when you draft. Make at most 3 drafts per request.
+What you can do with tools: check the business (business_snapshot), see the post queue (list_posts) and make post drafts (draft_post) that land in Posts → To review. Nothing posts, sends or spends money until Eli taps it in HQ; say so when you draft. Make at most 7 drafts per request (a week of posts). You can give each draft a suggested time ("when", Eastern time) and where it goes ("targets"): HQ posts it at that time only after Eli taps Approve & schedule.
 Captions: a hook in the first line, 2-4 short lines, a clear call to action, then a blank line and 5-8 hashtags.
 PICTURES, THE MOST IMPORTANT RULE: any post about a Rent Coat product MUST pass that product's product_id so the real product photo is used. Never ask the image maker to draw Rent Coat clothing: it can't reproduce the designs, so the picture would be wrong (a blank hoodie is not the Forgiven Hoodie). Use image_prompt (AI) only for scene or mood posts with no Rent Coat garment in frame: landscapes, light, a scripture page, a countdown mood shot. AI prompts: detailed, vertical, no text or logos.
 WHAT MAKES A GOOD ROAD-TO-LAUNCH AD for @rentcoat.co: one product per post, shown with its real photo; a first line that stops the scroll (the verse story behind the design, or a feeling a young Latter-day Saint knows); the design detail and the verse reference from the catalog; price; "Opens Black Friday, Nov 27, 10 AM Eastern" until launch; "Link in bio" as the call to action. Audience: LDS teens and young adults, missionaries and their families, parents shopping Christmas gifts. Voice: confident, warm, a little witty, never preachy, no "elevate your wardrobe" filler. When asked for several posts, vary them: product spotlight, verse story, gift angle, countdown, the sweatsuit deal.
@@ -278,36 +245,29 @@ const MO_TOOLS = [
       caption: { type: "string", description: "Final caption with hook, call to action and 5-8 hashtags" },
       product_id: { type: "string", description: "Id of the Rent Coat product this post shows (from the catalog). Required for any post about a product: HQ uses its real photo." },
       image_prompt: { type: "string", description: "Only for scene/mood posts with no Rent Coat clothing: a detailed AI image prompt, no text in the image" },
+      when: { type: "string", description: "Suggested post time in Eastern time, ISO like 2026-11-24T19:00. Optional." },
+      targets: { type: "array", items: { type: "string", enum: ["ig", "story", "fb", "tt"] }, description: "Where it goes: ig (feed), story, fb (Facebook Page), tt (TikTok drafts). Default ig. @whatisanldsmission: ig and story only." },
+      carousel: { type: "boolean", description: "Product posts: use all of the product's photos as an Instagram carousel." },
     }, required: ["account", "title", "caption"] } },
 ];
 
-async function igPublishStart(post) {
-  const user = process.env[`IG_${post.account.toUpperCase()}_USER_ID`], token = process.env[`IG_${post.account.toUpperCase()}_TOKEN`];
-  if (!user || !token) throw new Error(`Instagram isn't connected for ${ACCOUNTS[post.account]} yet. See Setup.`);
-  const video = (post.media || []).find(m => /\.mp4($|\?)/i.test(m));
-  const image = (post.media || []).find(m => /\.jpe?g($|\?)/i.test(m));
-  if (!video && !image) throw new Error("This post has no video or image to publish.");
-  const body = video
-    ? new URLSearchParams({ media_type: "REELS", video_url: video, caption: post.caption || "", share_to_feed: "true", access_token: token })
-    : new URLSearchParams({ image_url: image, caption: post.caption || "", access_token: token });
-  const r = await fetch(`${GRAPH}/${user}/media`, { method: "POST", body });
-  const d = await r.json();
-  if (!r.ok || !d.id) throw new Error(`Instagram: ${d.error?.message || r.status}`);
-  return d.id;
+// "2026-11-24T19:00" in Eastern time (no offset) -> epoch ms; null if missing or unreadable.
+function easternISO(v) {
+  if (!v) return null;
+  const s = String(v).trim();
+  if (/[zZ]|[+-]\d\d:?\d\d$/.test(s)) { const t = Date.parse(s); return Number.isFinite(t) ? t : null; }
+  const t = Date.parse(s + "Z"); if (!Number.isFinite(t)) return null;
+  const off = new Date(t).toLocaleString("en-US", { timeZone: "America/New_York", timeZoneName: "shortOffset" }).match(/GMT([+-]\d+)/);
+  return t - (off ? Number(off[1]) : -5) * 36e5;
 }
-async function igPublishCheck(post) {
-  const user = process.env[`IG_${post.account.toUpperCase()}_USER_ID`], token = process.env[`IG_${post.account.toUpperCase()}_TOKEN`];
-  const s = await (await fetch(`${GRAPH}/${post.container}?fields=status_code&access_token=${token}`)).json();
-  if (s.status_code === "ERROR" || s.status_code === "EXPIRED") throw new Error(`Instagram couldn't process the video (${s.status_code}).`);
-  if (s.status_code !== "FINISHED") return null;
-  const r = await fetch(`${GRAPH}/${user}/media_publish`, { method: "POST", body: new URLSearchParams({ creation_id: post.container, access_token: token }) });
-  const d = await r.json();
-  if (!r.ok || !d.id) throw new Error(`Instagram: ${d.error?.message || r.status}`);
-  return d.id;
+function targetMap(list, account) {
+  const allowed = account === "mission" ? ["ig", "story"] : Object.keys(TARGETS);
+  const pick = (Array.isArray(list) && list.length ? list : ["ig"]).filter(k => allowed.includes(k));
+  return Object.fromEntries(allowed.map(k => [k, pick.includes(k)]));
 }
 
 const SYSTEM = `You are the operator inside Rent Coat HQ, the back office of Rent Coat Co. (rentcoat.co), faith streetwear for young Latter-day Saints, run by Eli, a high school senior in Holly Springs, NC.
-Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Black Friday sale: every tee $30 ($33 2XL) from opening through Cyber Monday, Nov 30; tees are $45 ($48 2XL) after that. Hoodies $48, Press Forward Sweats $55, the Steadfast Sweatsuit $100, die-cut stickers $6 (six designs, printed by Printful). US shipping $5.99, free over $60. The cap prints through Printful automatically; tees, hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
+Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Black Friday sale: every tee $30 ($33 2XL) from opening through Cyber Monday, Nov 30; tees are $45 ($48 2XL) after that. Hoodies $48, Press Forward Sweats $55, the Steadfast Sweatsuit $78, die-cut stickers $6 (six designs, printed by Printful). US shipping $5.99, free over $60. The cap prints through Printful automatically; tees, hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
 How to answer: lead with the answer, short and direct, plain language. Show the math for money questions. Quote scripture and Church leaders only word for word with the reference. You can't post, send email, spend money or change the site from chat: say what to tap in HQ instead, and write captions, replies and plans ready to paste. If you don't know, say so.`;
 
 export default async (req) => {
@@ -450,7 +410,7 @@ export default async (req) => {
       const cb = `${url.origin}/api/connect/${path[1]}/callback`;
       if (path[1] === "meta") {
         if (!process.env.META_APP_ID || !process.env.META_APP_SECRET) return json({ error: "Save your Meta App ID and App Secret first (step 1)." }, 400);
-        const scope = "instagram_basic,instagram_content_publish,pages_show_list,pages_manage_posts,pages_read_engagement,business_management,ads_read";
+        const scope = "instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_manage_posts,pages_read_engagement,business_management,ads_read";
         return json({ url: `https://www.facebook.com/${process.env.IG_GRAPH_VERSION || "v21.0"}/dialog/oauth?${new URLSearchParams({ client_id: process.env.META_APP_ID, redirect_uri: cb, state: makeState("meta"), response_type: "code", ...(process.env.META_CONFIG_ID ? { config_id: process.env.META_CONFIG_ID } : { scope }) })}` });
       }
       if (path[1] === "tiktok") {
@@ -475,6 +435,7 @@ export default async (req) => {
       return json({
         today: sum(all.filter(o => day.format(o.created) === today)), week: sum(all.filter(o => o.created >= weekAgo)), month: sum(all),
         toPlace: all.filter(o => o.tapstitch.length && !o.placed).length,
+        upNext: q.filter(p => p.autopost && p.when && p.status !== "posted").sort((a, b) => a.when - b.when).slice(0, 5).map(p => ({ id: p.id, title: p.title, account: p.account, when: p.when, media: p.media?.[0] || "", targets: Object.keys(p.targets || { ig: true }).filter(k => (p.targets || { ig: true })[k]), errors: p.errors || {} })),
         queue: { review: q.filter(p => p.status === "review").length, approved: q.filter(p => p.status === "approved").length, posted: q.filter(p => p.status === "posted").length },
         visitsToday: stats?.views || 0, opens: "2026-11-27T10:00:00-05:00",
         connected: { instagram: Object.fromEntries(Object.keys(ACCOUNTS).map(a => [a, Boolean(process.env[`IG_${a.toUpperCase()}_TOKEN`])])), chat: Boolean(process.env.ANTHROPIC_API_KEY), images: Boolean(process.env.CF_ACCOUNT_ID && process.env.CF_AI_TOKEN),
@@ -500,35 +461,56 @@ export default async (req) => {
       if (!path[1] && req.method === "POST") {
         if (!ACCOUNTS[body.account]) return json({ error: "Pick an account." }, 400);
         const post = { id: crypto.randomUUID(), account: body.account, title: String(body.title || "New post").slice(0, 120), caption: String(body.caption || "").slice(0, 2200),
-          media: (body.media || []).map(String).slice(0, 10), when: body.when || null, status: "review", created: Date.now() };
+          media: (body.media || []).map(String).slice(0, 10), when: Number(body.when) || null, targets: targetMap(body.targets ? Object.keys(body.targets).filter(k => body.targets[k]) : null, body.account), status: "review", created: Date.now() };
         q.unshift(post); await store().setJSON("queue", q); return json({ post });
       }
       const post = q.find(p => p.id === path[1]);
       if (!post) return json({ error: "Post not found." }, 404);
-      if (path[2] === "publish") {
-        if (post.status !== "approved" && post.status !== "publishing") return json({ error: "Approve it first." }, 409);
-        if (!post.container) { post.container = await igPublishStart(post); post.status = "publishing"; }
-        else {
-          let id;
-          try { id = await igPublishCheck(post); }
-          catch (e) { delete post.container; post.status = "approved"; await store().setJSON("queue", q); throw e; } // tap Post again to retry from scratch
-          if (id) { post.status = "posted"; post.postedAt = Date.now(); post.igId = id; }
-        }
+      // Post now (or continue posting) to the post's targets. Old routes publish/facebook/tiktok send to one target.
+      if (["send", "publish", "facebook", "tiktok"].includes(path[2])) {
+        if (!["approved", "publishing", "posted"].includes(post.status)) return json({ error: "Approve it first." }, 409);
+        if (path[2] !== "send") post.targets = { ...(post.targets || {}), [{ publish: "ig", facebook: "fb", tiktok: "tt" }[path[2]]]: true };
+        if (body.targets) post.targets = targetMap(Object.keys(body.targets).filter(k => body.targets[k]), post.account);
+        await step(post, { retry: Boolean(body.retry), onRefresh: rt => setVault({ TIKTOK_REFRESH_TOKEN: rt }) });
         await store().setJSON("queue", q); return json({ post });
       }
-      if (path[2] === "facebook" || path[2] === "tiktok") {
-        if (post.status !== "approved" && post.status !== "posted") return json({ error: "Approve it first." }, 409);
-        if (path[2] === "facebook") post.fb = await fbPublish(post); else post.tt = await tiktokPublish(post);
+      if (path[2] === "stats") {
+        if (!post.igId && !post.done?.ig) return json({ error: "Stats show up once it's posted to Instagram from HQ." }, 409);
+        post.stats = await igStats(post.account, post.igId || post.done.ig); if (post.stats.views != null) post.views = post.stats.views;
         await store().setJSON("queue", q); return json({ post });
       }
       if (body.delete) { await store().setJSON("queue", q.filter(p => p.id !== post.id)); return json({ ok: true }); }
+      if (body.status === "review") post.autopost = false;
       if (["review", "approved", "posted"].includes(body.status)) { post.status = body.status; if (body.status === "posted") post.postedAt = Date.now(); }
       if (typeof body.caption === "string") post.caption = body.caption.slice(0, 2200);
-      if ("when" in body) post.when = body.when || null;
+      if ("when" in body) post.when = Number(body.when) || null;
+      if ("autopost" in body) post.autopost = Boolean(body.autopost) && Boolean(post.when);
+      if (body.targets) post.targets = targetMap(Object.keys(body.targets).filter(k => body.targets[k]), post.account);
       if (typeof body.views === "number") post.views = body.views;
       if (Array.isArray(body.media)) { post.media = body.media.map(String).slice(0, 10); delete post.needsImage; }
       if (body.branded) post.branded = true;
       await store().setJSON("queue", q); return json({ post });
+    }
+    // Instagram comments waiting for a reply, a reply Mo suggests, and sending the reply Eli approved.
+    if (path[0] === "inbox") {
+      const account = ACCOUNTS[body.account || url.searchParams.get("account")] ? (body.account || url.searchParams.get("account")) : "rentcoat";
+      if (req.method === "GET") return json(await igInbox(account));
+      if (path[1] === "reply" && req.method === "POST") {
+        const text = String(body.message || "").trim(); if (!text || !body.id) return json({ error: "Write a reply first." }, 400);
+        return json({ id: await igReply(account, String(body.id), text) });
+      }
+      if (path[1] === "suggest" && req.method === "POST") {
+        if (!process.env.ANTHROPIC_API_KEY) return json({ error: "Mo needs ANTHROPIC_API_KEY (see Setup)." }, 400);
+        const r = await new Anthropic().beta.messages.create({ model: "claude-sonnet-5-5", max_tokens: 300, betas: ["server-side-fallback-2026-07-01"], fallbacks: "default", output_config: { effort: "low" },
+          system: `${SYSTEM}\nWrite ONE short Instagram reply from ${ACCOUNTS[account]} to this comment: warm, human, 1-2 sentences, at most one emoji, no hashtags. Answer questions only with facts above; if you don't know (sizing details, a date), say Eli will DM them. ${account === "mission" ? "Never mention Rent Coat or products." : ""} Return only the reply text.`,
+          messages: [{ role: "user", content: `Post: ${String(body.post || "").slice(0, 300)}\nComment from @${String(body.user || "someone").slice(0, 40)}: ${String(body.text || "").slice(0, 600)}` }] });
+        return json({ reply: r.content.filter(b => b.type === "text").map(b => b.text).join("").trim() });
+      }
+    }
+    if (path[0] === "insights" && req.method === "GET") {
+      const out = {};
+      for (const a of Object.keys(ACCOUNTS)) { try { out[a] = await igAccount(a); } catch (e) { out[a] = { error: e.message }; } }
+      return json({ accounts: out });
     }
     if (path[0] === "image" && req.method === "POST") {
       if (!process.env.CF_ACCOUNT_ID || !process.env.CF_AI_TOKEN) return json({ error: "Image maker isn't connected yet. See Setup." }, 400);
@@ -593,7 +575,7 @@ If the idea is about a Rent Coat product, set "product_id" to its id and leave "
           if (u.name === "business_snapshot") out = await snapshot(req);
           else if (u.name === "list_posts") out = (await queue(req)).slice(0, 15).map(p => ({ account: p.account, title: p.title, status: p.status }));
           else if (u.name === "draft_post") {
-            if (++drafts > 3) throw new Error("Max 3 drafts per request.");
+            if (++drafts > 7) throw new Error("Max 7 drafts per request.");
             const a = u.input || {}, account = a.account === "mission" ? "mission" : "rentcoat";
             const prod = a.product_id ? liveLine().find(x => x.id === a.product_id) : null;
             if (a.product_id && !prod) throw new Error(`No live product with id ${a.product_id}. Use an id from the catalog.`);
@@ -602,11 +584,12 @@ If the idea is about a Rent Coat product, set "product_id" to its id and leave "
             const named = !prod && account === "rentcoat" && liveLine().find(x => `${a.title} ${a.caption} ${a.image_prompt}`.toLowerCase().includes(x.name.toLowerCase().replace(/^the /, "")));
             if (named) throw new Error(`This post is about ${named.name}: pass product_id "${named.id}" so the real photo is used, and drop image_prompt.`);
             const p2 = { id: crypto.randomUUID(), account, title: String(a.title || "Mo's draft").slice(0, 120), caption: String(a.caption || "").slice(0, 2200),
-              prompt: prod ? "" : String(a.image_prompt).slice(0, 2000), product: prod?.id, media: [], status: "review", by: "mo", created: Date.now() };
-            if (prod) p2.media = [`${url.origin}/${prod.images[0].src}`];
+              prompt: prod ? "" : String(a.image_prompt).slice(0, 2000), product: prod?.id, media: [], status: "review", by: "mo", created: Date.now(),
+              when: easternISO(a.when), targets: targetMap(a.targets, account) };
+            if (prod) p2.media = (a.carousel ? prod.images.slice(0, 10) : prod.images.slice(0, 1)).map(i => `${url.origin}/${i.src}`);
             else { try { p2.media = [await makeImage(p2.prompt, url.origin)]; } catch { p2.needsImage = true; } }
             const q = await queue(req); q.unshift(p2); await store().setJSON("queue", q);
-            out = { saved: true, title: p2.title, account: account === "mission" ? "@whatisanldsmission" : "@rentcoat.co", image: prod ? `real photo of ${prod.name}` : p2.media.length ? "AI scene made" : "no image yet (Eli can tap Make image)" };
+            out = { saved: true, title: p2.title, account: account === "mission" ? "@whatisanldsmission" : "@rentcoat.co", image: prod ? `real photo of ${prod.name}${p2.media.length > 1 ? ` (carousel of ${p2.media.length})` : ""}` : p2.media.length ? "AI scene made" : "no image yet (Eli can tap Make image)", when: p2.when, targets: Object.keys(p2.targets).filter(k => p2.targets[k]) };
           } else out = { error: "Unknown tool" };
         } catch (e) { out = { saved: false, error: e.message }; }
         results.push({ type: "tool_result", tool_use_id: u.id, content: JSON.stringify(out) });
