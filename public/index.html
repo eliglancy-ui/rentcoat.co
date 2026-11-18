@@ -832,6 +832,22 @@
         },
         {
           "@type": "Question",
+          "name": "Do you do group orders for youth conference or a ward?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Fill out the group order form with roughly how many and when you need them, and Eli will email you back with options and a price. Give at least three weeks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the shirts unisex?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Every tee, hoodie and pair of sweats is unisex, sizes S to 2XL."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Where does the name come from?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -1240,6 +1256,20 @@ footer .wrap { padding-block: 48px 40px }
   .card:hover .shot img, .btn:active, .btn:hover svg { transform: none }
 }
 .bag-up{margin:10px 0 12px;font-size:14px}.bag-up p{margin:6px 0}.bag-up .bar{height:6px;border-radius:99px;background:rgba(127,127,127,.2);overflow:hidden}.bag-up .bar i{display:block;height:100%;background:#B8913F}.bag-up .link{background:none;border:0;padding:0;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;color:inherit}
+
+/* Milestone gifts + group orders */
+.occ-sec { padding-block: 72px }
+.occ { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px }
+.occ li { border: 1px solid rgba(20,35,28,.14); border-radius: 18px; padding: 18px 18px 16px; background: rgba(255,255,255,.55) }
+.occ h3 { margin: 0 0 6px; font-size: 18px }
+.occ p { margin: 0; font-size: 15px; line-height: 1.5 }
+.grp-sec { padding-block: 72px }
+.grp-sec .wrap { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 40px; align-items: start }
+.grp-form { display: grid; gap: 12px }
+.grp-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 600 }
+.grp-form input, .grp-form select, .grp-form textarea { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(20,35,28,.22); background: #fff; color: #14231C; width: 100%; box-sizing: border-box }
+.grp-form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+@media (max-width: 760px) { .grp-sec .wrap { grid-template-columns: 1fr } .grp-form .two { grid-template-columns: 1fr } }
 </style>
 </head>
 <body>
@@ -1376,11 +1406,45 @@ footer .wrap { padding-block: 48px 40px }
     <details><summary>How do I pay?</summary><p>Checkout runs on Stripe, so you can pay with any major card, Apple Pay or Google Pay. Your card details go straight to Stripe and never touch our site. Tees are $40 ($43 for 2XL) and hoodies $68 ($71 for 2XL), and shipping in the US is $5.99, or free on orders of $60 or more.</p></details>
     <details><summary>What's a curelom?</summary><p>Nobody knows. Ether 9:19 lists cureloms and cumoms with elephants as animals that were useful to the Jaredites, and that's all the text says. Hence the Wildlife Society.</p></details>
     <details><summary>How do the shirts fit?</summary><p>The tees are heavyweight cotton, boxy and oversized with dropped shoulders. The hoodies are oversized, with no drawstrings. Sizes S to 2XL. We'll post exact measurements once our samples arrive; until then, email <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> with any sizing question.</p></details>
-        <details><summary>Where does the name come from?</summary><p>From Alma 46:12–13 in the Book of Mormon. Captain Moroni “rent his coat,” wrote on it, fastened it to a pole, and called it the title of liberty.</p></details>
+        <details><summary>Do you do group orders for youth conference or a ward?</summary><p>Yes. Fill out the <a href="#groups">group order form</a> with roughly how many and when you need them, and Eli will email you back with options and a price. Give at least three weeks.</p></details>
+    <details><summary>Are the shirts unisex?</summary><p>Yes. Every tee, hoodie and pair of sweats is unisex, sizes S to 2XL.</p></details>
+    <details><summary>Where does the name come from?</summary><p>From Alma 46:12–13 in the Book of Mormon. Captain Moroni “rent his coat,” wrote on it, fastened it to a pole, and called it the title of liberty.</p></details>
     <details><summary>Can I return or exchange?</summary><p>Because every shirt is printed for you, we can't take fit returns. If your shirt arrives damaged or misprinted, email a photo to <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days of delivery and we'll replace it free. <a href="policies.html">Shipping and returns</a>.</p></details>
   </div>
 </div></section>
 <div class="torn" aria-hidden="true" style="background:var(--paper)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
+
+
+<section class="occ-sec on-light" id="gifts" aria-labelledby="gifts-title"><div class="wrap">
+  <p class="eyebrow kicker">Gifts that mean something</p>
+  <h2 class="big" id="gifts-title">For every <em>milestone.</em></h2>
+  <ul class="occ">
+    <li><h3>Mission farewell</h3><p>Go and Do (1 Nephi 3:7) or Press Forward for the one leaving. Something to wear on P-day that still says it.</p></li>
+    <li><h3>Homecoming</h3><p>The Title of Liberty or the Steadfast Sweatsuit for the one coming home. Comfortable for the first week back.</p></li>
+    <li><h3>Baptism &amp; youth milestones</h3><p>The Liahona: by small and simple things. A good first “faith shirt” that doesn't look like one.</p></li>
+    <li><h3>Christmas</h3><p>Great Joy for the season, and a <a href="/gift-card/">printable gift card</a> to put under the tree while it ships.</p></li>
+    <li><h3>Youth conference &amp; camp</h3><p>Matching pieces for a ward or stake group. <a href="#groups">Ask about a group order</a>.</p></li>
+  </ul>
+</div></section>
+
+<section class="grp-sec on-light" id="groups" aria-labelledby="groups-title"><div class="wrap">
+  <div>
+    <p class="eyebrow kicker">Wards, stakes &amp; youth groups</p>
+    <h2 class="big" id="groups-title">Ordering for a <em>group?</em></h2>
+    <p>Youth conference, trek, girls' camp, a mission prep class or a family reunion: tell us roughly how many and when you need them, and Eli will email you back with options and a price.</p>
+    <p class="fine">Groups get the same printed-to-order shirts. Give at least three weeks before your date.</p>
+  </div>
+  <form class="grp-form" id="grp-form" name="groups" method="POST" action="/" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="groups">
+    <p hidden><label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off"></label></p>
+    <div class="two"><label>Your name <input name="name" required autocomplete="name"></label><label>Email <input type="email" name="email" required autocomplete="email"></label></div>
+    <div class="two"><label>Group <input name="group" placeholder="e.g. Apex Stake youth conference"></label><label>About how many <input name="count" inputmode="numeric" placeholder="e.g. 40"></label></div>
+    <label>Date you need them by <input type="date" name="date"></label>
+    <label>Which design, or anything else <textarea name="notes" rows="3" placeholder="Design, colors, sizes, questions"></textarea></label>
+    <button class="btn dark" type="submit">Ask about a group order</button>
+    <p class="fine" id="grp-note" role="status"></p>
+  </form>
+</div></section>
 
 <section class="dark remind-sec" id="remind" aria-labelledby="social-title"><div class="wrap">
   <div class="intro">
@@ -1484,6 +1548,19 @@ remind.addEventListener("submit", async e => {
     note.textContent = "That didn't go through. Try again, or email rentcoat.co@gmail.com.";
   }
   btn.disabled = false; btn.removeAttribute("aria-busy"); btn.textContent = "Remind me";
+});
+
+const grp = $("grp-form");
+grp.addEventListener("submit", async e => {
+  e.preventDefault();
+  const note = $("grp-note"), btn = grp.querySelector("button");
+  btn.disabled = true; btn.textContent = "Sending…";
+  try {
+    const r = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(grp)).toString() });
+    if (!r.ok) throw new Error(String(r.status));
+    grp.reset(); note.textContent = "Got it. Eli will email you within two days.";
+  } catch { note.textContent = "That didn't go through. Email rentcoat.co@gmail.com instead."; }
+  btn.disabled = false; btn.textContent = "Ask about a group order";
 });
 
 function wireCard(card) {
