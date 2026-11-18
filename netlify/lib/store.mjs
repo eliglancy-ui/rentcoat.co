@@ -105,7 +105,7 @@ Object.assign(LINE_PIECES, {
 // (R00286 hoodie, sweatpants), which has no API: paid orders for these are flagged in the webhook log and Stripe
 // email so Eli places them by hand. Photos are mockups on a similar blank until the samples are shot.
 const tap = (n, views) => views.map(([v, label]) => ({ src: `images/opening/${n}-${v}.jpg`, label }));
-const set = { default: 10000, "2XL": 10600 }, sweats = { default: 5500, "2XL": 5800 };
+const set = { default: 7800, "2XL": 8400 }, sweats = { default: 5500, "2XL": 5800 };
 Object.assign(LINE_PIECES, {
   "steadfast-hoodie": { live: true, maker: "tapstitch", images: tap("steadfast-hoodie", [["back", "Back"], ["front", "Front"], ["left", "Sleeve"]]),
     name: "Steadfast Hoodie", kind: "Hoodie", color: "Black", swatch: "#080808", price: hoodie, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
@@ -118,7 +118,7 @@ Object.assign(LINE_PIECES, {
     blurb: "Heavy black sweats with PRESS FORWARD down the left leg. Pairs with the Steadfast Hoodie. Ships in 10 to 17 days." },
   "steadfast-set": { live: true, maker: "tapstitch", images: [{ src: "images/opening/steadfast-hoodie-back.jpg", label: "Hoodie" }, { src: "images/opening/press-forward-sweats-front.jpg", label: "Sweats" }, { src: "images/opening/steadfast-hoodie-front.jpg", label: "Front" }],
     name: "The Steadfast Sweatsuit", kind: "Set", color: "Black", swatch: "#080808", price: set, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
-    blurb: "The Steadfast Hoodie and the Press Forward Sweats, one verse split across both. $100 for the set ($103 apart). Same size for both pieces. Ships in 10 to 17 days." },
+    blurb: "The Steadfast Hoodie and the Press Forward Sweats, one verse split across both. $78 for the set ($103 apart). Same size for both pieces. Ships in 10 to 17 days." },
 });
 // The dad cap (already in Printful) opens with the set; moved to the end so it shows after the shirts.
 { const cap = LINE_PIECES["flag-cap"]; delete LINE_PIECES["flag-cap"]; LINE_PIECES["flag-cap"] = { ...cap, live: true }; }
