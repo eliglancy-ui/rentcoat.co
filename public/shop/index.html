@@ -12,6 +12,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F3EFE7">
 <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <link rel="preload" href="/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/shop/shop.css">
 <script defer src="/vendor/motion-14.14.0.js"></script>
@@ -24,7 +25,7 @@
 <div class="ann"><b>Black Friday</b> · every tee $30 through Cyber Monday · free US shipping on $60+</div>
 <header class="hdr"><div class="in">
   <button class="menu-btn" aria-label="Menu" aria-expanded="false" onclick="const n=document.querySelector('.hdr nav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
-  <nav aria-label="Shop"><a href="/shop/">Shop all</a><a href="/shop/?f=tees">Tees</a><a href="/shop/?f=hoodies">Hoodies</a><a href="/shop/?f=sets">Sets</a><a href="/about.html">Our story</a></nav>
+  <nav aria-label="Shop"><a href="/shop/" aria-current="page">Shop all</a><a href="/shop/?f=tees">Tees</a><a href="/shop/?f=hoodies">Hoodies</a><a href="/shop/?f=sets">Sets</a><a href="/about.html">Our story</a></nav>
   <a class="logo" href="/" aria-label="Rent Coat Co. home"><svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5" fill="currentColor"/><rect x="8" y="8" width="6" height="92" rx="2" fill="currentColor"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z" fill="#A83A2C"/></svg>RENT COAT CO.</a>
   <div class="right"><a class="hide-sm" href="/size-guide/">Size guide</a><a href="/?bag=1" aria-label="Bag">Bag<span class="bagc" id="bagc" hidden>0</span></a></div>
 </div></header>
@@ -32,82 +33,83 @@
 <div class="col-head"><div><span class="mono">The collection</span><h1>Carry<br>the verse.</h1><p>Heavyweight tees and oversized hoodies, each built on a Book of Mormon reference. Printed to order in the US.</p></div><a class="mono" href="/size-guide/">Size guide →</a></div>
 <div class="filters" role="group" aria-label="Filter"><button data-f="all" aria-pressed="true">All</button><button data-f="tees" aria-pressed="false">Tees</button><button data-f="hoodies" aria-pressed="false">Hoodies</button><button data-f="sets" aria-pressed="false">Sweats &amp; sets</button><button data-f="extras" aria-pressed="false">Cap &amp; stickers</button></div>
 <div class="grid" id="grid"><a class="card" href="/shop/cureloms-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/cureloms-tee-studio.jpg" alt="Cureloms &amp; Cumoms Tee, Natural, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/cureloms-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/cureloms-tee-studio.jpg" srcset="/images/studio/cureloms-tee-studio-800.webp 800w, /images/studio/cureloms-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Cureloms &amp; Cumoms Tee, Natural, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/cureloms-back.jpg" srcset="/images/opening/cureloms-back-800.webp 800w, /images/opening/cureloms-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Cureloms &amp; Cumoms Tee</h3>
   <div class="meta"><span>Natural</span><span class="price on" data-p="cureloms-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/title-of-liberty-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/title-of-liberty-tee-studio.jpg" alt="Title of Liberty Tee, Dark Grey, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/title-of-liberty-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/title-of-liberty-tee-studio.jpg" srcset="/images/studio/title-of-liberty-tee-studio-800.webp 800w, /images/studio/title-of-liberty-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Title of Liberty Tee, Dark Grey, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/title-of-liberty-back.jpg" srcset="/images/opening/title-of-liberty-back-800.webp 800w, /images/opening/title-of-liberty-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Title of Liberty Tee</h3>
   <div class="meta"><span>Dark Grey</span><span class="price on" data-p="title-of-liberty-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/liahona-compass-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/liahona-compass-tee-studio.jpg" alt="The Liahona Tee, Natural, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/liahona-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/liahona-compass-tee-studio.jpg" srcset="/images/studio/liahona-compass-tee-studio-800.webp 800w, /images/studio/liahona-compass-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="The Liahona Tee, Natural, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/liahona-back.jpg" srcset="/images/opening/liahona-back-800.webp 800w, /images/opening/liahona-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>The Liahona Tee</h3>
   <div class="meta"><span>Natural</span><span class="price on" data-p="liahona-compass-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/rejoice-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/rejoice-tee-studio.jpg" alt="Rejoice in Christ Tee, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/rejoice-in-christ-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/rejoice-tee-studio.jpg" srcset="/images/studio/rejoice-tee-studio-800.webp 800w, /images/studio/rejoice-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Rejoice in Christ Tee, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/rejoice-in-christ-back.jpg" srcset="/images/opening/rejoice-in-christ-back-800.webp 800w, /images/opening/rejoice-in-christ-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Rejoice in Christ Tee</h3>
   <div class="meta"><span>Black</span><span class="price on" data-p="rejoice-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/great-joy-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/great-joy-tee-studio.jpg" alt="Great Joy Tee, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/great-joy-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/great-joy-tee-studio.jpg" srcset="/images/studio/great-joy-tee-studio-800.webp 800w, /images/studio/great-joy-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Great Joy Tee, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/great-joy-back.jpg" srcset="/images/opening/great-joy-back-800.webp 800w, /images/opening/great-joy-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Great Joy Tee</h3>
   <div class="meta"><span>Black</span><span class="price on" data-p="great-joy-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/he-rent-his-coat-hoodie/" data-tab="hoodies">
-  <div class="ph"><img class="a" src="/images/studio/he-rent-his-coat-hoodie-studio.jpg" alt="He Rent His Coat Hoodie, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/he-rent-his-coat-hoodie-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/studio/he-rent-his-coat-hoodie-studio.jpg" srcset="/images/studio/he-rent-his-coat-hoodie-studio-800.webp 800w, /images/studio/he-rent-his-coat-hoodie-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="He Rent His Coat Hoodie, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/he-rent-his-coat-hoodie-back.jpg" srcset="/images/opening/he-rent-his-coat-hoodie-back-800.webp 800w, /images/opening/he-rent-his-coat-hoodie-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>He Rent His Coat Hoodie</h3>
   <div class="meta"><span>Black</span><span class="price" data-p="he-rent-his-coat-hoodie"><span class="now">$48</span></span></div>
 </a>
 <a class="card" href="/shop/go-and-do-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/go-and-do-tee-studio.jpg" alt="Go and Do Tee, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/go-and-do-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/go-and-do-tee-studio.jpg" srcset="/images/studio/go-and-do-tee-studio-800.webp 800w, /images/studio/go-and-do-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Go and Do Tee, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/go-and-do-back.jpg" srcset="/images/opening/go-and-do-back-800.webp 800w, /images/opening/go-and-do-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Go and Do Tee</h3>
   <div class="meta"><span>Black</span><span class="price on" data-p="go-and-do-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/service-club-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/service-club-tee-studio.jpg" alt="Service Club Tee, Natural, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/service-club-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/service-club-tee-studio.jpg" srcset="/images/studio/service-club-tee-studio-800.webp 800w, /images/studio/service-club-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Service Club Tee, Natural, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/service-club-back.jpg" srcset="/images/opening/service-club-back-800.webp 800w, /images/opening/service-club-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Service Club Tee</h3>
   <div class="meta"><span>Natural</span><span class="price on" data-p="service-club-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/lehis-tent-tee/" data-tab="tees">
-  <div class="ph"><span class="badge sale">Black Friday</span><img class="a" src="/images/studio/lehis-tent-tee-studio.jpg" alt="Lehi's Tent Co. Tee, Toast, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/lehis-tent-co-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge sale">Black Friday</span><img src="/images/studio/lehis-tent-tee-studio.jpg" srcset="/images/studio/lehis-tent-tee-studio-800.webp 800w, /images/studio/lehis-tent-tee-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Lehi's Tent Co. Tee, Toast, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/lehis-tent-co-back.jpg" srcset="/images/opening/lehis-tent-co-back-800.webp 800w, /images/opening/lehis-tent-co-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Lehi's Tent Co. Tee</h3>
   <div class="meta"><span>Toast</span><span class="price on" data-p="lehis-tent-tee"><span class="now">$30</span><s>$45</s></span></div>
 </a>
 <a class="card" href="/shop/steadfast-hoodie/" data-tab="hoodies">
-  <div class="ph"><img class="a" src="/images/studio/steadfast-hoodie-studio.jpg" alt="Steadfast Hoodie, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/steadfast-hoodie-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/studio/steadfast-hoodie-studio.jpg" srcset="/images/studio/steadfast-hoodie-studio-800.webp 800w, /images/studio/steadfast-hoodie-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Steadfast Hoodie, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/steadfast-hoodie-back.jpg" srcset="/images/opening/steadfast-hoodie-back-800.webp 800w, /images/opening/steadfast-hoodie-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Steadfast Hoodie</h3>
   <div class="meta"><span>Black</span><span class="price" data-p="steadfast-hoodie"><span class="now">$48</span></span></div>
 </a>
 <a class="card" href="/shop/forgiven-hoodie/" data-tab="hoodies">
-  <div class="ph"><img class="a" src="/images/studio/forgiven-hoodie-studio.jpg" alt="Forgiven Hoodie, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/forgiven-hoodie-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/studio/forgiven-hoodie-studio.jpg" srcset="/images/studio/forgiven-hoodie-studio-800.webp 800w, /images/studio/forgiven-hoodie-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Forgiven Hoodie, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/forgiven-hoodie-back.jpg" srcset="/images/opening/forgiven-hoodie-back-800.webp 800w, /images/opening/forgiven-hoodie-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Forgiven Hoodie</h3>
   <div class="meta"><span>Black</span><span class="price" data-p="forgiven-hoodie"><span class="now">$48</span></span></div>
 </a>
 <a class="card" href="/shop/press-forward-sweats/" data-tab="sets">
-  <div class="ph"><img class="a" src="/images/studio/press-forward-sweats-studio.jpg" alt="Press Forward Sweats, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/press-forward-sweats-front.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/studio/press-forward-sweats-studio.jpg" srcset="/images/studio/press-forward-sweats-studio-800.webp 800w, /images/studio/press-forward-sweats-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Press Forward Sweats, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/press-forward-sweats-front.jpg" srcset="/images/opening/press-forward-sweats-front-800.webp 800w, /images/opening/press-forward-sweats-front-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Press Forward Sweats</h3>
   <div class="meta"><span>Black</span><span class="price" data-p="press-forward-sweats"><span class="now">$55</span></span></div>
 </a>
 <a class="card" href="/shop/steadfast-set/" data-tab="sets">
-  <div class="ph"><span class="badge">Best value</span><img class="a" src="/images/studio/steadfast-set-studio.jpg" alt="The Steadfast Sweatsuit, Black, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/opening/steadfast-hoodie-back.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><span class="badge">Best value</span><img src="/images/studio/steadfast-set-studio.jpg" srcset="/images/studio/steadfast-set-studio-800.webp 800w, /images/studio/steadfast-set-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="The Steadfast Sweatsuit, Black, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/opening/steadfast-hoodie-back.jpg" srcset="/images/opening/steadfast-hoodie-back-800.webp 800w, /images/opening/steadfast-hoodie-back-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>The Steadfast Sweatsuit</h3>
   <div class="meta"><span>Black</span><span class="price" data-p="steadfast-set"><span class="now">$78</span></span></div>
 </a>
 <a class="card" href="/shop/flag-cap/" data-tab="extras">
-  <div class="ph"><img class="a" src="/images/studio/flag-cap-studio.jpg" alt="Rent Coat Dad Cap, Spruce, back" loading="lazy" width="800" height="1000"><img class="b" src="/images/products/flag-cap-1.jpg" alt="" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/studio/flag-cap-studio.jpg" srcset="/images/studio/flag-cap-studio-800.webp 800w, /images/studio/flag-cap-studio-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Rent Coat Dad Cap, Spruce, back" class="a" loading="lazy" width="800" height="1000"><img src="/images/products/flag-cap-1.jpg" srcset="/images/products/flag-cap-1-800.webp 800w, /images/products/flag-cap-1-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="" class="b" loading="lazy" width="800" height="1000"></div>
   <h3>Rent Coat Dad Cap</h3>
   <div class="meta"><span>Spruce</span><span class="price" data-p="flag-cap"><span class="now">$32</span></span></div>
 </a>
 <a class="card" href="/shop/sticker-flag/" data-tab="extras">
-  <div class="ph"><img class="a" src="/images/products/flag-sticker-1.jpg" alt="Die-Cut Sticker, Torn Flag" loading="lazy" width="800" height="1000"></div>
+  <div class="ph"><img src="/images/products/flag-sticker-1.jpg" srcset="/images/products/flag-sticker-1-800.webp 800w, /images/products/flag-sticker-1-1600.webp 1600w" sizes="(max-width: 760px) 50vw, 25vw" alt="Die-Cut Sticker, Torn Flag" class="a" loading="lazy" width="800" height="1000"></div>
   <h3>Die-Cut Stickers</h3>
   <div class="meta"><span>6 designs</span><span class="price" data-p="sticker-flag"><span class="now">$6</span></span></div>
 </a></div>
 <script>
-(() => { const set = f => { document.querySelectorAll("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f)); document.querySelectorAll("#grid .card").forEach(c => c.hidden = f !== "all" && c.dataset.tab !== f); };
+(() => { const set = f => { document.querySelectorAll("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f)); document.querySelectorAll("#grid .card").forEach(c => c.hidden = f !== "all" && c.dataset.tab !== f);
+    document.querySelectorAll(".hdr nav a").forEach(a => { const k = (a.getAttribute("href").match(/f=(w+)/) || [, a.getAttribute("href") === "/shop/" ? "all" : ""])[1]; a.toggleAttribute("aria-current", k === f); if (k === f) a.setAttribute("aria-current", "page"); }); };
   document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { set(b.dataset.f); history.replaceState(null, "", b.dataset.f === "all" ? "/shop/" : "/shop/?f=" + b.dataset.f); });
   const f = new URLSearchParams(location.search).get("f"); if (f) set(f); })();
 </script></main>

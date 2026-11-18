@@ -3,7 +3,7 @@
 @font-face { font-family: "Plex"; font-weight: 500; font-display: swap; src: url("/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2") }
 @font-face { font-family: "Serif"; font-style: italic; font-display: swap; src: url("/fonts/instrument-serif-latin-400-italic.woff2") format("woff2") }
 :root {
-  --bg: #F3EFE7; --paper: #FBF9F4; --stone: #E8E2D6; --ink: #121512; --text: #3C433E; --mute: #6F766F; --line: #DCD5C7;
+  --bg: #F3EFE7; --paper: #FBF9F4; --stone: #E8E2D6; --ink: #121512; --text: #3C433E; --mute: #5F665F; --line: #DCD5C7;
   --forest: #1F2E27; --gold: #B8954F; --red: #A83A2C; --sale: #A83A2C;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif; --mono: "Plex", ui-monospace, monospace; --serif: "Serif", Georgia, serif;
   --ease: cubic-bezier(.2,.7,.2,1); --pad: clamp(16px, 4vw, 48px);
@@ -139,3 +139,43 @@ dialog.sheet h2 { margin: 0 0 4px; font: 900 34px/1 var(--display); font-stretch
 .ftr a { display: block; text-decoration: none; margin: 0 0 9px; font-size: 14px } .ftr a:hover { color: #fff }
 .ftr .big { font: 900 clamp(40px, 7vw, 88px)/.9 var(--display); font-stretch: 70%; color: #F3EFE7; text-transform: uppercase; margin: 0 0 14px }
 .ftr .legal { margin-top: 48px; padding-top: 18px; border-top: 1px solid #2c312d; font-size: 12px; color: #8e928c }
+
+/* ---- premium polish (applies on top of the rest) ---- */
+html { scroll-behavior: smooth; scroll-padding-top: 88px }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+@view-transition { navigation: auto }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s }
+h1, h2, h3, .big, q, blockquote { text-wrap: balance }
+p, li, dd { text-wrap: pretty }
+.price, .unit b, .chart td, .bagc, .bag-btn b, #t-sub, #t-ship, #t-total, .clock .unit b { font-variant-numeric: tabular-nums }
+button, .btn, .add, a.card { -webkit-tap-highlight-color: transparent }
+button:active, .btn:active, .add:active { transform: scale(.98) }
+:focus-visible { outline: 2px solid #121512; outline-offset: 3px; border-radius: 2px }
+.ftr :focus-visible, footer :focus-visible, .band :focus-visible, .remind-sec :focus-visible { outline-color: #E3C27E }
+input:user-invalid, textarea:user-invalid { border-color: #A83A2C !important; box-shadow: inset 0 0 0 1px #A83A2C }
+/* fine grain on the dark bands so they are not flat */
+.ann, .ftr, .band, footer, .remind-sec, .announce { position: relative; isolation: isolate }
+.ann::after, .ftr::after, .band::after, footer::after, .remind-sec::after, .announce::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.9%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E") }
+/* safe areas on notched phones */
+.hdr .in, .top .wrap { padding-left: max(var(--pad), env(safe-area-inset-left)); padding-right: max(var(--pad), env(safe-area-inset-right)) }
+.ftr, footer { padding-bottom: max(40px, env(safe-area-inset-bottom)) }
+/* header tightens once you scroll */
+.hdr .in, .top .wrap { transition: height .3s cubic-bezier(.2,.7,.2,1), min-height .3s cubic-bezier(.2,.7,.2,1) }
+.scrolled .hdr .in { height: 54px } .scrolled .top .wrap { min-height: 54px }
+.scrolled .hdr, .scrolled .top { box-shadow: 0 1px 0 rgba(18,21,18,.06), 0 8px 24px -16px rgba(60,50,30,.25) }
+/* comfortable touch targets */
+.filters button { min-height: 44px; padding-inline: 18px }
+.hdr nav a, .hdr .right a, .top .link, .bag-btn { min-height: 44px; display: inline-flex !important; align-items: center }
+.linkbtn { min-height: 32px }
+/* never wider than the screen; never wider than a big monitor needs */
+html, body { overflow-x: clip }
+@media (min-width: 1600px) { .grid, .pdp, .col-head, .filters, .recs, .guide, .hdr .in, .ftr .cols, .ftr .legal, .top .wrap, main > section > .wrap, .strip .wrap { max-width: 1520px; margin-inline: auto } }
+/* readable line length */
+.col-head p, .acc .body p, .story p, .lede, .guide p { max-width: 65ch }
+.hdr nav a[aria-current] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink) }
+
+.logo, .brand { min-height: 44px }
+.more, .col-head > a.mono, a.eyebrow[href], .trust a { display: inline-flex; align-items: center; min-height: 44px }
+.unit button { min-height: 40px; min-width: 44px }
+#line-grid .card h3 a { display: inline-block; padding-block: 8px }
