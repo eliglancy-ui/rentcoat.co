@@ -6,6 +6,9 @@
 import type { Config, Context } from "@netlify/edge-functions";
 
 const OPENS = Netlify.env.get("DROP_OPENS") || "2026-11-27T10:00:00-05:00";
+// The Black Friday tee sale (store.mjs SALE). The static pages carry the $30 sale price; once it ends this switches
+// the tee offers and the product-page price to the regular $45, matching what checkout charges.
+const SALE_ENDS = Netlify.env.get("SALE_ENDS") || "2026-12-01T00:00:00-05:00";
 
 export default async (_req: Request, context: Context) => {
   const res = await context.next();
@@ -13,9 +16,13 @@ export default async (_req: Request, context: Context) => {
   if (!Number.isFinite(opens) || Date.now() < opens) return res; // a malformed date never opens early
   if (!(res.headers.get("content-type") || "").includes("text/html")) return res;
   const html = await res.text();
-  const out = html
+  let out = html
     .replaceAll('"availability": "https://schema.org/OutOfStock"', '"availability": "https://schema.org/InStock"')
     .replace(/"availabilityStarts": "[^"]*",\s*/g, "");
+  const ends = Date.parse(SALE_ENDS);
+  if (Number.isFinite(ends) && Date.now() >= ends) out = out
+    .replace(/"price": "30\.00",\s*"priceValidUntil": "[^"]*",/g, '"price": "45.00",')
+    .replaceAll('<span class="price">$30 <s>$45</s></span>', '<span class="price">$45</span>');
   const headers = new Headers(res.headers);
   headers.delete("content-length");
   return new Response(out, { status: res.status, headers });
