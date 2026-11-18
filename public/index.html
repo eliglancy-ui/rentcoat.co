@@ -1643,14 +1643,15 @@ function showColors(tees) {
 const small = src => /\.jpg$/.test(src) && /^images\/(opening|studio|products)\//.test(src) ? src.replace(/\.jpg$/, "-800.webp") : src;
 const preloaded = new Set();
 const preload = list => list.forEach(u => { if (preloaded.has(u)) return; preloaded.add(u); const i = new Image(); i.decoding = "async"; i.src = u; });
-function swapPhoto(view, src) {
-  if (!src || view.dataset.cur === src) return;
-  view.dataset.cur = src;
-  const ghost = view.cloneNode(); ghost.removeAttribute("loading"); ghost.classList.add("ghost"); ghost.src = src;
-  ghost.onerror = () => { if (/\.webp$/.test(ghost.src)) ghost.src = src.replace(/-800\.webp$/, ".jpg"); };
-  const done = () => { view.src = ghost.src; setTimeout(() => ghost.remove(), 20); };
-  view.after(ghost);
-  (ghost.decode ? ghost.decode() : Promise.resolve()).catch(() => {}).then(() => { requestAnimationFrame(() => ghost.classList.add("in")); setTimeout(done, 260); });
+// Every view of a card sits stacked in the photo box; switching only fades the chosen one in (nothing loads or
+// decodes at tap time, so there is no blank frame or jump).
+function stackPhotos(view, images) {
+  const box = view.parentElement;
+  box.querySelectorAll("img.st").forEach(x => x.remove());
+  const imgs = images.map((im, i) => { const el = document.createElement("img"); el.className = "st"; el.alt = ""; el.decoding = "async";
+    el.src = small(im.src); el.onerror = () => { if (/\.webp$/.test(el.src)) el.src = im.src; }; if (i) el.loading = "lazy"; box.insertBefore(el, view.nextSibling); return el; });
+  view.classList.add("base");
+  return imgs;
 }
 // Cards for the live pieces of the line, one per design (group); the first piece of a group is the color it opens on.
 // The photo buttons switch views and hovering shows the back.
@@ -1696,9 +1697,11 @@ function showLine(line) {
     // Each photo is { src, label }: the buttons are its labels (Front, Back, Women's), and tapping the photo shows the next one.
     const buttons = () => [...viewsEl.querySelectorAll("button")];
     const picked = () => buttons().find(x => x.getAttribute("aria-pressed") === "true");
+    let stack = [];
+    const show = idx => stack.forEach((el, k) => el.classList.toggle("on", k === idx));
     const pick = b => {
       buttons().forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      swapPhoto(view, small(b.dataset.src));
+      show(buttons().indexOf(b));
       view.alt = `${cur.name} in ${cur.color}, ${(b.dataset.label || "photo").toLowerCase()}`;
     };
     const setPiece = q => {
@@ -1706,6 +1709,7 @@ function showLine(line) {
       cur = q;
       viewsEl.innerHTML = q.images.map((img, i) => `<button type="button" aria-pressed="false" data-src="${esc(img.src)}" data-label="${esc(img.label || "")}">${esc(img.label || `Photo ${i + 1}`)}</button>`).join("");
       viewsEl.hidden = q.images.length < 2;
+      stack = stackPhotos(view, q.images);
       buttons().forEach(b => b.addEventListener("click", () => pick(b)));
       pick(buttons().find(b => was && b.dataset.label === was) || buttons()[0]);
       buy.dataset.id = q.id;
@@ -1721,17 +1725,10 @@ function showLine(line) {
     };
     setPiece(p);
     colorPicker(card, pieces.map(x => x.id), p.id, id => { setPiece(pieces.find(x => x.id === id)); refreshPrices(); });
-    // On a mouse, hovering shows the back (or the second photo) without changing the picked view.
-    const peek = () => buttons().find(b => b.dataset.label === "Back") || buttons()[1];
-    if (matchMedia("(hover: hover)").matches) {
-      const shot = card.querySelector(".shot");
-      shot.addEventListener("mouseenter", () => { const k = peek(); if (k && picked() !== k) swapPhoto(view, small(k.dataset.src)); });
-      shot.addEventListener("mouseleave", () => { const b = picked(); if (b) swapPhoto(view, small(b.dataset.src)); });
-    }
     // preload this card's other photos once it's close to the screen, so switching is instant
-    const warm = () => preload(pieces.flatMap(q => q.images.map(i => small(i.src))));
+    const warm = () => { preload(pieces.flatMap(q => q.images.map(i => small(i.src)))); stack.forEach(el => el.loading = "eager"); };
     if ("IntersectionObserver" in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { warm(); io.disconnect(); } }, { rootMargin: "300px" }); io.observe(card); } else warm();
-    view.addEventListener("click", () => {
+    shot.addEventListener("click", e => { if (e.target.closest(".views, .tag")) return;
       const all = buttons();
       if (all.length > 1) pick(all[(all.indexOf(picked()) + 1) % all.length]);
     });

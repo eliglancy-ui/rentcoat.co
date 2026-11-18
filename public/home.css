@@ -234,3 +234,10 @@ p { line-height: 1.65 }
 .hero-art { width: auto !important }
 @media (max-width: 860px) { .hdr .right .hide-sm { display: none !important } }
 @media (max-width: 900px) { .gallery { margin: 0 !important; gap: 10px !important; scroll-padding: 0 } .gallery figure { flex: 0 0 88% !important } }
+/* card photo stack: all views preloaded, crossfade only */
+#line-grid .card .shot img.view.base { opacity: 0 !important }
+#line-grid .card .shot img.st { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; opacity: 0; transition: opacity .22s ease; transform: none !important; cursor: pointer; pointer-events: none }
+#line-grid .card .shot img.st.on { opacity: 1 }
+#line-grid .card .shot { cursor: pointer }
+#line-grid .card:hover .shot img { transform: none }
+@media (prefers-reduced-motion: reduce) { #line-grid .card .shot img.st { transition: none } }
