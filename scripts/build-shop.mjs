@@ -122,7 +122,7 @@ function productPage(g, pieces) {
   const offers = pieces.flatMap(q => q.sizes.map(size => ({ "@type": "Offer", sku: q.variants[size], name: `${q.name} (${q.color}, ${size})`, price: ((onSale(q) ? saleOf(q, size) : priceOf(q, size)) / 100).toFixed(2), ...(onSale(q) ? { priceValidUntil: "2026-11-30" } : {}),
     priceCurrency: "USD", availability: "https://schema.org/OutOfStock", availabilityStarts: DROP.opens, itemCondition: "https://schema.org/NewCondition", url: `${SITE}/shop/${g}/` })));
   const jsonld = { "@context": "https://schema.org", "@type": "Product", name: title, description: p.blurb, brand: { "@type": "Brand", name: "Rent Coat Co." }, image: ph.slice(0, 4).map(x => `${SITE}/${x.src}`), sku: p.id, offers };
-  const data = pieces.map(q => ({ id: q.id, name: q.name, color: q.color, kind: q.kind, sizes: q.sizes, price: q.price, photos: photos(q), html: photos(q).map((x, i) => `<figure>${img(x.src, x.alt, i ? 'loading="lazy"' : '')}</figure>`).join("") }));
+  const data = pieces.map(q => ({ chart: (FIT[q.kind] || {}).chart ? { Chest: FIT[q.kind].chart.cm.Chest, Length: FIT[q.kind].chart.cm.Length } : null, id: q.id, name: q.name, color: q.color, kind: q.kind, sizes: q.sizes, price: q.price, photos: photos(q), html: photos(q).map((x, i) => `<figure>${img(x.src, x.alt, i ? 'loading="lazy"' : '')}</figure>`).join("") }));
   return head({ title: `${title} | Rent Coat Co.`, desc, path: `/shop/${g}/`, image: ph[0].src, jsonld, nav: KIND_TAB[p.kind] === "tees" ? "tees" : KIND_TAB[p.kind] === "hoodies" ? "hoodies" : KIND_TAB[p.kind] === "sets" ? "sets" : "" }) + `
 <div class="pdp">
   <div>
@@ -138,7 +138,8 @@ function productPage(g, pieces) {
     ${onSale(p) ? `<p class="salenote">Black Friday price through Cyber Monday, Nov 30. Tees are $45 after that.</p>` : `<p class="salenote" style="color:var(--mute)">${p.kind === "Set" ? "Hoodie and sweats bought separately: $103." : "Free US shipping on orders of $60 or more."}</p>`}
     ${pieces.length > 1 ? `<div class="opt"><div class="lab"><span>Design</span><span class="small" id="cname">${esc(p.color)}</span></div><div class="sw">${pieces.map((q, i) => `<a href="#${q.id}" data-id="${q.id}" title="${esc(q.color)}" style="background:${esc(q.swatch)}"${i ? "" : ' aria-current="true"'}></a>`).join("")}</div></div>`
       : `<div class="opt"><div class="lab"><span>Color</span><span class="small">${esc(p.color)}</span></div><div class="sw"><a style="background:${esc(p.swatch)}" aria-current="true" title="${esc(p.color)}"></a></div></div>`}
-    ${p.sizes[0] === "OS" ? "" : `<div class="opt"><div class="lab"><span>Size</span>${f.chart ? `<button type="button" class="linkbtn" id="open-chart">Size chart</button>` : `<a class="linkbtn" href="/size-guide/">Size guide</a>`}</div>
+    ${p.sizes[0] === "OS" ? "" : `<div class="opt"><div class="lab"><span>Size</span>${f.chart ? `<span class="szlinks"><button type="button" class="finder-btn" id="open-finder"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17l14-14 4 4L7 21H3z"/><path d="M13 7l2 2M10 10l2 2M7 13l2 2"/></svg>Find my size</button><button type="button" class="linkbtn" id="open-chart">Size chart</button></span>` : `<a class="linkbtn" href="/size-guide/">Size guide</a>`}</div>
+      ${f.chart ? `<p class="myfit" id="myfit" hidden></p>` : ""}
       <div class="sizes" role="group" aria-label="Size">${p.sizes.map(s => `<button type="button" data-size="${s}" aria-pressed="false">${s}</button>`).join("")}</div>
       <p class="fitline"><b>${esc(f.fit)} fit.</b> ${esc(smart(f.advice))}</p></div>`}
     <button class="add" id="add" ${p.sizes[0] === "OS" ? "" : "disabled"}>${p.sizes[0] === "OS" ? "Add to bag" : "Pick a size"}</button>
@@ -163,7 +164,21 @@ ${p.ref ? `<section class="band"><span class="mono">${esc(p.ref)}</span><q>${esc
 ${recs.length ? `<section class="recs"><h2>Complete the fit</h2><div class="grid">${recs.map(k => card(k, groups.get(k))).join("")}</div></section>` : ""}
 ${f.chart ? `<dialog class="sheet" id="chart" aria-labelledby="chart-h"><div class="in"><button class="x" aria-label="Close" onclick="this.closest('dialog').close()">×</button>
   <span class="mono">${esc(title)}</span><h2 id="chart-h">Size chart</h2><p class="small" style="margin:6px 0 16px"><b>${esc(f.fit)} fit.</b> ${esc(f.advice)}</p>${chartTable(p.kind)}${howTo(p.kind)}
-  <p class="small" style="margin-top:18px">Tip: lay a shirt or hoodie you love flat and compare. <a href="/size-guide/">Full size guide</a></p></div></dialog>` : ""}
+  <p class="small" style="margin-top:18px">Tip: lay a shirt or hoodie you love flat and compare. <a href="/size-guide/">Full size guide</a></p></div></dialog>
+<dialog class="sheet" id="finder" aria-labelledby="finder-h"><div class="in"><button class="x" aria-label="Close" onclick="this.closest('dialog').close()">×</button>
+  <span class="mono">${esc(title)}</span><h2 id="finder-h">Find my size</h2><p class="small" style="margin:6px 0 20px">Three quick answers. We compare them with this piece's real measurements. Nothing leaves your phone.</p>
+  <form id="ff" class="ff">
+    <fieldset><legend>How do you like it to fit?</legend><div class="seg">${[["fitted", "Closer"], ["regular", p.kind === "Tee" ? "Boxy" : "As designed"], ["oversized", "Oversized"]].map(([v, t], i) => `<label><input type="radio" name="fit" value="${v}"${i === 1 ? " checked" : ""}><span>${t}</span></label>`).join("")}</div></fieldset>
+    <fieldset><legend>Height</legend><div class="two"><label><span class="small">Feet</span><select name="ft">${[4, 5, 6, 7].map(n => `<option${n === 5 ? " selected" : ""}>${n}</option>`).join("")}</select></label><label><span class="small">Inches</span><select name="in">${Array.from({ length: 12 }, (_, n) => `<option${n === 9 ? " selected" : ""}>${n}</option>`).join("")}</select></label></div></fieldset>
+    <fieldset><legend>Weight</legend><label><span class="small">Pounds</span><input name="lb" type="number" inputmode="numeric" min="70" max="500" placeholder="e.g. 160" required></label></fieldset>
+    <fieldset><legend>Your usual size in tees and hoodies <span class="small">(optional)</span></legend><div class="seg sm">${["S", "M", "L", "XL", "2XL"].map(z => `<label><input type="radio" name="usual" value="${z}"><span>${z}</span></label>`).join("")}</div></fieldset>
+    <button class="add" type="submit">Show my size</button>
+  </form>
+  <div class="ffres" id="ffres" hidden><span class="mono">Your size</span><p class="ffsize" id="ffsize"></p><p id="ffwhy"></p><p class="small" id="ffnote"></p>
+    <button class="add" type="button" id="ffuse">Choose this size</button><button class="linkbtn" type="button" id="ffagain" style="margin-top:14px">Change my answers</button>
+    <p class="small" style="margin-top:18px">An estimate from your height and weight and the maker's measurements, which can vary by 1 to 3 cm. Between sizes? Size up for a roomier fit.</p></div>
+</div></dialog>` : ""}
+${f.chart ? `<script src="/js/fit-finder.js"></script>` : ""}
 <script>
 (() => {
   const P = ${JSON.stringify(data)}, SALE = ${JSON.stringify({ ends: SALE.ends, kinds: SALE.kinds, price: SALE.price })};
@@ -186,6 +201,24 @@ ${f.chart ? `<dialog class="sheet" id="chart" aria-labelledby="chart-h"><div cla
   g.addEventListener("scroll", () => { const i = Math.round(g.scrollLeft / g.clientWidth); dots.forEach((x, k) => x.classList.toggle("on", k === i)); }, { passive: true });
   if (location.hash) { const a = document.querySelector('.sw [data-id="' + location.hash.slice(1) + '"]'); if (a) a.click(); }
   if (Date.now() < Date.parse(${JSON.stringify(DROP.opens)})) $("#opens").hidden = false;
+  // Find my size: answers are remembered on this device so every product page can show "Your size".
+  const fd = $("#finder"), ff = $("#ff");
+  if (fd && ff && window.RCFit) {
+    const load = () => { try { return JSON.parse(localStorage.getItem("rc-fit") || "null"); } catch (e) { return null; } };
+    const run = a => window.RCFit.recommend({ heightCm: (a.ft * 12 + a.in) * 2.54, weightKg: a.lb * 0.4536, fit: a.fit, usual: a.usual }, cur.chart, cur.kind);
+    const choose = z => { const b = document.querySelector('[data-size="' + z + '"]'); if (b) b.click(); };
+    const show = a => { const r = run(a); if (!r || r.error) { $("#ffwhy").textContent = r ? r.error : ""; return; }
+      ff.hidden = true; $("#ffres").hidden = false; $("#ffsize").textContent = r.size; $("#ffwhy").textContent = r.why; $("#ffnote").textContent = r.note || "";
+      $("#ffuse").textContent = "Choose " + r.size; $("#ffuse").onclick = () => { choose(r.size); fd.close(); };
+      const m = $("#myfit"); m.hidden = false; m.innerHTML = 'Your size: <b>' + r.size + '</b> <span class="small">(' + a.ft + '′' + a.in + '″, ' + a.lb + ' lb, ' + ({ fitted: "closer", regular: "regular", oversized: "oversized" })[a.fit] + ' fit)</span>'; };
+    const fill = a => { if (!a) return; ff.fit.value = a.fit; ff.ft.value = a.ft; ff.in.value = a.in; ff.lb.value = a.lb; if (a.usual) ff.usual.value = a.usual; };
+    $("#open-finder").onclick = () => { const a = load(); fill(a); if (a) show(a); else { ff.hidden = false; $("#ffres").hidden = true; } fd.showModal(); };
+    $("#ffagain").onclick = () => { ff.hidden = false; $("#ffres").hidden = true; };
+    ff.onsubmit = e => { e.preventDefault(); const a = { fit: ff.fit.value, ft: +ff.ft.value, in: +ff.in.value, lb: +ff.lb.value, usual: ff.usual.value || "" };
+      try { localStorage.setItem("rc-fit", JSON.stringify(a)); } catch (x) {} show(a); };
+    fd.addEventListener("click", e => { if (e.target === fd) fd.close(); });
+    const saved = load(); if (saved) { const r = run(saved); if (r && !r.error) { const m = $("#myfit"); m.hidden = false; m.innerHTML = 'Your size: <b>' + r.size + '</b> <button type="button" class="linkbtn" id="usemine">Choose it</button>'; $("#usemine").onclick = () => choose(r.size); } }
+  }
   paint();
 })();
 </script>` + foot;

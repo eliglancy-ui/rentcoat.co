@@ -223,3 +223,23 @@ p { line-height: 1.65 }
 .hero-art { width: auto !important }
 @media (max-width: 860px) { .hdr .right .hide-sm { display: none !important } }
 @media (max-width: 900px) { .gallery { margin: 0 !important; gap: 10px !important; scroll-padding: 0 } .gallery figure { flex: 0 0 88% !important } }
+/* Find my size */
+.szlinks { display: inline-flex; gap: 16px; align-items: center }
+.finder-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); border-radius: 999px; padding: 8px 14px; min-height: 36px; font: 700 11px/1 var(--display); letter-spacing: .1em; text-transform: uppercase }
+.finder-btn:hover { background: #2a302b }
+.myfit { margin: 12px 0 0; padding: 12px 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; font-size: 14px }
+.ff { display: grid; gap: 22px }
+.ff fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px }
+.ff legend { font: 700 12px/1.3 var(--display); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px }
+.ff .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.ff label { display: grid; gap: 6px }
+.ff select, .ff input[type=number] { height: 52px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 0 14px; font: 600 16px/1 var(--display); color: var(--ink) }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px } .seg.sm { grid-template-columns: repeat(5, 1fr) }
+.seg label { position: relative } .seg input { position: absolute; opacity: 0; inset: 0 }
+.seg span { display: grid; place-items: center; height: 48px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); font: 600 13px/1 var(--display); cursor: pointer }
+.seg input:checked + span { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.seg input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px }
+.ffres .ffsize { font: 900 96px/1 var(--display); font-stretch: 70%; margin: 6px 0 10px }
+.ffres p { max-width: 46ch }
+dialog.sheet { overflow-y: auto }
+.ff[hidden], .ffres[hidden], .myfit[hidden] { display: none }

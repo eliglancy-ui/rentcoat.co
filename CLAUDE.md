@@ -16,7 +16,7 @@ Store opens **Black Friday, Nov 27, 2026, 10 AM ET**. Read this first; don't re-
 Static site in `public/` + Netlify Functions (`netlify/functions/*.mjs`) + one edge function. No build step: generated pages are committed.
 - **Products, prices, sale, shipping:** `netlify/lib/store.mjs` (single source of truth). Tees $45 regular, **$30 Black Friday sale** (`SALE`, opening → Dec 1 00:00 ET); hoodies $48; sweats $55; Steadfast Sweatsuit $78; dad cap $32; stickers $6. Shipping $5.99, free ≥ $60. Checkout closed Sundays.
 - **Makers:** Tapstitch (tees RU0014, hoodies R00286, sweats; no API — Eli places orders by hand from HQ → Orders). Printful only for the dad cap and stickers (automatic). Costs in `hq.mjs` `COST`.
-- **Fit & size charts:** `netlify/lib/fit.mjs` (hoodie and tee charts from Tapstitch spec pages; sweats chart pending the exact blank code).
+- **Fit & size charts:** `netlify/lib/fit.mjs` (hoodie and tee charts from Tapstitch spec pages; sweats chart pending the exact blank code). "Find my size" on product pages: `public/js/fit-finder.js` (height/weight/fit → size against the chart; answers kept in `localStorage "rc-fit"`).
 - **Storefront:** `node scripts/build-shop.mjs` regenerates `public/shop/` (collection + one page per design) and `public/size-guide/`. Run it after any product/price/fit change. Studio photos: `python3 scripts/studio-photos.py` → `public/images/studio/`.
 - **Home page:** `public/index.html` (big: ~2,000 lines; holds the bag + Stripe embedded checkout; bag is `localStorage "rc-bag"`, `/?bag=1` opens it). Read only the part you need.
 - **Checkout/orders:** `checkout.mjs`, `stripe-webhook.mjs` (Stripe API 2024-06-20). `config.mjs` serves `/api/config` to the site.
