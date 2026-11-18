@@ -9,7 +9,7 @@
 // images: product photos with their view labels (see piece()). ref/verse: the scripture the piece points to (book slug, chapter, verse).
 const APPAREL = ["S", "M", "L", "XL", "2XL"];
 const ONE = ["OS"];
-const tee = { default: 4500, "2XL": 4800 }, hoodie = { default: 6800, "2XL": 7100 }, crew = { default: 5800, "2XL": 6100 };
+const tee = { default: 4500, "2XL": 4800 }, hoodie = { default: 4800, "2XL": 5100 }, crew = { default: 5800, "2XL": 6100 };
 function piece(id, o) {
   const [book, chapter, verse] = o.verse || [];
   return {
@@ -118,7 +118,7 @@ Object.assign(LINE_PIECES, {
     blurb: "Heavy black sweats with PRESS FORWARD down the left leg. Pairs with the Steadfast Hoodie. Ships in 10 to 17 days." },
   "steadfast-set": { live: true, maker: "tapstitch", images: [{ src: "images/opening/steadfast-hoodie-back.jpg", label: "Hoodie" }, { src: "images/opening/press-forward-sweats-front.jpg", label: "Sweats" }, { src: "images/opening/steadfast-hoodie-front.jpg", label: "Front" }],
     name: "The Steadfast Sweatsuit", kind: "Set", color: "Black", swatch: "#080808", price: set, ref: "2 Nephi 31:20", verse: ["2-ne", 31, 20],
-    blurb: "The Steadfast Hoodie and the Press Forward Sweats, one verse split across both. $100 for the set ($123 apart). Same size for both pieces. Ships in 10 to 17 days." },
+    blurb: "The Steadfast Hoodie and the Press Forward Sweats, one verse split across both. $100 for the set ($103 apart). Same size for both pieces. Ships in 10 to 17 days." },
 });
 // The dad cap (already in Printful) opens with the set; moved to the end so it shows after the shirts.
 { const cap = LINE_PIECES["flag-cap"]; delete LINE_PIECES["flag-cap"]; LINE_PIECES["flag-cap"] = { ...cap, live: true }; }
