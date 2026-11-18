@@ -1279,106 +1279,76 @@ footer .wrap { padding-block: 48px 40px }
 .grp-form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 @media (max-width: 760px) { .grp-sec .wrap { grid-template-columns: 1fr } .grp-form .two { grid-template-columns: 1fr } }
 </style>
+<link rel="stylesheet" href="/home.css">
 </head>
 <body>
 <a class="skip" href="#shop">Skip to the shop</a>
 
-<div class="announce" role="region" aria-label="Announcement"><span id="bar-dates">Store opens Black Friday · Nov 27</span><span>Printed to order</span><span>$5.99 US shipping, free on $60+</span></div>
+<div class="announce" role="region" aria-label="Announcement"><span id="bar-dates">Store opens Black Friday · Nov 27</span><span>Every tee $30 through Cyber Monday</span><span>Free US shipping on $60+</span></div>
 
 <header class="top"><div class="wrap">
-  <a class="brand" href="#top" aria-label="Rent Coat Co. home">
-    <svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>
-    RENT COAT CO.</a>
+  <nav class="left" aria-label="Shop"><a class="link" href="/shop/">Shop all</a><a class="link" href="/shop/?f=tees">Tees</a><a class="link" href="/shop/?f=hoodies">Hoodies</a><a class="link" href="/about.html">Our story</a></nav>
+  <a class="brand" href="#top" aria-label="Rent Coat Co. home"><svg viewBox="0 0 92 100" aria-hidden="true"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></svg>RENT COAT CO.</a>
   <nav aria-label="Main">
-    <a class="link" href="/shop/">Shop</a><a class="link" href="/size-guide/">Size guide</a><a class="link" href="#how">How it works</a><a class="link" href="/about.html">The story</a><a class="link" href="#faq">FAQ</a>
-    <button type="button" class="bag-btn" id="bag-open" aria-haspopup="dialog" aria-controls="bag">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1 14H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
-      Bag<b id="bag-count" hidden>0</b>
-    </button>
+    <a class="link hide-sm" href="/size-guide/">Size guide</a><a class="link hide-sm" href="#faq">FAQ</a>
+    <button type="button" class="bag-btn" id="bag-open" aria-haspopup="dialog" aria-controls="bag">Bag<b id="bag-count" hidden>0</b></button>
   </nav>
 </div></header>
 
 <main id="top">
-<section class="hero" style="padding-block:0" aria-labelledby="hero-title">
-  <div class="ghostnum" aria-hidden="true">46:12</div>
-  <div class="wrap">
-    <div>
-      <ul class="pills eyebrow" aria-label="About the shop"><li>Book of Mormon tees</li><li>Faith streetwear</li><li id="pill-offer">$30 tees · Black Friday</li></ul>
-      <h1 class="h1" id="hero-title">Stand for <em>something.</em></h1>
-      <p class="lede">Clean, modern graphic tees and hoodies for young Latter-day Saints. <b>Every design starts with scripture</b>, and the reference is printed right on the shirt.</p>
-
-      <div class="clock" role="timer" aria-live="off" aria-labelledby="clock-label">
-        <div class="clock-head">
-          <span class="eyebrow" id="clock-label">The store opens in</span>
-          <span class="eyebrow clock-state" id="clock-state">Upcoming</span>
-        </div>
-        <div class="units">
-          <div class="unit"><b id="cd-d">--</b><span>Days</span></div>
-          <div class="unit"><b id="cd-h">--</b><span>Hours</span></div>
-          <div class="unit"><b id="cd-m">--</b><span>Min</span></div>
-          <div class="unit"><b id="cd-s">--</b><span>Sec</span></div>
-        </div>
-        <div class="bar" aria-hidden="true"><i id="cd-bar"></i></div>
-        <div class="clock-foot eyebrow"><span id="cd-open"></span><span id="cd-close"></span></div>
-      </div>
-
-      <div class="hero-cta">
-        <a class="btn gold" href="#shop">Shop the collection <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn ghost" href="#story">Why a torn coat?</a>
-      </div>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">Faith streetwear · Book of Mormon</p>
+    <h1 class="h1" id="hero-title">Carry the verse.</h1>
+    <p class="lede">Heavyweight tees and oversized hoodies for young Latter-day Saints. Every design starts with a verse, printed right on the shirt.</p>
+    <div class="hero-cta">
+      <a class="btn dark" href="/shop/">Shop the collection</a>
+      <a class="btn line" href="#story">Why a torn coat?</a>
     </div>
-    <figure class="hero-art" style="margin:0">
-      <div class="frame">
-        <img src="images/opening/title-of-liberty-back.jpg" width="1400" height="1400" alt="Title of Liberty tee in Dark Grey, back print of a torn banner on a pole" fetchpriority="high">
-        <figcaption class="chips"><span class="chip">The flagship</span><span class="chip light" id="chip-offer">$30 Black Friday</span></figcaption>
-      </div>
-      <div class="stamp" aria-hidden="true">
-        <svg viewBox="0 0 140 140" width="136" height="136"><defs><path id="stamp-path" d="M70,70 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs><circle cx="70" cy="70" r="68" fill="#A83A2C"/><circle cx="70" cy="70" r="61" fill="none" stroke="#F5F2EA" stroke-opacity=".35"/><text fill="#F5F2EA" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600"><textPath href="#stamp-path" textLength="308" lengthAdjust="spacing">ALMA 46:12 · TITLE OF LIBERTY · RENT COAT · </textPath></text><g transform="translate(55 48) scale(.36)" fill="#F5F2EA"><circle cx="11" cy="5" r="5"/><rect x="8" y="8" width="6" height="92" rx="2"/><path d="M14 14 H88 L80 22 L91 30 L78 37 L89 45 L76 51 L86 58 H14 Z"/></g></svg>
-      </div>
-    </figure>
+    <div class="clock" role="timer" aria-live="off" aria-labelledby="clock-label">
+      <div class="clock-head"><span class="eyebrow" id="clock-label">The store opens in</span><span class="eyebrow clock-state" id="clock-state">Upcoming</span></div>
+      <div class="units"><div class="unit"><b id="cd-d">--</b><span>Days</span></div><div class="unit"><b id="cd-h">--</b><span>Hrs</span></div><div class="unit"><b id="cd-m">--</b><span>Min</span></div><div class="unit"><b id="cd-s">--</b><span>Sec</span></div></div>
+      <div class="bar" aria-hidden="true"><i id="cd-bar"></i></div>
+      <div class="clock-foot eyebrow"><span id="cd-open"></span><span id="cd-close"></span></div>
+    </div>
   </div>
-  <div class="torn" aria-hidden="true"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#A83A2C" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
+  <figure class="hero-art">
+    <img src="images/studio/title-of-liberty-tee-studio.jpg" width="1600" height="2000" alt="Title of Liberty tee in Dark Grey, back print of a torn banner on a pole" fetchpriority="high">
+    <figcaption><span class="eyebrow">The flagship · Alma 46:12</span><a href="/shop/title-of-liberty-tee/">Title of Liberty Tee <b id="chip-offer">$30 Black Friday</b></a></figcaption>
+  </figure>
 </section>
 
 <div class="marquee" aria-hidden="true"><div class="track">
-  <span>Alma 46:12</span><span>1 Nephi 16:29</span><span>Ether 9:19</span><span>Printed to order</span><span>2 Nephi 25:26</span><span>Unisex S–2XL</span><span>Book of Mormon streetwear</span>
-  <span>Alma 46:12</span><span>1 Nephi 16:29</span><span>Ether 9:19</span><span>Printed to order</span><span>2 Nephi 25:26</span><span>Unisex S–2XL</span><span>Book of Mormon streetwear</span>
+  <span>Alma 46:12</span><span>1 Nephi 16:29</span><span>Ether 9:19</span><span>2 Nephi 31:20</span><span>Enos 1:5</span><span>Mosiah 2:17</span><span>1 Nephi 3:7</span>
+  <span>Alma 46:12</span><span>1 Nephi 16:29</span><span>Ether 9:19</span><span>2 Nephi 31:20</span><span>Enos 1:5</span><span>Mosiah 2:17</span><span>1 Nephi 3:7</span>
 </div></div>
 
 <!-- The shop: filled from /api/config with every piece marked live in netlify/lib/store.mjs. -->
 <section class="drop-sec line-sec" id="shop" aria-labelledby="shop-title"><div class="wrap">
   <div class="sec-head">
-    <div><p class="eyebrow kicker">Tees · hoodies · sweats · a cap</p><h2 class="big" id="shop-title">The <em>shop</em></h2></div>
-    <p>Tees, word hoodies, sweats and a sweatsuit, each built on a verse and printed after you order. New designs are added to the shop as they're ready.</p>
+    <div><p class="eyebrow kicker">The collection</p><h2 class="big" id="shop-title">Shop the drop</h2></div>
+    <a class="eyebrow more" href="/shop/">View all →</a>
   </div>
   <div class="grid" id="line-grid" aria-busy="true"><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article><article class="card skel" aria-hidden="true"><div class="shot sk"></div><div class="info"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-line"></div><div class="sk sk-btn"></div></div></article></div>
   <p class="eyebrow drop-fine" id="shop-fine">Black Friday: every tee $30 through Nov 30, then $45 · hoodies $48 · sweats $55 · sweatsuit $78 · $5.99 US shipping, free on $60+ · checkout by Stripe</p>
 </div></section>
-<div class="torn" aria-hidden="true" style="background:var(--bone)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
-<section class="dark" id="how" aria-labelledby="how-title"><div class="wrap">
-  <p class="eyebrow kicker">How it works</p>
-  <h2 class="big" id="how-title" style="margin-bottom:56px">Printed for you. <em>That's it.</em></h2>
-  <ol class="steps">
-    <li><span class="n" aria-hidden="true">01</span><h3>Pick your shirt</h3><p>Choose a design and size. Tees are $30 through Cyber Monday (then $45) and hoodies $48.</p><p class="eyebrow when"><span id="step-window">Opens Nov 27</span></p></li>
-    <li><span class="n" aria-hidden="true">02</span><h3>We print yours</h3><p>Every shirt is printed after you order, so nothing gets wasted and nothing sits in a warehouse.</p><p class="eyebrow when">Printed to order</p></li>
-    <li><span class="n" aria-hidden="true">03</span><h3>It ships to your door</h3><p>Orders usually arrive in 10 to 17 days. You'll get tracking by email.</p><p class="eyebrow when">US addresses only</p></li>
-  </ol>
-  <div class="rest">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#C9A45C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-    <p><strong>Checkout rests on Sunday.</strong> Checkout pauses on Sundays (Eastern time) because we keep it as a day of rest. Your bag stays saved for Monday.</p>
-  </div>
+<section class="strip" id="how" aria-label="How it works"><div class="wrap">
+  <div><b>Printed for you</b><span>Made after you order. Nothing sits in a warehouse.</span></div>
+  <div><b>Ships in 10 to 17 days</b><span>Tracking by email. US addresses. <span id="step-window">Opens Nov 27</span></span></div>
+  <div><b>Free shipping on $60+</b><span>Otherwise $5.99. Checkout by Stripe.</span></div>
+  <div><b>Checkout rests on Sunday</b><span>Your bag stays saved for Monday.</span></div>
 </div></section>
-<div class="torn" aria-hidden="true" style="background:var(--night)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#F5F2EA" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
 <section class="story on-light" id="story" aria-labelledby="story-title"><div class="wrap">
   <figure>
+    <img src="images/studio/he-rent-his-coat-hoodie-studio.jpg" width="1600" height="2000" alt="He Rent His Coat Hoodie, back print" loading="lazy">
     <blockquote>“He rent <span>his coat.</span>”</blockquote>
     <figcaption class="eyebrow">— <a class="ref" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/alma/46?lang=eng&amp;id=p12#p12" target="_blank" rel="noopener">Alma 46:12</a></figcaption>
   </figure>
   <div>
     <p class="eyebrow kicker">The name</p>
-    <h2 class="big" id="story-title">Why a <em>torn</em> coat?</h2>
+    <h2 class="big" id="story-title">Why a torn coat?</h2>
     <p>When Captain Moroni needed his people to remember what they were fighting for, he tore his coat, wrote on it, and raised it on a pole. He called it the title of liberty.</p>
     <p>Rent Coat Co. is named for that moment: take what you have and turn it into something you stand behind. We make clean, modern clothes you'd wear anyway, that still say what you believe.</p>
     <a class="btn dark" href="/about.html">Read the full story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -1388,8 +1358,9 @@ footer .wrap { padding-block: 48px 40px }
 <section class="fit-sec on-light" id="fit" aria-labelledby="fit-title"><div class="wrap">
   <div class="intro">
     <p class="eyebrow kicker">The blank</p>
-    <h2 class="big" id="fit-title">Fit <em>&amp;</em> feel</h2>
+    <h2 class="big" id="fit-title">Built heavy.</h2>
     <p>Boxy, oversized heavyweight cotton tees with dropped shoulders, and oversized fleece hoodies with no drawstrings.</p>
+    <a class="btn line" href="/size-guide/">Size guide</a>
   </div>
   <dl class="specs">
     <div><dt>Tee</dt><dd>Heavyweight cotton, 300 gsm, boxy and oversized</dd></div>
@@ -1420,12 +1391,11 @@ footer .wrap { padding-block: 48px 40px }
     <details><summary>Can I return or exchange?</summary><p>Because every shirt is printed for you, we can't take fit returns. If your shirt arrives damaged or misprinted, email a photo to <a href="mailto:rentcoat.co@gmail.com">rentcoat.co@gmail.com</a> within 30 days of delivery and we'll replace it free. <a href="policies.html">Shipping and returns</a>.</p></details>
   </div>
 </div></section>
-<div class="torn" aria-hidden="true" style="background:var(--paper)"><svg viewBox="0 0 1440 32" preserveAspectRatio="none"><path fill="#16201B" d="M0 32L0 14L40 9L80 18L120 11L160 22L200 8L240 16L280 20L320 10L360 24L400 13L440 7L480 19L520 15L560 21L600 9L640 17L680 12L720 23L760 10L800 18L840 14L880 8L920 20L960 16L1000 11L1040 22L1080 13L1120 19L1160 9L1200 15L1240 24L1280 12L1320 17L1360 10L1400 21L1440 14L1440 32Z"/></svg></div>
 
 
 <section class="occ-sec on-light" id="gifts" aria-labelledby="gifts-title"><div class="wrap">
   <p class="eyebrow kicker">Gifts that mean something</p>
-  <h2 class="big" id="gifts-title">For every <em>milestone.</em></h2>
+  <h2 class="big" id="gifts-title">For every milestone.</h2>
   <ul class="occ">
     <li><h3>Mission farewell</h3><p>Go and Do (1 Nephi 3:7) or Press Forward for the one leaving. Something to wear on P-day that still says it.</p></li>
     <li><h3>Homecoming</h3><p>The Title of Liberty or the Steadfast Sweatsuit for the one coming home. Comfortable for the first week back.</p></li>
@@ -1438,7 +1408,7 @@ footer .wrap { padding-block: 48px 40px }
 <section class="grp-sec on-light" id="groups" aria-labelledby="groups-title"><div class="wrap">
   <div>
     <p class="eyebrow kicker">Wards, stakes &amp; youth groups</p>
-    <h2 class="big" id="groups-title">Ordering for a <em>group?</em></h2>
+    <h2 class="big" id="groups-title">Ordering for a group?</h2>
     <p>Youth conference, trek, girls' camp, a mission prep class or a family reunion: tell us roughly how many and when you need them, and Eli will email you back with options and a price.</p>
     <p class="fine">Groups get the same printed-to-order shirts. Give at least three weeks before your date.</p>
   </div>
@@ -1457,7 +1427,7 @@ footer .wrap { padding-block: 48px 40px }
 <section class="dark remind-sec" id="remind" aria-labelledby="social-title"><div class="wrap">
   <div class="intro">
     <p class="eyebrow kicker">Don't miss new designs</p>
-    <h2 class="big" id="social-title">Get the <em>reminder.</em></h2>
+    <h2 class="big" id="social-title">Get the reminder.</h2>
     <p>The store opens Black Friday, Nov 27. Leave your email and we'll tell you when it opens and when new designs come out. We only email about new designs.</p>
   </div>
   <div class="follow">
@@ -1957,5 +1927,8 @@ renderBag(); refreshPrices();
 tick(); setInterval(tick, 1000);
 </script>
 <script>/* Counts this page view: just the page and the site that linked here. No cookies. See /cookies.html */try{navigator.sendBeacon("/api/hit",JSON.stringify({p:location.pathname,r:document.referrer?new URL(document.referrer).hostname:""}))}catch(e){}</script>
+<script defer src="/vendor/motion-14.14.0.js"></script>
+<script defer src="/vendor/anime-4.5.0.min.js"></script>
+<script defer src="/js/fx.js"></script>
 </body>
 </html>

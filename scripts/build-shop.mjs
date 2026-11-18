@@ -54,6 +54,9 @@ function head({ title, desc, path, image, jsonld }) {
 <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/shop/shop.css">
+<script defer src="/vendor/motion-14.14.0.js"></script>
+<script defer src="/vendor/anime-4.5.0.min.js"></script>
+<script defer src="/js/fx.js"></script>
 ${jsonld ? `<script type="application/ld+json">\n${JSON.stringify(jsonld, null, 1)}\n</script>` : ""}
 </head>
 <body>
