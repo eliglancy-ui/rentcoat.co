@@ -3487,9 +3487,171 @@
         "vat": 0,
         "total": 30.32
       }
+    },
+    "sticker-flag": {
+      "sync_product_id": 495495722,
+      "images": [
+        "images/products/sticker-flag-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/4501ddf6fb05da2ee304b73fef641bdc/kiss-cut-stickers-white-4x4-default-6afd0fede1048.jpg",
+          "path": "images/products/sticker-flag-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
+    },
+    "sticker-steadfast": {
+      "sync_product_id": 495495767,
+      "images": [
+        "images/products/sticker-steadfast-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1cfd6fb5cbb0d98414ed20c36ff8fe63/kiss-cut-stickers-white-4x4-default-6afd0ff5847c4.jpg",
+          "path": "images/products/sticker-steadfast-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
+    },
+    "sticker-liahona": {
+      "sync_product_id": 495495819,
+      "images": [
+        "images/products/sticker-liahona-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/5d304f80a56994621808beb2a916f5af/kiss-cut-stickers-white-4x4-default-6afd0ffb439f6.jpg",
+          "path": "images/products/sticker-liahona-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
+    },
+    "sticker-rent": {
+      "sync_product_id": 495495859,
+      "images": [
+        "images/products/sticker-rent-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/1a4a0a3f0bf5bf1afd4507518b4befd1/kiss-cut-stickers-white-4x4-default-6afd1001ec480.jpg",
+          "path": "images/products/sticker-rent-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
+    },
+    "sticker-press-forward": {
+      "sync_product_id": 495495902,
+      "images": [
+        "images/products/sticker-press-forward-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/cd5df061d3d2a3a5e8f35f3c18e24413/kiss-cut-stickers-white-4x4-default-6afd1008356c5.jpg",
+          "path": "images/products/sticker-press-forward-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
+    },
+    "sticker-go-and-do": {
+      "sync_product_id": 495495951,
+      "images": [
+        "images/products/sticker-go-and-do-1.jpg"
+      ],
+      "mockups": [
+        {
+          "placement": "default",
+          "title": "default",
+          "url": "https://printful-upload.s3-accelerate.amazonaws.com/tmp/22fd6772c041ca1509eec360ffc1f634/kiss-cut-stickers-white-4x4-default-6afd100e6c4c2.jpg",
+          "path": "images/products/sticker-go-and-do-1.jpg"
+        }
+      ],
+      "cost": {
+        "currency": "USD",
+        "subtotal": 2.54,
+        "discount": 0,
+        "shipping": 4.890000000000001,
+        "digitization": 0,
+        "additional_fee": 0,
+        "fulfillment_fee": 0,
+        "retail_delivery_fee": 0,
+        "tax": 0.54,
+        "vat": 0,
+        "total": 7.97
+      }
     }
   },
-  "generatedAt": "2026-11-12T16:59:57.660Z",
+  "generatedAt": "2026-11-18T02:40:18.778Z",
   "dump": {
     "6adb8c541a39f3": {
       "id": 5590946542,
