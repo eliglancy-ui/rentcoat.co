@@ -1638,6 +1638,20 @@ function showColors(tees) {
   }
 }
 
+// Card photos use the small WebP copy (scripts/webp.py; falls back to the JPEG), are preloaded as the card nears the
+// screen, and switch with a short crossfade instead of a hard swap.
+const small = src => /\.jpg$/.test(src) && /^images\/(opening|studio|products)\//.test(src) ? src.replace(/\.jpg$/, "-800.webp") : src;
+const preloaded = new Set();
+const preload = list => list.forEach(u => { if (preloaded.has(u)) return; preloaded.add(u); const i = new Image(); i.decoding = "async"; i.src = u; });
+function swapPhoto(view, src) {
+  if (!src || view.dataset.cur === src) return;
+  view.dataset.cur = src;
+  const ghost = view.cloneNode(); ghost.removeAttribute("loading"); ghost.classList.add("ghost"); ghost.src = src;
+  ghost.onerror = () => { if (/\.webp$/.test(ghost.src)) ghost.src = src.replace(/-800\.webp$/, ".jpg"); };
+  const done = () => { view.src = ghost.src; setTimeout(() => ghost.remove(), 20); };
+  view.after(ghost);
+  (ghost.decode ? ghost.decode() : Promise.resolve()).catch(() => {}).then(() => { requestAnimationFrame(() => ghost.classList.add("in")); setTimeout(done, 260); });
+}
 // Cards for the live pieces of the line, one per design (group); the first piece of a group is the color it opens on.
 // The photo buttons switch views and hovering shows the back.
 function showLine(line) {
@@ -1657,7 +1671,7 @@ function showLine(line) {
     const card = document.createElement("article");
     card.className = "card"; card.id = g; card.dataset.line = "";
     card.innerHTML = `<div class="shot">
-        <img class="view" src="${esc(p.images[0].src)}" width="1000" height="1000" loading="lazy" alt="">
+        <img class="view" data-cur="${esc(small(p.images[0].src))}" src="${esc(small(p.images[0].src))}" onerror="if(/webp$/.test(this.src))this.src=this.src.replace(/-800\.webp$/,'.jpg')" width="1000" height="1000" loading="lazy" alt="">
         <span class="tag eyebrow">${esc(p.kind)}${SALE.kinds.includes(p.kind) && saleOn() ? " · Black Friday" : ""}</span>
         <div class="views" role="group" aria-label="Show view"></div>
       </div>
@@ -1684,7 +1698,7 @@ function showLine(line) {
     const picked = () => buttons().find(x => x.getAttribute("aria-pressed") === "true");
     const pick = b => {
       buttons().forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      view.src = b.dataset.src;
+      swapPhoto(view, small(b.dataset.src));
       view.alt = `${cur.name} in ${cur.color}, ${(b.dataset.label || "photo").toLowerCase()}`;
     };
     const setPiece = q => {
@@ -1711,9 +1725,12 @@ function showLine(line) {
     const peek = () => buttons().find(b => b.dataset.label === "Back") || buttons()[1];
     if (matchMedia("(hover: hover)").matches) {
       const shot = card.querySelector(".shot");
-      shot.addEventListener("mouseenter", () => { const k = peek(); if (k && picked() !== k) view.src = k.dataset.src; });
-      shot.addEventListener("mouseleave", () => { const b = picked(); if (b) view.src = b.dataset.src; });
+      shot.addEventListener("mouseenter", () => { const k = peek(); if (k && picked() !== k) swapPhoto(view, small(k.dataset.src)); });
+      shot.addEventListener("mouseleave", () => { const b = picked(); if (b) swapPhoto(view, small(b.dataset.src)); });
     }
+    // preload this card's other photos once it's close to the screen, so switching is instant
+    const warm = () => preload(pieces.flatMap(q => q.images.map(i => small(i.src))));
+    if ("IntersectionObserver" in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { warm(); io.disconnect(); } }, { rootMargin: "300px" }); io.observe(card); } else warm();
     view.addEventListener("click", () => {
       const all = buttons();
       if (all.length > 1) pick(all[(all.indexOf(picked()) + 1) % all.length]);
