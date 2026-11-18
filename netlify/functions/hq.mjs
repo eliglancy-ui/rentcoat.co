@@ -31,11 +31,11 @@ const GRAPH = `https://graph.facebook.com/${process.env.IG_GRAPH_VERSION || "v21
 const store = () => getStore("hq");
 
 // What a sale costs, so HQ shows what Eli keeps. Card fee 2.9% + 30c, Stripe Tax 0.5%, made-to-order cost per piece.
-const COST = { tee: 1397, hoodie: 2888, sweats: 2198, set: 5086, cap: 1500 }; // cents: Tapstitch tee (RU0014), hoodie and sweats (Nov 14 invoices)
+const COST = { tee: 1397, hoodie: 2888, sweats: 2198, set: 5086, cap: 1500, sticker: 254 }; // cents: Tapstitch tee (RU0014), hoodie and sweats (Nov 14 invoices)
 const SHIP_COST = 900; // rough cost to ship one order to the customer
 const pieceCost = id => {
   const p = PRODUCTS[id]; if (!p) return 0;
-  return { Tee: COST.tee, Hoodie: COST.hoodie, Sweats: COST.sweats, Set: COST.set, Cap: COST.cap }[p.kind] ?? COST.tee;
+  return { Tee: COST.tee, Hoodie: COST.hoodie, Sweats: COST.sweats, Set: COST.set, Cap: COST.cap, Sticker: COST.sticker }[p.kind] ?? COST.tee;
 };
 const feeOf = total => Math.round(total * 0.034) + 30;
 
@@ -307,7 +307,7 @@ async function igPublishCheck(post) {
 }
 
 const SYSTEM = `You are the operator inside Rent Coat HQ, the back office of Rent Coat Co. (rentcoat.co), faith streetwear for young Latter-day Saints, run by Eli, a high school senior in Holly Springs, NC.
-Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Black Friday sale: every tee $30 ($33 2XL) from opening through Cyber Monday, Nov 30; tees are $45 ($48 2XL) after that. Hoodies $48, Press Forward Sweats $55, the Steadfast Sweatsuit $100. US shipping $5.99, free over $60. The cap prints through Printful automatically; tees, hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
+Facts: the store opens Black Friday, Nov 27, 2026 at 10 AM Eastern. Black Friday sale: every tee $30 ($33 2XL) from opening through Cyber Monday, Nov 30; tees are $45 ($48 2XL) after that. Hoodies $48, Press Forward Sweats $55, the Steadfast Sweatsuit $100, die-cut stickers $6 (six designs, printed by Printful). US shipping $5.99, free over $60. The cap prints through Printful automatically; tees, hoodies, sweats and the set are made by Tapstitch and placed by hand from HQ's Orders tab (ships in 10 to 17 days). Hoodies carry words only, no pictures. Instagram accounts: @rentcoat.co (the brand) and @whatisanldsmission (church content only: no Rent Coat links or products, Instagram only).
 How to answer: lead with the answer, short and direct, plain language. Show the math for money questions. Quote scripture and Church leaders only word for word with the reference. You can't post, send email, spend money or change the site from chat: say what to tap in HQ instead, and write captions, replies and plans ready to paste. If you don't know, say so.`;
 
 export default async (req) => {
