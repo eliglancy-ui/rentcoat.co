@@ -122,6 +122,20 @@ Object.assign(LINE_PIECES, {
 });
 // The dad cap (already in Printful) opens with the set; moved to the end so it shows after the shirts.
 { const cap = LINE_PIECES["flag-cap"]; delete LINE_PIECES["flag-cap"]; LINE_PIECES["flag-cap"] = { ...cap, live: true }; }
+// Die-cut stickers (Eli, Nov 18): Printful 4" kiss-cut stickers, one card with a design picker (group "sticker-flag").
+// Print files in print/stickers (art source print/stickers/s.html). $6 each.
+const STICKERS = [
+  ["flag", "Torn Flag", "#B23A2B", "Alma 46:12", ["alma", 46, 12]],
+  ["steadfast", "Steadfast", "#14231C", "2 Nephi 31:20", ["2-ne", 31, 20]],
+  ["liahona", "Liahona", "#232323", "1 Nephi 16:29", ["1-ne", 16, 29]],
+  ["rent", "He Rent His Coat", "#F3EEE1", "Alma 46:12", ["alma", 46, 12]],
+  ["press-forward", "Press Forward", "#B23A2B", "2 Nephi 31:20", ["2-ne", 31, 20]],
+  ["go-and-do", "Go and Do", "#5B5E46", "1 Nephi 3:7", ["1-ne", 3, 7]],
+];
+for (const [k, design, swatch, ref, verse] of STICKERS)
+  LINE_PIECES[`sticker-${k}`] = { live: true, group: "sticker-flag", name: "Die-Cut Sticker", kind: "Sticker", color: design, swatch, price: { default: 600 }, sizes: ONE,
+    images: [{ src: `images/products/${k}-sticker-1.jpg`, label: "" }], ref, verse,
+    blurb: "A 4-inch vinyl sticker for a water bottle, laptop or scripture case. Six designs, each with its verse. $6." };
 // Big backs: one bold illustration and the verse set big, each as a hoodie and a tee.
 const BIG = [
   ["stripling", "Stripling 2000", ["Bone", "#F5E8CE"], ["Cream", "#F3EEE1"], "Alma 56:48", ["alma", 56, 48], "Two thousand young warriors marching under a big red 2000, and the words of their mothers."],

@@ -17,6 +17,8 @@ const hoodie = (id, back, chest, sleeves = []) => [
   ...sleeves.map(([place, file]) => ({ id, place, file, pos: SLEEVE })),
 ];
 export const OPEN_FILES = [
+  // Stickers: square 1200 px files (4 in at 300 dpi) that fill the 4" x 4" sticker; the cut follows the design.
+  ...["flag", "steadfast", "liahona", "rent", "press-forward", "go-and-do"].map(k => ({ id: `sticker-${k}`, place: "default", file: `stickers/${k}.png`, pos: { widthIn: 4, topIn: 0 } })),
   ...tee("open-cureloms", "review/cureloms-v3-back.png", "chest/chest-forest.png"),
   ...tee("open-liberty", "review/liberty-v4-back.png", "chest/chest-bone.png"),
   ...tee("open-liahona", "concept-liahona-back.png", "chest/chest-liahona-cream.png"),

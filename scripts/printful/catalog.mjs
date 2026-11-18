@@ -8,6 +8,8 @@ const v = (S, M, L, XL, XXL) => ({ S, M, L, XL, "2XL": XXL });
 // M2475 fleece pullover 674, SOL'S 32000 windbreaker 661, Champion CO200 packable anorak 399,
 // Yupoong 6245CM dad hat 206, Yupoong 1501KC cuffed beanie 266.
 export const CATALOG = {
+  // Kiss-cut stickers (product 358), 4" x 4" (variant 10164).
+  ...Object.fromEntries(["flag", "steadfast", "liahona", "rent", "press-forward", "go-and-do"].map(k => [`sticker-${k}`, { product: 358, color: "White", variants: { OS: 10164 } }])),
   // The opening set (Black Friday 2026): Bella+Canvas 3010 tees (product 1592) and Cotton Heritage M2580 hoodies,
   // art placed by inches from scripts/printful/art-opening.mjs. Variant IDs from api.printful.com/products/1592, Nov 12.
   "cureloms-tee":            { product: 1592, color: "Natural",   art: "open-cureloms",       variants: v(50085, 50119, 50129, 50088, 50081) },
