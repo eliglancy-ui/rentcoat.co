@@ -30,5 +30,5 @@ export default async (_req: Request, context: Context) => {
 
 export const config: Config = {
   onError: "bypass", // if this ever fails, serve the page untouched rather than an error
-  path: ["/", "/index.html", "/title-of-liberty-shirt", "/title-of-liberty-shirt/", "/curelom-shirt", "/curelom-shirt/"],
+  path: ["/", "/index.html", "/title-of-liberty-shirt", "/title-of-liberty-shirt/", "/curelom-shirt", "/curelom-shirt/", "/shop/*"],
 };
