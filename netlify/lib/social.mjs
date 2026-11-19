@@ -35,7 +35,13 @@ async function igStart(post, story) {
   const video = mediaOf(post, "video"), imgs = images(post), caption = post.caption || "";
   if (!video && !imgs.length) throw new Error("This post has no image or video.");
   if (story) return (await graph(`${user}/media`, { media_type: "STORIES", ...(video ? { video_url: video } : { image_url: imgs[0] }), access_token: token })).id;
-  if (video) return (await graph(`${user}/media`, { media_type: "REELS", video_url: video, caption, share_to_feed: "true", access_token: token })).id;
+  if (video) {
+    const reel = { media_type: "REELS", video_url: video, caption, share_to_feed: "true", access_token: token };
+    // Trial reel: shown to non-followers first. "manual" = Eli shares it to followers in the app if he likes how it did;
+    // "auto" = Instagram shares it to followers on its own if it performs well (Meta: trial_params.graduation_strategy).
+    if (post.trial) reel.trial_params = JSON.stringify({ graduation_strategy: post.trial === "auto" ? "SS_PERFORMANCE" : "MANUAL" });
+    return (await graph(`${user}/media`, reel)).id;
+  }
   if (imgs.length === 1) return (await graph(`${user}/media`, { image_url: imgs[0], caption, access_token: token })).id;
   const children = [];
   for (const u of imgs) children.push((await graph(`${user}/media`, { image_url: u, is_carousel_item: "true", access_token: token })).id);
@@ -84,6 +90,10 @@ async function tiktokPublish(post, onRefresh) {
   if (d.error?.code !== "ok") throw new Error(`TikTok: ${d.error?.message || d.error?.code || r.status}`);
   return d.data?.publish_id;
 }
+
+// Trial reels only exist for Instagram reels (a video post going to the Instagram feed).
+export const TRIALS = { manual: "Trial reel (I share it)", auto: "Trial reel (auto-share if it does well)" };
+export const canTrial = post => Boolean(mediaOf(post, "video"));
 
 // Which targets a post goes to. Old posts (before targets existed) go to Instagram only.
 export function targetsOf(post) {

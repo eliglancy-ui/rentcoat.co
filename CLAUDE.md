@@ -26,6 +26,7 @@ Static site in `public/` + Netlify Functions (`netlify/functions/*.mjs`) + one e
 ## HQ (private back office, rentcoat.co/hq, header `x-hq-key` = ADMIN_KEY)
 - UI: `public/hq/index.html` (tabs: Today, Orders, Posts, Inbox, Mo, Products, Setup; installable PWA).
 - API: `netlify/functions/hq.mjs`. Posting engine: `netlify/lib/social.mjs` (Instagram feed/carousel/reel/story, Facebook Page, TikTok drafts; per-post `targets`). Scheduler: `hq-scheduler.mjs` (every 10 min posts approved + scheduled posts). OAuth: `connect.mjs`. Keys/tokens: `netlify/lib/vault.mjs` (Netlify Blobs).
+- Reposts: video posts can go out as Instagram **trial reels** (`post.trial` manual/auto → `trial_params`, non-followers first). "Plan reposts" on a posted post makes review drafts ~90 and ~180 days later (+ a feed version 3 days later after a trial): `netlify/lib/reposts.mjs`. No mirrored copies (designs are words). Drafts with sale/launch wording are flagged to rewrite.
 - Mo (the assistant) = Claude in `hq.mjs` with tools to draft posts (max 7, real product photos via `product_id`).
 - Add posts for Eli to review by committing to `public/hq/seed.json` (images under `public/media/`).
 - AI media: Cloudflare Workers AI (images), fal.ai (video, try-on) with a monthly cap.

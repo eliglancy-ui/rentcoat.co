@@ -8,6 +8,9 @@
 //   POST /api/hq/queue/:id/send        { targets?, retry? }  post an approved post to its targets now (Instagram feed/carousel/reel,
 //                                       story, Facebook, TikTok drafts); call again until status is "posted" (videos take a minute)
 //   POST /api/hq/queue/:id/stats       refresh Instagram numbers for a posted post
+//   POST /api/hq/queue/:id/reposts     plan reposts of a posted post: drafts for ~90 and ~180 days later (+ a feed
+//                                      version 3 days later if it went out as a trial reel). Drafts only: Eli approves each.
+//   Posts can carry trial: "manual" | "auto" | null (video posts only): Instagram trial reel, non-followers first.
 //   GET  /api/hq/inbox?account=        Instagram comments; POST inbox/suggest (Mo writes a reply), POST inbox/reply (send it)
 //   GET  /api/hq/insights              followers and post counts for both Instagram accounts
 //   Approved posts with a time and "autopost" go out on their own (netlify/functions/hq-scheduler.mjs).
@@ -26,7 +29,8 @@ import { getStore } from "@netlify/blobs";
 import Anthropic from "@anthropic-ai/sdk";
 import { PRODUCTS, liveLine, decodeItems, stripe, json } from "../lib/store.mjs";
 import { hydrate, setVault, getAccounts, setAccounts, makeState, PASTE_KEYS, tokenFor } from "../lib/vault.mjs";
-import { ACCOUNTS, TARGETS, step, igStats, igAccount, igInbox, igReply } from "../lib/social.mjs";
+import { ACCOUNTS, TARGETS, TRIALS, canTrial, step, igStats, igAccount, igInbox, igReply } from "../lib/social.mjs";
+import { planReposts } from "../lib/reposts.mjs";
 
 const sameKey = (a, b) => crypto.timingSafeEqual(
   crypto.createHash("sha256").update(String(a)).digest(),
@@ -474,6 +478,13 @@ export default async (req) => {
         await step(post, { retry: Boolean(body.retry), onRefresh: rt => setVault({ TIKTOK_REFRESH_TOKEN: rt }) });
         await store().setJSON("queue", q); return json({ post });
       }
+      if (path[2] === "reposts") {
+        if (post.status !== "posted") return json({ error: "Plan reposts once it's posted." }, 409);
+        if (post.reposts?.length) return json({ error: "Reposts are already planned for this one." }, 409);
+        const drafts = planReposts(post);
+        post.reposts = drafts.map(d => d.id);
+        q.unshift(...drafts); await store().setJSON("queue", q); return json({ post, drafts });
+      }
       if (path[2] === "stats") {
         if (!post.igId && !post.done?.ig) return json({ error: "Stats show up once it's posted to Instagram from HQ." }, 409);
         post.stats = await igStats(post.account, post.igId || post.done.ig); if (post.stats.views != null) post.views = post.stats.views;
@@ -489,6 +500,12 @@ export default async (req) => {
       if (typeof body.views === "number") post.views = body.views;
       if (Array.isArray(body.media)) { post.media = body.media.map(String).slice(0, 10); delete post.needsImage; }
       if (body.branded) post.branded = true;
+      if ("trial" in body) {
+        if (body.trial && !TRIALS[body.trial]) return json({ error: "Unknown trial setting." }, 400);
+        if (body.trial && !canTrial(post)) return json({ error: "Trial reels are for video posts only." }, 400);
+        if (post.status === "posted") return json({ error: "It's already posted." }, 409);
+        post.trial = body.trial || null;
+      }
       await store().setJSON("queue", q); return json({ post });
     }
     // Instagram comments waiting for a reply, a reply Mo suggests, and sending the reply Eli approved.
