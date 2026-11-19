@@ -129,7 +129,7 @@ details.card>summary .pill{margin-left:auto}
 .tg button{border:1px solid var(--line-2);background:transparent;color:var(--mute);border-radius:99px;padding:6px 10px;font:600 12px/1 var(--body);cursor:pointer}
 .tg button[aria-pressed="true"]{color:#17120a;background:var(--gold);border-color:var(--gold)}
 .when{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.when input{background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:7px 10px;color:var(--ink);color-scheme:dark}
+.when input,.when select{background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:7px 10px;color:var(--ink);color-scheme:dark;max-width:100%}
 .st{font:600 12px/1.4 var(--mono);display:flex;flex-direction:column;gap:3px}
 .st .ok{color:var(--green)} .st .bad{color:#ff9b8a} .st .wait{color:var(--gold-2)}
 .cnt{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font:700 11px/1 var(--mono);padding:5px 7px;border-radius:99px}
@@ -180,7 +180,9 @@ code{font:500 12.5px var(--mono);background:var(--panel-2);border:1px solid var(
 /* phone */
 .tabbar{display:none}
 @media (max-width:860px){
-  .app{grid-template-columns:1fr}
+  .app{grid-template-columns:minmax(0,1fr)}
+  main{min-width:0}
+  .segrow .tabs{overflow-x:auto;scrollbar-width:none}
   .side{display:none}
   main{padding:22px 16px calc(110px + env(safe-area-inset-bottom))}
   h1{font-size:28px}
@@ -450,6 +452,9 @@ function postsSection() {
       ...(p.containers && Object.keys(p.containers).length ? [`<span class="wait">… Instagram is processing. Tap Finish posting.</span>`] : []),
       ...(p.autopost && p.status !== "posted" ? [`<span class="wait">⏱ Goes out ${whenText(p.when)}</span>`] : []),
       ...(p.missed ? [`<span class="bad">Missed its time (more than a day late). Pick a new time.</span>`] : []),
+      ...(p.trial ? [`<span class="wait">Trial reel: shown to non-followers first${p.trial === "manual" ? (p.status === "posted" ? ". If it did well, share it to followers in the Instagram app." : ". You share it to followers in the app if it does well.") : ". Instagram shares it to followers if it does well."}</span>`] : []),
+      ...(p.note && p.status !== "posted" ? [`<span class="${/^Rewrite/.test(p.note) ? "bad" : "wait"}">${esc(p.note)}</span>`] : []),
+      ...(p.reposts?.length ? [`<span class="ok">↻ ${p.reposts.length} reposts planned (in To review)</span>`] : []),
     ].join("");
     return `<div class="card post">
     <div class="shot">${p.needsImage && !many ? `<div style="aspect-ratio:4/5;display:grid;place-items:center;background:var(--panel-2)"><button class="btn sm primary" data-mkimg="${p.id}">Make image</button></div>` : img ? `<img src="${esc(local(p.media[0]))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">` : `<video src="${esc(local(p.media?.[0]))}" poster="${esc(p.cover || "")}" controls playsinline preload="none"></video>`}${many > 1 ? `<span class="cnt">1/${many} carousel</span>` : ""}</div>
@@ -458,6 +463,7 @@ function postsSection() {
       <span class="title">${esc(p.title)}${p.by === "mo" ? ` <span class="pill">by Mo</span>` : ""}</span>
       <textarea data-caption="${p.id}">${esc(p.caption)}</textarea>
       ${p.status !== "posted" ? `<div class="tg" aria-label="Post to">${tgtFor(p.account).map(k => `<button data-tgt="${p.id}" data-k="${k}" aria-pressed="${Boolean(t[k])}">${TGT[k]}</button>`).join("")}</div>
+      ${/\.(mp4|webm|mov)($|\?)/i.test(p.media?.[0] || "") && t.ig ? `<div class="when"><span class="sub" style="font-size:13px">Trial</span><select data-trial="${p.id}"><option value="">Off: regular reel</option><option value="manual"${p.trial === "manual" ? " selected" : ""}>Non-followers first · I share it</option><option value="auto"${p.trial === "auto" ? " selected" : ""}>Non-followers first · auto-share</option></select></div>` : ""}
       <div class="when"><span class="sub" style="font-size:13px">When</span><input type="datetime-local" data-when="${p.id}" value="${toLocalInput(p.when)}">${p.when ? `<button class="btn sm ghost" data-clearwhen="${p.id}">Clear</button>` : ""}</div>` : ""}
       ${st ? `<div class="st">${st}</div>` : ""}
       ${p.stats ? `<div class="stats">${[["views", p.stats.views], ["reach", p.stats.reach], ["likes", p.stats.likes], ["comments", p.stats.comments], ["saves", p.stats.saved], ["shares", p.stats.shares]].filter(x => x[1] != null).map(([k, v]) => `<div><b>${Number(v).toLocaleString()}</b><span>${k}</span></div>`).join("")}</div>` : ""}
@@ -466,6 +472,7 @@ function postsSection() {
         ${p.status === "approved" ? `${p.autopost ? `<button class="btn sm" data-unsched="${p.id}">Unschedule</button>` : sched ? `<button class="btn sm" data-approve="${p.id}" data-auto="1">Schedule</button>` : ""}<button class="btn sm primary" data-send="${p.id}">Post now</button>` : ""}
         ${p.status === "publishing" ? `<button class="btn sm primary" data-send="${p.id}">Finish posting</button>` : ""}
         ${p.status === "approved" && !p.done?.ig ? `<button class="btn sm ghost" data-status="${p.id}" data-to="posted">I posted it myself</button>` : ""}
+        ${p.status === "posted" && !p.reposts?.length && !p.repostOf ? `<button class="btn sm" data-reposts="${p.id}" title="Drafts to post it again ~90 and ~180 days from now">Plan reposts</button>` : ""}
         ${p.status === "posted" && (p.igId || p.done?.ig) ? `<button class="btn sm" data-stats="${p.id}">${p.stats ? "Refresh stats" : "See stats"}</button>` : ""}
         ${p.product && !p.branded && p.status !== "posted" ? `<button class="btn sm" data-brand="${p.id}">Make branded ad</button>` : ""}
         <button class="btn sm" data-copycap="${p.id}">Copy caption</button>
@@ -722,6 +729,9 @@ function wire() {
       updated(p); render(); toast(p.status === "posted" ? "Posted" : Object.keys(p.errors || {}).length ? "Some didn't go: see the red lines" : "Still processing. Tap Finish posting in a minute.");
     } catch (e) { toast(e.message); render(); }
   });
+  document.querySelectorAll("[data-trial]").forEach(sel => sel.onchange = () => savePost(sel.dataset.trial, { trial: sel.value || null }, sel.value ? "Trial reel on" : "Regular reel"));
+  document.querySelectorAll("[data-reposts]").forEach(b => b.onclick = async () => { b.disabled = true;
+    try { const r = await post(`queue/${b.dataset.reposts}/reposts`); updated(r.post); state.queue.queue.unshift(...r.drafts); state.overview = await api("overview").catch(() => state.overview); paintNav(); render(); toast(`${r.drafts.length} repost drafts added to To review`); } catch (e) { b.disabled = false; toast(e.message); } });
   document.querySelectorAll("[data-stats]").forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = "Loading…"; try { updated((await post(`queue/${b.dataset.stats}/stats`)).post); } catch (e) { toast(e.message); } render(); });
   // Composer extras
   document.querySelectorAll("[data-dtgt]").forEach(b => b.onclick = () => { keep(); const t = { ...(state.draft.targets || { ig: true }) }; t[b.dataset.dtgt] = !t[b.dataset.dtgt]; state.draft.targets = t; render(); });
